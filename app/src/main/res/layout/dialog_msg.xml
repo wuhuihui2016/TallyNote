@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/shape_dialog_gray">
+    android:padding="10dp"
+    android:background="@drawable/shape_dialog_gray_red">
 
     <LinearLayout
         android:id="@+id/title_layout"
@@ -17,7 +18,7 @@
             android:text="message"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textSize="22sp"/>
+            android:textSize="@dimen/titletextSize"/>
 
         <View
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
         android:padding="10dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
-        android:textSize="15sp"/>
+        android:textSize="@dimen/bigtextSize"/>
 
     <View
         android:layout_width="match_parent"
@@ -64,7 +65,7 @@
                 android:clickable="true"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:textSize="15sp"
+                android:textSize="@dimen/bigtextSize"
                 android:background="@android:color/transparent"
                 android:gravity="center|center_vertical"
                 android:textColor="@android:color/holo_blue_dark"/>
@@ -84,7 +85,7 @@
             android:clickable="true"
             android:layout_weight="1"
             android:padding="10dp"
-            android:textSize="15sp"
+            android:textSize="@dimen/bigtextSize"
             android:background="@android:color/transparent"
             android:gravity="center|center_vertical"
             android:textColor="@android:color/holo_blue_dark"/>

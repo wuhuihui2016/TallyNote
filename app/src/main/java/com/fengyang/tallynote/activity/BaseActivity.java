@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -93,10 +92,24 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
      */
     protected void setRightBtnListener(CharSequence text, View.OnClickListener listener) {
         if (! TextUtils.isEmpty(text)) {
-            Button right_btn = (Button) findViewById(R.id.right_btn);
+            TextView right_btn = (TextView) findViewById(R.id.right_btn);
             right_btn.setVisibility(View.VISIBLE);
             right_btn.setText(text);
             right_btn.setOnClickListener(listener);
+        }
+    }
+
+    /**
+     * 设置界面右上角更多按钮的点击事件
+     * @param text
+     * @param listener
+     */
+    protected void setRightMoreBtnListener(CharSequence text, View.OnClickListener listener) {
+        if (! TextUtils.isEmpty(text)) {
+            TextView more_btn = (TextView) findViewById(R.id.more_btn);
+            more_btn.setVisibility(View.VISIBLE);
+            more_btn.setText(text);
+            more_btn.setOnClickListener(listener);
         }
     }
 

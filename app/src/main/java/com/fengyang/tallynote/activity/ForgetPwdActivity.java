@@ -14,20 +14,21 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 忘记密码
  * Created by wuhuihui on 2017/6/27.
  */
-public class OnStartActivity extends BaseActivity {
+public class ForgetPwdActivity extends BaseActivity {
 
     private List<TextView> textViews = new ArrayList<>();
     private GridView numGridView;
     private List<String> list = new ArrayList<>();
-    private List<MonthNote> monthNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class OnStartActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_forgetpwd);
 
         initView();
     }
@@ -44,45 +45,39 @@ public class OnStartActivity extends BaseActivity {
      * 初始化View
      */
     private void initView() {
-        monthNotes = MyApp.utils.getMonNotes();
-        if (monthNotes.size() > 0) {
-            //密码输入显示的TextView集合
-            textViews.add((TextView) findViewById(R.id.pwd1));
-            textViews.add((TextView) findViewById(R.id.pwd2));
-            textViews.add((TextView) findViewById(R.id.pwd3));
-            textViews.add((TextView) findViewById(R.id.pwd4));
-            textViews.add((TextView) findViewById(R.id.pwd5));
-            textViews.add((TextView) findViewById(R.id.pwd6));
+        //密码输入显示的TextView集合
+        textViews.add((TextView) findViewById(R.id.pwd1));
+        textViews.add((TextView) findViewById(R.id.pwd2));
+        textViews.add((TextView) findViewById(R.id.pwd3));
+        textViews.add((TextView) findViewById(R.id.pwd4));
+        textViews.add((TextView) findViewById(R.id.pwd5));
+        textViews.add((TextView) findViewById(R.id.pwd6));
 
-            //输入数字View
-            numGridView = (GridView) findViewById(R.id.numGridView);
-            //输入后数字集合
-            list = new ArrayList<>();
+        //输入数字View
+        numGridView = (GridView) findViewById(R.id.numGridView);
+        //输入后数字集合
+        list = new ArrayList<>();
 
-            //数字显示集合
-            List<Drawable> numRes = new ArrayList<>();
-            numRes.add(getResources().getDrawable(R.drawable.number1));
-            numRes.add(getResources().getDrawable(R.drawable.number2));
-            numRes.add(getResources().getDrawable(R.drawable.number3));
-            numRes.add(getResources().getDrawable(R.drawable.number4));
-            numRes.add(getResources().getDrawable(R.drawable.number5));
-            numRes.add(getResources().getDrawable(R.drawable.number6));
-            numRes.add(getResources().getDrawable(R.drawable.number7));
-            numRes.add(getResources().getDrawable(R.drawable.number8));
-            numRes.add(getResources().getDrawable(R.drawable.number9));
+        //数字显示集合
+        List<Drawable> numRes = new ArrayList<>();
+        numRes.add(getResources().getDrawable(R.drawable.number1));
+        numRes.add(getResources().getDrawable(R.drawable.number2));
+        numRes.add(getResources().getDrawable(R.drawable.number3));
+        numRes.add(getResources().getDrawable(R.drawable.number4));
+        numRes.add(getResources().getDrawable(R.drawable.number5));
+        numRes.add(getResources().getDrawable(R.drawable.number6));
+        numRes.add(getResources().getDrawable(R.drawable.number7));
+        numRes.add(getResources().getDrawable(R.drawable.number8));
+        numRes.add(getResources().getDrawable(R.drawable.number9));
 
-            //数字显示
-            numGridView.setAdapter(new NumAdapter(activity, numRes));
-            numGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    onClickCallback((position + 1) + "");
-                }
-            });
-        } else {
-            finish();
-            startActivity(new Intent(activity, MainActivity.class));
-        }
+        //数字显示
+        numGridView.setAdapter(new NumAdapter(activity, numRes));
+        numGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onClickCallback((position + 1) + "");
+            }
+        });
     }
 
     @Override
@@ -129,17 +124,24 @@ public class OnStartActivity extends BaseActivity {
                             password += list.get(i);
                         }
 
-                        String actual_balance = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
-                        if (actual_balance.length() > 6) {
-                            actual_balance = actual_balance.substring(0, 5);
-                        } else if (actual_balance.length() < 6){
-                            actual_balance = "921023";
-                        }
-                        if (password.equals(actual_balance)) {
-                            finish();
-                            startActivity(new Intent(context, MainActivity.class));
+                        if (password.equals("222844")) {
+                            List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
+                            String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
+                            if (pwd.length() > 6) {
+                                pwd = pwd.substring(0, 5);
+                            } else if (pwd.length() < 6){
+                                pwd = "921023";
+                            }
+                            DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener(){
+                                @Override
+                                public void onClick(View v) {
+                                    super.onClick(v);
+                                    finish();
+                                }
+                            });
+
                         } else {
-                            StringUtils.show1Toast(context, "密码验证失败！请重新输入！");
+                            StringUtils.show1Toast(context, "验证失败！请重新输入！");
                             list.clear();
                             for (int i = 0; i < textViews.size(); i ++) {
                                 textViews.get(i).setText("");

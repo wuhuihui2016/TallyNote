@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.fengyang.tallynote.MyApp;
@@ -13,13 +12,11 @@ import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.PermissionUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
-public class DayActivity extends BaseActivity{
+public class NewDayActivity extends BaseActivity{
 
 	private EditText usageEt, moneyEt, remarkEt;
-	private Button commitNote;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +30,11 @@ public class DayActivity extends BaseActivity{
 		usageEt = (EditText) findViewById(R.id.usageEt);
 		moneyEt = (EditText) findViewById(R.id.moneyEt);
 		remarkEt = (EditText) findViewById(R.id.remarkEt);
-		commitNote = (Button) findViewById(R.id.commitNote);
 
 		setRightBtnListener("新建月账单", new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(activity, MonthActivity.class));
+				startActivity(new Intent(activity, NewMonthActivity.class));
 			}
 		});
 	}
@@ -48,14 +44,16 @@ public class DayActivity extends BaseActivity{
 		super.onClick(v);
 		if(v.getId() == R.id.commitNote) {
 			String usage = usageEt.getText().toString();
-			String money = StringUtils.formateDouble(moneyEt.getText().toString());
+			String money = StringUtils.formatePrice(moneyEt.getText().toString());
 			String remark = remarkEt.getText().toString();
 
 			if (! TextUtils.isEmpty(usage) && ! TextUtils.isEmpty(money)) {
 				final DayNote dayNote = new DayNote(usage, money, remark, DateUtils.formatDateTime());
 				LogUtils.i("commit", dayNote.toString());
-				DialogUtils.showMsgDialog(activity, "新增日账单",
-						dayNote.getUsage() + "：" + dayNote.getMoney() + "\n" + dayNote.getRemark(),
+				String message;
+				if (remark.length() > 0) message = dayNote.getUsage() + ":" + StringUtils.showPrice(dayNote.getMoney()) + " (" + dayNote.getRemark() + ")";
+				else message = dayNote.getUsage() + ":" + StringUtils.showPrice(dayNote.getMoney());
+				DialogUtils.showMsgDialog(activity, "新增日账单", message,
 						new DialogUtils.DialogListener(){
 							@Override
 							public void onClick(View v) {
@@ -65,6 +63,11 @@ public class DayActivity extends BaseActivity{
 									finish();
 								} else StringUtils.show1Toast(activity, "新增日账单失败！");
 							}
+						}, new DialogUtils.DialogListener(){
+							@Override
+							public void onClick(View v) {
+								super.onClick(v);
+							}
 						});
 
 			} else {
@@ -73,20 +76,4 @@ public class DayActivity extends BaseActivity{
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		//检测权限后显示界面
-		PermissionUtils.checkSDcardPermission(DayActivity.this, new PermissionUtils.OnCheckCallback() {
-			@Override
-			public void onCheck(boolean isSucess) {
-				commitNote.setEnabled(isSucess);
-				if (! isSucess) {
-					PermissionUtils.notPermission(DayActivity.this, PermissionUtils.PERMISSIONS_STORAGE);
-					StringUtils.show1Toast(context, "可能读取SDCard权限未打开，请检查后重试！");
-				}
-			}
-		});
-	}
 }

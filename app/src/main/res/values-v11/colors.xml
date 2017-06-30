@@ -7,4 +7,10 @@
     <color name="white">@android:color/white</color>
     <color name="red">@android:color/holo_red_light</color>
     <color name="black">@android:color/black</color>
+
+    <color name="day_record">#009393</color>
+    <color name="month_record">#007500</color>
+    <color name="income_record">#F75000</color>
+    <color name="remark">#999999</color>
+    <color name="remark_bkg">#FFF7E9</color>
 </resources>

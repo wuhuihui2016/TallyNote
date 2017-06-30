@@ -50,6 +50,7 @@ public class DayNoteAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.day_item_layout, null);
             viewHolder = new ViewHolder();
+            viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.usage = (TextView) convertView.findViewById(R.id.usage);
             viewHolder.money = (TextView) convertView.findViewById(R.id.money);
             viewHolder.remask = (TextView) convertView.findViewById(R.id.remask);
@@ -60,13 +61,14 @@ public class DayNoteAdapter extends BaseAdapter {
 
         //获取当前对象
         DayNote dayNote = dayNotes.get(position);
-        viewHolder.usage.setText(DateUtils.diffTime(dayNote.getTime()) + " :" + dayNote.getUsage());
-        viewHolder.money.setText(StringUtils.formate2Double(dayNote.getMoney()));
-        if (!TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
+        viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
+        viewHolder.usage.setText(dayNote.getUsage());
+        viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
+        if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
         return convertView;
     }
 
     class ViewHolder{
-        TextView usage, money, remask;
+        TextView time, usage, money, remask;
     }
 }

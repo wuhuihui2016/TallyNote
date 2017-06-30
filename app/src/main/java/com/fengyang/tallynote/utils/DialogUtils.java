@@ -95,7 +95,7 @@ public class DialogUtils {
             }
             msgView.setText(message);
             comfireView.setOnClickListener(comfireListener);
-            cancelView.setOnClickListener(new DialogListener());
+            cancel_layout.setVisibility(View.GONE);
             dialog.show();
 
         } catch (Exception e) {}

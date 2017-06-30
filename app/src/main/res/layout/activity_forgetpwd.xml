@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请验证密码"
+        android:hint="请输入身份证号后6位"
         android:gravity="center|center_horizontal"
         android:padding="10dp"/>
 
@@ -95,16 +95,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/forgetPwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/forgetPwd"
-        android:textColor="@android:color/holo_blue_light"
-        android:gravity="center|center_horizontal"
-        android:onClick="onClick"
-        android:padding="10dp"/>
-
     <GridView
         android:id="@+id/numGridView"
         android:layout_width="match_parent"
@@ -144,8 +134,5 @@
             android:onClick="onClick"/>
 
     </LinearLayout>
-
-
-
 
 </LinearLayout>

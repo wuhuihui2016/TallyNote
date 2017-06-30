@@ -23,15 +23,26 @@
             </intent-filter>
         </activity>
 
+        <!-- 忘记密码 -->
+        <activity android:name=".activity.ForgetPwdActivity"/>
+
         <!-- 主页 -->
         <activity android:name=".activity.MainActivity"/>
 
         <!-- 记日账 -->
-        <activity android:name=".activity.DayActivity"
+        <activity android:name=".activity.NewDayActivity"
             android:configChanges="orientation|keyboardHidden"/>
 
         <!-- 记月账 -->
-        <activity android:name=".activity.MonthActivity"
+        <activity android:name=".activity.NewMonthActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+
+        <!-- 记理财 -->
+        <activity android:name=".activity.NewIncomeActivity"
+            android:configChanges="orientation|keyboardHidden"/>
+
+        <!-- 完成理财 -->
+        <activity android:name=".activity.FinishIncomeActivity"
             android:configChanges="orientation|keyboardHidden"/>
 
         <!-- 账单记录 -->

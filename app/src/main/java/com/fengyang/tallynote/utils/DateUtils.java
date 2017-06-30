@@ -20,21 +20,21 @@ public class DateUtils {
     LogUtils.i("diffTime2", DateUtils.diffTime("2016-1-10 12:30:31"));
 	*/
 
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat time_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
 
 	/**
 	 * 日期格式
 	 */
 	public static String formatDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-		return sdf.format(new Date());
+		return date_sdf.format(new Date());
 	}
 
 	/**
 	 * 时间格式
 	 */
 	public static String formatDateTime() {
-		return sdf.format(new Date());
+		return time_sdf.format(new Date());
 	}
 
 	/**
@@ -77,14 +77,14 @@ public class DateUtils {
 				if (! year1.equals(year2)) return diffTime(lastTime); //不同年
 				else {//同年,判断是否同日
 					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(sdf.parse(lastTime));
+					calendar.setTime(time_sdf.parse(lastTime));
 					int day1 = calendar.get(Calendar.DAY_OF_YEAR);//在一年中第几天
-					calendar.setTime(sdf.parse(formeTime));
+					calendar.setTime(time_sdf.parse(formeTime));
 					int day2 = calendar.get(Calendar.DAY_OF_YEAR);
 
 					if (day1 == day2) {//同一天
-						Date laster = sdf.parse(lastTime);
-						Date former = sdf.parse(formeTime);
+						Date laster = time_sdf.parse(lastTime);
+						Date former = time_sdf.parse(formeTime);
 						long m = (laster.getTime() - former.getTime()) / (60 * 1000);
 //							LogUtils.i("diffTime", lastTime + "-" + formeTime + "相差" + m + "分");
 						if (m <= 5) {//相差小于5分不显示
@@ -130,9 +130,9 @@ public class DateUtils {
 			if (! year1.equals(year2)) return time.split(" ")[0]; //不同年 2016-08-30
 			else {//同年,判断是否同日
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(sdf.parse(now));
+				calendar.setTime(time_sdf.parse(now));
 				int day1 = calendar.get(Calendar.DAY_OF_YEAR);//在一年中第几天
-				calendar.setTime(sdf.parse(time));
+				calendar.setTime(time_sdf.parse(time));
 				int day2 = calendar.get(Calendar.DAY_OF_YEAR);
 				int d_value = day1 - day2;//天数差值
 //				LogUtils.i("diffTime", day1 + "-" + day2 + "=" + d_value);
@@ -140,8 +140,8 @@ public class DateUtils {
 					if (d_value == 2) return "前天 " + hm;//前天
 					else if(d_value == 1)  return "昨天 " + hm;//昨天
 					else if(d_value == 0) {
-						Date laster = sdf.parse(now);
-						Date former = sdf.parse(time);
+						Date laster = time_sdf.parse(now);
+						Date former = time_sdf.parse(time);
 						long m = (laster.getTime() - former.getTime()) / (60 * 1000);
 						if (m >= 5) {//相差5分以上显示时分
 							return hm;
@@ -157,6 +157,27 @@ public class DateUtils {
 		} catch (Exception e) {}
 
 		return "";
+	}
+
+	/**
+	 * 计算某个日期距离当天的天数
+	 * @param date
+	 * @return
+     */
+	public static final int daysBetween(String date) {
+		int days = 0;
+		try {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date_sdf.parse(date));
+			long time1 = cal.getTimeInMillis();
+			cal.setTime(date_sdf.parse(formatDate()));
+			long time2 = cal.getTimeInMillis();
+			long between_days = (time2 - time1) / ( 1000 * 3600 * 24);
+			days = Integer.parseInt(String.valueOf(between_days));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return days;
 	}
 
 	/**
