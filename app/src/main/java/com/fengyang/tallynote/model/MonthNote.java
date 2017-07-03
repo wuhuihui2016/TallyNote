@@ -1,9 +1,11 @@
 package com.fengyang.tallynote.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wuhuihui on 2017/6/23.
  */
-public class MonthNote {
+public class MonthNote implements Serializable {
 
     String last_balance; //上次结余
     String pay; //本次支出

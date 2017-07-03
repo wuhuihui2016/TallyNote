@@ -2,6 +2,7 @@ package com.fengyang.tallynote;
 
 import android.app.Application;
 
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.CrashHandler;
 import com.fengyang.tallynote.utils.DBUtils;
 import com.fengyang.tallynote.utils.FileUtils;
@@ -15,6 +16,8 @@ public class MyApp extends Application {
 
     public static DBUtils utils;
 
+    public static final int DAY = 0, MONTH = 1, INCOME = 2;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -22,6 +25,8 @@ public class MyApp extends Application {
         instance = this;
 
         CrashHandler.getInstance().init(getApplicationContext());//程序崩溃日志输出保存
+
+        ContansUtils.setPres(this);//设置存储空间，获取编辑器
 
         utils = new DBUtils(instance); //开辟用户数据库
 

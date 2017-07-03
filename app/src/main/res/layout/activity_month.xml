@@ -207,14 +207,15 @@
                 android:textColor="#333333"
                 android:textSize="@dimen/bigtextSize" />
 
-            <EditText
+            <TextView
                 android:id="@+id/balanceEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
                 android:inputType="numberDecimal"
-                android:hint="必填"
+                android:hint="计算"
+                android:onClick="onClick"
                 android:singleLine="true"
                 android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />

@@ -13,6 +13,7 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.StringUtils;
 
@@ -133,7 +134,7 @@ public class OnStartActivity extends BaseActivity {
                         if (actual_balance.length() > 6) {
                             actual_balance = actual_balance.substring(0, 5);
                         } else if (actual_balance.length() < 6){
-                            actual_balance = "921023";
+                            actual_balance = (String) ContansUtils.get("pwdKey", "");
                         }
                         if (password.equals(actual_balance)) {
                             finish();

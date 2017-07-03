@@ -5,9 +5,10 @@
     android:gravity="center">
 
     <TextView
+        android:id="@+id/edit_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入身份证号后6位"
+        android:hint="请输入6位密保"
         android:gravity="center|center_horizontal"
         android:padding="10dp"/>
 

@@ -162,14 +162,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     layout="@layout/day_item_layout"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp" />
 
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_day"
@@ -177,11 +177,11 @@
 
             <LinearLayout
                 android:id="@+id/commitDNote"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:gravity="center_horizontal|center"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -197,7 +197,7 @@
                     android:textSize="@dimen/bigtextSize"
                     android:textColor="@color/day_record"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="10dp"/>
 
             </LinearLayout>
             <View
@@ -207,11 +207,11 @@
 
             <LinearLayout
                 android:id="@+id/commitMNote"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:gravity="center_horizontal|center"
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
 
@@ -223,12 +223,12 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="30dp"
                     android:text="记一笔月账"
                     android:textSize="@dimen/bigtextSize"
                     android:textColor="@color/month_record"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="10dp"/>
 
             </LinearLayout>
 

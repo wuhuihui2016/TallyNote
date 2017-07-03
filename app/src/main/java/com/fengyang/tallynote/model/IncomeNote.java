@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by wuhuihui on 2017/6/28.
  */
-public class Income implements Serializable {
+public class IncomeNote implements Serializable {
 
     String money; //投入金额（单位万）
     String incomeRatio; //预期年化（%）
@@ -19,7 +19,7 @@ public class Income implements Serializable {
     String remark;//理财备注
     String time; //记录时间
 
-    public Income(String money, String incomeRatio, String days, String durtion, String dayIncome, String finalIncome, String finalCash, String finalCashGo, int finished, String remark, String time) {
+    public IncomeNote(String money, String incomeRatio, String days, String durtion, String dayIncome, String finalIncome, String finalCash, String finalCashGo, int finished, String remark, String time) {
         this.money = money;
         this.incomeRatio = incomeRatio;
         this.days = days;
@@ -123,7 +123,7 @@ public class Income implements Serializable {
 
     @Override
     public String toString() {
-        return "Income{" +
+        return "IncomeNote{" +
                 "money='" + money + 
                 ", incomeRatio='" + incomeRatio + 
                 ", days='" + days + 

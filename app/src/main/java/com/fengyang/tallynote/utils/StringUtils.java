@@ -44,7 +44,7 @@ public class StringUtils {
 
     //价格显示标准
     public static String formatePrice(String price){
-        if (!TextUtils.isEmpty(price)) {
+        if (! TextUtils.isEmpty(price)) {
             double d = Double.parseDouble(price);
             DecimalFormat df = new DecimalFormat("0.00");
             return df.format(d);

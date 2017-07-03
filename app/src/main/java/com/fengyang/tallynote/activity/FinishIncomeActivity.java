@@ -8,14 +8,14 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.model.Income;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 public class FinishIncomeActivity extends BaseActivity{
 
-	private Income income;
+	private IncomeNote incomeNote;
 	private EditText finalCashEt, finalCashGoEt;
 	private TextView income_info;
 
@@ -31,14 +31,14 @@ public class FinishIncomeActivity extends BaseActivity{
 		finalCashEt = (EditText) findViewById(R.id.finalCashEt);
 		finalCashGoEt = (EditText) findViewById(R.id.finalCashGoEt);
 
-		income = (Income) getIntent().getSerializableExtra("income");
+		incomeNote = (IncomeNote) getIntent().getSerializableExtra("incomeNote");
 		income_info = (TextView) findViewById(R.id.income_info);
-		income_info.setText("投入金额： " + StringUtils.showPrice(income.getMoney())  +
-				"\n预期年化： " + income.getIncomeRatio()  +
-				"\n投资期限： " + income.getDays()  +
-				"\n投资时期： " + income.getDurtion()  +
-				"\n拟日收益： " + StringUtils.showPrice(income.getDayIncome())  +
-				"\n最终收益： " + StringUtils.showPrice(income.getFinalIncome()));
+		income_info.setText("投入金额： " + StringUtils.showPrice(incomeNote.getMoney())  +
+				"\n预期年化： " + incomeNote.getIncomeRatio()  +
+				"\n投资期限： " + incomeNote.getDays()  +
+				"\n投资时期： " + incomeNote.getDurtion()  +
+				"\n拟日收益： " + StringUtils.showPrice(incomeNote.getDayIncome())  +
+				"\n最终收益： " + StringUtils.showPrice(incomeNote.getFinalIncome()));
 	}
 
 	@Override
@@ -49,23 +49,23 @@ public class FinishIncomeActivity extends BaseActivity{
 			String finalCashGo = StringUtils.formatePrice(finalCashGoEt.getText().toString());
 
 			if (! TextUtils.isEmpty(finalCash) && !TextUtils.isEmpty(finalCashGo)) {
-				income.setFinalCash(finalCash);
-				income.setFinalCashGo(finalCashGo);
-				LogUtils.i("commit", income.toString());
+				incomeNote.setFinalCash(finalCash);
+				incomeNote.setFinalCashGo(finalCashGo);
+				LogUtils.i("commit", incomeNote.toString());
 				DialogUtils.showMsgDialog(activity, "完成理财",
-						"投入金额： " + StringUtils.showPrice(income.getMoney())  +
-								"\n预期年化： " + income.getIncomeRatio()  +
-								"\n投资期限：" + income.getDays()  +
-								"\n投资时期：" + income.getDurtion()  +
-								"\n拟日收益：" + StringUtils.showPrice(income.getDayIncome())  +
-								"\n最终收益：" + StringUtils.showPrice(income.getFinalIncome())  +
-								"\n最终提现：" + StringUtils.showPrice(income.getFinalCash())  +
-								"\n提现去处：" + income.getFinalCashGo(),
+						"投入金额： " + StringUtils.showPrice(incomeNote.getMoney())  +
+								"\n预期年化： " + incomeNote.getIncomeRatio()  +
+								"\n投资期限：" + incomeNote.getDays()  +
+								"\n投资时期：" + incomeNote.getDurtion()  +
+								"\n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
+								"\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome())  +
+								"\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash())  +
+								"\n提现去处：" + incomeNote.getFinalCashGo(),
 						new DialogUtils.DialogListener(){
 							@Override
 							public void onClick(View v) {
 								super.onClick(v);
-								if (MyApp.utils.finishIncome(income)) {
+								if (MyApp.utils.finishIncome(incomeNote)) {
 									StringUtils.show1Toast(activity, "完成理财成功！");
 									finish();
 								} else StringUtils.show1Toast(activity, "完成理财失败！");

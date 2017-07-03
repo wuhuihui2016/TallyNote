@@ -11,7 +11,7 @@ import android.view.View;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.model.DayNote;
-import com.fengyang.tallynote.model.Income;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 
 import java.util.ArrayList;
@@ -204,7 +204,7 @@ public class DBUtils extends SQLiteOpenHelper {
 	 * @param income
 	 */
 	//理财记录：money 投入金额（单位万）,incomeRatio 预期年化（%）,days 投资期限(天),durtion 投资时期,dayIncome 拟日收益（万/天）,finalIncome 最终收益, time 记录时间
-	public synchronized boolean newIncome(Income income){
+	public synchronized boolean newIncome(IncomeNote income){
 		boolean isExit;
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL("insert into income_note(money,incomeRatio,days,durtion,dayIncome,finalIncome,finalCash,finalCashGo,finished,remark,time) values(?,?,?,?,?,?,?,?,?,?,?)",
@@ -218,7 +218,7 @@ public class DBUtils extends SQLiteOpenHelper {
 	}
 
 	//完成某个理财记录
-	public synchronized boolean finishIncome(Income income){
+	public synchronized boolean finishIncome(IncomeNote income){
 		boolean isFinished;
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL("update income_note set finished = 1 and finalCash = ? and finalCashGo = ? where money = ? and finalIncome = ? ",
@@ -231,7 +231,7 @@ public class DBUtils extends SQLiteOpenHelper {
 	}
 
 	//删除某个理财记录（仅用于最后一次账单记录，删除后可重新记录）
-	public synchronized void delIncome(Income income){
+	public synchronized void delIncome(IncomeNote income){
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL("delete from income_note where money = ? and finalIncome = ?", new String[]{income.getMoney(), income.getFinalIncome()});
 		db.close();
@@ -241,8 +241,8 @@ public class DBUtils extends SQLiteOpenHelper {
 	 * 查看所有的理财
 	 * @return
 	 */
-	public synchronized List<Income> getIncomes(){
-		List<Income> incomes = new ArrayList<Income>();
+	public synchronized List<IncomeNote> getIncomes(){
+		List<IncomeNote> incomes = new ArrayList<IncomeNote>();
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = db.rawQuery("select * from income_note",null);
 		while(cursor.moveToNext()){
@@ -258,7 +258,7 @@ public class DBUtils extends SQLiteOpenHelper {
 			String remark;//理财备注
 			String time; //记录时间*/
 
-			Income income = new Income(cursor.getString(cursor.getColumnIndex("money")),
+			IncomeNote income = new IncomeNote(cursor.getString(cursor.getColumnIndex("money")),
 					cursor.getString(cursor.getColumnIndex("incomeRatio")),
 					cursor.getString(cursor.getColumnIndex("days")),
 					cursor.getString(cursor.getColumnIndex("durtion")),

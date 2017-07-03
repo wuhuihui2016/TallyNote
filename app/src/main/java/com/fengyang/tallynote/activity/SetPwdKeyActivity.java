@@ -1,7 +1,9 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -11,20 +13,17 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
-import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
-import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 忘记密码
  * Created by wuhuihui on 2017/6/27.
  */
-public class ForgetPwdActivity extends BaseActivity {
+public class SetPwdKeyActivity extends BaseActivity {
 
     private List<TextView> textViews = new ArrayList<>();
     private GridView numGridView;
@@ -38,13 +37,22 @@ public class ForgetPwdActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_forgetpwd);
 
-        initView();
+        if (TextUtils.isEmpty((String) ContansUtils.get("pwdKey", ""))) {
+            initView();
+        } else {
+            skip();
+        }
+
     }
 
     /**
      * 初始化View
      */
     private void initView() {
+
+        TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
+        edit_tips.setHint("请输入6位密保，为找回密码时使用");
+
         //密码输入显示的TextView集合
         textViews.add((TextView) findViewById(R.id.pwd1));
         textViews.add((TextView) findViewById(R.id.pwd2));
@@ -121,35 +129,45 @@ public class ForgetPwdActivity extends BaseActivity {
                             pwdKey += list.get(i);
                         }
 
-                        String getPwdKey = (String) ContansUtils.get("pwdKey", "");
-                        if (pwdKey.equals(getPwdKey)) {
-                            List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
-                            String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
-                            if (pwd.length() > 6) {
-                                pwd = pwd.substring(0, 5);
-                            } else if (pwd.length() < 6){
-                                pwd = getPwdKey;
+                        final String finalPwdKey = pwdKey;
+                        DialogUtils.showMsgDialog(activity, "设置密保Key", "key：" + pwdKey, new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                ContansUtils.put("pwdKey", finalPwdKey);
+                                skip();
                             }
-                            DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener(){
-                                @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
-                                    finish();
+                        }, new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                list.clear();
+                                for (int i = 0; i < textViews.size(); i ++) {
+                                    textViews.get(i).setText("");
                                 }
-                            });
 
-                        } else {
-                            StringUtils.show1Toast(context, "验证失败！请重新输入！");
-                            list.clear();
-                            for (int i = 0; i < textViews.size(); i ++) {
-                                textViews.get(i).setText("");
                             }
-                        }
+                        });
+
                     }
                 }).execute();
             }
         }
     }
+
+
+    /**
+     * 设置密保后跳转页面
+     */
+    private void skip() {
+        finish();
+        if(MyApp.utils.getMonNotes().size() > 0) {//当月账单有记录时，密码生成即跳转密码输入界面
+            startActivity(new Intent(activity, OnStartActivity.class));
+        } else {//当月账单无记录时，无密码生成时即跳转首页
+            startActivity(new Intent(activity, MainActivity.class));
+        }
+    }
+
 
 
 }

@@ -172,7 +172,7 @@ public class DateUtils {
 			long time1 = cal.getTimeInMillis();
 			cal.setTime(date_sdf.parse(formatDate()));
 			long time2 = cal.getTimeInMillis();
-			long between_days = (time2 - time1) / ( 1000 * 3600 * 24);
+			long between_days = (time1 - time2) / ( 1000 * 3600 * 24);
 			days = Integer.parseInt(String.valueOf(between_days));
 		} catch (Exception e) {
 			e.printStackTrace();

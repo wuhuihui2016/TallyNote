@@ -51,10 +51,9 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
     /**
      * 设置中间内容布局
-     * @param layoutID
      * @param title
      */
-    protected void setContentView(String title, int layoutID) {
+    protected void setTitle(String title) {
 
         ImageButton return_btn = (ImageButton) findViewById(R.id.return_btn);
         if (isOtherActivity()) {
@@ -76,6 +75,15 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             RelativeLayout top_layout = (RelativeLayout) findViewById(R.id.top_layout);
             top_layout.setVisibility(View.GONE);
         }
+    }
+    /**
+     * 设置中间内容布局
+     * @param layoutID
+     * @param title
+     */
+    protected void setContentView(String title, int layoutID) {
+
+        setTitle(title);
 
         //加载中间布局
         FrameLayout content_layout = (FrameLayout) findViewById(R.id.content_layout);

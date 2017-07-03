@@ -1,9 +1,11 @@
 package com.fengyang.tallynote.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wuhuihui on 2017/6/23.
  */
-public class DayNote {
+public class DayNote implements Serializable {
 
     String usage; //消费用途
     String money; //消费金额

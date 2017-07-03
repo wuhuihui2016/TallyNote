@@ -51,8 +51,8 @@ public class NewDayActivity extends BaseActivity{
 				final DayNote dayNote = new DayNote(usage, money, remark, DateUtils.formatDateTime());
 				LogUtils.i("commit", dayNote.toString());
 				String message;
-				if (remark.length() > 0) message = dayNote.getUsage() + ":" + StringUtils.showPrice(dayNote.getMoney()) + " (" + dayNote.getRemark() + ")";
-				else message = dayNote.getUsage() + ":" + StringUtils.showPrice(dayNote.getMoney());
+				if (remark.length() > 0) message = dayNote.getUsage() + "：" + StringUtils.showPrice(dayNote.getMoney()) + " 元 (" + dayNote.getRemark() + ")";
+				else message = dayNote.getUsage() + "：" + StringUtils.showPrice(dayNote.getMoney());
 				DialogUtils.showMsgDialog(activity, "新增日账单", message,
 						new DialogUtils.DialogListener(){
 							@Override

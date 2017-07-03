@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.DayNote;
-import com.fengyang.tallynote.model.Income;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -98,11 +100,20 @@ public class MainActivity extends BaseActivity{
 			DayNote dayNote = dayNotes.get(dayNotes.size() - 1);
 			TextView time = (TextView) findViewById(R.id.time); time.setText(DateUtils.diffTime(dayNote.getTime()));
 			TextView usage = (TextView) findViewById(R.id.usage); usage.setText(dayNote.getUsage());
-			TextView money = (TextView) findViewById(R.id.money); money.setText(StringUtils.showPrice(dayNote.getMoney()));
+			TextView money = (TextView) findViewById(R.id.money); money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
 			if (! TextUtils.isEmpty(dayNote.getRemark())) {
 				TextView remask = (TextView) findViewById(R.id.remask);
 				remask.setText(dayNote.getRemark());
 			}
+
+			findViewById(R.id.item_day_layout).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(activity, ListViewActivity.class);
+					intent.putExtra("type", MyApp.DAY);
+					startActivity(intent);
+				}
+			});
 		} else {
 			cur_layout.setVisibility(View.GONE);
 			current_pay.setText("当月还没有记录~~");
@@ -118,7 +129,7 @@ public class MainActivity extends BaseActivity{
 		LinearLayout last_layout = (LinearLayout) findViewById(R.id.last_layout);
 		if (monthNotes.size() > 0) {
 			last_layout.setVisibility(View.VISIBLE);
-			last_balanceTv.setText(StringUtils.showPrice(monthNotes.get(monthNotes.size() - 1).getActual_balance()));
+			last_balanceTv.setText(StringUtils.showPrice(monthNotes.get(monthNotes.size() - 1).getActual_balance()) + " 元");
 		} else {
 			last_layout.setVisibility(View.GONE);
 		}
@@ -128,12 +139,12 @@ public class MainActivity extends BaseActivity{
 	 * 显示最近一次收益的理财记录
 	 */
 	private void showIncomeNote() {
-		List<Income> incomes = MyApp.utils.getIncomes();
+		List<IncomeNote> incomes = MyApp.utils.getIncomes();
 		RelativeLayout income_layout = (RelativeLayout) findViewById(R.id.income_layout);
 		if (incomes.size() > 0) {
-
+			income_layout.setVisibility(View.VISIBLE);
 			//显示最近一次收益的理财记录
-			Income laterIncome = incomes.get(0);
+			IncomeNote laterIncome = incomes.get(0);
 			for (int i = 0; i < incomes.size(); i ++) {
 				String date = incomes.get(i).getDurtion().split("-")[1];
 				String lasterDate = laterIncome.getDurtion().split("-")[1];
@@ -149,18 +160,28 @@ public class MainActivity extends BaseActivity{
 			TextView income_info = (TextView) findViewById(R.id.income_info);
 			income_id.setText(laterIncome.getDurtion().split("-")[0].substring(4, 6));
 
-			income_money.setText("投入金额： " + StringUtils.showPrice(laterIncome.getMoney()) + "\n" +
-					"预期年化： " + laterIncome.getIncomeRatio());
-			income_info.setText("投资期限： " + laterIncome.getDays() + "\n" +
+			income_money.setText("投入金额： " + StringUtils.showPrice(laterIncome.getMoney()) + " 元\n" +
+					"预期年化： " + laterIncome.getIncomeRatio() + " %");
+			income_info.setText("投资期限： " + laterIncome.getDays() + " 天\n" +
 					"投资时期： " + laterIncome.getDurtion());
-			if (laterIncome.getFinished() == 0) income_finished.setText("还剩"
-					+ DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]) + "天");
+
+			if (laterIncome.getFinished() == 0) {
+				int day = DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]);
+				if (day < 0) {
+					income_finished.setText("已经结束,请完成！");
+				} else if (day == 0) {
+					income_finished.setText("今日到期！可完成！");
+				} else {
+					income_finished.setText("计息中," +
+							"还剩 " + DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]) + " 天");
+				}
+			}
 			else income_finished.setText("已完成");
 			income_money.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(context, ListViewActivity.class);
-					intent.putExtra("type", 2);
+					intent.putExtra("type", MyApp.INCOME);
 					startActivity(intent);
 
 				}
@@ -192,13 +213,13 @@ public class MainActivity extends BaseActivity{
 
 			case R.id.current_pay:
 			case R.id.todayNotes:
-				intent.putExtra("type", 0);
+				intent.putExtra("type", MyApp.DAY);
 				startActivity(intent);
 				break;
 
 			case R.id.last_balanceTv:
 			case R.id.toMonthNotes:
-				intent.putExtra("type", 1);
+				intent.putExtra("type", MyApp.MONTH);
 				startActivity(intent);
 				break;
 
@@ -214,5 +235,22 @@ public class MainActivity extends BaseActivity{
 				startActivity(new Intent(activity, NewIncomeActivity.class));
 				break;
 		}
+	}
+
+	/**
+	 * 再按一次退出程序
+	 */
+	private long mExitTime;//返回退出时间间隔标志
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+			} else {
+				finish();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

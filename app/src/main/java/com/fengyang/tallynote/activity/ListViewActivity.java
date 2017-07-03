@@ -3,7 +3,6 @@ package com.fengyang.tallynote.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,13 +13,11 @@ import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
 import com.fengyang.tallynote.adapter.MonthNoteAdapter;
 import com.fengyang.tallynote.model.DayNote;
-import com.fengyang.tallynote.model.Income;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
-import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +27,6 @@ import java.util.List;
  */
 public class ListViewActivity extends BaseActivity {
 
-    private final int DAY = 0, MONTH = 1, INCOME = 2;
     private int type;//0：日账单，1：月账单，其他：理财记录
     private ListView listView;
     private TextView emptyView;
@@ -41,7 +37,7 @@ public class ListViewActivity extends BaseActivity {
     private List<MonthNote> monthNotes;
     private MonthNoteAdapter monthNoteAdapter;
 
-    private List<Income> incomes;
+    private List<IncomeNote> incomes;
     private IncomeNoteAdapter incomeNoteAdapter;
     private LinearLayout sort_layout;
     private TextView start_time, end_time;
@@ -50,9 +46,9 @@ public class ListViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        type = getIntent().getIntExtra("type", DAY);
-        if (type == DAY) setContentView("日账单列表", R.layout.activity_list);
-        else if (type == MONTH) setContentView("月账单列表", R.layout.activity_list);
+        type = getIntent().getIntExtra("type", MyApp.DAY);
+        if (type == MyApp.DAY) setContentView("日账单列表", R.layout.activity_list);
+        else if (type == MyApp.MONTH) setContentView("月账单列表", R.layout.activity_list);
         else setContentView("理财列表", R.layout.activity_list);
 
         initView();
@@ -62,19 +58,19 @@ public class ListViewActivity extends BaseActivity {
     private void initView () {
         listView = (ListView) findViewById(R.id.listView);
 
-        if (type == DAY) {
+        if (type == MyApp.DAY) {
             dayNotes = MyApp.utils.getDayNotes();
             Collections.reverse(dayNotes);//倒序排列
             dayNoteAdapter = new DayNoteAdapter(context, dayNotes);
             listView.setAdapter(dayNoteAdapter);
 
-        } else if (type == MONTH){
+        } else if (type == MyApp.MONTH){
             monthNotes = MyApp.utils.getMonNotes();
             Collections.reverse(monthNotes);//倒序排列
             monthNoteAdapter = new MonthNoteAdapter(context, monthNotes);
             listView.setAdapter(monthNoteAdapter);
 
-        } else if (type == INCOME){
+        } else if (type == MyApp.INCOME){
             incomes = MyApp.utils.getIncomes();
             Collections.reverse(incomes);//倒序排列
             incomeNoteAdapter = new IncomeNoteAdapter(context, incomes);
@@ -91,15 +87,15 @@ public class ListViewActivity extends BaseActivity {
         setRightBtnListener("导出", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == DAY) {
+                if (type == MyApp.DAY) {
                     if (dayNotes.size() > 0) ExcelUtils.writeDayNote(activity, dayNotes);
-                } else if (type == MONTH){
+                } else if (type == MyApp.MONTH){
                     if (monthNotes.size() > 0) ExcelUtils.writeMonthNote(activity, monthNotes);
                 } else ExcelUtils.writeIncomeNote(activity, incomes);
             }
         });
 
-        if (type == INCOME) {
+        if (type == MyApp.INCOME) {
             setRightMoreBtnListener("排序", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,30 +121,6 @@ public class ListViewActivity extends BaseActivity {
             });
         }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (type == DAY) {
-                    DayNote dayNote = dayNotes.get(position);
-                    String message;
-                    if (dayNote.getRemark().length() > 0) message = dayNote.getUsage() + "：" + StringUtils.showPrice(dayNote.getMoney()) + " (" + dayNote.getRemark() + ")";
-                    else message = dayNote.getUsage() + "：" + StringUtils.showPrice(dayNote.getMoney());
-                    DialogUtils.showMsgDialog(activity, dayNote.getTime(), message);
-
-                } else if (type == MONTH){
-                    MonthNote monthNote = monthNotes.get(position);
-                    DialogUtils.showMsgDialog(activity, monthNote.getDuration(),
-                            "上次结余：" + StringUtils.showPrice(monthNote.getLast_balance()) + "\n" +
-                                    "本次支出：" + StringUtils.showPrice(monthNote.getPay()) + "\n" +
-                                    "本次工资：" + StringUtils.showPrice(monthNote.getSalary()) + "\n" +
-                                    "本次收益：" + StringUtils.showPrice(monthNote.getIncome()) + "\n" +
-                                    "家用补贴：" + StringUtils.showPrice(monthNote.getHomeuse()) + "\n" +
-                                    "本次结余：" + StringUtils.showPrice(monthNote.getBalance()) + "\n" +
-                                    "实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) + "\n" +
-                                    "月结备注：" + monthNote.getRemark());
-                }
-            }
-        });
     }
 
     /**
@@ -159,6 +131,7 @@ public class ListViewActivity extends BaseActivity {
             start_time.setTextColor(Color.BLACK);
             end_time.setTextColor(Color.RED);
             sort_layout.setVisibility(View.GONE);
+            Collections.reverse(incomes);//倒序排列
             incomeNoteAdapter = new IncomeNoteAdapter(context, incomes);
             listView.setAdapter(incomeNoteAdapter);
         }
@@ -174,7 +147,7 @@ public class ListViewActivity extends BaseActivity {
             sort_layout.setVisibility(View.GONE);
             for(int i = 0; i < incomes.size() - 1; i ++) {
                 for(int j = 1; j < incomes.size() - i; j ++) {
-                    Income income;
+                    IncomeNote income;
                     int days1 = DateUtils.daysBetween(incomes.get(j).getDurtion().split("-")[1]) ;
                     int days2 = DateUtils.daysBetween(incomes.get(j - 1).getDurtion().split("-")[1]) ;
                     if(days1 > days2) {
@@ -186,7 +159,7 @@ public class ListViewActivity extends BaseActivity {
             }
         }
         LogUtils.i("sort", incomes.toString());
-        incomeNoteAdapter = new IncomeNoteAdapter(context, incomes);
+        incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, false);//列表显示按投资时间排序时，最后一个才可做删除操作
         listView.setAdapter(incomeNoteAdapter);
     }
 

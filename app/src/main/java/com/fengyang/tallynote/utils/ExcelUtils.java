@@ -3,7 +3,7 @@ package com.fengyang.tallynote.utils;
 import android.app.Activity;
 
 import com.fengyang.tallynote.model.DayNote;
-import com.fengyang.tallynote.model.Income;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 
 import java.io.File;
@@ -110,7 +110,7 @@ public class ExcelUtils {
 	 * @param incomes
 	 * @param activity
 	 */
-	public static void writeIncomeNote(Activity activity, List<Income> incomes){
+	public static void writeIncomeNote(Activity activity, List<IncomeNote> incomes){
 		if (incomes.size() > 0) {
 			try {
 				LogUtils.i("writeIncomeNote", incomes.size() + "--" + incomes.toString());
