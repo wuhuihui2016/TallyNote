@@ -1,45 +1,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/sort_layout"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/pop_sort_bg"
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/sort_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/remark_bkg"
+        android:text="按投资时间排序"
+        android:onClick="onClick"
+        android:textColor="@color/red"
         android:padding="10dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="按投资时间"/>
-        <TextView
-            android:id="@+id/end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="按到期时间"/>
-
-    </LinearLayout>
-
+        android:textSize="@dimen/bigtextSize"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
+        android:padding="10dp"
+        android:layout_below="@id/sort_info"
+        android:divider="@color/transparent"
+        android:dividerHeight="10dp"/>
 
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:layout_below="@id/sort_info"
         android:gravity="center_vertical|center"
-        android:text="暂无账单记录~~"
+        android:text="暂无记录~~"
         android:textSize="20sp"
         android:visibility="gone"
         android:textColor="@android:color/holo_orange_dark"/>

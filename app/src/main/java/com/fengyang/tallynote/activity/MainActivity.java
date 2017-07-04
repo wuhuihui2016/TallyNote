@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -161,22 +162,24 @@ public class MainActivity extends BaseActivity{
 			income_id.setText(laterIncome.getDurtion().split("-")[0].substring(4, 6));
 
 			income_money.setText("投入金额： " + StringUtils.showPrice(laterIncome.getMoney()) + " 元\n" +
-					"预期年化： " + laterIncome.getIncomeRatio() + " %");
+					"预期年化： " + StringUtils.formatePrice(laterIncome.getIncomeRatio()) + " %");
 			income_info.setText("投资期限： " + laterIncome.getDays() + " 天\n" +
 					"投资时期： " + laterIncome.getDurtion());
 
 			if (laterIncome.getFinished() == 0) {
 				int day = DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]);
 				if (day < 0) {
-					income_finished.setText("已经结束,请完成！");
+					income_finished.setText("已经结束,请完成 >");
 				} else if (day == 0) {
-					income_finished.setText("今日到期！可完成！");
+					income_finished.setText("今日到期！可完成 >");
 				} else {
-					income_finished.setText("计息中," +
-							"还剩 " + DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]) + " 天");
+					income_finished.setText("计息中,还剩 " + DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]) + " 天");
 				}
 			}
-			else income_finished.setText("已完成");
+			else {
+				income_finished.setTextColor(Color.GRAY);
+				income_finished.setText("已完成！");
+			}
 			income_money.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

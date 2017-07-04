@@ -11,6 +11,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
@@ -60,6 +61,7 @@ public class NewDayActivity extends BaseActivity{
 								super.onClick(v);
 								if (MyApp.utils.newDNote(dayNote)) {
 									StringUtils.show1Toast(activity, "新增日账单成功！");
+									ExcelUtils.exportDayNote(activity);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增日账单失败！");
 							}

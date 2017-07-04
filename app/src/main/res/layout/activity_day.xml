@@ -121,7 +121,7 @@
             android:text="提交日账单"
             android:onClick="onClick"
             android:layout_margin="30dp"
-            android:background="@drawable/shape_btn_bkg"/>
+            android:background="@drawable/shape_day"/>
     </LinearLayout>
 
 </com.fengyang.tallynote.view.IOSScrollView>

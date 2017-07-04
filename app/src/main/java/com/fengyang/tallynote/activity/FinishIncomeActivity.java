@@ -38,7 +38,8 @@ public class FinishIncomeActivity extends BaseActivity{
 				"\n投资期限： " + incomeNote.getDays()  +
 				"\n投资时期： " + incomeNote.getDurtion()  +
 				"\n拟日收益： " + StringUtils.showPrice(incomeNote.getDayIncome())  +
-				"\n最终收益： " + StringUtils.showPrice(incomeNote.getFinalIncome()));
+				"\n最终收益： " + StringUtils.showPrice(incomeNote.getFinalIncome()) +
+				"\n投资备注：" + incomeNote.getRemark());
 	}
 
 	@Override
@@ -46,19 +47,20 @@ public class FinishIncomeActivity extends BaseActivity{
 		super.onClick(v);
 		if(v.getId() == R.id.commitNote) {
 			String finalCash = StringUtils.formatePrice(finalCashEt.getText().toString());
-			String finalCashGo = StringUtils.formatePrice(finalCashGoEt.getText().toString());
+			String finalCashGo = finalCashGoEt.getText().toString();
 
 			if (! TextUtils.isEmpty(finalCash) && !TextUtils.isEmpty(finalCashGo)) {
 				incomeNote.setFinalCash(finalCash);
 				incomeNote.setFinalCashGo(finalCashGo);
 				LogUtils.i("commit", incomeNote.toString());
 				DialogUtils.showMsgDialog(activity, "完成理财",
-						"投入金额： " + StringUtils.showPrice(incomeNote.getMoney())  +
-								"\n预期年化： " + incomeNote.getIncomeRatio()  +
-								"\n投资期限：" + incomeNote.getDays()  +
-								"\n投资时期：" + incomeNote.getDurtion()  +
-								"\n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
-								"\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome())  +
+						"投入金额：" + StringUtils.showPrice(incomeNote.getMoney())  +
+								"\n预期年化：" + incomeNote.getIncomeRatio()  +
+								" %\n投资期限：" + incomeNote.getDays()  +
+								" 天\n投资时期：" + incomeNote.getDurtion()  +
+								" \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
+								" 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
+								"\n投资备注：" + incomeNote.getRemark()  +
 								"\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash())  +
 								"\n提现去处：" + incomeNote.getFinalCashGo(),
 						new DialogUtils.DialogListener(){

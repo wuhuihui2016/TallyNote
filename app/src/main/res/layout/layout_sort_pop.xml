@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sort_layout"
+    android:layout_width="100dp"
+    android:layout_height="60dp"
+    android:layout_alignParentRight="true"
+    android:orientation="vertical"
+    android:background="@drawable/pop_sort_bg"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:text="按投资时间"/>
+    <TextView
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:text="按到期时间"/>
+
+</LinearLayout>

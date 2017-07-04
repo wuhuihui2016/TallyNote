@@ -107,20 +107,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    /**
-     * 设置界面右上角更多按钮的点击事件
-     * @param text
-     * @param listener
-     */
-    protected void setRightMoreBtnListener(CharSequence text, View.OnClickListener listener) {
-        if (! TextUtils.isEmpty(text)) {
-            TextView more_btn = (TextView) findViewById(R.id.more_btn);
-            more_btn.setVisibility(View.VISIBLE);
-            more_btn.setText(text);
-            more_btn.setOnClickListener(listener);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

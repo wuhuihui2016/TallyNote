@@ -13,6 +13,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
@@ -75,13 +76,15 @@ public class NewIncomeActivity extends BaseActivity{
 								" %\n投资期限：" + incomeNote.getDays()  +
 								" 天\n投资时期：" + incomeNote.getDurtion()  +
 								" \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
-								"元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()),
+								" 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
+								"\n投资备注：" + incomeNote.getRemark(),
 						new DialogUtils.DialogListener(){
 							@Override
 							public void onClick(View v) {
 								super.onClick(v);
 								if (MyApp.utils.newIncome(incomeNote)) {
 									StringUtils.show1Toast(activity, "新增理财成功！");
+									ExcelUtils.exportIncomeNote(activity);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增理财失败！");
 							}

@@ -16,7 +16,7 @@ public class IncomeNote implements Serializable {
     String finalCash; //最终提现
     String finalCashGo; //提现去处
     int finished; //完成状态
-    String remark;//理财备注
+    String remark;//投资备注
     String time; //记录时间
 
     public IncomeNote(String money, String incomeRatio, String days, String durtion, String dayIncome, String finalIncome, String finalCash, String finalCashGo, int finished, String remark, String time) {

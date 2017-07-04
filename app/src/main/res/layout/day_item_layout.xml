@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:padding="5dp"
     android:orientation="horizontal"
-    android:layout_margin="5dp"
     android:onClick="onClick"
     android:background="@drawable/shape_day">
 

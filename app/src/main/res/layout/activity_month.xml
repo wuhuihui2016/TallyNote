@@ -342,7 +342,7 @@
             android:text="提交月账单"
             android:onClick="onClick"
             android:layout_margin="30dp"
-            android:background="@drawable/shape_btn_bkg"/>
+            android:background="@drawable/shape_month"/>
     </LinearLayout>
 
 </com.fengyang.tallynote.view.IOSScrollView>

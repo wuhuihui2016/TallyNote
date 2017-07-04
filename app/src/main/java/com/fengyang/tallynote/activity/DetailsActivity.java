@@ -10,6 +10,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 /**
@@ -70,16 +71,30 @@ public class DetailsActivity extends BaseActivity {
             setRightBtnListener("删除", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (type == MyApp.DAY) {
-                        MyApp.utils.delDNote(dayNote);
 
-                    } else if (type == MyApp.MONTH){
-                        MyApp.utils.delMNote(monthNote);
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                            if (type == MyApp.DAY) {
+                                MyApp.utils.delDNote(dayNote);
 
-                    } else {
-                        MyApp.utils.delIncome(incomeNote);
+                            } else if (type == MyApp.MONTH){
+                                MyApp.utils.delMNote(monthNote);
 
-                    }
+                            } else {
+                                MyApp.utils.delIncome(incomeNote);
+
+                            }
+                            finish();
+                        }
+                    }, new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                        }
+                    });
+
                 }
             });
         }

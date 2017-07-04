@@ -240,7 +240,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:text="理财备注"
+                android:text="投资备注"
                 android:textColor="#333333"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -269,7 +269,7 @@
             android:text="提交理财记录"
             android:onClick="onClick"
             android:layout_margin="30dp"
-            android:background="@drawable/shape_btn_bkg"/>
+            android:background="@drawable/shape_income"/>
     </LinearLayout>
 
 </com.fengyang.tallynote.view.IOSScrollView>

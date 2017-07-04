@@ -10,16 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/app_color"
-        android:fitsSystemWindows="true"
-        android:clipToPadding="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <ImageButton
             android:id="@+id/return_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/return_icon"
             android:scaleType="centerInside"
             android:onClick="onClick"
@@ -36,35 +35,16 @@
             android:gravity="center|center_horizontal"
             android:textSize="@dimen/titletextSize"/>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/right_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true">
-
-            <TextView
-                android:id="@+id/right_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:textColor="@color/white"
-                android:textSize="@dimen/bigtextSize"
-                android:onClick="onClick"
-                android:text="导出"
-                android:visibility="gone"/>
-            <TextView
-                android:id="@+id/more_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:textColor="@color/white"
-                android:textSize="@dimen/bigtextSize"
-                android:onClick="onClick"
-                android:layout_marginLeft="20dp"
-                android:text="排序"
-                android:visibility="gone"/>
-
-        </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="@dimen/bigtextSize"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

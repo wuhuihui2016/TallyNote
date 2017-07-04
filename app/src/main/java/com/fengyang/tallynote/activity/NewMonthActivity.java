@@ -13,6 +13,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
@@ -59,22 +60,35 @@ public class NewMonthActivity extends BaseActivity{
 			final String last_balanceStr = StringUtils.formatePrice(last_balanceEt.getText().toString());
 			final String payStr = StringUtils.formatePrice(payEt.getText().toString());
 			final String salaryStr = StringUtils.formatePrice(salaryEt.getText().toString());
+			final String incomeStr = StringUtils.formatePrice(incomeEt.getText().toString());
+			final String homeuseStr = StringUtils.formatePrice(homeuseEt.getText().toString());
 
 			if (! TextUtils.isEmpty(last_balanceStr) &&
 					! TextUtils.isEmpty(payStr) &&
 					! TextUtils.isEmpty(salaryStr)) {
+				String meaasge = last_balanceStr + " - "
+						+  payStr + " + "
+						+ salaryStr;
+
 				Double last_balance = Double.parseDouble(last_balanceStr);
 				Double pay = Double.parseDouble(payStr);
 				Double salary = Double.parseDouble(salaryStr);
 				Double income = 0.00;
-				if (! TextUtils.isEmpty(incomeEt.getText().toString()))  income = Double.parseDouble(incomeEt.getText().toString());
+				if (! TextUtils.isEmpty(incomeStr))  {
+					income = Double.parseDouble(incomeStr);
+					meaasge += " + " + incomeStr;
+				}
+
 				Double homeuse = 0.00;
-				if (! TextUtils.isEmpty(homeuseEt.getText().toString()))  homeuse = Double.parseDouble(homeuseEt.getText().toString());
+				if (! TextUtils.isEmpty(homeuseStr))  {
+					homeuse = Double.parseDouble(homeuseStr);
+					meaasge += " - " +  homeuseStr;
+				}
 
 				final String calculate = (last_balance - pay + salary + income - homeuse) + "";
 
-				DialogUtils.showMsgDialog(activity, "计算结余",
-						last_balance + " - " +  pay + " + " + salary + " + " +  income + " - " +  homeuse, new DialogUtils.DialogListener(){
+				DialogUtils.showMsgDialog(activity, "计算结余", meaasge,
+						new DialogUtils.DialogListener(){
 					@Override
 					public void onClick(View v) {
 						super.onClick(v);
@@ -120,6 +134,7 @@ public class NewMonthActivity extends BaseActivity{
 								super.onClick(v);
 								if (MyApp.utils.newMNote(monthNote)) {
 									StringUtils.show1Toast(activity, "新增月账单成功！");
+									ExcelUtils.exportMonthNote(activity);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增月账单失败！");
 							}

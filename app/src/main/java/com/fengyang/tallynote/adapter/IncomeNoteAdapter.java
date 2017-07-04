@@ -31,11 +31,6 @@ public class IncomeNoteAdapter extends BaseAdapter{
     private List<IncomeNote> incomes;
     private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
 
-    public IncomeNoteAdapter(Context context, List<IncomeNote> incomes) {
-        this.context = context;
-        this.incomes = incomes;
-    }
-
     public IncomeNoteAdapter(Context context, List<IncomeNote> incomes, boolean isLast) {
         this.context = context;
         this.incomes = incomes;
@@ -77,7 +72,7 @@ public class IncomeNoteAdapter extends BaseAdapter{
         final IncomeNote incomeNote = incomes.get(position);
         viewHolder.income_id.setText(incomeNote.getDurtion().split("-")[0].substring(4, 6));
         viewHolder.income_money.setText("投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
-                " 万元\n预期年化：" + incomeNote.getIncomeRatio() + " %" );
+                " 万元\n预期年化：" + StringUtils.formatePrice(incomeNote.getIncomeRatio()) + " %" );
 
         String info = "投资期限：" + incomeNote.getDays()  +
                 " 天\n投资时期：" + incomeNote.getDurtion()  +
@@ -92,32 +87,40 @@ public class IncomeNoteAdapter extends BaseAdapter{
 
             int day = DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]);
             if (day < 0) {
-                viewHolder.income_finished.setText("已经结束,请完成！");
+                viewHolder.income_finished.setText("已经结束,请完成 >");
             } else if (day == 0) {
-                viewHolder.income_finished.setText("今日到期！可完成！");
+                viewHolder.income_finished.setText("今日到期！可完成 >");
             } else {
-                viewHolder.income_finished.setText("计息中," +
-                        "还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
+                viewHolder.income_finished.setText("计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
             }
 
-            viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, FinishIncomeActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("incomeNote", incomeNote);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+            if (day <= 0) {
+                viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, FinishIncomeActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("incomeNote", incomeNote);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
 
-                }
-            });
+                    }
+                });
+            } else {
+                viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        StringUtils.show1Toast(context,
+                                "计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
+                    }
+                });
+            }
+
         } else {
-            
             viewHolder.income_info.setText(info + "\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash()) +
-                    " 元\n提现去处：" + incomeNote.getFinalCashGo() + " 元");
-
+                    " 元\n提现去处：" + incomeNote.getFinalCashGo());
             viewHolder.income_finished.setTextColor(Color.GRAY);
-            viewHolder.income_finished.setText("已完成");
+            viewHolder.income_finished.setText("已完成！");
         }
 
         viewHolder.item_income_layout.setOnClickListener(new View.OnClickListener() {

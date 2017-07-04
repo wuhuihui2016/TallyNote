@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.view.View;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
@@ -115,7 +114,7 @@ public class DBUtils extends SQLiteOpenHelper {
 					@Override
 					public void onClick(View v) {
 						super.onClick(v);
-						ExcelUtils.writeDayNote(activity, MyApp.utils.getDayNotes());
+						ExcelUtils.exportDayNote(activity);
 						SQLiteDatabase db = getWritableDatabase();
 						db.execSQL("delete from day_note", null);
 						db.close();
@@ -192,7 +191,7 @@ public class DBUtils extends SQLiteOpenHelper {
 	 * @param activity
 	 */
 	public synchronized void clearMonthNotes(Activity activity){
-		ExcelUtils.writeMonthNote(activity, MyApp.utils.getMonNotes());
+		ExcelUtils.exportMonthNote(activity);
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL("delete from month_note", null);
 		db.close();
@@ -218,12 +217,12 @@ public class DBUtils extends SQLiteOpenHelper {
 	}
 
 	//完成某个理财记录
-	public synchronized boolean finishIncome(IncomeNote income){
+	public synchronized boolean finishIncome(IncomeNote incomeNote){
 		boolean isFinished;
 		SQLiteDatabase db = getWritableDatabase();
-		db.execSQL("update income_note set finished = 1 and finalCash = ? and finalCashGo = ? where money = ? and finalIncome = ? ",
-				new String[]{income.getFinalCash(), income.getFinalCashGo()});
-		Cursor cursor = db.rawQuery("select * from income_note where money = ? and finalIncome = ? and finalCash= ?", new String[]{income.getMoney(), income.getFinalIncome(), income.getFinalCash()});
+		db.execSQL("update income_note set finished = 1,finalCash = ?,finalCashGo = ? where money = ? and finalIncome = ? ",
+				new String[]{incomeNote.getFinalCash(), incomeNote.getFinalCashGo(), incomeNote.getMoney(), incomeNote.getFinalIncome()});
+		Cursor cursor = db.rawQuery("select * from income_note where money = ? and finalIncome = ? and finalCash= ?", new String[]{incomeNote.getMoney(), incomeNote.getFinalIncome(), incomeNote.getFinalCash()});
 		isFinished = cursor.moveToFirst();
 		cursor.close();
 		db.close();
@@ -255,7 +254,7 @@ public class DBUtils extends SQLiteOpenHelper {
 			String finalCash; //最终提现
 			String finalCashGo; //提现去处
 			int finished; //完成状态
-			String remark;//理财备注
+			String remark;//投资备注
 			String time; //记录时间*/
 
 			IncomeNote income = new IncomeNote(cursor.getString(cursor.getColumnIndex("money")),
@@ -287,7 +286,7 @@ public class DBUtils extends SQLiteOpenHelper {
 					@Override
 					public void onClick(View v) {
 						super.onClick(v);
-						ExcelUtils.writeIncomeNote(activity, MyApp.utils.getIncomes());
+						ExcelUtils.exportIncomeNote(activity);
 						SQLiteDatabase db = getWritableDatabase();
 						db.execSQL("delete from day_note", null);
 						db.close();
