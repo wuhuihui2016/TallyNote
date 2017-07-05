@@ -8,6 +8,8 @@
     <color name="red">@android:color/holo_red_light</color>
     <color name="black">@android:color/black</color>
 
+    <color name="line">#F5F5F5</color>
+
     <color name="day_record">#009393</color>
     <color name="month_record">#007500</color>
     <color name="income_record">#F75000</color>

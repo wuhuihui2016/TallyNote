@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:paddingBottom="20dp"
+        android:background="@color/app_color">
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/user"
+            android:layout_marginTop="10dp"
+            android:padding="2dp"/>
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_icon"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/user_icon"
+            android:text="狒狒\n每天进步一点点"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/settingList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_info"
+        android:scrollbars="none"
+        android:dividerHeight="2dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
+
+
+
+

@@ -30,7 +30,7 @@ public class MyApp extends Application {
 
         utils = new DBUtils(instance); //开辟用户数据库
 
-        FileUtils.createDirPath(); //创建项目文件目录
+        FileUtils.createDir(); //创建项目文件目录
     }
 
     /**

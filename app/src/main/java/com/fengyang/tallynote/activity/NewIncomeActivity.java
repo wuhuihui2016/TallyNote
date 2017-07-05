@@ -82,9 +82,9 @@ public class NewIncomeActivity extends BaseActivity{
 							@Override
 							public void onClick(View v) {
 								super.onClick(v);
-								if (MyApp.utils.newIncome(incomeNote)) {
+								if (MyApp.utils.newINote(incomeNote)) {
 									StringUtils.show1Toast(activity, "新增理财成功！");
-									ExcelUtils.exportIncomeNote(activity);
+									ExcelUtils.exportIncomeNote(null);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增理财失败！");
 							}

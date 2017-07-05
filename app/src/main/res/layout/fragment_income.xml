@@ -1,0 +1,83 @@
+<com.fengyang.tallynote.view.IOSScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/currIncomeSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/app_color"
+                    android:inputType="textPassword"
+                    android:text="123"
+                    android:textSize="@dimen/bigtextSize"/>
+
+                <ImageButton
+                    android:id="@+id/seenCheck"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/eye_icon"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="bottom"
+                    android:layout_toRightOf="@id/currIncomeSum"
+                    android:onClick="onClick"
+                    android:background="@color/transparent"/>
+
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/income_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/income_item_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"/>
+
+            <LinearLayout
+                android:id="@+id/commitIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center|center_horizontal"
+                android:background="@drawable/shape_btn_bkg"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/income_record"
+                    android:scaleType="centerInside"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="记一笔理财"
+                    android:textSize="@dimen/bigtextSize"
+                    android:textColor="@color/income_record"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</com.fengyang.tallynote.view.IOSScrollView>

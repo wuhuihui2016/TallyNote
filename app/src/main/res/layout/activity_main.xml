@@ -1,287 +1,110 @@
-<com.fengyang.tallynote.view.IOSScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/main_context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:layout_marginBottom="50dp"/>
+
+    <LinearLayout
+        android:id="@+id/app_buttom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:background="@color/line"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true">
+        <View
+            android:id="@+id/menu_topline"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="2017"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/titletextSize"
-                android:text="/"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/gray"/>
-            <TextView
-                android:id="@+id/month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/titletextSize"
-                android:text="1"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/red"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/titletextSize"
-                android:text="/"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/gray"/>
-
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/titletextSize"
-                android:text="1"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/red"/>
-
-            <ImageButton
-                android:id="@+id/seenCheck"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/eye_icon"
-                android:layout_marginLeft="20dp"
-                android:layout_gravity="bottom"
-                android:onClick="onClick"
-                android:background="@color/transparent"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/last_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="上次结余 "
-                android:textColor="@color/month_record"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/last_balanceTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/month_record"
-                android:onClick="onClick"
-                android:textSize="@dimen/bigtextSize"/>
-
-            <ImageButton
-                android:id="@+id/toMonthNotes"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/main_top_arrow"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="bottom"
-                android:onClick="onClick"
-                android:background="@color/transparent"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/cur_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/tally"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="本月支出 "
-                    android:textColor="@color/day_record"
-                    android:textSize="@dimen/bigtextSize"/>
-
-                <TextView
-                    android:id="@+id/current_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/day_record"
-                    android:onClick="onClick"
-                    android:textSize="@dimen/bigtextSize"/>
-
-                <ImageButton
-                    android:id="@+id/todayNotes"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/main_top_arrow"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="bottom"
-                    android:onClick="onClick"
-                    android:background="@color/transparent"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="最近一笔支出"
-                    android:textColor="@color/day_record"
-                    android:textSize="@dimen/bigtextSize"/>
-
-                <include
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/day_item_layout"
-                    android:layout_marginTop="5dp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_day"
-            android:gravity="center|center_horizontal">
-
-            <LinearLayout
-                android:id="@+id/commitDNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="onClick"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal">
-
+                android:clickable="true"
+                android:paddingTop="5dp"
+                android:onClick="onClick"
+                android:orientation="vertical">
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/day_record"
-                    android:scaleType="centerInside"/>
-
+                    android:id="@+id/tally_pic"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/tally"
+                    android:layout_gravity="center_horizontal"/>
                 <TextView
+                    android:id="@+id/tally_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="记一笔日账"
-                    android:textSize="@dimen/bigtextSize"
-                    android:textColor="@color/day_record"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"/>
-
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/app_name"
+                    android:textSize="12sp"/>
             </LinearLayout>
             <View
-                android:layout_width="1dp"
-                android:layout_height="55dp"
-                android:background="@color/day_record"/>
-
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/line"/>
             <LinearLayout
-                android:id="@+id/commitMNote"
-                android:layout_width="match_parent"
+                android:id="@+id/income"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="onClick"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
-                android:layout_marginLeft="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/month_record"
-                    android:scaleType="centerInside"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="记一笔月账"
-                    android:textSize="@dimen/bigtextSize"
-                    android:textColor="@color/month_record"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我的理财"
-                android:textColor="@color/app_color"
-                android:textSize="@dimen/bigtextSize"/>
-
-            <include
-                android:id="@+id/income_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/income_item_layout"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"/>
-
-            <LinearLayout
-                android:id="@+id/commitIncome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:paddingTop="5dp"
                 android:onClick="onClick"
-                android:padding="10dp"
-                android:gravity="center|center_horizontal"
-                android:background="@drawable/shape_btn_bkg"
-                android:orientation="horizontal">
-
+                android:orientation="vertical">
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/income_record"
-                    android:scaleType="centerInside"/>
-
+                    android:id="@+id/income_pic"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/income"
+                    android:layout_gravity="center_horizontal"/>
                 <TextView
+                    android:id="@+id/income_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="记一笔理财"
-                    android:textSize="@dimen/bigtextSize"
-                    android:textColor="@color/income_record"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"/>
-
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="理财"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/line"/>
+            <LinearLayout
+                android:id="@+id/mine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/mine_pic"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/mine"/>
+                <TextView
+                    android:id="@+id/mine_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="我的"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-</com.fengyang.tallynote.view.IOSScrollView>
+</RelativeLayout>

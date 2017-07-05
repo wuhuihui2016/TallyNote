@@ -134,7 +134,7 @@ public class NewMonthActivity extends BaseActivity{
 								super.onClick(v);
 								if (MyApp.utils.newMNote(monthNote)) {
 									StringUtils.show1Toast(activity, "新增月账单成功！");
-									ExcelUtils.exportMonthNote(activity);
+									ExcelUtils.exportMonthNote(null);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增月账单失败！");
 							}

@@ -61,7 +61,7 @@ public class NewDayActivity extends BaseActivity{
 								super.onClick(v);
 								if (MyApp.utils.newDNote(dayNote)) {
 									StringUtils.show1Toast(activity, "新增日账单成功！");
-									ExcelUtils.exportDayNote(activity);
+									ExcelUtils.exportDayNote(null);
 									finish();
 								} else StringUtils.show1Toast(activity, "新增日账单失败！");
 							}

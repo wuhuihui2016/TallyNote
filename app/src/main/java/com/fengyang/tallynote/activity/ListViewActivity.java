@@ -19,6 +19,7 @@ import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
+import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -104,15 +105,24 @@ public class ListViewActivity extends BaseActivity {
         setRightBtnListener("导出", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == MyApp.DAY) {
-                    if (dayNotes.size() > 0) ExcelUtils.exportDayNote(activity);
-                } else if (type == MyApp.MONTH){
-                    if (monthNotes.size() > 0) ExcelUtils.exportMonthNote(activity);
-                } else ExcelUtils.exportIncomeNote(activity);
+                if (type == MyApp.DAY) ExcelUtils.exportDayNote(callBackExport);
+                else if (type == MyApp.MONTH) ExcelUtils.exportMonthNote(callBackExport);
+                else ExcelUtils.exportIncomeNote(callBackExport);
             }
         });
 
     }
+
+    /**
+     * 导出结果回调
+     */
+    private ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
+        @Override
+        public void callback(boolean sucess, String fileName) {
+            if (sucess) StringUtils.show1Toast(activity, "导出成功:" + fileName);
+            else StringUtils.show1Toast(activity, "导出失败！");
+        }
+    };
 
     /**
      * 初始化popupWindow

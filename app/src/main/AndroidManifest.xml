@@ -54,6 +54,12 @@
         <!-- 账单记录详情 -->
         <activity android:name=".activity.DetailsActivity"/>
 
+        <!-- 重置密保 -->
+        <activity android:name=".activity.ReSetPwdKeyActivity"/>
+
+        <!-- 导入导出 -->
+        <activity android:name=".activity.PortNotesActivity"/>
+
     </application>
 
 </manifest>
