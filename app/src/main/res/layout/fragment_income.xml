@@ -25,15 +25,15 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/app_color"
                     android:inputType="textPassword"
-                    android:text="123"
+                    android:text="暂无投资"
                     android:textSize="@dimen/bigtextSize"/>
 
                 <ImageButton
                     android:id="@+id/seenCheck"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/eye_icon"
+                    android:src="@drawable/eye_close_pwd"
                     android:layout_marginLeft="20dp"
                     android:layout_gravity="bottom"
                     android:layout_toRightOf="@id/currIncomeSum"

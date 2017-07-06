@@ -72,9 +72,9 @@ public class MonthNoteAdapter extends BaseAdapter{
 
         String info = "上次结余：" + StringUtils.showPrice(monthNote.getLast_balance()) +
                 " 元\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) + " 元";
-        if (! TextUtils.isEmpty(monthNote.getIncome())) info = info + "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) + " 元";
-        if (! TextUtils.isEmpty(monthNote.getHomeuse())) info = info + "\n家用补贴：" + StringUtils.showPrice(monthNote.getHomeuse()) + " 元";
-        if (! TextUtils.isEmpty(monthNote.getRemark())) info = info + "\n月结备注：" + monthNote.getRemark();
+        if (! TextUtils.isEmpty(monthNote.getIncome())) info += "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) + " 元";
+        if (! TextUtils.isEmpty(monthNote.getHomeuse())) info += "\n家用补贴：" + StringUtils.showPrice(monthNote.getHomeuse()) + " 元";
+        if (! TextUtils.isEmpty(monthNote.getRemark())) info += "\n月结备注：" + monthNote.getRemark();
         viewHolder.month_info.setText(info);
 
         viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) + " 元");

@@ -2,109 +2,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/main_context"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title"
-        android:layout_marginBottom="50dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation"/>
 
-    <LinearLayout
-        android:id="@+id/app_buttom"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:background="@color/line"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:animateLayoutChanges="true">
-        <View
-            android:id="@+id/menu_topline"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/line" />
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+
         <LinearLayout
+            android:id="@+id/app_buttom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:id="@+id/tally"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:paddingTop="5dp"
-                android:onClick="onClick"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/tally_pic"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:src="@drawable/tally"
-                    android:layout_gravity="center_horizontal"/>
-                <TextView
-                    android:id="@+id/tally_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/app_name"
-                    android:textSize="12sp"/>
-            </LinearLayout>
+            android:layout_height="60dp"
+            android:paddingBottom="5dp"
+            android:background="@color/line"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
             <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:background="@color/line"/>
+                android:id="@+id/menu_topline"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line" />
             <LinearLayout
-                android:id="@+id/income"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:paddingTop="5dp"
-                android:onClick="onClick"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/income_pic"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:src="@drawable/income"
-                    android:layout_gravity="center_horizontal"/>
-                <TextView
-                    android:id="@+id/income_title"
-                    android:layout_width="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/tally"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="理财"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:background="@color/line"/>
-            <LinearLayout
-                android:id="@+id/mine"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:onClick="onClick"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/mine_pic"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/mine"/>
-                <TextView
-                    android:id="@+id/mine_title"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:paddingTop="5dp"
+                    android:onClick="onClick"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/tally_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/tally"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:id="@+id/tally_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/app_name"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line"/>
+                <LinearLayout
+                    android:id="@+id/income"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="我的"
-                    android:textSize="12sp" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:paddingTop="5dp"
+                    android:onClick="onClick"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/income_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/income"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:id="@+id/income_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="理财"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line"/>
+                <LinearLayout
+                    android:id="@+id/mine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/mine_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/mine"/>
+                    <TextView
+                        android:id="@+id/mine_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="我的"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <View
+            android:id="@+id/barView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_bar"/>
+
+    </FrameLayout>
 
 </RelativeLayout>

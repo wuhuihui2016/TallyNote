@@ -30,7 +30,8 @@
         <activity android:name=".activity.ForgetPwdActivity"/>
 
         <!-- 主页 -->
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.MainActivity"
+            android:launchMode="singleTask"/>
 
         <!-- 记日账 -->
         <activity android:name=".activity.NewDayActivity"
@@ -48,17 +49,20 @@
         <activity android:name=".activity.FinishIncomeActivity"
             android:configChanges="orientation|keyboardHidden"/>
 
-        <!-- 账单记录 -->
+        <!-- 记录列表 -->
         <activity android:name=".activity.ListViewActivity"/>
 
-        <!-- 账单记录详情 -->
+        <!-- 记录详情 -->
         <activity android:name=".activity.DetailsActivity"/>
+
+        <!-- 导入导出 -->
+        <activity android:name=".activity.PortNotesActivity"/>
 
         <!-- 重置密保 -->
         <activity android:name=".activity.ReSetPwdKeyActivity"/>
 
-        <!-- 导入导出 -->
-        <activity android:name=".activity.PortNotesActivity"/>
+        <!-- 计算日收益 -->
+        <activity android:name=".activity.CalculateActivity"/>
 
     </application>
 

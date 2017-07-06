@@ -63,10 +63,10 @@
 
                 <ImageButton
                     android:id="@+id/seenCheck"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/eye_icon"
+                    android:src="@drawable/eye_close_pwd"
                     android:layout_marginLeft="20dp"
                     android:layout_gravity="bottom"
                     android:onClick="onClick"
@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_day"
                 android:gravity="center|center_horizontal">
 

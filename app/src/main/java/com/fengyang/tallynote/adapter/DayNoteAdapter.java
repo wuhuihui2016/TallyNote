@@ -70,6 +70,7 @@ public class DayNoteAdapter extends BaseAdapter {
         viewHolder.usage.setText(dayNote.getUsage());
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
         if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
+        else viewHolder.remask.setText("");
 
         viewHolder.item_day_layout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -79,7 +79,7 @@ public class IncomeNoteAdapter extends BaseAdapter{
                 "\n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
                 " 元/万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) + " 元";
         
-        if (! TextUtils.isEmpty(incomeNote.getRemark()))  info = info + "\n投资备注：" + incomeNote.getRemark();
+        if (! TextUtils.isEmpty(incomeNote.getRemark()))  info += "\n投资备注：" + incomeNote.getRemark();
         
         if (incomeNote.getFinished() == 0) {//未完成
             viewHolder.income_info.setText(info);

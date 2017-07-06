@@ -17,7 +17,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_gridview">
+        android:background="@drawable/shape_pwd">
 
         <TextView
             android:id="@+id/pwd1"

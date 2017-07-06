@@ -126,7 +126,11 @@ public class ReSetPwdKeyActivity extends BaseActivity {
                         final String finalPwdKey = pwdKey;
                         String oldKey = (String) ContansUtils.get("pwdKey", "");
                         if (finalPwdKey.equals(oldKey)) {
-                            startActivity(new Intent(activity, SetPwdKeyActivity.class));
+                            Intent intent = new Intent(activity, SetPwdKeyActivity.class);
+                            intent.putExtra("reSetPwdKey", true);
+                            startActivity(intent);
+                            finish();
+
                         } else {
                             StringUtils.show1Toast(context, "验证失败，请新输入");list.clear();
                             for (int i = 0; i < textViews.size(); i ++) {

@@ -8,14 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.activity.CalculateActivity;
 import com.fengyang.tallynote.activity.PortNotesActivity;
 import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
-import com.fengyang.tallynote.adapter.SettingAdapter;
-import com.fengyang.tallynote.utils.ContansUtils;
-import com.fengyang.tallynote.utils.FileUtils;
+import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,9 @@ public class MineFragment extends Fragment{
 	private Activity activity;
 	private View content;//内容布局
 
-	private ListView settingList;
+	private GridView settingGrid;
 	private List<String> settings = new ArrayList<>();
+	private List<Integer> drawableRes = new ArrayList<>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,12 +43,14 @@ public class MineFragment extends Fragment{
 	 */
 	private void initView() {
 
-		settingList = (ListView) content.findViewById(R.id.settingList);
-		settings.add("导入/导出");
-		settings.add("重置密保");
-		settings.add("清除数据");
-		settingList.setAdapter(new SettingAdapter(activity, settings));
-		settingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		settingGrid = (GridView) content.findViewById(R.id.settingGrid);
+		settings.clear(); drawableRes.clear();
+		settings.add("导入/导出"); drawableRes.add(R.drawable.import_export);
+		settings.add("重置密保");  drawableRes.add(R.drawable.pwdkey);
+		settings.add("计算日收益");  drawableRes.add(R.drawable.calculate);
+
+		settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
+		settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (position) {
@@ -58,9 +60,8 @@ public class MineFragment extends Fragment{
 					case 1://重置密保
 						startActivity(new Intent(activity, ReSetPwdKeyActivity.class));
 						break;
-					case 2://清除数据
-						ContansUtils.clear();
-						FileUtils.delete(FileUtils.getAppDir());
+					case 2://计算日收益
+						startActivity(new Intent(activity, CalculateActivity.class));
 						break;
 				}
 			}

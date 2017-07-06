@@ -164,17 +164,20 @@ public class TallyFragment extends Fragment{
 	private View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			ImageButton seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
 			Intent intent = new Intent(activity, ListViewActivity.class);
 			switch (v.getId()) {
 				case R.id.seenCheck:
 					//密文明文显示
 					if (isSeen) {
 						isSeen = false;
+						seenCheck.setImageResource(R.drawable.eye_open_pwd);
 						//设置EditText文本为隐藏的
 						last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 						current_pay.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 					} else {
 						isSeen = true;
+						seenCheck.setImageResource(R.drawable.eye_close_pwd);
 						//设置EditText文本为可见的
 						last_balanceTv.setTransformationMethod(PasswordTransformationMethod.getInstance());
 						current_pay.setTransformationMethod(PasswordTransformationMethod.getInstance());

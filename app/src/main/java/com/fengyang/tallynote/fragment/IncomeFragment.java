@@ -74,7 +74,6 @@ public class IncomeFragment extends Fragment{
 
 		showIncomeNote();
 
-
 	}
 
 
@@ -85,9 +84,9 @@ public class IncomeFragment extends Fragment{
 
 		List<IncomeNote> incomes = MyApp.utils.getIncomes();
 		RelativeLayout income_layout = (RelativeLayout) content.findViewById(R.id.income_layout);
+		currIncomeSum = (TextView) content.findViewById(R.id.currIncomeSum);
 		if (incomes.size() > 0) {
 			//显示当前未完成的理财投资的总金额
-			currIncomeSum = (TextView) content.findViewById(R.id.currIncomeSum);
 			Double sum = 0.00;
 			for (int i = 0; i < incomes.size(); i ++) {
 				if(incomes.get(i).getFinished() == 0) {
@@ -153,14 +152,17 @@ public class IncomeFragment extends Fragment{
 	private View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			ImageButton seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
 			switch (v.getId()) {
 				case R.id.seenCheck:
 					//密文明文显示
 					if (isSeen) {
 						isSeen = false;
+						seenCheck.setImageResource(R.drawable.eye_open_pwd);
 						currIncomeSum.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 					} else {
 						isSeen = true;
+						seenCheck.setImageResource(R.drawable.eye_close_pwd);
 						currIncomeSum.setTransformationMethod(PasswordTransformationMethod.getInstance());
 					}
 					break;

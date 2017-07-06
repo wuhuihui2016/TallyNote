@@ -280,8 +280,8 @@ public class ExcelUtils {
                     }
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
-                        StringUtils.show1Toast(context, "导入成功！日账单新增" + incomeNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件结构不符！请检查后重试");
+                        StringUtils.show1Toast(context, "导入成功！日账单新增" + dayNotes.size() + "条数据");
+                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
 
                 } else if (sheetName.contains("月")) { //月账单解析
                     monthNotes = new ArrayList<>();
@@ -301,8 +301,8 @@ public class ExcelUtils {
                     }
                     LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                     if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
-                        StringUtils.show1Toast(context, "导入成功！月账单新增" + incomeNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件结构不符！请检查后重试");
+                        StringUtils.show1Toast(context, "导入成功！月账单新增" + monthNotes.size() + "条数据");
+                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
                     
                 } else if (sheetName.contains("理财")) { //理财记录解析
                     incomeNotes = new ArrayList<>();
@@ -324,7 +324,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                     if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
                         StringUtils.show1Toast(context, "导入成功！理财记录新增" + incomeNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件结构不符！请检查后重试");
+                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
                 } else {
                     StringUtils.show1Toast(context, "导入失败！原因：非本APP导出的文件！请检查后重试");
                 }
@@ -334,7 +334,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             System.out.println(e);
-            StringUtils.show1Toast(context, "导入失败！原因：非Excel格式的文件！请检查后重试");
+            StringUtils.show1Toast(context, "导入失败！");
         }
     }
 }

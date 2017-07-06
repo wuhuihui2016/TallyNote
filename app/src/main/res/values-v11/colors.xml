@@ -6,6 +6,8 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="white">@android:color/white</color>
     <color name="red">@android:color/holo_red_light</color>
+    <color name="smallred">#FF9797</color>
+    <color name="orange">@android:color/holo_orange_light</color>
     <color name="black">@android:color/black</color>
 
     <color name="line">#F5F5F5</color>
