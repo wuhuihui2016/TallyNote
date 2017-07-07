@@ -17,12 +17,13 @@ import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class NewIncomeActivity extends BaseActivity{
 
-	private EditText moneyEt, incomeRatioEt, daysEt, dayIncomeEt, finalIncomeEt, remarkEt;
-	private TextView durationEt;
+	private EditText moneyEt, incomeRatioEt, daysEt, finalIncomeEt, remarkEt;
+	private TextView durationEt, dayIncomeEt;
 	private Calendar calendar;
 
 	@Override
@@ -37,8 +38,8 @@ public class NewIncomeActivity extends BaseActivity{
 		moneyEt = (EditText) findViewById(R.id.moneyEt);
 		incomeRatioEt = (EditText) findViewById(R.id.incomeRatioEt);
 		daysEt = (EditText) findViewById(R.id.daysEt);
-		dayIncomeEt = (EditText) findViewById(R.id.dayIncomeEt);
 		finalIncomeEt = (EditText) findViewById(R.id.finalIncomeEt);
+		dayIncomeEt = (TextView) findViewById(R.id.dayIncomeEt);
 		durationEt = (TextView) findViewById(R.id.durtionEt);
 		remarkEt = (EditText) findViewById(R.id.remarkEt);
 
@@ -54,6 +55,33 @@ public class NewIncomeActivity extends BaseActivity{
 			new DatePickerDialog(activity, mdateListener,
 					calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
 					calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+		} else if(v.getId() == R.id.dayIncomeEt) {//自动结算日收益
+			final String moneyStr = StringUtils.formatePrice(moneyEt.getText().toString());
+			final String finalIncomeStr = StringUtils.formatePrice(finalIncomeEt.getText().toString());
+			final String daysStr = daysEt.getText().toString();
+
+			if (! TextUtils.isEmpty(moneyStr) &&
+					! TextUtils.isEmpty(finalIncomeStr) &&
+					! TextUtils.isEmpty(daysStr)) {
+				DialogUtils.showMsgDialog(activity, "计算日收益", finalIncomeStr + " / " + daysStr + " / " + moneyStr,
+						new DialogUtils.DialogListener(){
+							@Override
+							public void onClick(View v) {
+								super.onClick(v);
+								double result = Double.parseDouble(finalIncomeStr) / Double.parseDouble(daysStr)
+										/ (Double.parseDouble(moneyStr) / 10000);
+								DecimalFormat df = new DecimalFormat("0.000");
+								dayIncomeEt.setText(df.format(result));
+							}
+						}, new DialogUtils.DialogListener(){
+							@Override
+							public void onClick(View v) {
+								super.onClick(v);
+							}
+						});
+			} else StringUtils.show1Toast(context, "投资金额，投资期限，最终收益等信息不能为空！");
+
 
 		} else if(v.getId() == R.id.commitNote) {
 			String money = StringUtils.formatePrice(moneyEt.getText().toString());

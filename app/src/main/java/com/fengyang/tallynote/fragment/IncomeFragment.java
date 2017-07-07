@@ -40,6 +40,7 @@ public class IncomeFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		content = inflater.inflate(R.layout.fragment_income, container, false);
+		LogUtils.i("fragment", TAG);
 		activity = getActivity();
 		initView();
 		return content;
@@ -75,7 +76,6 @@ public class IncomeFragment extends Fragment{
 		showIncomeNote();
 
 	}
-
 
 	/**
 	 * 显示最近一次收益的理财记录

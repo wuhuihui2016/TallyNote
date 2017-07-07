@@ -14,23 +14,27 @@
             android:text="投资金额(元)"
             android:onClick="onClick"
             android:padding="10dp"
+            android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
         <TextView
             android:id="@+id/cal_money"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:hint="请输入投资金额"
             android:padding="10dp"
+            android:lines="1"
+            android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
+            android:background="@drawable/shape_input_bkg"
             android:textSize="@dimen/bigtextSize"/>
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/line"/>
 
     <LinearLayout
@@ -43,16 +47,20 @@
             android:layout_height="wrap_content"
             android:text="预期年化(%)"
             android:onClick="onClick"
+            android:layout_margin="5dp"
             android:padding="10dp"
             android:textSize="@dimen/bigtextSize"/>
 
         <TextView
             android:id="@+id/cal_ratio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:hint="请输入预期年化"
             android:padding="10dp"
+            android:lines="1"
+            android:background="@null"
+            android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
@@ -60,7 +68,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/line"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,15 +81,19 @@
             android:text="投资期限(天)"
             android:onClick="onClick"
             android:padding="10dp"
+            android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
         <TextView
             android:id="@+id/cal_day"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:hint="请输入投资期限"
             android:padding="10dp"
+            android:lines="1"
+            android:background="@null"
+            android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
@@ -89,7 +101,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/line"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,23 +114,27 @@
             android:text="最终收益(元)"
             android:onClick="onClick"
             android:padding="10dp"
+            android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
         <TextView
             android:id="@+id/cal_finalIncome"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:hint="请输入最终收益"
             android:padding="10dp"
+            android:lines="1"
+            android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
+            android:background="@null"
             android:textSize="@dimen/bigtextSize"/>
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/line"/>
 
     <LinearLayout
@@ -133,82 +149,59 @@
             android:text="计算结果(日/万/元)："
             android:onClick="onClick"
             android:padding="10dp"
+            android:layout_margin="5dp"
             android:textColor="@color/red"
             android:textSize="@dimen/bigtextSize"/>
 
         <TextView
             android:id="@+id/cal_result"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_margin="5dp"
             android:textColor="@color/red"
             android:layout_marginLeft="5dp"
+            android:lines="1"
+            android:background="@null"
             android:textSize="@dimen/bigtextSize"/>
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/line"/>
 
     <RelativeLayout
+        android:id="@+id/nunkeyboard_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="202dp"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/gray"
+            android:layout_alignParentBottom="true">
+            <ImageView
+                android:id="@+id/hide_nunkeyboard"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:layout_marginTop="0.5dp"
+                android:background="@color/white"
+                android:src="@drawable/hide_nunkeyboard"/>
             <GridView
                 android:id="@+id/numGridView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
                 android:layout_weight="1"
-                android:numColumns="3"
+                android:numColumns="4"
                 android:scrollbars="none"
-                android:horizontalSpacing="1dp"
-                android:verticalSpacing="1dp"
-                android:padding="1dp"
+                android:horizontalSpacing="0.5dp"
+                android:verticalSpacing="0.5dp"
+                android:padding="0.5dp"
                 android:gravity="center_horizontal|center"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="1dp"
-                android:paddingRight="1dp"
-                android:paddingBottom="1dp"
-                android:layout_weight="3">
-                <TextView
-                    android:id="@+id/cal_del"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/red"
-                    android:layout_weight="1"
-                    android:text="C"
-                    android:layout_marginBottom="0.5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/titletextSize"
-                    android:gravity="center_vertical|center"
-                    android:onClick="onClick"/>
-                <TextView
-                    android:id="@+id/calculate"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/red"
-                    android:layout_weight="1"
-                    android:text="计算"
-                    android:layout_marginTop="0.5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/titletextSize"
-                    android:gravity="center_vertical|center"
-                    android:onClick="onClick"/>
-            </LinearLayout>
-
         </LinearLayout>
 
     </RelativeLayout>

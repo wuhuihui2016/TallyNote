@@ -64,6 +64,9 @@
         <!-- 计算日收益 -->
         <activity android:name=".activity.CalculateActivity"/>
 
+        <!-- 日收益比较 -->
+        <activity android:name=".activity.CompareActivity"/>
+
     </application>
 
 </manifest>

@@ -111,11 +111,22 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:id="@+id/barView"
+        <RelativeLayout
+            android:id="@+id/cur_tab"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/shape_bar"/>
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="centerInside"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/cur_tab"/>
+
+        </RelativeLayout>
+
 
     </FrameLayout>
 

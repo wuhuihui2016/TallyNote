@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class CalculateAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 12;
+        return 16;
     }
 
     @Override
@@ -52,10 +53,34 @@ public class CalculateAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        if (position >= 0 && position <= 8) viewHolder.num.setText((position + 1) + "");
-        else if (position == 9) viewHolder.num.setText("00");
-        else if (position == 10) viewHolder.num.setText("0");
-        else if (position == 11) viewHolder.num.setText("CE");
+        if (position >= 0 && position <= 2) {
+            viewHolder.num.setBackgroundColor(Color.WHITE);
+            viewHolder.num.setText((position + 1) + "");
+        } else if (position == 3) {
+            viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            viewHolder.num.setText("C");
+        } else if (position >= 4 && position <= 6) {
+            viewHolder.num.setBackgroundColor(Color.WHITE);
+            viewHolder.num.setText((position) + "");
+        } else if (position == 7) {
+            viewHolder.num.setText(".");
+            viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
+        } else if (position >= 8 && position <= 10) {
+            viewHolder.num.setBackgroundColor(Color.WHITE);
+            viewHolder.num.setText((position - 1) + "");
+        } else if (position == 11) {
+            viewHolder.num.setText("下一个");
+            viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
+        } else if (position >= 12 && position <= 14) {
+            viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            if (position == 12) viewHolder.num.setText("00");
+            if (position == 13) {viewHolder.num.setText("0"); viewHolder.num.setBackgroundColor(Color.WHITE);}
+            if (position == 14) viewHolder.num.setText("CE");
+        } else if (position == 15) {
+            viewHolder.num.setText("计算");
+            viewHolder.num.setTextColor(Color.RED);
+            viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
+        }
 
         return convertView;
     }

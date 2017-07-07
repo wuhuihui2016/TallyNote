@@ -78,7 +78,6 @@ public class ListViewActivity extends BaseActivity {
             listView.setAdapter(monthNoteAdapter);
 
         } else if (type == MyApp.INCOME){
-            monthNotes = MyApp.utils.getMonNotes();
             incomes = MyApp.utils.getIncomes();
             Collections.reverse(incomes);//倒序排列
             incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, isStart);

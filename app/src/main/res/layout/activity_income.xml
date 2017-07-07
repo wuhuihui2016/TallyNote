@@ -154,42 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#d0d0d0" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="拟日收益"
-                android:textColor="#333333"
-                android:textSize="@dimen/bigtextSize" />
-
-            <EditText
-                android:id="@+id/dayIncomeEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
-                android:inputType="numberDecimal"
-                android:hint="必填"
-                android:singleLine="true"
-                android:textColor="#9f9f9f"
-                android:textSize="@dimen/bigtextSize" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d0d0" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -226,6 +191,45 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#d0d0d0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:text="拟日收益"
+                android:textColor="#333333"
+                android:textSize="@dimen/bigtextSize" />
+
+            <TextView
+                android:id="@+id/dayIncomeEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:hint="计算"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:textColor="#9f9f9f"
+                android:textSize="@dimen/bigtextSize" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d0d0d0" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
