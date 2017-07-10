@@ -15,7 +15,7 @@ import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +140,7 @@ public class OnStartActivity extends BaseActivity {
                             finish();
                             startActivity(new Intent(context, MainActivity.class));
                         } else {
-                            StringUtils.show1Toast(context, "密码验证失败！请重新输入！");
+                            ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
                             list.clear();
                             for (int i = 0; i < textViews.size(); i ++) {
                                 textViews.get(i).setText("");

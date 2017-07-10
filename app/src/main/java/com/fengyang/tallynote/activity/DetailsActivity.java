@@ -39,7 +39,11 @@ public class DetailsActivity extends BaseActivity {
         if (type == MyApp.DAY) {
             setTitle("日账记录详情");
             dayNote = (DayNote) intent.getSerializableExtra("note");
-            message = dayNote.getUsage() + "：" + StringUtils.showPrice(dayNote.getMoney()) + " (" + dayNote.getRemark() + ")" +
+            String dayType = null;
+            if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
+            if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
+            if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
+            message = dayType + "：" + StringUtils.showPrice(dayNote.getMoney()) + " (" + dayNote.getRemark() + ")" +
                     "\n记录时间：" + dayNote.getTime();
         } else if (type == MyApp.MONTH) {
             setTitle("月账记录详情");

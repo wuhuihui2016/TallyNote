@@ -50,7 +50,9 @@
             android:configChanges="orientation|keyboardHidden"/>
 
         <!-- 记录列表 -->
-        <activity android:name=".activity.ListViewActivity"/>
+        <activity android:name=".activity.DayListActivity"/>
+        <activity android:name=".activity.MonthListActivity"/>
+        <activity android:name=".activity.IncomeListActivity"/>
 
         <!-- 记录详情 -->
         <activity android:name=".activity.DetailsActivity"/>
@@ -62,7 +64,9 @@
         <activity android:name=".activity.ReSetPwdKeyActivity"/>
 
         <!-- 计算日收益 -->
-        <activity android:name=".activity.CalculateActivity"/>
+        <activity android:name=".activity.CalculateActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <!-- 日收益比较 -->
         <activity android:name=".activity.CompareActivity"/>

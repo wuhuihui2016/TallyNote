@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.ActivityUtils;
 import com.fengyang.tallynote.utils.NetReceiver;
-import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -46,7 +46,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         ActivityUtils.addActivity(this);
         context = this; activity = this; TAG = getLocalClassName(); //初始化常量
 
-        if (! SystemUtils.isNetworkConnected(context))  StringUtils.show1Toast(context, "当前网络不可用"); //判断网络
+        if (! SystemUtils.isNetworkConnected(context))  ToastUtils.showToast(context, true, "当前网络不可用"); //判断网络
     }
 
     /**
@@ -116,7 +116,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onNetChange() {
                 if (! SystemUtils.isNetworkConnected(context)) {
-                    StringUtils.show1Toast(context, "当前网络不可用");
+                    ToastUtils.showToast(context, true, "当前网络不可用");
                 }
             }
         });

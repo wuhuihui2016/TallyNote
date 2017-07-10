@@ -1,8 +1,6 @@
 package com.fengyang.tallynote.utils;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -24,23 +22,6 @@ public class StringUtils {
         }
     }
 
-    /**
-     * 页面消息提示(短)
-     * @param context
-     * @param message
-     */
-    public static void show1Toast(Context context, String message){
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 页面消息提示（长）
-     * @param context
-     * @param message
-     */
-    public static void show2Toast(Context context, String message){
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
 
     //价格显示标准
     public static String formatePrice(String price){

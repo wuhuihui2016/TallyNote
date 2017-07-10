@@ -12,19 +12,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="投资金额(元)"
-            android:onClick="onClick"
             android:padding="10dp"
             android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cal_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
             android:hint="请输入投资金额"
             android:padding="10dp"
             android:lines="1"
+            android:inputType="numberDecimal"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/shape_input_bkg"
@@ -46,19 +45,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="预期年化(%)"
-            android:onClick="onClick"
             android:layout_margin="5dp"
             android:padding="10dp"
             android:textSize="@dimen/bigtextSize"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cal_ratio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
             android:hint="请输入预期年化"
             android:padding="10dp"
             android:lines="1"
+            android:inputType="numberDecimal"
             android:background="@null"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
@@ -79,18 +77,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="投资期限(天)"
-            android:onClick="onClick"
             android:padding="10dp"
             android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cal_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
             android:hint="请输入投资期限"
             android:padding="10dp"
+            android:inputType="numberDecimal"
             android:lines="1"
             android:background="@null"
             android:layout_margin="5dp"
@@ -117,13 +114,14 @@
             android:layout_margin="5dp"
             android:textSize="@dimen/bigtextSize"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cal_finalIncome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:hint="请输入最终收益"
             android:padding="10dp"
+            android:inputType="numberDecimal"
             android:lines="1"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
@@ -185,7 +183,7 @@
             <ImageView
                 android:id="@+id/hide_nunkeyboard"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:scaleType="centerInside"
                 android:layout_marginTop="0.5dp"
                 android:background="@color/white"
@@ -202,6 +200,21 @@
                 android:verticalSpacing="0.5dp"
                 android:padding="0.5dp"
                 android:gravity="center_horizontal|center"/>
+
+            <android.inputmethodservice.KeyboardView
+                android:id="@+id/keyboard_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_alignParentBottom="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="#999999"
+                android:keyBackground="@drawable/btn_keyboard_key"
+                android:keyTextSize="16sp"
+                android:keyTextColor="#000"
+                android:visibility="gone" />
         </LinearLayout>
 
     </RelativeLayout>

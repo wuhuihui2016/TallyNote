@@ -25,7 +25,7 @@ import com.fengyang.tallynote.fragment.MineFragment;
 import com.fengyang.tallynote.fragment.TallyFragment;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.PermissionUtils;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView("我的账本", R.layout.activity_main);
+
 	}
 
 	@Override
@@ -70,70 +71,52 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onCheck(boolean isSucess) {
 				if (isSucess) {
-					//初始化ViewPager
-					viewPager = (ViewPager) findViewById(R.id.viewpager);
 					if (! canShow) {
 						fragments.add(new TallyFragment());
 						fragments.add(new IncomeFragment());
 						fragments.add(new MineFragment());
-						//给ViewPager设置适配器
-						adapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), viewPager,fragments);
-						viewPager.setAdapter(adapter);
+
+						viewPager = (ViewPager) findViewById(R.id.viewpager);
+						adapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), viewPager, fragments);
 						adapter.setOnExtraPageChangeListener(new FragmentViewPagerAdapter.OnExtraPageChangeListener(){
 							@Override
-							public void onExtraPageSelected(int i) {
-								System.out.println("Extra...i: " + i);
+							public void onExtraPageSelected(int position) {
+								setCheked(position);//设置当前显示标签页为第一页
+							}
+
+							@Override
+							public void onExtraPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+								// 取得该控件的实例
+								FrameLayout.LayoutParams ll = (FrameLayout.LayoutParams) cur_tab.getLayoutParams();
+
+								cur_tab.setVisibility(View.VISIBLE);
+
+								if(frag_index == position){
+									ll.leftMargin = (int) (frag_index * cur_tab.getWidth() + positionOffset
+											* cur_tab.getWidth());
+								}else if(frag_index > position){
+									ll.leftMargin = (int) (frag_index * cur_tab.getWidth() - (1 - positionOffset) * cur_tab.getWidth());
+								}
+								cur_tab.setLayoutParams(ll);
+
+								new DelayTask(200, new DelayTask.ICallBack() {
+									@Override
+									public void deal() {
+										cur_tab.setVisibility(View.GONE);
+									}
+								}).execute();
 							}
 						});
-						setCheked(0);//设置当前显示标签页为第一页
-						viewPager.setOnPageChangeListener(new MyOnPageChangeListener());//页面变化时的监听器
 					}
 					isShow(true);
 
 				} else {
 					PermissionUtils.notPermission(MainActivity.this, PermissionUtils.PERMISSIONS_STORAGE);
-					StringUtils.show1Toast(context, "可能读取SDCard权限未打开，请检查后重试！");
+					ToastUtils.showToast(context, true, "可能读取SDCard权限未打开，请检查后重试！");
 				}
 			}
 		});
 
-	}
-
-	/**
-	 * 页面滑动监听
-	 */
-	class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
-
-		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			// 取得该控件的实例
-			FrameLayout.LayoutParams ll = (FrameLayout.LayoutParams) cur_tab.getLayoutParams();
-
-			cur_tab.setVisibility(View.VISIBLE);
-
-			if(frag_index == position){
-				ll.leftMargin = (int) (frag_index * cur_tab.getWidth() + positionOffset
-						* cur_tab.getWidth());
-			}else if(frag_index > position){
-				ll.leftMargin = (int) (frag_index * cur_tab.getWidth() - (1 - positionOffset) * cur_tab.getWidth());
-			}
-			cur_tab.setLayoutParams(ll);
-
-			new DelayTask(200, new DelayTask.ICallBack() {
-				@Override
-				public void deal() {
-					cur_tab.setVisibility(View.GONE);
-				}
-			}).execute();
-		}
-
-		@Override
-		public void onPageScrollStateChanged(int position) {}
-
-		@Override
-		public void onPageSelected(int position) {
-			setCheked(position);
-		}
 	}
 
 	/**
@@ -151,8 +134,6 @@ public class MainActivity extends BaseActivity {
 			case 1: setTitle("理财"); income_title.setTextColor(Color.RED); break;
 			case 2: setTitle("我的"); mine_title.setTextColor(Color.RED); break;
 		}
-
-		viewPager.setCurrentItem(frag_index);
 	}
 
 	@Override
@@ -166,9 +147,9 @@ public class MainActivity extends BaseActivity {
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.tally:  setCheked(0); break;
-			case R.id.income: setCheked(1); break;
-			case R.id.mine:   setCheked(2); break;
+			case R.id.tally:  viewPager.setCurrentItem(0); setCheked(0); break;
+			case R.id.income: viewPager.setCurrentItem(1); setCheked(1); break;
+			case R.id.mine:   viewPager.setCurrentItem(2); setCheked(2); break;
 		}
 
 	}

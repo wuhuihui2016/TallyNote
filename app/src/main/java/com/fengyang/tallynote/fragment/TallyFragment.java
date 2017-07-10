@@ -18,7 +18,8 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.activity.ListViewActivity;
+import com.fengyang.tallynote.activity.DayListActivity;
+import com.fengyang.tallynote.activity.MonthListActivity;
 import com.fengyang.tallynote.activity.NewDayActivity;
 import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.model.DayNote;
@@ -43,8 +44,13 @@ public class TallyFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
 		content = inflater.inflate(R.layout.fragment_tally, container, false);
 		activity = getActivity();
-		initView();
 		return content;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initView();
 	}
 
 	/**
@@ -113,7 +119,11 @@ public class TallyFragment extends Fragment{
 			cur_layout.setVisibility(View.VISIBLE);
 			DayNote dayNote = dayNotes.get(dayNotes.size() - 1);
 			TextView time = (TextView) content.findViewById(R.id.time); time.setText(DateUtils.diffTime(dayNote.getTime()));
-			TextView usage = (TextView) content.findViewById(R.id.usage); usage.setText(dayNote.getUsage());
+			String dayType = null;
+			if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
+			if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
+			if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
+			TextView usage = (TextView) content.findViewById(R.id.usage); usage.setText(dayType);
 			TextView money = (TextView) content.findViewById(R.id.money); money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
 			if (! TextUtils.isEmpty(dayNote.getRemark())) {
 				TextView remask = (TextView) content.findViewById(R.id.remask);
@@ -123,9 +133,7 @@ public class TallyFragment extends Fragment{
 			content.findViewById(R.id.item_day_layout).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(activity, ListViewActivity.class);
-					intent.putExtra("type", MyApp.DAY);
-					startActivity(intent);
+					startActivity(new Intent(activity, DayListActivity.class));
 				}
 			});
 		} else {
@@ -165,7 +173,6 @@ public class TallyFragment extends Fragment{
 		@Override
 		public void onClick(View v) {
 			ImageButton seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
-			Intent intent = new Intent(activity, ListViewActivity.class);
 			switch (v.getId()) {
 				case R.id.seenCheck:
 					//密文明文显示
@@ -186,14 +193,12 @@ public class TallyFragment extends Fragment{
 
 				case R.id.current_pay:
 				case R.id.todayNotes:
-					intent.putExtra("type", MyApp.DAY);
-					startActivity(intent);
+					startActivity(new Intent(activity, DayListActivity.class));
 					break;
 
 				case R.id.last_balanceTv:
 				case R.id.toMonthNotes:
-					intent.putExtra("type", MyApp.MONTH);
-					startActivity(intent);
+					startActivity(new Intent(activity, MonthListActivity.class));
 					break;
 
 				case R.id.commitDNote:

@@ -67,7 +67,11 @@ public class DayNoteAdapter extends BaseAdapter {
         //获取当前对象
         final DayNote dayNote = dayNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
-        viewHolder.usage.setText(dayNote.getUsage());
+        String dayType = null;
+        if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
+        if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
+        if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
+        viewHolder.usage.setText(dayType);
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
         if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
         else viewHolder.remask.setText("");

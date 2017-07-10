@@ -19,7 +19,7 @@ import jxl.write.WritableWorkbook;
 
 public class ExcelUtils {
 
-    private static String[] dayTitle = {"消费用途", "消费支出（元）", "消费备注", "消费时间"};
+    private static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
 
     private static String[] monthTitle = {"上次结余（元）", "本次支出（元）", "本次工资（元）", "本次收益（元）", "家用补贴（元）", "本次结余（元）", "实际结余（元）",
             "月结期间", "月结备注", "记录时间"};
@@ -193,7 +193,11 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, dayNotes.get(i).getUsage()));
+                            String dayType = null;
+                            if (dayNotes.get(i).getUseType() == DayNote.consume) dayType = "支出";
+                            if (dayNotes.get(i).getUseType() == DayNote.account_out) dayType = "转账";
+                            if (dayNotes.get(i).getUseType() == DayNote.account_in) dayType = "转入";
+                            sheet.addCell(new Label(0, i + 1, dayType));
                             sheet.addCell(new Label(1, i + 1, dayNotes.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes.get(i).getTime()));
@@ -272,16 +276,20 @@ public class ExcelUtils {
                     dayNotes = new ArrayList<>();
                     dayNotes.clear();
                     for (int j = 1; j < rows; j ++) {//行
+                        int type = 1;
+                        if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
+                        if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
+                        if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
                         dayNotes.add(new DayNote(
-                                sheet.getCell(0, j).getContents(),
+                                type,
                                 sheet.getCell(1, j).getContents(),
                                 sheet.getCell(2, j).getContents(),
                                 sheet.getCell(3, j).getContents()));
                     }
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
-                        StringUtils.show1Toast(context, "导入成功！日账单新增" + dayNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
+                        ToastUtils.showToast(context, true, "导入成功！日账单新增" + dayNotes.size() + "条数据");
+                    } else ToastUtils.showToast(context, true, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
 
                 } else if (sheetName.contains("月")) { //月账单解析
                     monthNotes = new ArrayList<>();
@@ -301,8 +309,8 @@ public class ExcelUtils {
                     }
                     LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                     if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
-                        StringUtils.show1Toast(context, "导入成功！月账单新增" + monthNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
+                        ToastUtils.showToast(context, true, "导入成功！月账单新增" + monthNotes.size() + "条数据");
+                    } else ToastUtils.showToast(context, true, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
                     
                 } else if (sheetName.contains("理财")) { //理财记录解析
                     incomeNotes = new ArrayList<>();
@@ -323,10 +331,10 @@ public class ExcelUtils {
                     }
                     LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                     if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
-                        StringUtils.show1Toast(context, "导入成功！理财记录新增" + incomeNotes.size() + "条数据");
-                    } else StringUtils.show1Toast(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
+                        ToastUtils.showSucessLong(context, "导入成功！理财记录新增" + incomeNotes.size() + "条数据");
+                    } else ToastUtils.showErrorLong(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
                 } else {
-                    StringUtils.show1Toast(context, "导入失败！原因：非本APP导出的文件！请检查后重试");
+                    ToastUtils.showErrorLong(context, "导入失败！原因：非本APP导出的文件！请检查后重试");
                 }
 
             }
@@ -334,7 +342,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             System.out.println(e);
-            StringUtils.show1Toast(context, "导入失败！");
+            ToastUtils.showErrorLong(context, "导入失败！");
         }
     }
 }

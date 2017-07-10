@@ -122,13 +122,14 @@ public class FragmentViewPagerAdapter extends PagerAdapter implements ViewPager.
         }
     }
 
+
     /**
      * page切换额外功能接口
      */
-    public static class OnExtraPageChangeListener {
-        public void onExtraPageScrolled(int i, float v, int i2){}
-        public void onExtraPageSelected(int i){}
-        public void onExtraPageScrollStateChanged(int i){}
+   public static class OnExtraPageChangeListener {
+        public void onExtraPageScrolled(int position, float positionOffset, int positionOffsetPixels){}
+        public void onExtraPageSelected(int position){}
+        public void onExtraPageScrollStateChanged(int position){}
     }
 
 

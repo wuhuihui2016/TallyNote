@@ -34,8 +34,13 @@ public class MineFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		content = inflater.inflate(R.layout.fragment_mine, container, false);
 		activity = getActivity();
-		initView();
 		return content;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initView();
 	}
 
 	/**

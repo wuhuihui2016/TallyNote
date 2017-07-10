@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.activity.ListViewActivity;
+import com.fengyang.tallynote.activity.IncomeListActivity;
 import com.fengyang.tallynote.activity.NewIncomeActivity;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -40,10 +40,14 @@ public class IncomeFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		content = inflater.inflate(R.layout.fragment_income, container, false);
-		LogUtils.i("fragment", TAG);
 		activity = getActivity();
-		initView();
 		return content;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initView();
 	}
 
 	/**
@@ -135,9 +139,7 @@ public class IncomeFragment extends Fragment{
 			income_money.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(activity, ListViewActivity.class);
-					intent.putExtra("type", MyApp.INCOME);
-					startActivity(intent);
+					startActivity(new Intent(activity, IncomeListActivity.class));
 
 				}
 			});

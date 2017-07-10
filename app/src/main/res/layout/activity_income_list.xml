@@ -12,8 +12,7 @@
         android:onClick="onClick"
         android:textColor="@color/red"
         android:padding="10dp"
-        android:textSize="@dimen/bigtextSize"
-        android:visibility="gone"/>
+        android:textSize="@dimen/bigtextSize"/>
 
     <ListView
         android:id="@+id/listView"

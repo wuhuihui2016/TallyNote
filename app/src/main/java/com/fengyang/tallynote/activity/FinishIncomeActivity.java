@@ -12,6 +12,7 @@ import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 public class FinishIncomeActivity extends BaseActivity{
 
@@ -68,9 +69,9 @@ public class FinishIncomeActivity extends BaseActivity{
 							public void onClick(View v) {
 								super.onClick(v);
 								if (MyApp.utils.finishIncome(incomeNote)) {
-									StringUtils.show1Toast(activity, "完成理财成功！");
+									ToastUtils.showErrorLong(context, "完成理财成功！");
 									finish();
-								} else StringUtils.show1Toast(activity, "完成理财失败！");
+								} else ToastUtils.showErrorLong(context, "完成理财失败！");
 							}
 						}, new DialogUtils.DialogListener(){
 							@Override
@@ -79,7 +80,7 @@ public class FinishIncomeActivity extends BaseActivity{
 							}
 						});
 			} else {
-				StringUtils.show1Toast(activity, "请完善必填信息！");
+				ToastUtils.showToast(context, true, "请完善必填信息！");
 			}
 		}
 	}

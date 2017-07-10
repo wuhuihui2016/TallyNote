@@ -19,6 +19,7 @@ import com.fengyang.tallynote.activity.FinishIncomeActivity;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class IncomeNoteAdapter extends BaseAdapter{
                 viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        StringUtils.show1Toast(context,
+                        ToastUtils.showToast(context, true,
                                 "计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
                     }
                 });

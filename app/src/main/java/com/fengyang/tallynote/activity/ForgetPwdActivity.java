@@ -15,7 +15,7 @@ import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +139,7 @@ public class ForgetPwdActivity extends BaseActivity {
                             });
 
                         } else {
-                            StringUtils.show1Toast(context, "验证失败！请重新输入！");
+                            ToastUtils.showToast(context, true, "验证失败！请重新输入！");
                             list.clear();
                             for (int i = 0; i < textViews.size(); i ++) {
                                 textViews.get(i).setText("");

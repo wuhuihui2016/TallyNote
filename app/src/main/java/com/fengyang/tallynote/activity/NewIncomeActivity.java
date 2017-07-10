@@ -16,6 +16,7 @@ import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -51,7 +52,7 @@ public class NewIncomeActivity extends BaseActivity{
 	public void onClick(View v) {
 		super.onClick(v);
 		if(v.getId() == R.id.durtionEt) {
-			StringUtils.show1Toast(activity, "请选择投资起始日期");
+			ToastUtils.showToast(context, true, "请选择投资起始日期");
 			new DatePickerDialog(activity, mdateListener,
 					calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
 					calendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -80,7 +81,7 @@ public class NewIncomeActivity extends BaseActivity{
 								super.onClick(v);
 							}
 						});
-			} else StringUtils.show1Toast(context, "投资金额，投资期限，最终收益等信息不能为空！");
+			} else ToastUtils.showToast(context, true, "投资金额，投资期限，最终收益等信息不能为空！");
 
 
 		} else if(v.getId() == R.id.commitNote) {
@@ -111,10 +112,10 @@ public class NewIncomeActivity extends BaseActivity{
 							public void onClick(View v) {
 								super.onClick(v);
 								if (MyApp.utils.newINote(incomeNote)) {
-									StringUtils.show1Toast(activity, "新增理财成功！");
+									ToastUtils.showSucessLong(context, "新增理财成功！");
 									ExcelUtils.exportIncomeNote(null);
 									finish();
-								} else StringUtils.show1Toast(activity, "新增理财失败！");
+								} else ToastUtils.showErrorLong(context, "新增理财失败！");
 							}
 						}, new DialogUtils.DialogListener(){
 							@Override
@@ -123,7 +124,7 @@ public class NewIncomeActivity extends BaseActivity{
 							}
 						});
 			} else {
-				StringUtils.show1Toast(activity, "请完善必填信息！");
+				ToastUtils.showToast(context, true, "请完善必填信息！");
 			}
 		}
 	}
@@ -145,14 +146,14 @@ public class NewIncomeActivity extends BaseActivity{
 				if (curDuration.endsWith("-")) {
 					durationEt.setText(curDuration + year + month + day);
 				} else {
-					StringUtils.show1Toast(activity, "请选择投资终止日期");
+					ToastUtils.showToast(context, true, "请选择投资终止日期");
 					durationEt.setText(year + month + day + "-");
 					new DatePickerDialog(activity, mdateListener,
 							calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
 							calendar.get(Calendar.DAY_OF_MONTH)).show();
 				}
 			} else {
-				StringUtils.show1Toast(activity, "请选择投资终止日期");
+				ToastUtils.showToast(context, true, "请选择投资终止日期");
 				durationEt.setText(year + month + day + "-");
 				new DatePickerDialog(activity, mdateListener,
 						calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),

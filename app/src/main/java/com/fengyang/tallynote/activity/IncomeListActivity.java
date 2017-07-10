@@ -10,16 +10,12 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
-import com.fengyang.tallynote.adapter.MonthNoteAdapter;
-import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
-import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,17 +23,10 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/6/27.
  */
-public class ListViewActivity extends BaseActivity {
+public class IncomeListActivity extends BaseActivity {
 
-    private int type;//0：日账单，1：月账单，其他：理财记录
     private ListView listView;
     private TextView emptyView;
-
-    private List<DayNote> dayNotes;
-    private DayNoteAdapter dayNoteAdapter;
-
-    private List<MonthNote> monthNotes;
-    private MonthNoteAdapter monthNoteAdapter;
 
     private List<IncomeNote> incomes;
     private IncomeNoteAdapter incomeNoteAdapter;
@@ -49,10 +38,7 @@ public class ListViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        type = getIntent().getIntExtra("type", MyApp.DAY);
-        if (type == MyApp.DAY) setContentView("日账单列表", R.layout.activity_list);
-        else if (type == MyApp.MONTH) setContentView("月账单列表", R.layout.activity_list);
-        else setContentView("理财列表", R.layout.activity_list);
+        setContentView("理财列表", R.layout.activity_income_list);
 
     }
 
@@ -65,19 +51,6 @@ public class ListViewActivity extends BaseActivity {
     private void initView () {
         listView = (ListView) findViewById(R.id.listView);
 
-        if (type == MyApp.DAY) {
-            dayNotes = MyApp.utils.getDayNotes();
-            Collections.reverse(dayNotes);//倒序排列
-            dayNoteAdapter = new DayNoteAdapter(context, dayNotes);
-            listView.setAdapter(dayNoteAdapter);
-
-        } else if (type == MyApp.MONTH){
-            monthNotes = MyApp.utils.getMonNotes();
-            Collections.reverse(monthNotes);//倒序排列
-            monthNoteAdapter = new MonthNoteAdapter(context, monthNotes);
-            listView.setAdapter(monthNoteAdapter);
-
-        } else if (type == MyApp.INCOME){
             incomes = MyApp.utils.getIncomes();
             Collections.reverse(incomes);//倒序排列
             incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, isStart);
@@ -96,7 +69,6 @@ public class ListViewActivity extends BaseActivity {
                 }
             });
 
-        }
 
         emptyView = (TextView) findViewById(R.id.emptyView);
         listView.setEmptyView(emptyView);
@@ -104,9 +76,7 @@ public class ListViewActivity extends BaseActivity {
         setRightBtnListener("导出", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == MyApp.DAY) ExcelUtils.exportDayNote(callBackExport);
-                else if (type == MyApp.MONTH) ExcelUtils.exportMonthNote(callBackExport);
-                else ExcelUtils.exportIncomeNote(callBackExport);
+                ExcelUtils.exportIncomeNote(callBackExport);
             }
         });
 
@@ -118,8 +88,8 @@ public class ListViewActivity extends BaseActivity {
     private ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
         @Override
         public void callback(boolean sucess, String fileName) {
-            if (sucess) StringUtils.show1Toast(activity, "导出成功:" + fileName);
-            else StringUtils.show1Toast(activity, "导出失败！");
+            if (sucess) ToastUtils.showSucessLong(context, "导出成功:" + fileName);
+            else ToastUtils.showErrorLong(context, "导出失败！");
         }
     };
 

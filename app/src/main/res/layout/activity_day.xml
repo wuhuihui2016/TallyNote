@@ -15,52 +15,10 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="消费用途"
-                android:textColor="#333333"
-                android:textSize="@dimen/bigtextSize" />
-
-            <EditText
-                android:id="@+id/usageEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
-                android:hint="必填"
-                android:singleLine="true"
-                android:textColor="#9f9f9f"
-                android:textSize="@dimen/bigtextSize" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d0d0" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="消费金额"
-                android:textColor="#333333"
-                android:textSize="@dimen/bigtextSize" />
-
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="80dp"
+                android:layout_height="40dp"/>
             <EditText
                 android:id="@+id/moneyEt"
                 android:layout_width="match_parent"
@@ -94,7 +52,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:text="消费备注"
+                android:text="消费明细"
                 android:textColor="#333333"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -104,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:hint="可不填"
+                android:hint="必填"
                 android:singleLine="true"
                 android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />

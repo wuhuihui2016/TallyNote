@@ -13,7 +13,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +132,7 @@ public class ReSetPwdKeyActivity extends BaseActivity {
                             finish();
 
                         } else {
-                            StringUtils.show1Toast(context, "验证失败，请新输入");list.clear();
+                            ToastUtils.showToast(context, true, "验证失败，请新输入");list.clear();
                             for (int i = 0; i < textViews.size(); i ++) {
                                 textViews.get(i).setText("");
                             }

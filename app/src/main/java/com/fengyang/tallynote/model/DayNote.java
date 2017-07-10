@@ -7,24 +7,26 @@ import java.io.Serializable;
  */
 public class DayNote implements Serializable {
 
-    String usage; //消费用途
+    public static final int consume = 1, account_out = 2, account_in = 3;
+
+    int useType; //消费类型：1.支出，2.转账，3.转入
     String money; //消费金额
     String remark; //消费备注
     String time; //消费时间
 
-    public DayNote(String usage, String money, String remark, String time) {
-        this.usage = usage;
+    public DayNote(int useType, String money, String remark, String time) {
+        this.useType = useType;
         this.money = money;
         this.remark = remark;
         this.time = time;
     }
 
-    public String getUsage() {
-        return usage;
+    public int getUseType() {
+        return useType;
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setUseType(int useType) {
+        this.useType = useType;
     }
 
     public String getMoney() {
@@ -54,10 +56,10 @@ public class DayNote implements Serializable {
     @Override
     public String toString() {
         return "DayNote{" +
-                "usage='" + usage  +
-                ", money=" + money +
-                ", remark='" + remark  +
-                ", time='" + time  +
+                "useType=" + useType +
+                ", money='" + money + 
+                ", remark='" + remark + 
+                ", time='" + time + 
                 '}';
     }
 }

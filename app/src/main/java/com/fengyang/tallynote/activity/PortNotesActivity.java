@@ -11,7 +11,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.net.URISyntaxException;
 
@@ -46,10 +46,10 @@ public class PortNotesActivity extends BaseActivity {
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
                     } catch (android.content.ActivityNotFoundException ex) {
-                        StringUtils.show1Toast(activity, "Please install a File Manager.");
+                        ToastUtils.showToast(context, true, "Please install a File Manager.");
                     }
                 } else {
-                    StringUtils.show1Toast(context, "SDCard is not available");
+                    ToastUtils.showToast(context, true, "SDCard is not available");
                 }
                 break;
 
@@ -57,8 +57,8 @@ public class PortNotesActivity extends BaseActivity {
                 ExcelUtils.exportAll(new ExcelUtils.ICallBackExport() {
                     @Override
                     public void callback(boolean sucess, String fileName) {
-                        if (sucess) StringUtils.show1Toast(activity, "导出成功:" + fileName);
-                        else StringUtils.show1Toast(activity, "导出失败！");
+                        if (sucess) ToastUtils.showToast(context, true, "导出成功:" + fileName);
+                        else ToastUtils.showToast(context, true, "导出失败！");
                     }
                 });
                 break;

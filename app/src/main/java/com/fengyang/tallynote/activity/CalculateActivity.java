@@ -2,19 +2,22 @@ package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.CalculateAdapter;
-import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.KeyboardUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 
@@ -23,8 +26,10 @@ import java.text.DecimalFormat;
  */
 public class CalculateActivity extends BaseActivity {
 
-    private TextView cal_money, cal_ratio, cal_day, cal_finalIncome, cal_result;
+    private EditText cal_money, cal_ratio, cal_day, cal_finalIncome;
+    private TextView cal_result;
     private GridView numGridView;
+    private KeyboardUtils keyboardUtil;
 
     private int area = 1;
     private final int MONEY = 1, RATIO = 2, DAY = 3, INCOME = 4;
@@ -42,13 +47,12 @@ public class CalculateActivity extends BaseActivity {
 
     private void initView () {
 
-        cal_money = (TextView) findViewById(R.id.cal_money);
-        cal_ratio = (TextView) findViewById(R.id.cal_ratio);
-        cal_day = (TextView) findViewById(R.id.cal_day);
-        cal_finalIncome = (TextView) findViewById(R.id.cal_finalIncome);
-        cal_result = (TextView) findViewById(R.id.cal_result);
+        cal_money = (EditText) findViewById(R.id.cal_money); cal_money.setOnTouchListener(new OnTouchListener(MONEY));
+        cal_ratio = (EditText) findViewById(R.id.cal_ratio); cal_ratio.setOnTouchListener(new OnTouchListener(RATIO));
+        cal_day = (EditText) findViewById(R.id.cal_day); cal_day.setOnTouchListener(new OnTouchListener(DAY));
+        cal_finalIncome = (EditText) findViewById(R.id.cal_finalIncome); cal_finalIncome.setOnTouchListener(new OnTouchListener(INCOME));
 
-        setArea(MONEY);
+        cal_result = (TextView) findViewById(R.id.cal_result);
 
         numGridView = (GridView) findViewById(R.id.numGridView);
 
@@ -88,6 +92,34 @@ public class CalculateActivity extends BaseActivity {
         });
 
     }
+    /**
+     * 输入时区域的设置
+     * @param area
+     */
+    private void setArea(int area) {
+
+        cal_money.setBackground(null); cal_money.clearFocus();
+        cal_ratio.setBackground(null); cal_ratio.clearFocus();
+        cal_day.setBackground(null); cal_day.clearFocus();
+        cal_finalIncome.setBackground(null); cal_finalIncome.clearFocus();
+        openNumKeyboard(true);
+
+        this.area = area;
+        switch (area) {
+            case MONEY: setEditFocus(cal_money); break;
+            case RATIO: setEditFocus(cal_ratio); break;
+            case DAY: setEditFocus(cal_day); break;
+            case INCOME: setEditFocus(cal_finalIncome); break;
+        }
+    }
+
+    private void setEditFocus(EditText edit) {
+        edit.setBackgroundResource(R.drawable.shape_input_bkg);
+        edit.setFocusable(true);
+        edit.setFocusableInTouchMode(true);
+        edit.requestFocus();
+        edit.setCursorVisible(true);
+    }
 
     /**
      * 跳转下一个输入区
@@ -126,6 +158,12 @@ public class CalculateActivity extends BaseActivity {
             if (area == RATIO && ratioStr.length() == 0) return true;
             if (area == DAY && dayStr.length() == 0) return true;
             if (area == INCOME && incomeStr.length() == 0) return true;
+            if (num.equals(".")) {
+                if (area == MONEY && moneyStr.contains(".")) return true;
+                if (area == RATIO && ratioStr.contains(".")) return true;
+                if (area == DAY && dayStr.contains(".")) return true;
+                if (area == INCOME && incomeStr.contains(".")) return true;
+            }
         }
         return false;
     }
@@ -145,42 +183,30 @@ public class CalculateActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.cal_money:
-                setArea(MONEY);
-                break;
-            case R.id.cal_ratio:
-                setArea(RATIO);
-                break;
-            case R.id.cal_day:
-                setArea(DAY);
-                break;
-            case R.id.cal_finalIncome:
-                setArea(INCOME);
-            case R.id.hide_nunkeyboard:
-                openNumKeyboard(false);
-                break;
-        }
+        if (v.getId() == R.id.hide_nunkeyboard) openNumKeyboard(false);
     }
 
-    /**
-     * 输入时区域的设置
-     * @param area
-     */
-    private void setArea(int area) {
-        cal_money.setBackground(null);
-        cal_ratio.setBackground(null);
-        cal_day.setBackground(null);
-        cal_finalIncome.setBackground(null);
-        openNumKeyboard(true);
+    private class OnTouchListener implements View.OnTouchListener {
 
-        this.area = area;
-        switch (area) {
-            case MONEY: cal_money.setBackgroundResource(R.drawable.shape_input_bkg); break;
-            case RATIO: cal_ratio.setBackgroundResource(R.drawable.shape_input_bkg); break;
-            case DAY: cal_day.setBackgroundResource(R.drawable.shape_input_bkg); break;
-            case INCOME: cal_finalIncome.setBackgroundResource(R.drawable.shape_input_bkg); break;
+        private int area;
+
+        public OnTouchListener(int area) {
+            this.area = area;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+//            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//            setArea(area);
+
+            if(keyboardUtil == null){
+                EditText editText = (EditText) v;
+                keyboardUtil = new KeyboardUtils(activity, editText);
+                keyboardUtil.hideSoftInputMethod();
+                keyboardUtil.showKeyboard();
+            }
+            return false;
         }
     }
 
@@ -237,7 +263,8 @@ public class CalculateActivity extends BaseActivity {
             DecimalFormat df = new DecimalFormat("0.000");
             cal_result.setText(df.format(result));
             openNumKeyboard(false);
-        } else {StringUtils.show1Toast(context, "请填入所有数值！");}
+        } else {
+            ToastUtils.showToast(context, true, "请填入所有数值！");}
     }
 
     /**
@@ -252,8 +279,7 @@ public class CalculateActivity extends BaseActivity {
         if (open) {
             animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_show);
             nunkeyboard_layout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_hidden);
             nunkeyboard_layout.setVisibility(View.GONE);
         }
@@ -265,5 +291,17 @@ public class CalculateActivity extends BaseActivity {
     public boolean onTouchEvent(MotionEvent event) {
         openNumKeyboard(false);
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(keyboardUtil.isShow()){
+                keyboardUtil.hideKeyboard();
+            }else{
+                finish();
+            }
+        }
+        return false;
     }
 }

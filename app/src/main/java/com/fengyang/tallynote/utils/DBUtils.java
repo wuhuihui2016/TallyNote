@@ -35,9 +35,9 @@ public class DBUtils extends SQLiteOpenHelper {
     @Override
     public synchronized void onCreate(SQLiteDatabase db) {
 
-        //日消费记录：消费用途usage,消费金额money,备注remark,时间time
+        //日消费记录：消费类型useType,金额money,消费明细remark,时间time
         db.execSQL("create table if not exists day_note(_id integer primary key," +
-                "usage varchar(100),money varchar(20),remark varchar(100),time varchar(20))");
+                "useType integer,money varchar(20),remark varchar(100),time varchar(20))");
 
         //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,期间duration,时间time,备注remark
         db.execSQL("create table if not exists month_note(_id integer primary key," +
@@ -68,8 +68,8 @@ public class DBUtils extends SQLiteOpenHelper {
     public synchronized boolean newDNote(DayNote dayNote) {
         boolean isExit;
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("insert into day_note(usage,money,remark,time) values(?,?,?,?)",
-                new Object[]{dayNote.getUsage(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime()});
+        db.execSQL("insert into day_note(useType,money,remark,time) values(?,?,?,?)",
+                new Object[]{dayNote.getUseType(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime()});
         Cursor cursor = db.rawQuery("select * from day_note where money = ? and time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
         isExit = cursor.moveToFirst();
         cursor.close();
@@ -96,8 +96,8 @@ public class DBUtils extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from day_note", null);
         while (cursor.moveToNext()) {
-            //String usage, String money, String remark, String time
-            DayNote dayNote = new DayNote(cursor.getString(cursor.getColumnIndex("usage")),
+            //int useType, String money, String remark, String time
+            DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex("useType")),
                     cursor.getString(cursor.getColumnIndex("money")),
                     cursor.getString(cursor.getColumnIndex("remark")),
                     cursor.getString(cursor.getColumnIndex("time")));
@@ -205,7 +205,6 @@ public class DBUtils extends SQLiteOpenHelper {
         db.execSQL("delete from month_note", null);
         db.close();
     }
-
 
     /**
      * 插入一条理财记录(默认未完成状态，修改状态需在列表中操作)
@@ -329,8 +328,8 @@ public class DBUtils extends SQLiteOpenHelper {
         for (int i = 0; i < dayNotes.size(); i++) {
             if (isExit) {
                 DayNote dayNote = dayNotes.get(i);
-                db.execSQL("insert into day_note(usage,money,remark,time) values(?,?,?,?)",
-                        new Object[]{dayNote.getUsage(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime()});
+                db.execSQL("insert into day_note(useType,money,remark,time) values(?,?,?,?)",
+                        new Object[]{dayNote.getUseType(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime()});
                 Cursor cursor = db.rawQuery("select * from day_note where money = ? and time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
                 isExit = cursor.moveToFirst();
                 cursor.close();
