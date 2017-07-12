@@ -27,6 +27,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected Context context;//获取当前对象
     protected Activity activity;//获取当前对象
     protected String TAG;//当前界面输出log时的标签字段
+    protected FrameLayout content_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         setTitle(title);
 
         //加载中间布局
-        FrameLayout content_layout = (FrameLayout) findViewById(R.id.content_layout);
+        content_layout = (FrameLayout) findViewById(R.id.content_layout);
         content_layout.removeAllViews();
         View view = LayoutInflater.from(this).inflate(layoutID, null);
         content_layout.addView(view);

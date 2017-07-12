@@ -3,64 +3,101 @@
     android:id="@+id/item_day_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
     android:orientation="horizontal"
-    android:onClick="onClick"
-    android:background="@drawable/shape_day">
+    android:onClick="onClick">
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/bigtextSize"
+        android:text="今天"/>
+
+    <RelativeLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/day_record" />
+        <View
+            android:id="@+id/spot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_day_in_spot"/>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/tag"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerInside"
-        android:src="@drawable/day_record"/>
+        android:src="@drawable/day_record"
+        android:padding="5dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp">
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/day_record"
-            android:textSize="@dimen/bigtextSize"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/bigtextSize"
+                android:textSize="@dimen/smalltextSize"
                 android:ellipsize="end"
-                android:layout_weight="1"/>
-            <TextView
-                android:id="@+id/money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/bigtextSize"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:textColor="@color/red"/>
+                android:textColor="@color/day_record"/>
 
             <TextView
                 android:id="@+id/remask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ellipsize="end"
-                android:textColor="@color/remark"
-                android:textSize="@dimen/bigtextSize"/>
-
+                android:textSize="@dimen/smalltextSize"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/bigtextSize"
+            android:ellipsize="end"
+            android:gravity="right|center_vertical"
+            android:textColor="@color/red"/>
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/day_del"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerInside"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/note_del"
+            android:layout_marginLeft="10dp"
+            android:onClick="onClick"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
 </LinearLayout>
 

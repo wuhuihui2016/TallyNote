@@ -1,23 +1,22 @@
 package com.fengyang.tallynote.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.activity.DetailsActivity;
 import com.fengyang.tallynote.activity.FinishIncomeActivity;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
@@ -28,12 +27,12 @@ import java.util.List;
  */
 public class IncomeNoteAdapter extends BaseAdapter{
 
-    private Context context;
+    private Activity activity;
     private List<IncomeNote> incomes;
     private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
 
-    public IncomeNoteAdapter(Context context, List<IncomeNote> incomes, boolean isLast) {
-        this.context = context;
+    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomes, boolean isLast) {
+        this.activity = activity;
         this.incomes = incomes;
         this.isLast = isLast;
     }
@@ -57,13 +56,18 @@ public class IncomeNoteAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.income_item_layout, null);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.income_item_layout, null);
             viewHolder = new ViewHolder();
-            viewHolder.item_income_layout = (RelativeLayout) convertView.findViewById(R.id.item_income_layout);
-            viewHolder.income_id = (TextView) convertView.findViewById(R.id.income_id);
+            viewHolder.income_del = (ImageView) convertView.findViewById(R.id.income_del);
+            viewHolder.income_time = (TextView) convertView.findViewById(R.id.income_time);
             viewHolder.income_money = (TextView) convertView.findViewById(R.id.income_money);
+            viewHolder.income_ratio = (TextView) convertView.findViewById(R.id.income_ratio);
+            viewHolder.income_days = (TextView) convertView.findViewById(R.id.income_days);
+            viewHolder.income_durtion = (TextView) convertView.findViewById(R.id.income_durtion);
+            viewHolder.income_dayIncome = (TextView) convertView.findViewById(R.id.income_dayIncome);
+            viewHolder.income_finalIncome = (TextView) convertView.findViewById(R.id.income_finalIncome);
+            viewHolder.income_remark = (TextView) convertView.findViewById(R.id.income_remark);
             viewHolder.income_finished = (TextView) convertView.findViewById(R.id.income_finished);
-            viewHolder.income_info = (TextView) convertView.findViewById(R.id.income_info);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -71,19 +75,16 @@ public class IncomeNoteAdapter extends BaseAdapter{
 
         //获取当前对象
         final IncomeNote incomeNote = incomes.get(position);
-        viewHolder.income_id.setText(incomeNote.getDurtion().split("-")[0].substring(4, 6));
-        viewHolder.income_money.setText("投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
-                " 万元\n预期年化：" + StringUtils.formatePrice(incomeNote.getIncomeRatio()) + " %" );
+        viewHolder.income_time.setText(incomeNote.getDurtion().split("-")[0].substring(4, 6));
+        viewHolder.income_money.setText(StringUtils.showPrice(incomeNote.getMoney()));
+        viewHolder.income_ratio.setText(incomeNote.getIncomeRatio() + " %");
+        viewHolder.income_days.setText(incomeNote.getDays() + " 天");
+        viewHolder.income_durtion.setText(incomeNote.getDurtion());
+        viewHolder.income_dayIncome.setText(StringUtils.showPrice(incomeNote.getDayIncome()) + "/万/天");
+        viewHolder.income_finalIncome.setText(StringUtils.showPrice(incomeNote.getFinalIncome()));
+        viewHolder.income_remark.setText(incomeNote.getRemark());
 
-        String info = "投资期限：" + incomeNote.getDays()  +
-                " 天\n投资时期：" + incomeNote.getDurtion()  +
-                "\n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
-                " 元/万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) + " 元";
-        
-        if (! TextUtils.isEmpty(incomeNote.getRemark()))  info += "\n投资备注：" + incomeNote.getRemark();
-        
         if (incomeNote.getFinished() == 0) {//未完成
-            viewHolder.income_info.setText(info);
             viewHolder.income_finished.setTextColor(Color.RED);
 
             int day = DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]);
@@ -99,11 +100,11 @@ public class IncomeNoteAdapter extends BaseAdapter{
                 viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, FinishIncomeActivity.class);
+                        Intent intent = new Intent(activity, FinishIncomeActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("incomeNote", incomeNote);
                         intent.putExtras(bundle);
-                        context.startActivity(intent);
+                        activity.startActivity(intent);
 
                     }
                 });
@@ -111,35 +112,46 @@ public class IncomeNoteAdapter extends BaseAdapter{
                 viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtils.showToast(context, true,
+                        ToastUtils.showToast(activity, true,
                                 "计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
                     }
                 });
             }
 
         } else {
-            viewHolder.income_info.setText(info + "\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash()) +
-                    " 元\n提现去处：" + incomeNote.getFinalCashGo());
             viewHolder.income_finished.setTextColor(Color.GRAY);
-            viewHolder.income_finished.setText("已完成！");
+            viewHolder.income_finished.setText("已完成：" + StringUtils.showPrice(incomeNote.getFinalCash()) +
+                    "已提现，" + incomeNote.getFinalCashGo());
         }
 
-        viewHolder.item_income_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("type", MyApp.INCOME);
-                if (position == 0 && isLast) intent.putExtra("last", true);//列表显示按投资时间排序时，最后一个才可做删除操作
-                intent.putExtra("note", incomeNote);
-                context.startActivity(intent);
-            }
-        });
+        if (position == 0 && isLast) {
+            viewHolder.income_del.setVisibility(View.VISIBLE);
+            viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                            MyApp.utils.delIncome(incomes.get(0));
+                            notifyDataSetChanged();
+                        }
+                    }, new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                        }
+                    });
+                }
+            });
+        } else viewHolder.income_del.setVisibility(View.GONE);
 
         return convertView;
     }
 
     class ViewHolder{
-        RelativeLayout item_income_layout;
-        TextView income_id, income_money, income_finished, income_info;
+        ImageView income_del;
+        TextView income_time, income_money, income_ratio, income_days, income_durtion;
+        TextView income_dayIncome, income_finalIncome, income_remark, income_finished;
     }
 }

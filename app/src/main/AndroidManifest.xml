@@ -55,7 +55,6 @@
         <activity android:name=".activity.IncomeListActivity"/>
 
         <!-- 记录详情 -->
-        <activity android:name=".activity.DetailsActivity"/>
 
         <!-- 导入导出 -->
         <activity android:name=".activity.PortNotesActivity"/>

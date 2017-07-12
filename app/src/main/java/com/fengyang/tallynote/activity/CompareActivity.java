@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.adapter.CompareIncomeAdapter;
+import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.util.ArrayList;
@@ -60,11 +60,11 @@ public class CompareActivity extends BaseActivity {
             info.setText("与日收益 " + cal_result + "比较，共有 " + incomes.size() + "条记录，日收益大于 "
                     + cal_result + "的有 " + list.size() + "条记录!");
             Collections.reverse(list);//倒序排列
-            listView.setAdapter(new CompareIncomeAdapter(context, list));
+            listView.setAdapter(new IncomeNoteAdapter(activity, list, false));
 
         } else {
             Collections.reverse(incomes);//倒序排列
-            listView.setAdapter(new CompareIncomeAdapter(context, incomes));
+            listView.setAdapter(new IncomeNoteAdapter(activity, incomes, false));
         }
 
 

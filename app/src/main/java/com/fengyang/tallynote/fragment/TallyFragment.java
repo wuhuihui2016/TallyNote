@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,7 +37,8 @@ public class TallyFragment extends Fragment{
 	private Activity activity;
 	private View content;//内容布局
 
-	private TextView year, month, day, last_balanceTv, current_pay;
+	private TextView year, month, day, last_balanceTv, current_payTv;
+	private String last_balance, current_pay;
 	private boolean isSeen = false;
 
 	@Override
@@ -86,8 +87,8 @@ public class TallyFragment extends Fragment{
 
 		last_balanceTv = (TextView) content.findViewById(R.id.last_balanceTv);
 		last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-		current_pay = (TextView) content.findViewById(R.id.current_pay);
-		current_pay.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+		current_payTv = (TextView) content.findViewById(R.id.current_pay);
+		current_payTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
 		Calendar calendar = Calendar.getInstance();
 		year.setText(calendar.get(Calendar.YEAR) + ""); // 获取当前年份
@@ -113,18 +114,31 @@ public class TallyFragment extends Fragment{
 			for (int i = 0; i < dayNotes.size(); i ++) {
 				sum = sum + Double.parseDouble(dayNotes.get(i).getMoney());
 			}
-			current_pay.setText(StringUtils.showPrice(sum + ""));
+			current_pay = StringUtils.showPrice(sum + "");
+			current_payTv.setText("....");
 
 			//显示最近一次日记录支出
 			cur_layout.setVisibility(View.VISIBLE);
 			DayNote dayNote = dayNotes.get(dayNotes.size() - 1);
+			View spot = content.findViewById(R.id.spot);
+			ImageView tag = (ImageView) content.findViewById(R.id.tag);
 			TextView time = (TextView) content.findViewById(R.id.time); time.setText(DateUtils.diffTime(dayNote.getTime()));
-			String dayType = null;
-			if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
-			if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
-			if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
-			TextView usage = (TextView) content.findViewById(R.id.usage); usage.setText(dayType);
-			TextView money = (TextView) content.findViewById(R.id.money); money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
+			TextView usage = (TextView) content.findViewById(R.id.usage);
+			time.setText(DateUtils.diffTime(dayNote.getTime()));
+			if (dayNote.getUseType() == DayNote.consume) {
+				usage.setText("支出：");
+				spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
+				tag.setImageResource(R.drawable.consume);
+			} else if (dayNote.getUseType() == DayNote.account_out) {
+				usage.setText("转账：");
+				spot.setBackgroundResource(R.drawable.shape_day_out_spot);
+				tag.setImageResource(R.drawable.account_out);
+			} else if (dayNote.getUseType() == DayNote.account_in) {
+				usage.setText("转入：");
+				spot.setBackgroundResource(R.drawable.shape_day_in_spot);
+				tag.setImageResource(R.drawable.account_in);
+			}
+			TextView money = (TextView) content.findViewById(R.id.money); money.setText(StringUtils.showPrice(dayNote.getMoney()));
 			if (! TextUtils.isEmpty(dayNote.getRemark())) {
 				TextView remask = (TextView) content.findViewById(R.id.remask);
 				remask.setText(dayNote.getRemark());
@@ -138,7 +152,7 @@ public class TallyFragment extends Fragment{
 			});
 		} else {
 			cur_layout.setVisibility(View.GONE);
-			current_pay.setText("当月还没有记录~~");
+			current_payTv.setText("当月还没有记录~~");
 		}
 
 	}
@@ -151,7 +165,8 @@ public class TallyFragment extends Fragment{
 		LinearLayout last_layout = (LinearLayout) content.findViewById(R.id.last_layout);
 		if (monthNotes.size() > 0) {
 			last_layout.setVisibility(View.VISIBLE);
-			last_balanceTv.setText(StringUtils.showPrice(monthNotes.get(monthNotes.size() - 1).getActual_balance()) + " 元");
+			last_balance = StringUtils.showPrice(monthNotes.get(monthNotes.size() - 1).getActual_balance());
+			last_balanceTv.setText("....");
 		} else {
 			last_layout.setVisibility(View.GONE);
 		}
@@ -180,14 +195,14 @@ public class TallyFragment extends Fragment{
 						isSeen = false;
 						seenCheck.setImageResource(R.drawable.eye_open_pwd);
 						//设置EditText文本为隐藏的
-						last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-						current_pay.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+						last_balanceTv.setText(last_balance);
+						current_payTv.setText(current_pay);
 					} else {
 						isSeen = true;
 						seenCheck.setImageResource(R.drawable.eye_close_pwd);
 						//设置EditText文本为可见的
-						last_balanceTv.setTransformationMethod(PasswordTransformationMethod.getInstance());
-						current_pay.setTransformationMethod(PasswordTransformationMethod.getInstance());
+						last_balanceTv.setText("....");
+						current_payTv.setText("....");
 					}
 					break;
 

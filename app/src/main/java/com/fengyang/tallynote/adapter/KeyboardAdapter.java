@@ -16,12 +16,12 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/7/5.
  */
-public class CalculateAdapter extends BaseAdapter {
+public class KeyboardAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> numbers = new ArrayList<>();
 
-    public CalculateAdapter(Context context) {
+    public KeyboardAdapter(Context context) {
         this.context = context;
     }
 
@@ -45,7 +45,7 @@ public class CalculateAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.calculate_item_layout, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.keyboard_item_layout, null);
             viewHolder = new ViewHolder();
             viewHolder.num = (TextView) convertView.findViewById(R.id.set_info);
             convertView.setTag(viewHolder);
@@ -77,7 +77,7 @@ public class CalculateAdapter extends BaseAdapter {
             if (position == 13) {viewHolder.num.setText("0"); viewHolder.num.setBackgroundColor(Color.WHITE);}
             if (position == 14) viewHolder.num.setText("CE");
         } else if (position == 15) {
-            viewHolder.num.setText("计算");
+            viewHolder.num.setText("完成");
             viewHolder.num.setTextColor(Color.RED);
             viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
         }

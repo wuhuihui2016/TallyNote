@@ -26,7 +26,7 @@
             android:inputType="numberDecimal"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/shape_input_bkg"
+            android:background="@null"
             android:textSize="@dimen/bigtextSize"/>
 
     </LinearLayout>
@@ -170,52 +170,5 @@
         android:layout_height="2dp"
         android:background="@color/line"/>
 
-    <RelativeLayout
-        android:id="@+id/nunkeyboard_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/gray"
-            android:layout_alignParentBottom="true">
-            <ImageView
-                android:id="@+id/hide_nunkeyboard"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:layout_marginTop="0.5dp"
-                android:background="@color/white"
-                android:src="@drawable/hide_nunkeyboard"/>
-            <GridView
-                android:id="@+id/numGridView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_weight="1"
-                android:numColumns="4"
-                android:scrollbars="none"
-                android:horizontalSpacing="0.5dp"
-                android:verticalSpacing="0.5dp"
-                android:padding="0.5dp"
-                android:gravity="center_horizontal|center"/>
 
-            <android.inputmethodservice.KeyboardView
-                android:id="@+id/keyboard_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_alignParentBottom="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="#999999"
-                android:keyBackground="@drawable/btn_keyboard_key"
-                android:keyTextSize="16sp"
-                android:keyTextColor="#000"
-                android:visibility="gone" />
-        </LinearLayout>
-
-    </RelativeLayout>
 </LinearLayout>

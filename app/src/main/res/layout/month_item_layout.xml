@@ -1,54 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_month_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:onClick="onClick"
-    android:background="@drawable/shape_month">
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/month_id"
+            android:id="@+id/month_time"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
-            android:textSize="15sp"
+            android:textSize="@dimen/smalltextSize"
             android:gravity="center_vertical|center"
             android:textColor="@color/app_color"
             android:background="@drawable/month_record"/>
 
-        <TextView
-            android:id="@+id/month_money"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/month_id"
-            android:layout_marginLeft="10dp"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本次支出："
+                    android:textSize="@dimen/smalltextSize"/>
+                <TextView
+                    android:id="@+id/month_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/smalltextSize"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本次工资："
+                    android:textSize="@dimen/smalltextSize"/>
+                <TextView
+                    android:id="@+id/month_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/smalltextSize"/>
+            </LinearLayout>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/month_info"
-        android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/month_del"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/note_del"
+                android:layout_marginLeft="10dp"
+                android:onClick="onClick"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout"
-        android:lineSpacingExtra="2dp"
-        android:layout_marginTop="10dp"
-        android:text="月结详情"
-        android:textSize="@dimen/smalltextSize"/>
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上次结余："
+                android:textSize="@dimen/littletextSize"/>
+            <TextView
+                android:id="@+id/month_last_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/littletextSize"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本次结余："
+                android:textSize="@dimen/littletextSize"/>
+            <TextView
+                android:id="@+id/month_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/littletextSize"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本次收益："
+                android:textSize="@dimen/littletextSize"/>
+            <TextView
+                android:id="@+id/month_income"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/littletextSize"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="家用补贴："
+                android:textSize="@dimen/littletextSize"/>
+            <TextView
+                android:id="@+id/month_homeuse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/littletextSize"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="月结备注："
+                android:textSize="@dimen/littletextSize"/>
+            <TextView
+                android:id="@+id/month_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/littletextSize"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/month_actual_balance"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:textColor="@color/app_color"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="实际结余："
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/bigtextSize"
-        android:layout_alignBottom="@+id/month_info"/>
+        android:textSize="@dimen/smalltextSize"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -7,7 +7,6 @@
         android:id="@+id/sort_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/remark_bkg"
         android:text="按投资时间排序"
         android:onClick="onClick"
         android:textColor="@color/red"
@@ -18,10 +17,9 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_below="@id/sort_info"
-        android:divider="@color/transparent"
-        android:dividerHeight="10dp"/>
+        android:divider="@color/income_record"
+        android:dividerHeight="2dp"
+        android:layout_below="@id/sort_info"/>
 
     <TextView
         android:id="@+id/emptyView"

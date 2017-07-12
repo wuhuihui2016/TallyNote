@@ -53,7 +53,7 @@ public class IncomeListActivity extends BaseActivity {
 
             incomes = MyApp.utils.getIncomes();
             Collections.reverse(incomes);//倒序排列
-            incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, isStart);
+            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
             listView.setAdapter(incomeNoteAdapter);
 
             sort_info = (TextView) findViewById(R.id.sort_info);
@@ -148,7 +148,7 @@ public class IncomeListActivity extends BaseActivity {
                 sort_info.setText("按投资时间排序");
                 isStart = true;
                 Collections.reverse(incomes);//倒序排列
-                incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, isStart);
+                incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
                 listView.setAdapter(incomeNoteAdapter);
             }
         }
@@ -175,7 +175,7 @@ public class IncomeListActivity extends BaseActivity {
                 }
             }
             LogUtils.i("sort", incomes.toString());
-            incomeNoteAdapter = new IncomeNoteAdapter(context, incomes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
+            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
             listView.setAdapter(incomeNoteAdapter);
         }
     }

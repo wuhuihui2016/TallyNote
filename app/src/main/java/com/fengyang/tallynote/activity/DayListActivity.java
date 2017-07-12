@@ -109,7 +109,7 @@ public class DayListActivity extends BaseActivity {
         }
         info.setText("当前总账单记录有 " + dayNotes.size()
                 + " 条，+ 支出 + 转账 - 转入：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(context, dayNotes);
+        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -129,8 +129,8 @@ public class DayListActivity extends BaseActivity {
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("当前支出账单记录有 " + list.size() + " 条，支出金额：" + StringUtils.showPrice(sum + "") + "元");
-        dayNoteAdapter = new DayNoteAdapter(context, list);
+        info.setText("当前支出账单记录有 " + list.size() + " 条，支出金额：" + StringUtils.showPrice(sum + ""));
+        dayNoteAdapter = new DayNoteAdapter(activity, list);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -150,8 +150,8 @@ public class DayListActivity extends BaseActivity {
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("当前转账记录有 " + list.size() + " 条，转账金额：" + StringUtils.showPrice(sum + "") + "元");
-        dayNoteAdapter = new DayNoteAdapter(context, list);
+        info.setText("当前转账记录有 " + list.size() + " 条，转账金额：" + StringUtils.showPrice(sum + ""));
+        dayNoteAdapter = new DayNoteAdapter(activity, list);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -171,8 +171,8 @@ public class DayListActivity extends BaseActivity {
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("当前转入记录有 " + list.size() + " 条，转入金额：" + StringUtils.showPrice(sum + "") + "元");
-        dayNoteAdapter = new DayNoteAdapter(context, list);
+        info.setText("当前转入记录有 " + list.size() + " 条，转入金额：" + StringUtils.showPrice(sum + ""));
+        dayNoteAdapter = new DayNoteAdapter(activity, list);
         listView.setAdapter(dayNoteAdapter);
     }
 }

@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyboard_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/gray"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:id="@+id/hidekeyboard"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:layout_marginTop="0.5dp"
+            android:background="@color/white"
+            android:src="@drawable/hide_nunkeyboard"/>
+        <GridView
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:horizontalSpacing="0.5dp"
+            android:verticalSpacing="0.5dp"
+            android:padding="0.5dp"
+            android:gravity="center_horizontal|center"/>
+    </LinearLayout>
+
+</RelativeLayout>

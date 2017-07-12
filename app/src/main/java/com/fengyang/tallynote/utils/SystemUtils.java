@@ -9,12 +9,14 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -183,6 +185,34 @@ public class SystemUtils {
                 .hideSoftInputFromWindow(
                         activity.getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * 针对与某个输入框的方法：禁掉系统软键盘
+     * （用于自定义键盘）
+     */
+    public static void hideSoftInputMethod(Activity activity, EditText editText) {
+        try {
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            int currentVersion = android.os.Build.VERSION.SDK_INT;
+            String methodName = null;
+            if (currentVersion >= 16) { // 4.2
+                methodName = "setShowSoftInputOnFocus";
+            } else if (currentVersion >= 14) { // 4.0
+                methodName = "setSoftInputShownOnFocus";
+            }
+            if (methodName == null) {
+                editText.setInputType(InputType.TYPE_NULL);
+            } else {
+                Class<EditText> cls = EditText.class;
+                Method setShowSoftInputOnFocus;
+                setShowSoftInputOnFocus = cls.getMethod(methodName, boolean.class);
+                setShowSoftInputOnFocus.setAccessible(true);
+                setShowSoftInputOnFocus.invoke(editText, false);
+            }
+        } catch (Exception e) {
+            LogUtils.i("hideSoftInputMethod", e.toString());
+        }
     }
 
     /**

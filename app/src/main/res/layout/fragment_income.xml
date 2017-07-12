@@ -24,31 +24,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/app_color"
-                    android:inputType="textPassword"
                     android:text="暂无投资"
                     android:textSize="@dimen/bigtextSize"/>
 
-                <ImageButton
-                    android:id="@+id/seenCheck"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/eye_close_pwd"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="bottom"
-                    android:layout_toRightOf="@id/currIncomeSum"
-                    android:onClick="onClick"
-                    android:background="@color/transparent"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/currIncomeSum">
+
+                    <ImageButton
+                        android:id="@+id/seenCheck"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/eye_close_pwd"
+                        android:layout_alignParentRight="true"
+                        android:onClick="onClick"
+                        android:background="@color/transparent"/>
+                </RelativeLayout>
 
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="最近一次投资"
+                android:layout_marginTop="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_income"
+                android:padding="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
 
             <include
                 android:id="@+id/income_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/income_item_layout"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"/>
+                layout="@layout/income_item_layout" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/commitIncome"

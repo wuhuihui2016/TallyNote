@@ -1,20 +1,19 @@
 package com.fengyang.tallynote.adapter;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.activity.DetailsActivity;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
@@ -24,11 +23,11 @@ import java.util.List;
  */
 public class DayNoteAdapter extends BaseAdapter {
 
-    private Context context;
+    private Activity activity;
     private List<DayNote> dayNotes;
 
-    public DayNoteAdapter(Context context, List<DayNote> dayNotes) {
-        this.context = context;
+    public DayNoteAdapter(Activity activity, List<DayNote> dayNotes) {
+        this.activity = activity;
         this.dayNotes = dayNotes;
     }
 
@@ -52,46 +51,69 @@ public class DayNoteAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.day_item_layout, null);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.day_item_layout, null);
+
             viewHolder = new ViewHolder();
-            viewHolder.item_day_layout = (LinearLayout) convertView.findViewById(R.id.item_day_layout);
+            viewHolder.spot = convertView.findViewById(R.id.spot);
+            viewHolder.tag = (ImageView) convertView.findViewById(R.id.tag);
+            viewHolder.day_del = (ImageView) convertView.findViewById(R.id.day_del);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.usage = (TextView) convertView.findViewById(R.id.usage);
             viewHolder.money = (TextView) convertView.findViewById(R.id.money);
             viewHolder.remask = (TextView) convertView.findViewById(R.id.remask);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //获取当前对象
         final DayNote dayNote = dayNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
-        String dayType = null;
-        if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
-        if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
-        if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
-        viewHolder.usage.setText(dayType);
-        viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()) + " 元");
+        if (dayNote.getUseType() == DayNote.consume) {
+            viewHolder.usage.setText("支出：");
+            viewHolder.spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
+            viewHolder.tag.setImageResource(R.drawable.consume);
+        } else if (dayNote.getUseType() == DayNote.account_out) {
+            viewHolder.usage.setText("转账：");
+            viewHolder.spot.setBackgroundResource(R.drawable.shape_day_out_spot);
+            viewHolder.tag.setImageResource(R.drawable.account_out);
+        } else if (dayNote.getUseType() == DayNote.account_in) {
+            viewHolder.usage.setText("转入：");
+            viewHolder.spot.setBackgroundResource(R.drawable.shape_day_in_spot);
+            viewHolder.tag.setImageResource(R.drawable.account_in);
+        }
+        viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
         if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
         else viewHolder.remask.setText("");
 
-        viewHolder.item_day_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("type", MyApp.DAY);
-                if (position == 0) intent.putExtra("last", true);
-                intent.putExtra("note", dayNote);
-                context.startActivity(intent);
-            }
-        });
+        if (position == 0) {
+            viewHolder.day_del.setVisibility(View.VISIBLE);
+            viewHolder.day_del.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                            MyApp.utils.delDNote(dayNote);
+                            notifyDataSetChanged();
+                        }
+                    }, new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                        }
+                    });
+                }
+            });
+        } else viewHolder.day_del.setVisibility(View.GONE);
 
         return convertView;
     }
 
     class ViewHolder{
-        LinearLayout item_day_layout;
+        View spot;
+        ImageView tag, day_del;
         TextView time, usage, money, remask;
     }
 }

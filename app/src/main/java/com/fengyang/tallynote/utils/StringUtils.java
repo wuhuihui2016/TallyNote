@@ -37,9 +37,9 @@ public class StringUtils {
     //价格显示标准
     public static String showPrice(String price) {
         if (! TextUtils.isEmpty(formatePrice(price))) {
-            return "¥ " + formatePrice(price);
+            return "¥ " + formatePrice(price) + " 元";
         } else {
-            return "";
+            return "无";
         }
     }
 

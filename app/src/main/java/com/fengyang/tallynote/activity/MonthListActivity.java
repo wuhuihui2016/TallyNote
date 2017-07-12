@@ -45,7 +45,7 @@ public class MonthListActivity extends BaseActivity {
 
         monthNotes = MyApp.utils.getMonNotes();
         Collections.reverse(monthNotes);//倒序排列
-        monthNoteAdapter = new MonthNoteAdapter(context, monthNotes);
+        monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
         listView.setAdapter(monthNoteAdapter);
 
         emptyView = (TextView) findViewById(R.id.emptyView);

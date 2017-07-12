@@ -2,13 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.fengyang.tallynote.view.IOSScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
-
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,16 +57,23 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red"/>
 
-                <ImageButton
-                    android:id="@+id/seenCheck"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/eye_close_pwd"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="bottom"
-                    android:onClick="onClick"
-                    android:background="@color/transparent"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/seenCheck"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/eye_close_pwd"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="bottom"
+                        android:onClick="onClick"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/transparent"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -79,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,17 +100,23 @@
                     android:textColor="@color/month_record"
                     android:onClick="onClick"
                     android:textSize="@dimen/bigtextSize"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp">
 
-                <ImageButton
-                    android:id="@+id/toMonthNotes"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/main_top_arrow"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="bottom"
-                    android:onClick="onClick"
-                    android:background="@color/transparent"/>
+                    <ImageButton
+                        android:id="@+id/toMonthNotes"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/main_top_arrow"
+                        android:layout_gravity="bottom"
+                        android:onClick="onClick"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/transparent"/>
+                </RelativeLayout>
+
 
             </LinearLayout>
             <LinearLayout
@@ -120,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -139,16 +148,22 @@
                         android:onClick="onClick"
                         android:textSize="@dimen/bigtextSize"/>
 
-                    <ImageButton
-                        android:id="@+id/todayNotes"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/main_top_arrow"
-                        android:layout_marginLeft="5dp"
-                        android:layout_gravity="bottom"
-                        android:onClick="onClick"
-                        android:background="@color/transparent"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp">
+
+                        <ImageButton
+                            android:id="@+id/todayNotes"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/main_top_arrow"
+                            android:layout_gravity="bottom"
+                            android:onClick="onClick"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/transparent"/>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -156,7 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -164,12 +179,17 @@
                         android:text="最近一笔支出"
                         android:textColor="@color/day_record"
                         android:textSize="@dimen/bigtextSize"/>
-
-                    <include
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/day_item_layout"
-                        android:layout_marginTop="5dp" />
+                        android:background="@drawable/shape_day"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp">
+                        <include
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            layout="@layout/day_item_layout" />
+                    </RelativeLayout>
 
                 </LinearLayout>
             </LinearLayout>
