@@ -137,8 +137,8 @@ public class DateUtils {
 				int d_value = day1 - day2;//天数差值
 //				LogUtils.i("diffTime", day1 + "-" + day2 + "=" + d_value);
 				if(d_value <= 2) {
-					if (d_value == 2) return "前天 " + hm;//前天
-					else if(d_value == 1)  return "昨天 " + hm;//昨天
+					if (d_value == 2) return "前天";//前天
+					else if(d_value == 1)  return "昨天";//昨天
 					else if(d_value == 0) {
 						Date laster = time_sdf.parse(now);
 						Date former = time_sdf.parse(time);
@@ -150,7 +150,7 @@ public class DateUtils {
 						}
 					}
 				}  else {
-					return Md + " " + hm; //08-30 12:30
+					return Md; //08-30
 				}
 			}
 

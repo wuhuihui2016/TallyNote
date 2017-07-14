@@ -25,6 +25,7 @@ import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
@@ -175,6 +176,7 @@ public class TallyFragment extends Fragment{
 
 	private void clickListener () {
 		content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
+		content.findViewById(R.id.reload).setOnClickListener(clickListener);
 		content.findViewById(R.id.current_pay).setOnClickListener(clickListener);
 		content.findViewById(R.id.todayNotes).setOnClickListener(clickListener);
 		content.findViewById(R.id.last_balanceTv).setOnClickListener(clickListener);
@@ -204,6 +206,11 @@ public class TallyFragment extends Fragment{
 						last_balanceTv.setText("....");
 						current_payTv.setText("....");
 					}
+					break;
+
+				case R.id.reload:
+					LogUtils.i("reload", "showIncomeNote");
+					showDayNote();
 					break;
 
 				case R.id.current_pay:

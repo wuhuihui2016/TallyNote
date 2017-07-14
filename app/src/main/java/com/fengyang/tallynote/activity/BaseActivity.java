@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -106,6 +107,18 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             right_btn.setText(text);
             right_btn.setOnClickListener(listener);
         }
+    }
+
+    /**
+     * 设置界面右上角图片按钮的点击事件
+     * @param resId
+     * @param listener
+     */
+    protected void setRightImgBtnListener(int resId, View.OnClickListener listener) {
+        ImageView right_imgbtn = (ImageView) findViewById(R.id.right_imgbtn);
+        right_imgbtn.setVisibility(View.VISIBLE);
+        right_imgbtn.setImageResource(resId);
+        right_imgbtn.setOnClickListener(listener);
     }
 
     @Override

@@ -96,6 +96,7 @@ public class DayNoteAdapter extends BaseAdapter {
                         public void onClick(View v) {
                             super.onClick(v);
                             MyApp.utils.delDNote(dayNote);
+                            dayNotes = MyApp.utils.getDayNotes();
                             notifyDataSetChanged();
                         }
                     }, new DialogUtils.DialogListener(){

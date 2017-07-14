@@ -66,10 +66,20 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:scaleType="centerInside"
+                        android:layout_toLeftOf="@+id/reload"
                         android:src="@drawable/eye_close_pwd"
-                        android:layout_marginLeft="20dp"
+                        android:onClick="onClick"
+                        android:background="@color/transparent"/>
+
+                    <ImageView
+                        android:id="@+id/reload"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/reload"
                         android:layout_gravity="bottom"
                         android:onClick="onClick"
+                        android:layout_marginLeft="20dp"
                         android:layout_alignParentRight="true"
                         android:background="@color/transparent"/>
 

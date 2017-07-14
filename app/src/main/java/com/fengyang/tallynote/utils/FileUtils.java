@@ -4,16 +4,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 
 /**
  * Created by wuhuihui on 2017/3/24.
  */
 public class FileUtils {
 
-    public static final String dirPath = Environment.getExternalStorageDirectory()+ "/TallyNote/";//项目根目录
+    public static final String dirPath = Environment.getExternalStorageDirectory() + "/TallyNote/";//项目根目录
+    public static final String excelPath = dirPath +  "/excel/";//excel根目录
 
     /**
      * 获取APP文件夹
@@ -26,12 +30,23 @@ public class FileUtils {
     }
 
     /**
+     * 获取excel文件夹
+     * @return
+     */
+    public static File getExcelDir() {
+        if (isSDCardAvailable()) {
+            return new File(excelPath);
+        } else return null;
+    }
+
+    /**
      * 创建项目文件目录
      */
     public static void createDir() {
         if (isSDCardAvailable()) {
             if (! getAppDir().exists()) {
                 getAppDir().mkdirs();
+                getExcelDir().mkdirs();
             }
         }
     }
@@ -69,6 +84,70 @@ public class FileUtils {
             return uri.getPath();
         }
         return null;
+    }
+
+    /**
+     * 获取指定文件大小
+     * @param file
+     * @return
+     * @throws Exception 　　
+     */
+    public static long getFileSize(File file) throws Exception {
+        long size = 0;
+        if (file.exists()) {
+            FileInputStream fis = null;
+            fis = new FileInputStream(file);
+            size = fis.available();
+        } else {
+            file.createNewFile();
+            Log.e("获取文件大小", "文件不存在!");
+        }
+        return size;
+    }
+
+    /**
+     * 获取指定文件夹
+     * @param f
+     * @return
+     * @throws Exception
+     *
+     */
+    public static long getFileSizes(File f) throws Exception {
+        long size = 0;
+        File flist[] = f.listFiles();
+        for (int i = 0; i < flist.length; i++) {
+            if (flist[i].isDirectory()) {
+                size = size + getFileSizes(flist[i]);
+            } else {
+                size = size + getFileSize(flist[i]);
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 转换文件大小
+     * @param fileS
+     * @return
+     *
+     */
+    public static String FormetFileSize(long fileS) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String fileSizeString = "";
+        String wrongSize = "0B";
+        if (fileS == 0) {
+            return wrongSize;
+        }
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "KB";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "MB";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "GB";
+        }
+        return fileSizeString;
     }
 
     /**

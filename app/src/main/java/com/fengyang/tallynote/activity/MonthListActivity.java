@@ -3,7 +3,6 @@ package com.fengyang.tallynote.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
@@ -21,7 +20,6 @@ import java.util.List;
 public class MonthListActivity extends BaseActivity {
 
     private ListView listView;
-    private TextView emptyView;
 
     private List<MonthNote> monthNotes;
     private MonthNoteAdapter monthNoteAdapter;
@@ -48,8 +46,7 @@ public class MonthListActivity extends BaseActivity {
         monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
         listView.setAdapter(monthNoteAdapter);
 
-        emptyView = (TextView) findViewById(R.id.emptyView);
-        listView.setEmptyView(emptyView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
         setRightBtnListener("导出", new View.OnClickListener() {
             @Override

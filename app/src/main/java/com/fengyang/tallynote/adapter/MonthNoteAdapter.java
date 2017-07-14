@@ -87,7 +87,7 @@ public class MonthNoteAdapter extends BaseAdapter{
                         public void onClick(View v) {
                             super.onClick(v);
                             MyApp.utils.delMNote(monthNote);
-
+                            monthNotes = MyApp.utils.getMonNotes();
                             notifyDataSetChanged();
                         }
                     }, new DialogUtils.DialogListener(){

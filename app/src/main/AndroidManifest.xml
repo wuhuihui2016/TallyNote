@@ -70,6 +70,9 @@
         <!-- 日收益比较 -->
         <activity android:name=".activity.CompareActivity"/>
 
+        <!-- 文件浏览 -->
+        <activity android:name=".activity.FileExplorerActivity"/>
+
     </application>
 
 </manifest>

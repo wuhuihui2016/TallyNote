@@ -79,7 +79,7 @@ public class NewDayActivity extends BaseActivity{
 				if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
 				if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
 				if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
-				message = dayType + "：" + StringUtils.showPrice(dayNote.getMoney()) + " 元 (" + dayNote.getRemark() + ")";
+				message = dayType + "：" + StringUtils.showPrice(dayNote.getMoney()) + " " + dayNote.getRemark() ;
 				DialogUtils.showMsgDialog(activity, "新增日账单", message,
 						new DialogUtils.DialogListener(){
 							@Override

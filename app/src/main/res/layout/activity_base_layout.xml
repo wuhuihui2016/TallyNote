@@ -44,7 +44,20 @@
             android:background="@color/transparent"
             android:textColor="@color/white"
             android:textSize="@dimen/bigtextSize"
+            android:layout_marginRight="10dp"
             android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/right_imgbtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:onClick="onClick"
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_action_bar_more"/>
 
     </RelativeLayout>
 

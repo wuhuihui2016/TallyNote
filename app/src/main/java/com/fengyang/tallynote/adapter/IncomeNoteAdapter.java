@@ -134,6 +134,7 @@ public class IncomeNoteAdapter extends BaseAdapter{
                         public void onClick(View v) {
                             super.onClick(v);
                             MyApp.utils.delIncome(incomes.get(0));
+                            incomes = MyApp.utils.getIncomes();
                             notifyDataSetChanged();
                         }
                     }, new DialogUtils.DialogListener(){

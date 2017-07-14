@@ -12,6 +12,7 @@ import android.widget.GridView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
+import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.PortNotesActivity;
 import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
@@ -53,20 +54,24 @@ public class MineFragment extends Fragment{
 		settings.add("导入/导出"); drawableRes.add(R.drawable.import_export);
 		settings.add("重置密保");  drawableRes.add(R.drawable.pwdkey);
 		settings.add("计算日收益");  drawableRes.add(R.drawable.calculate);
+		settings.add("文件浏览");  drawableRes.add(R.drawable.file_explorer);
 
 		settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
 		settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (position) {
-					case 0://导入/导出
+					case 0: //导入/导出
 						startActivity(new Intent(activity, PortNotesActivity.class));
 						break;
-					case 1://重置密保
+					case 1: //重置密保
 						startActivity(new Intent(activity, ReSetPwdKeyActivity.class));
 						break;
-					case 2://计算日收益
+					case 2: //计算日收益
 						startActivity(new Intent(activity, CalculateActivity.class));
+						break;
+					case 3: //文件浏览
+						startActivity(new Intent(activity, FileExplorerActivity.class));
 						break;
 				}
 			}

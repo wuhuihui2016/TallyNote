@@ -38,8 +38,8 @@ public class ExcelUtils {
      */
     public static void exportDayNote(ICallBackExport callBackExport) {
         try {
-            File file = new File(FileUtils.dirPath + "/daynote_" + DateUtils.formatDate4fileName() + ".xls");
-            if (!file.exists()) file.createNewFile();
+            File file = new File(FileUtils.excelPath + "/daynote_" + DateUtils.formatDate4fileName() + ".xls");
+            if (! file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
             // 创建工作表
@@ -70,7 +70,7 @@ public class ExcelUtils {
     public static void exportMonthNote(ICallBackExport callBackExport) {
         try {
 
-            File file = new File(FileUtils.dirPath + "/monthnote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/monthnote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
@@ -104,7 +104,7 @@ public class ExcelUtils {
      */
     public static void exportIncomeNote(ICallBackExport callBackExport) {
         try {
-            File file = new File(FileUtils.dirPath + "/incomenote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/incomenote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
@@ -138,7 +138,7 @@ public class ExcelUtils {
     public static void exportAll(ICallBackExport callBackExport) {
         try {
 
-            File file = new File(FileUtils.dirPath + "/tallynote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/tallynote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 

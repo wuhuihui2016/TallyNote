@@ -1,9 +1,14 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
@@ -24,11 +29,11 @@ import java.util.List;
 public class DayListActivity extends BaseActivity {
 
     private ListView listView;
-    private TextView emptyView;
 
     private List<DayNote> dayNotes;
     private List<DayNote> list = new ArrayList<>();
     private DayNoteAdapter dayNoteAdapter;
+    private PopupWindow popupWindow;
 
     private TextView info, all, consume, account_out, account_in;
 
@@ -59,16 +64,49 @@ public class DayListActivity extends BaseActivity {
         Collections.reverse(dayNotes);
         getAll();
 
-        emptyView = (TextView) findViewById(R.id.emptyView);
-        listView.setEmptyView(emptyView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
-        setRightBtnListener("导出", new View.OnClickListener() {
+        setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ExcelUtils.exportDayNote(callBackExport);
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                } else {
+                    initPopupWindow();
+                }
             }
         });
 
+    }
+
+    /**
+     * 初始化popupWindow
+     */
+    private void initPopupWindow() {
+        LayoutInflater inflater = (LayoutInflater) getApplication()
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.layout_day_pop, null);
+        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(false);
+        popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
+
+        layout.findViewById(R.id.newNote).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewDayActivity.class));
+                    }
+                }
+        );
+        layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                ExcelUtils.exportDayNote(callBackExport);
+            }
+        });
     }
 
     /**
@@ -108,7 +146,7 @@ public class DayListActivity extends BaseActivity {
             if (dayNotes.get(i).getUseType() == DayNote.account_in) sum -= Double.parseDouble(dayNotes.get(i).getMoney());
         }
         info.setText("当前总账单记录有 " + dayNotes.size()
-                + " 条，+ 支出 + 转账 - 转入：" + StringUtils.showPrice(sum + ""));
+                + " 条，支出 + 转账 - 转入：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, dayNotes);
         listView.setAdapter(dayNoteAdapter);
     }
@@ -174,5 +212,11 @@ public class DayListActivity extends BaseActivity {
         info.setText("当前转入记录有 " + list.size() + " 条，转入金额：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, list);
         listView.setAdapter(dayNoteAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
+        else super.onBackPressed();
     }
 }

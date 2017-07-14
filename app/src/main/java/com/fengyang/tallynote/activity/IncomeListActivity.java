@@ -26,7 +26,6 @@ import java.util.List;
 public class IncomeListActivity extends BaseActivity {
 
     private ListView listView;
-    private TextView emptyView;
 
     private List<IncomeNote> incomes;
     private IncomeNoteAdapter incomeNoteAdapter;
@@ -51,27 +50,26 @@ public class IncomeListActivity extends BaseActivity {
     private void initView () {
         listView = (ListView) findViewById(R.id.listView);
 
-            incomes = MyApp.utils.getIncomes();
-            Collections.reverse(incomes);//倒序排列
-            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
-            listView.setAdapter(incomeNoteAdapter);
+        incomes = MyApp.utils.getIncomes();
+        Collections.reverse(incomes);//倒序排列
+        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
+        listView.setAdapter(incomeNoteAdapter);
 
-            sort_info = (TextView) findViewById(R.id.sort_info);
-            sort_info.setVisibility(View.VISIBLE);
-            sort_info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (popupWindow != null && popupWindow.isShowing()) {
-                        popupWindow.dismiss();
-                    } else {
-                        initPopupWindow();
-                    }
+        sort_info = (TextView) findViewById(R.id.sort_info);
+        sort_info.setVisibility(View.VISIBLE);
+        sort_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                } else {
+                    initPopupWindow();
                 }
-            });
+            }
+        });
 
 
-        emptyView = (TextView) findViewById(R.id.emptyView);
-        listView.setEmptyView(emptyView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
         setRightBtnListener("导出", new View.OnClickListener() {
             @Override

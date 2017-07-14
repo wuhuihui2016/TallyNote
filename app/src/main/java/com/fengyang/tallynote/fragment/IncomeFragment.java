@@ -154,10 +154,13 @@ public class IncomeFragment extends Fragment{
 				}
 			});
 		} else {
+			sumStr = "暂无投资";
+			currIncomeSum.setText("....");
 			income_layout.setVisibility(View.GONE);
 		}
 
 		content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
+		content.findViewById(R.id.reload).setOnClickListener(clickListener);
 		content.findViewById(R.id.commitIncome).setOnClickListener(clickListener);
 	}
 
@@ -178,6 +181,11 @@ public class IncomeFragment extends Fragment{
 						currIncomeSum.setText("....");
 
 					}
+					break;
+
+				case R.id.reload:
+					LogUtils.i("reload", "showIncomeNote");
+					showIncomeNote();
 					break;
 
 				case R.id.commitIncome:

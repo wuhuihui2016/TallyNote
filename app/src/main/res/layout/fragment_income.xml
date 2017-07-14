@@ -5,45 +5,57 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/currIncomeSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/app_color"
+                android:text="暂无投资"
+                android:textSize="@dimen/bigtextSize"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/currIncomeSum">
 
-                <TextView
-                    android:id="@+id/currIncomeSum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/app_color"
-                    android:text="暂无投资"
-                    android:textSize="@dimen/bigtextSize"/>
+                <ImageButton
+                    android:id="@+id/seenCheck"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerInside"
+                    android:layout_toLeftOf="@+id/reload"
+                    android:src="@drawable/eye_close_pwd"
+                    android:onClick="onClick"
+                    android:background="@color/transparent"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/currIncomeSum">
-
-                    <ImageButton
-                        android:id="@+id/seenCheck"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/eye_close_pwd"
-                        android:layout_alignParentRight="true"
-                        android:onClick="onClick"
-                        android:background="@color/transparent"/>
-                </RelativeLayout>
-
+                <ImageButton
+                    android:id="@+id/reload"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/reload"
+                    android:layout_marginLeft="20dp"
+                    android:layout_alignParentRight="true"
+                    android:onClick="onClick"
+                    android:background="@color/transparent"/>
             </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/income_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,40 +71,40 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
 
-            <include
-                android:id="@+id/income_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/income_item_layout" />
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/income_item_layout" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/commitIncome"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/commitIncome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|center_horizontal"
+            android:background="@drawable/shape_btn_bkg"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/income_record"
+                android:scaleType="centerInside"/>
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClick"
-                android:padding="10dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center|center_horizontal"
-                android:background="@drawable/shape_btn_bkg"
-                android:orientation="horizontal">
+                android:layout_height="20dp"
+                android:text="记一笔理财"
+                android:textSize="@dimen/bigtextSize"
+                android:textColor="@color/income_record"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"/>
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/income_record"
-                    android:scaleType="centerInside"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="记一笔理财"
-                    android:textSize="@dimen/bigtextSize"
-                    android:textColor="@color/income_record"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"/>
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
