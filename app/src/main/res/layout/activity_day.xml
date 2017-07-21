@@ -28,7 +28,6 @@
                 android:hint="必填"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -53,7 +52,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="消费明细"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -64,7 +63,6 @@
                 android:background="@null"
                 android:hint="必填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
         </LinearLayout>
         <View

@@ -1,7 +1,5 @@
 package com.fengyang.tallynote.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +11,7 @@ import com.fengyang.tallynote.adapter.FileExplorerAdapter;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.WPSUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,7 +84,7 @@ public class FileExplorerActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     super.onClick(v);
-                                    for (int i = 0; i < adapter.selList.size(); i++)  adapter.selList.get(i).deleteOnExit();
+                                    for (int i = 0; i < adapter.selList.size(); i++)  adapter.selList.get(i).delete();
                                     adapter.selList.clear();
                                     choose_layout.setVisibility(View.GONE);
                                     init();
@@ -120,12 +119,7 @@ public class FileExplorerActivity extends BaseActivity {
                 adapter.setSelected(file);
             } else {
                 try {
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setClassName("cn.wps.moffice", "cn.wps.moffice.documentmanager.PreStartActivity");
-                    Uri uri = Uri.fromFile(file);
-                    intent.setData(uri);
-                    context.startActivity(intent);
+                    WPSUtils.openFile(getApplicationContext(), file.getPath());
                 } catch (Exception e) {
                     ToastUtils.showWarningShort(context, "没有找到可打开" + file.getName() + "的应用！");
                 }

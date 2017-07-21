@@ -22,7 +22,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="上次结余"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -34,7 +34,6 @@
                 android:inputType="numberDecimal"
                 android:hint="必填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -59,7 +58,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="本次支出"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -71,7 +70,6 @@
                 android:hint="必填"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -96,7 +94,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="本次工资"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -108,7 +106,6 @@
                 android:hint="必填"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -132,7 +129,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="本次收益"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -144,7 +141,6 @@
                 android:inputType="numberDecimal"
                 android:hint="可不填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -168,7 +164,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="家用补贴"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -180,7 +176,6 @@
                 android:inputType="numberDecimal"
                 android:hint="可不填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -204,7 +199,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="本次结余"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <TextView
@@ -217,7 +212,6 @@
                 android:hint="计算"
                 android:onClick="onClick"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -241,7 +235,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="实际结余"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -253,7 +247,6 @@
                 android:inputType="numberDecimal"
                 android:hint="必填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -277,7 +270,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="月结期间"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <TextView
@@ -289,7 +282,6 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -314,7 +306,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:text="月结备注"
-                android:textColor="#333333"
+                android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
             <EditText
@@ -325,7 +317,6 @@
                 android:background="@null"
                 android:hint="可不填"
                 android:singleLine="true"
-                android:textColor="#9f9f9f"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>

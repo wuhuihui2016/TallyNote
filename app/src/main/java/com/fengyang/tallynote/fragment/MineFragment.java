@@ -49,12 +49,15 @@ public class MineFragment extends Fragment{
 	 */
 	private void initView() {
 
+		//3的倍数
 		settingGrid = (GridView) content.findViewById(R.id.settingGrid);
 		settings.clear(); drawableRes.clear();
 		settings.add("导入/导出"); drawableRes.add(R.drawable.import_export);
 		settings.add("重置密保");  drawableRes.add(R.drawable.pwdkey);
 		settings.add("计算日收益");  drawableRes.add(R.drawable.calculate);
 		settings.add("文件浏览");  drawableRes.add(R.drawable.file_explorer);
+		settings.add("");  drawableRes.add(R.drawable.blank);
+		settings.add("");  drawableRes.add(R.drawable.blank);
 
 		settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
 		settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -47,7 +47,7 @@ public class KeyboardAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.keyboard_item_layout, null);
             viewHolder = new ViewHolder();
-            viewHolder.num = (TextView) convertView.findViewById(R.id.set_info);
+            viewHolder.num = (TextView) convertView.findViewById(R.id.num);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

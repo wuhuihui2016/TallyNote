@@ -44,10 +44,8 @@ public class FileUtils {
      */
     public static void createDir() {
         if (isSDCardAvailable()) {
-            if (! getAppDir().exists()) {
-                getAppDir().mkdirs();
-                getExcelDir().mkdirs();
-            }
+            getAppDir().mkdirs();
+            getExcelDir().mkdirs();
         }
     }
 
@@ -63,7 +61,6 @@ public class FileUtils {
 
     /**
      * 获取文件路径
-     *
      * @param context
      * @param uri
      * @return
