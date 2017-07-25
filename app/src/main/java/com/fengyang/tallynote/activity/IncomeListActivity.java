@@ -1,17 +1,24 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
 import com.fengyang.tallynote.model.IncomeNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -27,10 +34,10 @@ public class IncomeListActivity extends BaseActivity {
 
     private ListView listView;
 
-    private List<IncomeNote> incomes;
+    private List<IncomeNote> incomeNotes;
     private IncomeNoteAdapter incomeNoteAdapter;
     private TextView sort_info;
-    private PopupWindow popupWindow;
+    private PopupWindow sort_popupWindow, popupWindow;
     private boolean isStart = true;
 
     @Override
@@ -38,21 +45,35 @@ public class IncomeListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("理财列表", R.layout.activity_income_list);
+        //删除后广播接收
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ContansUtils.ACTION_INCOME);
+        registerReceiver(myReceiver, intentFilter);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         initView();
+
     }
 
-    private void initView () {
+    //删除后刷新界面
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
+                initView();
+            }
+        }
+    };
+
+    private void initView() {
         listView = (ListView) findViewById(R.id.listView);
 
-        incomes = MyApp.utils.getIncomes();
-        Collections.reverse(incomes);//倒序排列
-        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
+        incomeNotes = MyApp.utils.getIncomes();
+
+        TextView info = (TextView) findViewById(R.id.info);
+        info.setText("月账单记录有" + incomeNotes.size() + "条");
+
+        Collections.reverse(incomeNotes);//倒序排列
+        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
         listView.setAdapter(incomeNoteAdapter);
 
         sort_info = (TextView) findViewById(R.id.sort_info);
@@ -60,10 +81,10 @@ public class IncomeListActivity extends BaseActivity {
         sort_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
+                if (sort_popupWindow != null && sort_popupWindow.isShowing()) {
+                    sort_popupWindow.dismiss();
                 } else {
-                    initPopupWindow();
+                    initSort_PopupWindow();
                 }
             }
         });
@@ -71,10 +92,14 @@ public class IncomeListActivity extends BaseActivity {
 
         listView.setEmptyView(findViewById(R.id.emptyView));
 
-        setRightBtnListener("导出", new View.OnClickListener() {
+        setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ExcelUtils.exportIncomeNote(callBackExport);
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                } else {
+                    initPopupWindow();
+                }
             }
         });
 
@@ -94,14 +119,14 @@ public class IncomeListActivity extends BaseActivity {
     /**
      * 初始化popupWindow
      */
-    private void initPopupWindow() {
+    private void initSort_PopupWindow() {
         LayoutInflater inflater = (LayoutInflater) getApplication()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_sort_pop, null);
-        popupWindow = new PopupWindow(layout, 300, 200);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
-        popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
+        sort_popupWindow = new PopupWindow(layout, 300, 200);
+        sort_popupWindow.setOutsideTouchable(true);
+        sort_popupWindow.setFocusable(false);
+        sort_popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
 
         final TextView start_time = (TextView) layout.findViewById(R.id.start_time);
         final TextView end_time = (TextView) layout.findViewById(R.id.end_time);
@@ -119,7 +144,7 @@ public class IncomeListActivity extends BaseActivity {
             public void onClick(View v) {
                 start_time.setTextColor(Color.RED);
                 end_time.setTextColor(Color.BLACK);
-                popupWindow.dismiss();
+                sort_popupWindow.dismiss();
                 sort4Start();
             }
         });
@@ -129,24 +154,57 @@ public class IncomeListActivity extends BaseActivity {
             public void onClick(View v) {
                 start_time.setTextColor(Color.BLACK);
                 end_time.setTextColor(Color.RED);
-                popupWindow.dismiss();
+                sort_popupWindow.dismiss();
                 sort4End();
             }
         });
 
     }
 
+    private void initPopupWindow() {
+        LayoutInflater inflater = (LayoutInflater) getApplication()
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.layout_list_pop, null);
+        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(false);
+        popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
+
+        layout.findViewById(R.id.newNote).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewIncomeActivity.class));
+                    }
+                }
+        );
+        layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                ExcelUtils.exportIncomeNote(callBackExport);
+            }
+        });
+        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
     /**
      * 以投资时间排序
      */
     private void sort4Start() {
-        if (! isStart) {
-            incomes = MyApp.utils.getIncomes();
-            if (incomes.size() > 0) {
+        if (!isStart) {
+            incomeNotes = MyApp.utils.getIncomes();
+            if (incomeNotes.size() > 0) {
                 sort_info.setText("按投资时间排序");
                 isStart = true;
-                Collections.reverse(incomes);//倒序排列
-                incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);
+                Collections.reverse(incomeNotes);//倒序排列
+                incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
                 listView.setAdapter(incomeNoteAdapter);
             }
         }
@@ -156,31 +214,40 @@ public class IncomeListActivity extends BaseActivity {
      * 以到期时间排序
      */
     private void sort4End() {
-        incomes = MyApp.utils.getIncomes();
-        if (incomes.size() > 0) {
+        incomeNotes = MyApp.utils.getIncomes();
+        if (incomeNotes.size() > 0) {
             isStart = false;
             sort_info.setText("按到期时间排序");
-            for(int i = 0; i < incomes.size() - 1; i ++) {
-                for(int j = 1; j < incomes.size() - i; j ++) {
+            for (int i = 0; i < incomeNotes.size() - 1; i++) {
+                for (int j = 1; j < incomeNotes.size() - i; j++) {
                     IncomeNote incomeNote;
-                    int days1 = DateUtils.daysBetween(incomes.get(j).getDurtion().split("-")[1]) ;
-                    int days2 = DateUtils.daysBetween(incomes.get(j - 1).getDurtion().split("-")[1]) ;
-                    if(days1 < days2) {
-                        incomeNote = incomes.get(j - 1);
-                        incomes.set((j - 1), incomes.get(j));
-                        incomes.set(j , incomeNote);
+                    int days1 = DateUtils.daysBetween(incomeNotes.get(j).getDurtion().split("-")[1]);
+                    int days2 = DateUtils.daysBetween(incomeNotes.get(j - 1).getDurtion().split("-")[1]);
+                    if (days1 < days2) {
+                        incomeNote = incomeNotes.get(j - 1);
+                        incomeNotes.set((j - 1), incomeNotes.get(j));
+                        incomeNotes.set(j, incomeNote);
                     }
                 }
             }
-            LogUtils.i("sort", incomes.toString());
-            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
+            LogUtils.i("sort", incomeNotes.toString());
+            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
             listView.setAdapter(incomeNoteAdapter);
         }
     }
 
     @Override
     public void onBackPressed() {
+        if (sort_popupWindow != null && sort_popupWindow.isShowing()) sort_popupWindow.dismiss();
+        else super.onBackPressed();
+
         if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
         else super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myReceiver != null) unregisterReceiver(myReceiver);
     }
 }

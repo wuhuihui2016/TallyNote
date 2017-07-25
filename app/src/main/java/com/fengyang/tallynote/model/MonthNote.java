@@ -15,7 +15,7 @@ public class MonthNote implements Serializable {
     String balance; //本次结余
     String actual_balance; //实际结余
     String duration; //月结期间
-    String remark; //月结备注
+    String remark; //月结说明
     String time; //记录时间
 
     public MonthNote(String last_balance, String pay, 

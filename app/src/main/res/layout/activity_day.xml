@@ -35,7 +35,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:text="消费明细"
+                android:text="消费说明"
                 android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -68,7 +68,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
 
         <Button
             android:id="@+id/commitNote"

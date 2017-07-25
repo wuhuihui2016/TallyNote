@@ -65,20 +65,31 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/income_del"
+                android:id="@+id/income_delete"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:scaleType="centerInside"
+                android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/note_del"
+                android:src="@drawable/note_delete"
+                android:layout_marginLeft="10dp"
+                android:onClick="onClick"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/income_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:layout_centerInParent="true"
+                android:src="@drawable/note_edit"
+                android:layout_toLeftOf="@id/income_delete"
                 android:layout_marginLeft="10dp"
                 android:onClick="onClick"
                 android:visibility="gone"/>
         </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -165,7 +176,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="投资备注："
+                android:text="投资说明："
                 android:textSize="@dimen/littletextSize"/>
             <TextView
                 android:id="@+id/income_remark"

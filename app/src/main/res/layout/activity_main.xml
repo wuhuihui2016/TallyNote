@@ -18,8 +18,7 @@
             android:id="@+id/app_buttom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:paddingBottom="5dp"
-            android:background="@color/line"
+            android:background="#f5f5f5"
             android:orientation="vertical"
             android:animateLayoutChanges="true">
             <View
@@ -39,6 +38,7 @@
                     android:clickable="true"
                     android:paddingTop="5dp"
                     android:onClick="onClick"
+                    android:paddingBottom="5dp"
                     android:orientation="vertical">
                     <ImageView
                         android:id="@+id/tally_pic"
@@ -66,6 +66,7 @@
                     android:clickable="true"
                     android:paddingTop="5dp"
                     android:onClick="onClick"
+                    android:paddingBottom="5dp"
                     android:orientation="vertical">
                     <ImageView
                         android:id="@+id/income_pic"
@@ -93,6 +94,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onClick"
+                    android:paddingBottom="5dp"
                     android:orientation="vertical">
                     <ImageView
                         android:id="@+id/mine_pic"

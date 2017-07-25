@@ -97,7 +97,7 @@ public class NewIncomeActivity extends BaseActivity{
 					! TextUtils.isEmpty(days) && !TextUtils.isEmpty(dayIncome) &&
 					! TextUtils.isEmpty(finalIncome) && ! TextUtils.isEmpty(duration)) {
 				final IncomeNote incomeNote = new IncomeNote(money, incomeRatio, days, duration, dayIncome, finalIncome,
-						 null, null, 0, remark, DateUtils.formatDateTime());
+						null, null, 0, remark, DateUtils.formatDateTime());
 				LogUtils.i("commit", incomeNote.toString());
 				DialogUtils.showMsgDialog(activity, "新增理财",
 						"投入金额：" + StringUtils.showPrice(incomeNote.getMoney())  +
@@ -106,7 +106,7 @@ public class NewIncomeActivity extends BaseActivity{
 								" 天\n投资时期：" + incomeNote.getDurtion()  +
 								" \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
 								" 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
-								"\n投资备注：" + incomeNote.getRemark(),
+								"\n投资说明：" + incomeNote.getRemark(),
 						new DialogUtils.DialogListener(){
 							@Override
 							public void onClick(View v) {
@@ -162,6 +162,22 @@ public class NewIncomeActivity extends BaseActivity{
 		}
 	};
 
+	@Override
+	public void onBackPressed() {
+		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
+				new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+						finish();
 
+					}
+				}, new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+					}
+				});
 
+	}
 }

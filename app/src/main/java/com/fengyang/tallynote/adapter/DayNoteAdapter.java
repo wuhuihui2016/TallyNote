@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.DayNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -25,10 +27,12 @@ public class DayNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<DayNote> dayNotes;
+    private boolean isLast;//列表显示按所有排序，最后一个才可做删除操作
 
-    public DayNoteAdapter(Activity activity, List<DayNote> dayNotes) {
+    public DayNoteAdapter(Activity activity, List<DayNote> dayNotes, boolean isLast) {
         this.activity = activity;
         this.dayNotes = dayNotes;
+        this.isLast = isLast;
     }
 
 
@@ -86,7 +90,7 @@ public class DayNoteAdapter extends BaseAdapter {
         if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
         else viewHolder.remask.setText("");
 
-        if (position == 0) {
+        if (position == 0 && isLast) {
             viewHolder.day_del.setVisibility(View.VISIBLE);
             viewHolder.day_del.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,6 +102,10 @@ public class DayNoteAdapter extends BaseAdapter {
                             MyApp.utils.delDNote(dayNote);
                             dayNotes = MyApp.utils.getDayNotes();
                             notifyDataSetChanged();
+
+                            Intent intent = new Intent(ContansUtils.ACTION_DAY);
+                            activity.sendBroadcast(intent);
+
                         }
                     }, new DialogUtils.DialogListener(){
                         @Override

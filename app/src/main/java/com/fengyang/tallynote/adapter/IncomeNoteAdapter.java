@@ -15,6 +15,7 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.FinishIncomeActivity;
 import com.fengyang.tallynote.model.IncomeNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/6/23.
  */
-public class IncomeNoteAdapter extends BaseAdapter{
+public class IncomeNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<IncomeNote> incomes;
@@ -55,10 +56,10 @@ public class IncomeNoteAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(activity).inflate(R.layout.income_item_layout, null);
             viewHolder = new ViewHolder();
-            viewHolder.income_del = (ImageView) convertView.findViewById(R.id.income_del);
+            viewHolder.income_del = (ImageView) convertView.findViewById(R.id.income_delete);
             viewHolder.income_time = (TextView) convertView.findViewById(R.id.income_time);
             viewHolder.income_money = (TextView) convertView.findViewById(R.id.income_money);
             viewHolder.income_ratio = (TextView) convertView.findViewById(R.id.income_ratio);
@@ -69,20 +70,21 @@ public class IncomeNoteAdapter extends BaseAdapter{
             viewHolder.income_remark = (TextView) convertView.findViewById(R.id.income_remark);
             viewHolder.income_finished = (TextView) convertView.findViewById(R.id.income_finished);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //获取当前对象
         final IncomeNote incomeNote = incomes.get(position);
-        viewHolder.income_time.setText(incomeNote.getDurtion().split("-")[0].substring(4, 6));
+        viewHolder.income_time.setText(incomeNote.getDurtion().split("-")[1].substring(4, 8));
         viewHolder.income_money.setText(StringUtils.showPrice(incomeNote.getMoney()));
         viewHolder.income_ratio.setText(incomeNote.getIncomeRatio() + " %");
         viewHolder.income_days.setText(incomeNote.getDays() + " 天");
         viewHolder.income_durtion.setText(incomeNote.getDurtion());
         viewHolder.income_dayIncome.setText(StringUtils.showPrice(incomeNote.getDayIncome()) + "/万/天");
         viewHolder.income_finalIncome.setText(StringUtils.showPrice(incomeNote.getFinalIncome()));
-        viewHolder.income_remark.setText(incomeNote.getRemark());
+        if (incomeNote.getRemark().length() > 0) viewHolder.income_remark.setText(incomeNote.getRemark());
+        else viewHolder.income_remark.setText("无");
 
         if (incomeNote.getFinished() == 0) {//未完成
             viewHolder.income_finished.setTextColor(Color.RED);
@@ -129,15 +131,18 @@ public class IncomeNoteAdapter extends BaseAdapter{
             viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
                             MyApp.utils.delIncome(incomes.get(0));
                             incomes = MyApp.utils.getIncomes();
                             notifyDataSetChanged();
+
+                            Intent intent = new Intent(ContansUtils.ACTION_INCOME);
+                            activity.sendBroadcast(intent);
                         }
-                    }, new DialogUtils.DialogListener(){
+                    }, new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -150,7 +155,7 @@ public class IncomeNoteAdapter extends BaseAdapter{
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         ImageView income_del;
         TextView income_time, income_money, income_ratio, income_days, income_durtion;
         TextView income_dayIncome, income_finalIncome, income_remark, income_finished;

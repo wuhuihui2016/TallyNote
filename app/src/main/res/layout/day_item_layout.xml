@@ -8,9 +8,9 @@
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
         android:textSize="@dimen/bigtextSize"
         android:text="今天"/>
 
@@ -88,12 +88,12 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/day_del"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="centerInside"
             android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/note_del"
+            android:src="@drawable/note_delete"
             android:layout_marginLeft="10dp"
             android:onClick="onClick"
             android:visibility="gone"/>

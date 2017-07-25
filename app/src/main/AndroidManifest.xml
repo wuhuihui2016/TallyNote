@@ -57,7 +57,7 @@
         <!-- 记录详情 -->
 
         <!-- 导入导出 -->
-        <activity android:name=".activity.PortNotesActivity"/>
+        <activity android:name=".activity.ImportExportActivity"/>
 
         <!-- 重置密保 -->
         <activity android:name=".activity.ReSetPwdKeyActivity"/>

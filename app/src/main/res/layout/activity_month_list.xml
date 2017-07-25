@@ -3,11 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="@dimen/smalltextSize"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/month_record"
+        android:layout_below="@id/info"
         android:dividerHeight="2dp"/>
 
     <TextView
@@ -17,6 +25,7 @@
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"
+        android:layout_below="@id/info"
         android:textSize="20sp"
         android:visibility="gone"
         android:textColor="@android:color/holo_orange_dark"/>

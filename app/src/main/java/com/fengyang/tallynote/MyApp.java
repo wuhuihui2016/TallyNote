@@ -16,8 +16,6 @@ public class MyApp extends Application {
 
     public static DBUtils utils;
 
-    public static final int DAY = 0, MONTH = 1, INCOME = 2;
-
     @Override
     public void onCreate() {
         super.onCreate();

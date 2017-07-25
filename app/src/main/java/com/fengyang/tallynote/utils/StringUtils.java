@@ -11,18 +11,6 @@ public class StringUtils {
 
     private static String TAG = "StringUtils";
 
-    /**
-     * 验证输入的身份证号是否合法
-     */
-    public static boolean isLegalId(String id){
-        if (id.toUpperCase().matches("(^\\d{15}$)|(^\\d{17}([0-9]|X)$)")){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-
     //价格显示标准
     public static String formatePrice(String price){
         if (! TextUtils.isEmpty(price)) {

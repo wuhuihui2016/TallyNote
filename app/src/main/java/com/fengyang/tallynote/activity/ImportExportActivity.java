@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -19,7 +20,7 @@ import java.net.URISyntaxException;
  * 导入/导出
  * Created by wuhuihui on 2017/7/5.
  */
-public class PortNotesActivity extends BaseActivity {
+public class ImportExportActivity extends BaseActivity {
 
     private static final int FILE_SELECT_CODE = 0;
 
@@ -28,6 +29,10 @@ public class PortNotesActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView("导入/导出", R.layout.activity_port_notes);
 
+        initDate();
+    }
+
+    private void initDate () {
         TextView notesNum = (TextView) findViewById(R.id.notesNum);
         notesNum.setText("日账记录：" + MyApp.utils.getDayNotes().size() +
                 "\n月账记录：" + MyApp.utils.getMonNotes().size() +
@@ -40,14 +45,27 @@ public class PortNotesActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.import2file:
                 if (FileUtils.isSDCardAvailable()) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        ToastUtils.showToast(context, true, "Please install a File Manager.");
-                    }
+
+                    DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                intent.setType("*/*");
+                                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+                            } catch (android.content.ActivityNotFoundException ex) {
+                                ToastUtils.showToast(context, true, "Please install a File Manager.");
+                            }
+                        }
+                    }, new DialogUtils.DialogListener(){
+                        @Override
+                        public void onClick(View v) {
+                            super.onClick(v);
+                        }
+                    });
+
                 } else {
                     ToastUtils.showToast(context, true, "SDCard is not available");
                 }
@@ -75,7 +93,22 @@ public class PortNotesActivity extends BaseActivity {
                         Uri uri = data.getData();
                         String path = FileUtils.getPath(context, uri);
                         LogUtils.i(TAG, "File Path: " + path);
-                        ExcelUtils.importExcel(context, path);
+                        ExcelUtils.importExcel(context, path, new ExcelUtils.ICallBackImport() {
+
+                            @Override
+                            public void callback(int day_count, int month_count, int income_count) {
+                                ToastUtils.showSucessLong(context, "导入成功！" +
+                                        "\n日账记录：" + day_count +
+                                        "\n月账记录：" + month_count  +
+                                        "\n理财记录：" + income_count);
+                                initDate();
+                            }
+
+                            @Override
+                            public void callback(String errorMsg) {
+                                ToastUtils.showSucessLong(context, errorMsg);
+                            }
+                        });
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }

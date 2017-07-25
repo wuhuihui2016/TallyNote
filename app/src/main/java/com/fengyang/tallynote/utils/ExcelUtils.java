@@ -22,14 +22,34 @@ public class ExcelUtils {
     private static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
 
     private static String[] monthTitle = {"上次结余（元）", "本次支出（元）", "本次工资（元）", "本次收益（元）", "家用补贴（元）", "本次结余（元）", "实际结余（元）",
-            "月结期间", "月结备注", "记录时间"};
+            "月结期间", "月结说明", "记录时间"};
 
     private static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时期", "拟日收益（元/万天）", "最终收益（元）",
-            "最终提现（元）", "提现去处", "完成状态", "投资备注", "记录时间"};
+            "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
 
     private static List<DayNote> dayNotes;
     private static List<MonthNote> monthNotes;
     private static List<IncomeNote> incomeNotes;
+
+    /**
+     * 文件导出时清除旧文件
+     * @param type
+     */
+    private static void clearOldExcelFile (int type) {
+        File excelDir = FileUtils.getExcelDir();
+        final File files[] = excelDir.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (type == 0) {
+                if (files[i].getName().contains("daynote_")) files[i].delete();
+            } else if (type == 1) {
+                if (files[i].getName().contains("monthnote_")) files[i].delete();
+            } if (type == 2) {
+                if (files[i].getName().contains("incomenote_")) files[i].delete();
+            } else {
+                if (files[i].getName().contains("tallynote_")) files[i].delete();
+            }
+        }
+    }
 
     /**
      * 日账单表
@@ -38,6 +58,7 @@ public class ExcelUtils {
      */
     public static void exportDayNote(ICallBackExport callBackExport) {
         try {
+            clearOldExcelFile(0);
             File file = new File(FileUtils.excelPath + "/daynote_" + DateUtils.formatDate4fileName() + ".xls");
             if (! file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -50,7 +71,7 @@ public class ExcelUtils {
                 day_sheet.addCell(new Label(i, 0, dayTitle[i]));//列，行
             }
             //写入数据
-            writeSheet(MyApp.DAY, day_sheet);
+            writeSheet(ContansUtils.DAY, day_sheet);
             writebook.write();
             writebook.close();
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
@@ -69,7 +90,7 @@ public class ExcelUtils {
      */
     public static void exportMonthNote(ICallBackExport callBackExport) {
         try {
-
+            clearOldExcelFile(1);
             File file = new File(FileUtils.excelPath + "/monthnote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -84,7 +105,7 @@ public class ExcelUtils {
             }
 
             //写入数据
-            writeSheet(MyApp.MONTH, month_sheet);
+            writeSheet(ContansUtils.MONTH, month_sheet);
             writebook.write();
             writebook.close();
 
@@ -104,6 +125,7 @@ public class ExcelUtils {
      */
     public static void exportIncomeNote(ICallBackExport callBackExport) {
         try {
+            clearOldExcelFile(2);
             File file = new File(FileUtils.excelPath + "/incomenote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -117,7 +139,7 @@ public class ExcelUtils {
             }
 
             //写入数据
-            writeSheet(MyApp.INCOME, income_sheet);
+            writeSheet(ContansUtils.INCOME, income_sheet);
             writebook.write();
             writebook.close();
 
@@ -137,7 +159,7 @@ public class ExcelUtils {
      */
     public static void exportAll(ICallBackExport callBackExport) {
         try {
-
+            clearOldExcelFile(3);
             File file = new File(FileUtils.excelPath + "/tallynote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -160,9 +182,9 @@ public class ExcelUtils {
                 income_sheet.addCell(new Label(i, 0, incomeTitle[i]));//列，行
             }
 
-            writeSheet(MyApp.DAY, day_sheet);
-            writeSheet(MyApp.MONTH, month_sheet);
-            writeSheet(MyApp.INCOME, income_sheet);
+            writeSheet(ContansUtils.DAY, day_sheet);
+            writeSheet(ContansUtils.MONTH, month_sheet);
+            writeSheet(ContansUtils.INCOME, income_sheet);
             writebook.write();//只能执行一次
             writebook.close();
 
@@ -189,7 +211,7 @@ public class ExcelUtils {
             incomeNotes = MyApp.utils.getIncomes();
 
             switch (type) {
-                case MyApp.DAY:
+                case ContansUtils.DAY:
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
@@ -205,7 +227,7 @@ public class ExcelUtils {
                     }
                     break;
 
-                case MyApp.MONTH:
+                case ContansUtils.MONTH:
                     LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                     if (monthNotes.size() > 0) {
                         for (int i = 0; i < monthNotes.size(); i++) {
@@ -223,7 +245,7 @@ public class ExcelUtils {
                     }
                     break;
 
-                case MyApp.INCOME:
+                case ContansUtils.INCOME:
                     LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                     if (incomeNotes.size() > 0) {
                         for (int i = 0; i < incomeNotes.size(); i++) {
@@ -259,8 +281,9 @@ public class ExcelUtils {
     /**
      * 导入本地Excel文件到数据库
      */
-    public static void importExcel(Context context, String filePath) {
+    public static void importExcel(Context context, String filePath, ICallBackImport callBackImport) {
         String tag = "importExcel";
+        int day_count = 0, month_count = 0, income_count = 0;
         try {
             Workbook book = Workbook.getWorkbook(new File(filePath));
             int num = book.getNumberOfSheets();
@@ -272,77 +295,93 @@ public class ExcelUtils {
                 String sheetName = sheet.getName();
                 LogUtils.i(tag, "第" + (i + 1) + "个表单名：" + sheetName + ",表单行数：" + rows + "表单列数：" + cols);
 
-                if (sheetName.contains("日")) { //日账单解析
-                    dayNotes = new ArrayList<>();
-                    dayNotes.clear();
-                    for (int j = 1; j < rows; j ++) {//行
-                        int type = 1;
-                        if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
-                        if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
-                        if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
-                        dayNotes.add(new DayNote(
-                                type,
-                                sheet.getCell(1, j).getContents(),
-                                sheet.getCell(2, j).getContents(),
-                                sheet.getCell(3, j).getContents()));
-                    }
-                    LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
-                    if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
-                        ToastUtils.showToast(context, true, "导入成功！日账单新增" + dayNotes.size() + "条数据");
-                    } else ToastUtils.showToast(context, true, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
+                if (rows > 0) { //如果表单中有数据时解析
+                    if (sheetName.contains("日")) { //日账单解析
+                        dayNotes = new ArrayList<>();
+                        dayNotes.clear();
+                        for (int j = 1; j < rows; j ++) {//行
+                            int type = 1;
+                            if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
+                            if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
+                            if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
+                            dayNotes.add(new DayNote(
+                                    type,
+                                    sheet.getCell(1, j).getContents(),
+                                    sheet.getCell(2, j).getContents(),
+                                    sheet.getCell(3, j).getContents()));
+                        }
+                        LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
+                        if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
+                            day_count = dayNotes.size();
+                        }
 
-                } else if (sheetName.contains("月")) { //月账单解析
-                    monthNotes = new ArrayList<>();
-                    monthNotes.clear();
-                    for (int j = 1; j < rows; j ++) {//行
-                        monthNotes.add(new MonthNote(
-                                sheet.getCell(0, j).getContents(),
-                                sheet.getCell(1, j).getContents(),
-                                sheet.getCell(2, j).getContents(),
-                                sheet.getCell(3, j).getContents(),
-                                sheet.getCell(4, j).getContents(),
-                                sheet.getCell(5, j).getContents(),
-                                sheet.getCell(6, j).getContents(),
-                                sheet.getCell(7, j).getContents(),
-                                sheet.getCell(8, j).getContents(),
-                                sheet.getCell(9, j).getContents()));
-                    }
-                    LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
-                    if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
-                        ToastUtils.showToast(context, true, "导入成功！月账单新增" + monthNotes.size() + "条数据");
-                    } else ToastUtils.showToast(context, true, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
-                    
-                } else if (sheetName.contains("理财")) { //理财记录解析
-                    incomeNotes = new ArrayList<>();
-                    incomeNotes.clear();
-                    for (int j = 1; j < rows; j ++) {//行
-                        incomeNotes.add(new IncomeNote(
-                                sheet.getCell(0, j).getContents(),
-                                sheet.getCell(1, j).getContents(),
-                                sheet.getCell(2, j).getContents(),
-                                sheet.getCell(3, j).getContents(),
-                                sheet.getCell(4, j).getContents(),
-                                sheet.getCell(5, j).getContents(),
-                                sheet.getCell(6, j).getContents(),
-                                sheet.getCell(7, j).getContents(),
-                                (sheet.getCell(8, j).getContents().contains("已")) ? 1 : 0,
-                                sheet.getCell(9, j).getContents(),
-                                sheet.getCell(10, j).getContents()));
-                    }
-                    LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
-                    if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
-                        ToastUtils.showSucessLong(context, "导入成功！理财记录新增" + incomeNotes.size() + "条数据");
-                    } else ToastUtils.showErrorLong(context, "导入失败！原因：Excel文件中可能无相符数据！请检查后重试");
-                } else {
-                    ToastUtils.showErrorLong(context, "导入失败！原因：非本APP导出的文件！请检查后重试");
-                }
+                    } else if (sheetName.contains("月")) { //月账单解析
+                        monthNotes = new ArrayList<>();
+                        monthNotes.clear();
+                        for (int j = 1; j < rows; j ++) {//行
+                            monthNotes.add(new MonthNote(
+                                    sheet.getCell(0, j).getContents(),
+                                    sheet.getCell(1, j).getContents(),
+                                    sheet.getCell(2, j).getContents(),
+                                    sheet.getCell(3, j).getContents(),
+                                    sheet.getCell(4, j).getContents(),
+                                    sheet.getCell(5, j).getContents(),
+                                    sheet.getCell(6, j).getContents(),
+                                    sheet.getCell(7, j).getContents(),
+                                    sheet.getCell(8, j).getContents(),
+                                    sheet.getCell(9, j).getContents()));
+                        }
+                        LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
+                        if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
+                            month_count = monthNotes.size();
+                        }
 
+                    } else if (sheetName.contains("理财")) { //理财记录解析
+                        incomeNotes = new ArrayList<>();
+                        incomeNotes.clear();
+                        for (int j = 1; j < rows; j ++) {//行
+                            incomeNotes.add(new IncomeNote(
+                                    sheet.getCell(0, j).getContents(),
+                                    sheet.getCell(1, j).getContents(),
+                                    sheet.getCell(2, j).getContents(),
+                                    sheet.getCell(3, j).getContents(),
+                                    sheet.getCell(4, j).getContents(),
+                                    sheet.getCell(5, j).getContents(),
+                                    sheet.getCell(6, j).getContents(),
+                                    sheet.getCell(7, j).getContents(),
+                                    (sheet.getCell(8, j).getContents().contains("已")) ? 1 : 0,
+                                    sheet.getCell(9, j).getContents(),
+                                    sheet.getCell(10, j).getContents()));
+                        }
+                        LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
+                        if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
+                            income_count = incomeNotes.size();
+                        }
+                    } else {
+                        callBackImport.callback("导入失败！原因：非本APP导出的文件！");
+                        return;
+                    }
+
+                } else  LogUtils.i(tag, sheetName + "表单中没有可解析的数据！");
+            }
+
+            if (callBackImport != null) {
+                if (day_count > 0 || month_count > 0 || income_count > 0) {
+                    callBackImport.callback(day_count, month_count, income_count);
+                } else callBackImport.callback("导入失败, 原因：表单中没有可解析的数据！");
             }
             book.close();
-
         } catch (Exception e) {
             System.out.println(e);
-            ToastUtils.showErrorLong(context, "导入失败！");
+            callBackImport.callback("导入失败！");
         }
+    }
+
+    /**
+     * 导出结果回调
+     */
+    public interface ICallBackImport {
+        void callback(String errorMsg);
+        void callback(int day_count, int month_count, int income_count);
     }
 }

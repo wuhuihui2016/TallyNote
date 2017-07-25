@@ -11,7 +11,7 @@ public class DayNote implements Serializable {
 
     int useType; //消费类型：1.支出，2.转账，3.转入
     String money; //消费金额
-    String remark; //消费备注
+    String remark; //消费说明
     String time; //消费时间
 
     public DayNote(int useType, String money, String remark, String time) {

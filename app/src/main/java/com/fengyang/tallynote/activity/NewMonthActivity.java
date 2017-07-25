@@ -128,7 +128,7 @@ public class NewMonthActivity extends BaseActivity{
 								"\n家用补贴：" + StringUtils.showPrice(monthNote.getHomeuse())  +
 								"\n本次结余：" + StringUtils.showPrice(monthNote.getBalance())  +
 								"\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance())  +
-								"\n月结备注：" + monthNote.getRemark(),
+								"\n月结说明：" + monthNote.getRemark(),
 						new DialogUtils.DialogListener(){
 							@Override
 							public void onClick(View v) {
@@ -184,4 +184,22 @@ public class NewMonthActivity extends BaseActivity{
 		}
 	};
 
+	@Override
+	public void onBackPressed() {
+		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
+				new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+						finish();
+
+					}
+				}, new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+					}
+				});
+
+	}
 }

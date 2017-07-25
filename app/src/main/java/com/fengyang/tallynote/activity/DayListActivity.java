@@ -1,6 +1,9 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,6 +18,7 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.model.DayNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
@@ -42,16 +46,25 @@ public class DayListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("日账单列表", R.layout.activity_day_list);
+        //删除后广播接收
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ContansUtils.ACTION_DAY);
+        registerReceiver(myReceiver, intentFilter);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         initView();
     }
 
-    private void initView () {
+    //删除后刷新界面
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_DAY)) {
+                getAll();
+            }
+        }
+    };
+
+    private void initView() {
         info = (TextView) findViewById(R.id.info);
         all = (TextView) findViewById(R.id.all);
         consume = (TextView) findViewById(R.id.consume);
@@ -60,8 +73,6 @@ public class DayListActivity extends BaseActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
-        dayNotes = MyApp.utils.getDayNotes();
-        Collections.reverse(dayNotes);
         getAll();
 
         listView.setEmptyView(findViewById(R.id.emptyView));
@@ -79,13 +90,21 @@ public class DayListActivity extends BaseActivity {
 
     }
 
+    /*
+     * 获取最新数据
+     */
+    private void getDayNotes() {
+        dayNotes = MyApp.utils.getDayNotes();
+        Collections.reverse(dayNotes);
+    }
+
     /**
      * 初始化popupWindow
      */
     private void initPopupWindow() {
         LayoutInflater inflater = (LayoutInflater) getApplication()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_day_pop, null);
+        View layout = inflater.inflate(R.layout.layout_list_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(false);
@@ -107,6 +126,12 @@ public class DayListActivity extends BaseActivity {
                 ExcelUtils.exportDayNote(callBackExport);
             }
         });
+        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 
     /**
@@ -124,43 +149,56 @@ public class DayListActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.all: getAll(); break;
-            case R.id.consume: getConsume(); break;
-            case R.id.account_out: getAccountOut(); break;
-            case R.id.account_in: getAccountIn(); break;
+            case R.id.all:
+                getAll();
+                break;
+            case R.id.consume:
+                getConsume();
+                break;
+            case R.id.account_out:
+                getAccountOut();
+                break;
+            case R.id.account_in:
+                getAccountIn();
+                break;
         }
     }
 
     /**
      * 总账单记录
      */
-    private void getAll () {
+    private void getAll() {
         all.setTextColor(Color.RED);
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
         Double sum = 0.00;
+        getDayNotes();
         for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.consume) sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            if (dayNotes.get(i).getUseType() == DayNote.account_out) sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            if (dayNotes.get(i).getUseType() == DayNote.account_in) sum -= Double.parseDouble(dayNotes.get(i).getMoney());
+            if (dayNotes.get(i).getUseType() == DayNote.consume)
+                sum += Double.parseDouble(dayNotes.get(i).getMoney());
+            if (dayNotes.get(i).getUseType() == DayNote.account_out)
+                sum += Double.parseDouble(dayNotes.get(i).getMoney());
+            if (dayNotes.get(i).getUseType() == DayNote.account_in)
+                sum -= Double.parseDouble(dayNotes.get(i).getMoney());
         }
         info.setText("当前总账单记录有 " + dayNotes.size()
                 + " 条，支出 + 转账 - 转入：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes);
+        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
         listView.setAdapter(dayNoteAdapter);
     }
 
     /**
      * 支出账单记录
      */
-    private void getConsume () {
+    private void getConsume() {
         all.setTextColor(Color.GRAY);
         consume.setTextColor(Color.RED);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
         list.clear();
         Double sum = 0.00;
+        getDayNotes();
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.consume) {
                 list.add(dayNotes.get(i));
@@ -168,7 +206,7 @@ public class DayListActivity extends BaseActivity {
             }
         }
         info.setText("当前支出账单记录有 " + list.size() + " 条，支出金额：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, list);
+        dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -182,6 +220,7 @@ public class DayListActivity extends BaseActivity {
         account_in.setTextColor(Color.GRAY);
         list.clear();
         Double sum = 0.00;
+        getDayNotes();
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.account_out) {
                 list.add(dayNotes.get(i));
@@ -189,7 +228,7 @@ public class DayListActivity extends BaseActivity {
             }
         }
         info.setText("当前转账记录有 " + list.size() + " 条，转账金额：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, list);
+        dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -203,6 +242,7 @@ public class DayListActivity extends BaseActivity {
         account_in.setTextColor(Color.RED);
         list.clear();
         Double sum = 0.00;
+        getDayNotes();
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.account_in) {
                 list.add(dayNotes.get(i));
@@ -210,7 +250,7 @@ public class DayListActivity extends BaseActivity {
             }
         }
         info.setText("当前转入记录有 " + list.size() + " 条，转入金额：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, list);
+        dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -218,5 +258,11 @@ public class DayListActivity extends BaseActivity {
     public void onBackPressed() {
         if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
         else super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myReceiver != null) unregisterReceiver(myReceiver);
     }
 }

@@ -74,7 +74,7 @@
                 android:scaleType="centerInside"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/note_del"
+                android:src="@drawable/note_delete"
                 android:layout_marginLeft="10dp"
                 android:onClick="onClick"
                 android:visibility="gone"/>
@@ -164,7 +164,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="月结备注："
+                android:text="月结说明："
                 android:textSize="@dimen/littletextSize"/>
             <TextView
                 android:id="@+id/month_remark"

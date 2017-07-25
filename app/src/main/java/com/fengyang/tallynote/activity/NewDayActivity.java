@@ -104,4 +104,23 @@ public class NewDayActivity extends BaseActivity{
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
+				new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+						finish();
+
+					}
+				}, new DialogUtils.DialogListener(){
+					@Override
+					public void onClick(View v) {
+						super.onClick(v);
+					}
+				});
+
+	}
+
 }

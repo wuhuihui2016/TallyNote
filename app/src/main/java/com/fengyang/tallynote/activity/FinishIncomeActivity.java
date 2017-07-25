@@ -40,7 +40,7 @@ public class FinishIncomeActivity extends BaseActivity{
 				"\n投资时期： " + incomeNote.getDurtion()  +
 				"\n拟日收益： " + StringUtils.showPrice(incomeNote.getDayIncome())  +
 				"\n最终收益： " + StringUtils.showPrice(incomeNote.getFinalIncome()) +
-				"\n投资备注：" + incomeNote.getRemark());
+				"\n投资说明：" + incomeNote.getRemark());
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class FinishIncomeActivity extends BaseActivity{
 								" 天\n投资时期：" + incomeNote.getDurtion()  +
 								" \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome())  +
 								" 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
-								"\n投资备注：" + incomeNote.getRemark()  +
+								"\n投资说明：" + incomeNote.getRemark()  +
 								"\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash())  +
 								"\n提现去处：" + incomeNote.getFinalCashGo(),
 						new DialogUtils.DialogListener(){
@@ -69,7 +69,7 @@ public class FinishIncomeActivity extends BaseActivity{
 							public void onClick(View v) {
 								super.onClick(v);
 								if (MyApp.utils.finishIncome(incomeNote)) {
-									ToastUtils.showErrorLong(context, "完成理财成功！");
+									ToastUtils.showSucessLong(context, "完成理财成功！");
 									finish();
 								} else ToastUtils.showErrorLong(context, "完成理财失败！");
 							}

@@ -11,8 +11,7 @@
     <color name="black">@android:color/black</color>
 
     <color name="title">#333333</color>
-    <color name="line">#F5F5F5</color>
-
+    <color name="line">#d0d0d0</color>
 
     <color name="day_record">#009393</color>
     <color name="month_record">#007500</color>

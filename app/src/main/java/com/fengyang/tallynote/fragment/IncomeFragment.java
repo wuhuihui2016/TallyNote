@@ -108,7 +108,7 @@ public class IncomeFragment extends Fragment{
 			for (int i = 0; i < incomes.size(); i ++) {
 				String date = incomes.get(i).getDurtion().split("-")[1];
 				String lasterDate = laterIncome.getDurtion().split("-")[1];
-				if (DateUtils.daysBetween(date) < DateUtils.daysBetween(lasterDate)) {
+				if (DateUtils.daysBetween(date) > DateUtils.daysBetween(lasterDate)) {
 					laterIncome = incomes.get(i);
 				}
 			}

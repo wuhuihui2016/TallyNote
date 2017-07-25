@@ -13,7 +13,7 @@ import android.widget.GridView;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
 import com.fengyang.tallynote.activity.FileExplorerActivity;
-import com.fengyang.tallynote.activity.PortNotesActivity;
+import com.fengyang.tallynote.activity.ImportExportActivity;
 import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 
@@ -65,7 +65,7 @@ public class MineFragment extends Fragment{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (position) {
 					case 0: //导入/导出
-						startActivity(new Intent(activity, PortNotesActivity.class));
+						startActivity(new Intent(activity, ImportExportActivity.class));
 						break;
 					case 1: //重置密保
 						startActivity(new Intent(activity, ReSetPwdKeyActivity.class));

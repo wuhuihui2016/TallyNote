@@ -4,12 +4,20 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="@dimen/smalltextSize"/>
+
+    <TextView
         android:id="@+id/sort_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="按投资时间排序"
         android:onClick="onClick"
         android:textColor="@color/red"
+        android:layout_below="@id/info"
         android:padding="10dp"
         android:textSize="@dimen/bigtextSize"/>
 

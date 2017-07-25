@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
@@ -74,7 +76,9 @@ public class MonthNoteAdapter extends BaseAdapter{
         viewHolder.month_balance.setText(StringUtils.showPrice(monthNote.getBalance()));
         viewHolder.month_income.setText(StringUtils.showPrice(monthNote.getIncome()));
         viewHolder.month_homeuse.setText(StringUtils.showPrice(monthNote.getHomeuse()));
-        viewHolder.month_remark.setText(monthNote.getRemark());
+        if (monthNote.getRemark().length() > 0) viewHolder.month_remark.setText(monthNote.getRemark());
+        else viewHolder.month_remark.setText("无");
+
         viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()));
 
         if (position == 0) {
@@ -89,6 +93,9 @@ public class MonthNoteAdapter extends BaseAdapter{
                             MyApp.utils.delMNote(monthNote);
                             monthNotes = MyApp.utils.getMonNotes();
                             notifyDataSetChanged();
+
+                            Intent intent = new Intent(ContansUtils.ACTION_MONTH);
+                            activity.sendBroadcast(intent);
                         }
                     }, new DialogUtils.DialogListener(){
                         @Override

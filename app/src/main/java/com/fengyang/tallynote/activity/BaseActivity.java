@@ -15,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.utils.ActivityUtils;
-import com.fengyang.tallynote.utils.NetReceiver;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
@@ -45,7 +43,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//设置竖屏
         setContentView(R.layout.activity_base_layout);
 
-        ActivityUtils.addActivity(this);
         context = this; activity = this; TAG = getLocalClassName(); //初始化常量
 
         if (! SystemUtils.isNetworkConnected(context))  ToastUtils.showToast(context, true, "当前网络不可用"); //判断网络
@@ -119,21 +116,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         right_imgbtn.setVisibility(View.VISIBLE);
         right_imgbtn.setImageResource(resId);
         right_imgbtn.setOnClickListener(listener);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //注册网络监听
-        NetReceiver.registerHandler(new NetReceiver.OnNetEventHandler() {
-            @Override
-            public void onNetChange() {
-                if (! SystemUtils.isNetworkConnected(context)) {
-                    ToastUtils.showToast(context, true, "当前网络不可用");
-                }
-            }
-        });
     }
 
     @Override

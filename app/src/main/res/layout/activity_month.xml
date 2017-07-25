@@ -41,7 +41,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,7 +77,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,7 +113,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -148,7 +148,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -183,7 +183,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -219,7 +219,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -254,7 +254,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -289,23 +289,21 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d0d0d0" />
+            android:background="@color/line" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:layout_margin="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="月结备注"
+                android:text="月结说明"
                 android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -313,18 +311,15 @@
                 android:id="@+id/remarkEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
+                android:background="@drawable/shape_edit"
+                android:layout_marginTop="5dp"
+                android:gravity="left|top"
+                android:padding="5dp"
+                android:lines="2"
                 android:hint="可不填"
-                android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#d0d0d0" />
 
         <Button
             android:id="@+id/commitNote"

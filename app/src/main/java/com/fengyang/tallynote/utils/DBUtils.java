@@ -39,7 +39,7 @@ public class DBUtils extends SQLiteOpenHelper {
         db.execSQL("create table if not exists day_note(_id integer primary key," +
                 "useType integer,money varchar(20),remark varchar(100),time varchar(20))");
 
-        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,期间duration,时间time,备注remark
+        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,期间duration,时间time,说明remark
         db.execSQL("create table if not exists month_note(_id integer primary key," +
                 "last_balance varchar(20),pay varchar(20),salary varchar(20),income varchar(20),homeuse varchar(20),balance varchar(20),actual_balance varchar(20)," +
                 "duration varchar(20),remark varchar(100),time varchar(20))");
@@ -269,7 +269,7 @@ public class DBUtils extends SQLiteOpenHelper {
 			String finalCash; //最终提现
 			String finalCashGo; //提现去处
 			int finished; //完成状态
-			String remark;//投资备注
+			String remark;//投资说明
 			String time; //记录时间*/
 
             IncomeNote income = new IncomeNote(cursor.getString(cursor.getColumnIndex("money")),
@@ -325,6 +325,7 @@ public class DBUtils extends SQLiteOpenHelper {
     public synchronized boolean newDNotes(List<DayNote> dayNotes) {
         boolean isExit = true;
         SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from day_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < dayNotes.size(); i++) {
             if (isExit) {
                 DayNote dayNote = dayNotes.get(i);
@@ -346,6 +347,7 @@ public class DBUtils extends SQLiteOpenHelper {
     public synchronized boolean newMNotes(List<MonthNote> monthNotes) {
         boolean isExit = true;
         SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from month_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < monthNotes.size(); i++) {
             if (isExit) {
                 MonthNote monthNote = monthNotes.get(i);
@@ -370,6 +372,7 @@ public class DBUtils extends SQLiteOpenHelper {
     public synchronized boolean newINotes(List<IncomeNote> incomeNotes) {
         boolean isExit = true;
         SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from income_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (isExit) {
                 IncomeNote incomeNote = incomeNotes.get(i);
