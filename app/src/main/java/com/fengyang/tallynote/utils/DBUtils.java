@@ -256,7 +256,7 @@ public class DBUtils extends SQLiteOpenHelper {
      * @return
      */
     public synchronized List<IncomeNote> getIncomes() {
-        List<IncomeNote> incomes = new ArrayList<IncomeNote>();
+        List<IncomeNote> incomeNotes = new ArrayList<IncomeNote>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from income_note", null);
         while (cursor.moveToNext()) {
@@ -284,11 +284,13 @@ public class DBUtils extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndex("remark")),
                     cursor.getString(cursor.getColumnIndex("time"))
             );
-            incomes.add(income);
+
+            income.setId(cursor.getInt(cursor.getColumnIndex("_id")) + "");
+            incomeNotes.add(income);
         }
         cursor.close();
         db.close();
-        return incomes;
+        return incomeNotes;
     }
 
     /**

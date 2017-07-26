@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
@@ -131,9 +132,26 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (isOtherActivity()) {
-            overridePendingTransition(0, R.anim.slide_right_out);
+            if (TAG.contains("New")) {
+                DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
+                        new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                finish();
+
+                            }
+                        }, new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
+            } else {
+                finish();
+            }
+
         }
     }
 
@@ -145,6 +163,5 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         if (TAG.contains("MainActivity")) return false;
         else return true;
     }
-
 
 }

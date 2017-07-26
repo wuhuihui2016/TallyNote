@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.IncomeNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
@@ -114,6 +116,7 @@ public class NewIncomeActivity extends BaseActivity{
 								if (MyApp.utils.newINote(incomeNote)) {
 									ToastUtils.showSucessLong(context, "新增理财成功！");
 									ExcelUtils.exportIncomeNote(null);
+									if (getIntent().hasExtra("list")) sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
 									finish();
 								} else ToastUtils.showErrorLong(context, "新增理财失败！");
 							}
@@ -162,22 +165,4 @@ public class NewIncomeActivity extends BaseActivity{
 		}
 	};
 
-	@Override
-	public void onBackPressed() {
-		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
-				new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-						finish();
-
-					}
-				}, new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-					}
-				});
-
-	}
 }

@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">记账本</string>
-    <string name="RMB">¥</string>
     <string name="forgetPwd"><u>忘记密码？</u></string>
 
 </resources>

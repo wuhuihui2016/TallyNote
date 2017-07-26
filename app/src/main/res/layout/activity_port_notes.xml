@@ -5,10 +5,26 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/notesNum"
+        android:id="@+id/notesNum1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="5dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:textSize="@dimen/bigtextSize"/>
+    <TextView
+        android:id="@+id/notesNum2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
+        android:textSize="@dimen/bigtextSize"/>
+    <TextView
+        android:id="@+id/notesNum3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
         android:textSize="@dimen/bigtextSize"/>
 
     <TextView

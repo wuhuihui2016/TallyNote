@@ -22,7 +22,7 @@ public class CompareActivity extends BaseActivity {
     private ListView listView;
     private TextView emptyView;
 
-    private List<IncomeNote> incomes;
+    private List<IncomeNote> incomeNotes;
     private TextView info;
 
     @Override
@@ -44,27 +44,27 @@ public class CompareActivity extends BaseActivity {
         emptyView = (TextView) findViewById(R.id.emptyView);
         listView.setEmptyView(emptyView);
 
-        incomes = MyApp.utils.getIncomes();
+        incomeNotes = MyApp.utils.getIncomes();
 
         if (getIntent().hasExtra("cal_result")) {
             String cal_result = getIntent().getStringExtra("cal_result");
             Double result = Double.parseDouble(cal_result);
             List<IncomeNote> list = new ArrayList<>();
-            for (int i = 0; i < incomes.size(); i ++) {
-                Double dayIncome = Double.parseDouble(incomes.get(i).getDayIncome());
+            for (int i = 0; i < incomeNotes.size(); i ++) {
+                Double dayIncome = Double.parseDouble(incomeNotes.get(i).getDayIncome());
                 if (dayIncome > result) {
-                    list.add(incomes.get(i));
+                    list.add(incomeNotes.get(i));
                 }
             }
 
-            info.setText("与日收益 " + cal_result + "比较，共有 " + incomes.size() + "条记录，日收益大于 "
+            info.setText("与日收益 " + cal_result + "比较，共有 " + incomeNotes.size() + "条记录，日收益大于 "
                     + cal_result + "的有 " + list.size() + "条记录!");
             Collections.reverse(list);//倒序排列
             listView.setAdapter(new IncomeNoteAdapter(activity, list, false));
 
         } else {
-            Collections.reverse(incomes);//倒序排列
-            listView.setAdapter(new IncomeNoteAdapter(activity, incomes, false));
+            Collections.reverse(incomeNotes);//倒序排列
+            listView.setAdapter(new IncomeNoteAdapter(activity, incomeNotes, false));
         }
 
 

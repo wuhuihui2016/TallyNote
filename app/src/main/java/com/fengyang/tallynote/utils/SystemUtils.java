@@ -2,6 +2,8 @@ package com.fengyang.tallynote.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.InputType;
@@ -57,6 +59,22 @@ public class SystemUtils {
         } catch (Exception e) {
             LogUtils.i("hideSoftInputMethod", e.toString());
         }
+    }
+
+    /**
+     * 获取版本号
+     *
+     * @return 当前应用的版本号
+     */
+    public static String getVersion(Context context) {
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info.versionName;
     }
 
 }

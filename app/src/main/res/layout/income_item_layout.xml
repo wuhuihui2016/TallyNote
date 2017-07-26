@@ -19,7 +19,7 @@
             android:scaleType="centerInside"
             android:textSize="@dimen/smalltextSize"
             android:gravity="center_vertical|center"
-            android:textColor="@color/app_color"
+            android:textColor="@color/black"
             android:background="@drawable/income_record"/>
 
         <LinearLayout

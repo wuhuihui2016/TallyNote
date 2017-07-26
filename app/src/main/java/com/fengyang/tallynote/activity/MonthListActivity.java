@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class MonthListActivity extends BaseActivity {
 
+    private TextView info;
     private ListView listView;
 
     private List<MonthNote> monthNotes;
@@ -39,41 +40,17 @@ public class MonthListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("月账单列表", R.layout.activity_month_list);
+        setContentView("月账单明细", R.layout.activity_month_list);
 
         //删除后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_MONTH);
         registerReceiver(myReceiver, intentFilter);
 
-        initView();
-
-    }
-
-    //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
-                initView();
-            }
-        }
-    };
-
-
-    private void initView () {
         listView = (ListView) findViewById(R.id.listView);
-
-        monthNotes = MyApp.utils.getMonNotes();
-        TextView info = (TextView) findViewById(R.id.info);
-        info.setText("月账单记录有" + monthNotes.size() + "条");
-
-        Collections.reverse(monthNotes);//倒序排列
-        monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
-        listView.setAdapter(monthNoteAdapter);
-
         listView.setEmptyView(findViewById(R.id.emptyView));
 
+        info = (TextView) findViewById(R.id.info);
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +61,28 @@ public class MonthListActivity extends BaseActivity {
                 }
             }
         });
+
+        initData();
+
+    }
+
+    //删除后刷新界面
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
+                initData();
+            }
+        }
+    };
+
+    private void initData() {
+        monthNotes = MyApp.utils.getMonNotes();
+        info.setText("月账单记录有" + monthNotes.size() + "条");
+
+        Collections.reverse(monthNotes);//倒序排列
+        monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
+        listView.setAdapter(monthNoteAdapter);
     }
 
     /**
@@ -103,7 +102,9 @@ public class MonthListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewMonthActivity.class));
+                        Intent intent = new Intent(activity, NewMonthActivity.class);
+                        intent.putExtra("list", true);
+                        startActivity(intent);
                     }
                 }
         );

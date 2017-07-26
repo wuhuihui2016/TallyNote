@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
@@ -136,6 +138,7 @@ public class NewMonthActivity extends BaseActivity{
 								if (MyApp.utils.newMNote(monthNote)) {
 									ToastUtils.showSucessLong(context, "新增月账单成功！");
 									ExcelUtils.exportMonthNote(null);
+									if (getIntent().hasExtra("list")) sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
 									finish();
 								} else ToastUtils.showErrorLong(context, "新增月账单失败！");
 							}
@@ -184,22 +187,4 @@ public class NewMonthActivity extends BaseActivity{
 		}
 	};
 
-	@Override
-	public void onBackPressed() {
-		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
-				new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-						finish();
-
-					}
-				}, new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-					}
-				});
-
-	}
 }

@@ -1,12 +1,17 @@
 package com.fengyang.tallynote.model;
 
+import com.fengyang.tallynote.MyApp;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wuhuihui on 2017/6/28.
  */
 public class IncomeNote implements Serializable {
 
+    String id;
     String money; //投入金额（单位万）
     String incomeRatio; //预期年化（%）
     String days; //投资期限(天)
@@ -31,6 +36,14 @@ public class IncomeNote implements Serializable {
         this.finished = finished;
         this.remark = remark;
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getMoney() {
@@ -124,7 +137,8 @@ public class IncomeNote implements Serializable {
     @Override
     public String toString() {
         return "IncomeNote{" +
-                "money='" + money + 
+                "id='" + id + 
+                ", money='" + money + 
                 ", incomeRatio='" + incomeRatio + 
                 ", days='" + days + 
                 ", durtion='" + durtion + 
@@ -136,5 +150,20 @@ public class IncomeNote implements Serializable {
                 ", remark='" + remark + 
                 ", time='" + time + 
                 '}';
+    }
+
+    /**
+     * 获取未完成的理财列表
+     * @return
+     */
+    public static List<IncomeNote> getUnFinished() {
+        List<IncomeNote> unFinisheds = new ArrayList<>();
+        List<IncomeNote> incomeNotes = MyApp.utils.getIncomes();
+        for (int i = 0; i < incomeNotes.size(); i++) {
+            if (incomeNotes.get(i).getFinished() == 0) {
+                unFinisheds.add(incomeNotes.get(i));
+            }
+        }
+        return unFinisheds;
     }
 }

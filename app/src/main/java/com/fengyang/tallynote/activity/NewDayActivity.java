@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Spinner;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.DayNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
@@ -88,6 +90,7 @@ public class NewDayActivity extends BaseActivity{
 								if (MyApp.utils.newDNote(dayNote)) {
 									ToastUtils.showSucessLong(context, "新增日账单成功！");
 									ExcelUtils.exportDayNote(null);
+									if (getIntent().hasExtra("list")) sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
 									finish();
 								} else ToastUtils.showErrorLong(context, "新增日账单失败！");
 							}
@@ -102,25 +105,6 @@ public class NewDayActivity extends BaseActivity{
 				ToastUtils.showToast(context, true, "请完善必填信息！");
 			}
 		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
-				new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-						finish();
-
-					}
-				}, new DialogUtils.DialogListener(){
-					@Override
-					public void onClick(View v) {
-						super.onClick(v);
-					}
-				});
-
 	}
 
 }

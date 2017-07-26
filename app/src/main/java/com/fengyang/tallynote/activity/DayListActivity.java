@@ -45,26 +45,12 @@ public class DayListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("日账单列表", R.layout.activity_day_list);
+        setContentView("日账单明细", R.layout.activity_day_list);
         //删除后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_DAY);
         registerReceiver(myReceiver, intentFilter);
 
-        initView();
-    }
-
-    //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_DAY)) {
-                getAll();
-            }
-        }
-    };
-
-    private void initView() {
         info = (TextView) findViewById(R.id.info);
         all = (TextView) findViewById(R.id.all);
         consume = (TextView) findViewById(R.id.consume);
@@ -72,9 +58,6 @@ public class DayListActivity extends BaseActivity {
         account_in = (TextView) findViewById(R.id.account_in);
 
         listView = (ListView) findViewById(R.id.listView);
-
-        getAll();
-
         listView.setEmptyView(findViewById(R.id.emptyView));
 
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
@@ -88,7 +71,18 @@ public class DayListActivity extends BaseActivity {
             }
         });
 
+        getAll();
     }
+
+    //删除后刷新界面
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_DAY)) {
+                getAll();
+            }
+        }
+    };
 
     /*
      * 获取最新数据
@@ -115,7 +109,9 @@ public class DayListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewDayActivity.class));
+                        Intent intent = new Intent(activity, NewDayActivity.class);
+                        intent.putExtra("list", true);
+                        startActivity(intent);
                     }
                 }
         );

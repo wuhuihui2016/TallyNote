@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +32,23 @@ import java.util.List;
 public class IncomeNoteAdapter extends BaseAdapter {
 
     private Activity activity;
-    private List<IncomeNote> incomes;
+    private List<IncomeNote> incomeNotes;
     private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
 
-    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomes, boolean isLast) {
+    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes, boolean isLast) {
         this.activity = activity;
-        this.incomes = incomes;
+        this.incomeNotes = incomeNotes;
         this.isLast = isLast;
     }
 
     @Override
     public int getCount() {
-        return incomes.size();
+        return incomeNotes.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return incomes.get(position);
+        return incomeNotes.get(position);
     }
 
     @Override
@@ -75,8 +78,15 @@ public class IncomeNoteAdapter extends BaseAdapter {
         }
 
         //获取当前对象
-        final IncomeNote incomeNote = incomes.get(position);
-        viewHolder.income_time.setText(incomeNote.getDurtion().split("-")[1].substring(4, 8));
+        final IncomeNote incomeNote = incomeNotes.get(position);
+
+        String id = incomeNote.getId();
+        String time = incomeNote.getDurtion().split("-")[1].substring(4, 8);
+        SpannableStringBuilder style = new SpannableStringBuilder(id + "\n" + time);
+        style.setSpan(new ForegroundColorSpan(Color.BLACK), 0, id.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(Color.RED), id.length(), (id + "\n" + time).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        viewHolder.income_time.setText(style);
         viewHolder.income_money.setText(StringUtils.showPrice(incomeNote.getMoney()));
         viewHolder.income_ratio.setText(incomeNote.getIncomeRatio() + " %");
         viewHolder.income_days.setText(incomeNote.getDays() + " 天");
@@ -135,12 +145,11 @@ public class IncomeNoteAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
-                            MyApp.utils.delIncome(incomes.get(0));
-                            incomes = MyApp.utils.getIncomes();
+                            MyApp.utils.delIncome(incomeNotes.get(0));
+                            incomeNotes = MyApp.utils.getIncomes();
                             notifyDataSetChanged();
 
-                            Intent intent = new Intent(ContansUtils.ACTION_INCOME);
-                            activity.sendBroadcast(intent);
+                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
                         }
                     }, new DialogUtils.DialogListener() {
                         @Override

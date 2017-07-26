@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/app_color"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <ImageButton
             android:id="@+id/return_btn"
@@ -44,7 +44,6 @@
             android:background="@color/transparent"
             android:textColor="@color/white"
             android:textSize="@dimen/bigtextSize"
-            android:layout_marginRight="10dp"
             android:visibility="gone"/>
 
         <ImageView
@@ -56,7 +55,6 @@
             android:scaleType="centerInside"
             android:onClick="onClick"
             android:visibility="gone"
-            android:layout_marginRight="10dp"
             android:src="@drawable/icon_action_bar_more"/>
 
     </RelativeLayout>

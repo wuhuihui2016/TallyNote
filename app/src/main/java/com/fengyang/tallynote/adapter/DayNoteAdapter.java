@@ -103,8 +103,7 @@ public class DayNoteAdapter extends BaseAdapter {
                             dayNotes = MyApp.utils.getDayNotes();
                             notifyDataSetChanged();
 
-                            Intent intent = new Intent(ContansUtils.ACTION_DAY);
-                            activity.sendBroadcast(intent);
+                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
 
                         }
                     }, new DialogUtils.DialogListener(){

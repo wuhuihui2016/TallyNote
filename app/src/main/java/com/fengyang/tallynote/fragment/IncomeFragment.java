@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,18 +86,17 @@ public class IncomeFragment extends Fragment{
 	/**
 	 * 显示最近一次收益的理财记录
 	 */
+	IncomeNote laterIncome = null;
 	private void showIncomeNote() {
 
-		List<IncomeNote> incomes = MyApp.utils.getIncomes();
+		List<IncomeNote> unFinisheds = IncomeNote.getUnFinished(); //未完成的
 		currIncomeSum = (TextView) content.findViewById(R.id.currIncomeSum);
 		LinearLayout income_layout = (LinearLayout) content.findViewById(R.id.income_layout);
-		if (incomes.size() > 0) {
+		if (unFinisheds.size() > 0) {
 			//显示当前未完成的理财投资的总金额
 			Double sum = 0.00;
-			for (int i = 0; i < incomes.size(); i ++) {
-				if(incomes.get(i).getFinished() == 0) {
-					sum += Double.parseDouble(incomes.get(i).getMoney());
-				}
+			for (int i = 0; i < unFinisheds.size(); i ++) {
+				sum += Double.parseDouble(unFinisheds.get(i).getMoney());
 			}
 
 			sumStr = "当前投资总金额：" + StringUtils.showPrice(sum + "");
@@ -103,13 +105,14 @@ public class IncomeFragment extends Fragment{
 			income_layout.setVisibility(View.VISIBLE);
 			content.findViewById(R.id.detail_layout).setVisibility(View.GONE);
 			content.findViewById(R.id.income_finished).setVisibility(View.GONE);
+
 			//显示最近一次收益的理财记录
-			IncomeNote laterIncome = incomes.get(0);
-			for (int i = 0; i < incomes.size(); i ++) {
-				String date = incomes.get(i).getDurtion().split("-")[1];
+			laterIncome = unFinisheds.get(0);
+			for (int i = 0; i < unFinisheds.size(); i ++) {
+				String date = unFinisheds.get(i).getDurtion().split("-")[1];
 				String lasterDate = laterIncome.getDurtion().split("-")[1];
-				if (DateUtils.daysBetween(date) > DateUtils.daysBetween(lasterDate)) {
-					laterIncome = incomes.get(i);
+				if (DateUtils.daysBetween(date) < DateUtils.daysBetween(lasterDate)) {
+					laterIncome = unFinisheds.get(i);
 				}
 			}
 
@@ -117,39 +120,22 @@ public class IncomeFragment extends Fragment{
 			TextView income_time = (TextView) content.findViewById(R.id.income_time);
 			TextView income_money = (TextView) content.findViewById(R.id.income_money);
 			TextView income_ratio = (TextView) content.findViewById(R.id.income_ratio);
-			TextView income_days = (TextView) content.findViewById(R.id.income_days);
-			TextView income_durtion = (TextView) content.findViewById(R.id.income_durtion);
-			TextView income_dayIncome = (TextView) content.findViewById(R.id.income_dayIncome);
-			TextView income_finalIncome = (TextView) content.findViewById(R.id.income_finalIncome);
-			TextView income_remark = (TextView) content.findViewById(R.id.income_remark);
-			TextView income_finished = (TextView) content.findViewById(R.id.income_finished);
-			
-			income_time.setText(laterIncome.getDurtion().split("-")[0].substring(4, 6));
+
+			String id = laterIncome.getId();
+			String time = laterIncome.getDurtion().split("-")[1].substring(4, 8);
+			SpannableStringBuilder style = new SpannableStringBuilder(id + "\n" + time);
+			style.setSpan(new ForegroundColorSpan(Color.BLACK), 0, id.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			style.setSpan(new ForegroundColorSpan(Color.RED), id.length(), (id + "\n" + time).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			income_time.setText(style);
 			income_money.setText(StringUtils.showPrice(laterIncome.getMoney()));
 			income_ratio.setText(laterIncome.getIncomeRatio() + " %");
-			income_days.setText(laterIncome.getDays() + " 天");
-			income_durtion.setText(laterIncome.getDurtion());
-			income_dayIncome.setText(StringUtils.showPrice(laterIncome.getDayIncome()) + "/万/天");
-			income_finalIncome.setText(StringUtils.showPrice(laterIncome.getFinalIncome()));
-			income_remark.setText(laterIncome.getRemark());
 
-			if (laterIncome.getFinished() == 0) {
-				int day = DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]);
-				if (day < 0) {
-					income_finished.setText("已经结束,请完成 >");
-				} else if (day == 0) {
-					income_finished.setText("今日到期！可完成 >");
-				} else {
-					income_finished.setText("计息中,还剩 " + DateUtils.daysBetween(laterIncome.getDurtion().split("-")[1]) + " 天");
-				}
-			} else {
-				income_finished.setTextColor(Color.GRAY);
-				income_finished.setText("已完成！");
-			}
 			income_layout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(activity, IncomeListActivity.class));
+					Intent intent = new Intent(activity, IncomeListActivity.class);
+					intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(laterIncome.getId()));
+					startActivity(intent);
 
 				}
 			});

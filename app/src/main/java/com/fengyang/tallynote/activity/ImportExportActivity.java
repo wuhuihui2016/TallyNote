@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
@@ -33,10 +34,31 @@ public class ImportExportActivity extends BaseActivity {
     }
 
     private void initDate () {
-        TextView notesNum = (TextView) findViewById(R.id.notesNum);
-        notesNum.setText("日账记录：" + MyApp.utils.getDayNotes().size() +
-                "\n月账记录：" + MyApp.utils.getMonNotes().size() +
-                "\n理财记录：" + MyApp.utils.getIncomes().size());
+        TextView notesNum1 = (TextView) findViewById(R.id.notesNum1);
+        TextView notesNum2 = (TextView) findViewById(R.id.notesNum2);
+        TextView notesNum3 = (TextView) findViewById(R.id.notesNum3);
+        notesNum1.setText("日账记录：" + MyApp.utils.getDayNotes().size());
+        notesNum2.setText("月账记录：" + MyApp.utils.getMonNotes().size());
+        notesNum3.setText("理财记录：" + MyApp.utils.getIncomes().size());
+        notesNum1.setOnClickListener(new MyOnClickListener(ContansUtils.DAY));
+        notesNum2.setOnClickListener(new MyOnClickListener(ContansUtils.MONTH));
+        notesNum3.setOnClickListener(new MyOnClickListener(ContansUtils.INCOME));
+    }
+
+    private class MyOnClickListener implements View.OnClickListener {
+
+        private int index;
+
+        public MyOnClickListener(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (index == ContansUtils.DAY) startActivity(new Intent(activity, DayListActivity.class));
+            if (index == ContansUtils.MONTH) startActivity(new Intent(activity, MonthListActivity.class));
+            if (index == ContansUtils.INCOME) startActivity(new Intent(activity, IncomeListActivity.class));
+        }
     }
 
     @Override
@@ -93,7 +115,7 @@ public class ImportExportActivity extends BaseActivity {
                         Uri uri = data.getData();
                         String path = FileUtils.getPath(context, uri);
                         LogUtils.i(TAG, "File Path: " + path);
-                        ExcelUtils.importExcel(context, path, new ExcelUtils.ICallBackImport() {
+                        ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
 
                             @Override
                             public void callback(int day_count, int month_count, int income_count) {

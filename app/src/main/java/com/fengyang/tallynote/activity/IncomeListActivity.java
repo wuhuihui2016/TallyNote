@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class IncomeListActivity extends BaseActivity {
 
+    private TextView info;
     private ListView listView;
 
     private List<IncomeNote> incomeNotes;
@@ -44,38 +45,16 @@ public class IncomeListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("理财列表", R.layout.activity_income_list);
+        setContentView("理财明细", R.layout.activity_income_list);
         //删除后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_INCOME);
         registerReceiver(myReceiver, intentFilter);
 
-        initView();
-
-    }
-
-    //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
-                initView();
-            }
-        }
-    };
-
-    private void initView() {
         listView = (ListView) findViewById(R.id.listView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
-        incomeNotes = MyApp.utils.getIncomes();
-
-        TextView info = (TextView) findViewById(R.id.info);
-        info.setText("月账单记录有" + incomeNotes.size() + "条");
-
-        Collections.reverse(incomeNotes);//倒序排列
-        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
-        listView.setAdapter(incomeNoteAdapter);
-
+        info = (TextView) findViewById(R.id.info);
         sort_info = (TextView) findViewById(R.id.sort_info);
         sort_info.setVisibility(View.VISIBLE);
         sort_info.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +68,6 @@ public class IncomeListActivity extends BaseActivity {
             }
         });
 
-
-        listView.setEmptyView(findViewById(R.id.emptyView));
-
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +79,31 @@ public class IncomeListActivity extends BaseActivity {
             }
         });
 
+        initData();
+
+        if (getIntent().hasExtra("position")) {
+            listView.setSelection(getIntent().getIntExtra("position", 0));
+        }
+
+    }
+
+    //删除后刷新界面
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
+                initData();
+            }
+        }
+    };
+
+    private void initData() {
+        incomeNotes = MyApp.utils.getIncomes();
+        info.setText("投资账单记录有" + incomeNotes.size() + "条,计息中" + IncomeNote.getUnFinished().size() + "条");
+
+        Collections.reverse(incomeNotes);//倒序排列
+        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
+        listView.setAdapter(incomeNoteAdapter);
     }
 
     /**
@@ -175,7 +176,9 @@ public class IncomeListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewIncomeActivity.class));
+                        Intent intent = new Intent(activity, NewIncomeActivity.class);
+                        intent.putExtra("list", true);
+                        startActivity(intent);
                     }
                 }
         );
@@ -230,6 +233,7 @@ public class IncomeListActivity extends BaseActivity {
                     }
                 }
             }
+            Collections.reverse(incomeNotes);//倒序排列
             LogUtils.i("sort", incomeNotes.toString());
             incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
             listView.setAdapter(incomeNoteAdapter);

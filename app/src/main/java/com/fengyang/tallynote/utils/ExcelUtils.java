@@ -1,7 +1,5 @@
 package com.fengyang.tallynote.utils;
 
-import android.content.Context;
-
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
@@ -39,11 +37,11 @@ public class ExcelUtils {
         File excelDir = FileUtils.getExcelDir();
         final File files[] = excelDir.listFiles();
         for (int i = 0; i < files.length; i++) {
-            if (type == 0) {
+            if (type == ContansUtils.DAY) {
                 if (files[i].getName().contains("daynote_")) files[i].delete();
-            } else if (type == 1) {
+            } else if (type == ContansUtils.MONTH) {
                 if (files[i].getName().contains("monthnote_")) files[i].delete();
-            } if (type == 2) {
+            } if (type == ContansUtils.INCOME) {
                 if (files[i].getName().contains("incomenote_")) files[i].delete();
             } else {
                 if (files[i].getName().contains("tallynote_")) files[i].delete();
@@ -58,7 +56,7 @@ public class ExcelUtils {
      */
     public static void exportDayNote(ICallBackExport callBackExport) {
         try {
-            clearOldExcelFile(0);
+            clearOldExcelFile(ContansUtils.DAY);
             File file = new File(FileUtils.excelPath + "/daynote_" + DateUtils.formatDate4fileName() + ".xls");
             if (! file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -90,7 +88,7 @@ public class ExcelUtils {
      */
     public static void exportMonthNote(ICallBackExport callBackExport) {
         try {
-            clearOldExcelFile(1);
+            clearOldExcelFile(ContansUtils.MONTH);
             File file = new File(FileUtils.excelPath + "/monthnote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -125,7 +123,7 @@ public class ExcelUtils {
      */
     public static void exportIncomeNote(ICallBackExport callBackExport) {
         try {
-            clearOldExcelFile(2);
+            clearOldExcelFile(ContansUtils.INCOME);
             File file = new File(FileUtils.excelPath + "/incomenote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -159,7 +157,7 @@ public class ExcelUtils {
      */
     public static void exportAll(ICallBackExport callBackExport) {
         try {
-            clearOldExcelFile(3);
+            clearOldExcelFile(ContansUtils.ALL);
             File file = new File(FileUtils.excelPath + "/tallynote_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
@@ -281,7 +279,7 @@ public class ExcelUtils {
     /**
      * 导入本地Excel文件到数据库
      */
-    public static void importExcel(Context context, String filePath, ICallBackImport callBackImport) {
+    public static void importExcel(String filePath, ICallBackImport callBackImport) {
         String tag = "importExcel";
         int day_count = 0, month_count = 0, income_count = 0;
         try {

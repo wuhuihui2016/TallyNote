@@ -18,7 +18,7 @@ public class ContansUtils {
 	private static SharedPreferences preferences;
 	private static SharedPreferences.Editor editor;
 
-	public static final int DAY = 0, MONTH = 1, INCOME = 2;
+	public static final int DAY = 0, MONTH = 1, INCOME = 2, ALL = 3;
 
 	public static final String ACTION_DAY = "day";
 	public static final String ACTION_MONTH = "month";

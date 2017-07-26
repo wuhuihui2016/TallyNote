@@ -25,6 +25,7 @@ import com.fengyang.tallynote.fragment.MineFragment;
 import com.fengyang.tallynote.fragment.TallyFragment;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.PermissionUtils;
+import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class MainActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView("我的账本", R.layout.activity_main);
+
+		setRightBtnListener("V " + SystemUtils.getVersion(context), null);
 
 	}
 
