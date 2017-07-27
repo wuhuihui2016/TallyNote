@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.InputType;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -18,20 +16,6 @@ import java.lang.reflect.Method;
 public class SystemUtils {
 
     private static String TAG = "SystemUtils";
-
-    /**
-     * 判断是否有网络连接
-     */
-    public static boolean isNetworkConnected(Context context) {
-        if(context != null){
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if(mNetworkInfo != null){
-                return mNetworkInfo.isAvailable();
-            }
-        }
-        return false;
-    }
 
     /**
      * 针对与某个输入框的方法：禁掉系统软键盘

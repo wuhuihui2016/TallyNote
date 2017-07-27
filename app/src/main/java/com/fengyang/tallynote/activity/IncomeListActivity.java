@@ -22,6 +22,7 @@ import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
+import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.Collections;
@@ -84,6 +85,8 @@ public class IncomeListActivity extends BaseActivity {
         if (getIntent().hasExtra("position")) {
             listView.setSelection(getIntent().getIntExtra("position", 0));
         }
+
+        NotificationUtils.cancel();//关闭通知
 
     }
 

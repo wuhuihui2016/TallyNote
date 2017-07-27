@@ -54,7 +54,7 @@ public class DayNoteAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(activity).inflate(R.layout.day_item_layout, null);
 
             viewHolder = new ViewHolder();
@@ -87,7 +87,7 @@ public class DayNoteAdapter extends BaseAdapter {
             viewHolder.tag.setImageResource(R.drawable.account_in);
         }
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
-        if (! TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
+        if (!TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
         else viewHolder.remask.setText("");
 
         if (position == 0 && isLast) {
@@ -95,7 +95,7 @@ public class DayNoteAdapter extends BaseAdapter {
             viewHolder.day_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -106,7 +106,7 @@ public class DayNoteAdapter extends BaseAdapter {
                             activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
 
                         }
-                    }, new DialogUtils.DialogListener(){
+                    }, new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -119,7 +119,7 @@ public class DayNoteAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         View spot;
         ImageView tag, day_del;
         TextView time, usage, money, remask;

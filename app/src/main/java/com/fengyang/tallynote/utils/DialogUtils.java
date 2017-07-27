@@ -23,6 +23,7 @@ public class DialogUtils {
 
     /**
      * 页面消息提示（dialog）
+     *
      * @param activity
      * @param message
      */
@@ -43,11 +44,13 @@ public class DialogUtils {
 
             dialog.show();
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     /**
      * 页面消息提示（dialog）
+     *
      * @param activity
      * @param title
      * @param message
@@ -73,11 +76,13 @@ public class DialogUtils {
 
             dialog.show();
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     /**
      * 页面消息提示（dialog）
+     *
      * @param activity
      * @param title
      * @param message
@@ -98,10 +103,13 @@ public class DialogUtils {
             cancel_layout.setVisibility(View.GONE);
             dialog.show();
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
+
     /**
      * 页面消息提示（dialog）
+     *
      * @param activity
      * @param title
      * @param message
@@ -122,14 +130,16 @@ public class DialogUtils {
             comfireView.setOnClickListener(comfireListener);
 
             if (cancelListener == null) cancel_layout.setVisibility(View.GONE);
-            else  cancelView.setOnClickListener(cancelListener);
+            else cancelView.setOnClickListener(cancelListener);
             dialog.show();
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     /**
      * 初始化dialog
+     *
      * @param activity
      * @return
      */

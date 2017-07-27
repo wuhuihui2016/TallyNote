@@ -17,6 +17,7 @@ public class ToastUtils {
 
     /**
      * 页面消息提示
+     *
      * @param context
      * @param message
      */
@@ -38,7 +39,7 @@ public class ToastUtils {
         mToast = new Toast(context);
         mToast.setGravity(Gravity.CENTER, 0, 0);
         if (isShort) mToast.setDuration(Toast.LENGTH_SHORT);
-        else  mToast.setDuration(Toast.LENGTH_LONG);
+        else mToast.setDuration(Toast.LENGTH_LONG);
 
         View view = View.inflate(context, R.layout.layout_toast, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);

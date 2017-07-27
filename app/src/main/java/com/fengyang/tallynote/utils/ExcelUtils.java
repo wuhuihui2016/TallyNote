@@ -31,20 +31,22 @@ public class ExcelUtils {
 
     /**
      * 文件导出时清除旧文件
+     *
      * @param type
      */
-    private static void clearOldExcelFile (int type) {
+    private static void clearOldExcelFile(int type) {
         File excelDir = FileUtils.getExcelDir();
         final File files[] = excelDir.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (type == ContansUtils.DAY) {
-                if (files[i].getName().contains("daynote_")) files[i].delete();
+                if (files[i].getName().contains("day_note_")) files[i].delete();
             } else if (type == ContansUtils.MONTH) {
-                if (files[i].getName().contains("monthnote_")) files[i].delete();
-            } if (type == ContansUtils.INCOME) {
-                if (files[i].getName().contains("incomenote_")) files[i].delete();
+                if (files[i].getName().contains("month_note_")) files[i].delete();
+            }
+            if (type == ContansUtils.INCOME) {
+                if (files[i].getName().contains("income_note_")) files[i].delete();
             } else {
-                if (files[i].getName().contains("tallynote_")) files[i].delete();
+                if (files[i].getName().contains("tally_note_")) files[i].delete();
             }
         }
     }
@@ -57,8 +59,8 @@ public class ExcelUtils {
     public static void exportDayNote(ICallBackExport callBackExport) {
         try {
             clearOldExcelFile(ContansUtils.DAY);
-            File file = new File(FileUtils.excelPath + "/daynote_" + DateUtils.formatDate4fileName() + ".xls");
-            if (! file.exists()) file.createNewFile();
+            File file = new File(FileUtils.excelPath + "/day_note_" + DateUtils.formatDate4fileName() + ".xls");
+            if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
             // 创建工作表
@@ -89,7 +91,7 @@ public class ExcelUtils {
     public static void exportMonthNote(ICallBackExport callBackExport) {
         try {
             clearOldExcelFile(ContansUtils.MONTH);
-            File file = new File(FileUtils.excelPath + "/monthnote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/month_note_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
@@ -124,7 +126,7 @@ public class ExcelUtils {
     public static void exportIncomeNote(ICallBackExport callBackExport) {
         try {
             clearOldExcelFile(ContansUtils.INCOME);
-            File file = new File(FileUtils.excelPath + "/incomenote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/income_note_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
@@ -158,7 +160,7 @@ public class ExcelUtils {
     public static void exportAll(ICallBackExport callBackExport) {
         try {
             clearOldExcelFile(ContansUtils.ALL);
-            File file = new File(FileUtils.excelPath + "/tallynote_" + DateUtils.formatDate4fileName() + ".xls");
+            File file = new File(FileUtils.excelPath + "/tally_note_" + DateUtils.formatDate4fileName() + ".xls");
             if (!file.exists()) file.createNewFile();
             WritableWorkbook writebook = Workbook.createWorkbook(file);
 
@@ -297,7 +299,7 @@ public class ExcelUtils {
                     if (sheetName.contains("日")) { //日账单解析
                         dayNotes = new ArrayList<>();
                         dayNotes.clear();
-                        for (int j = 1; j < rows; j ++) {//行
+                        for (int j = 1; j < rows; j++) {//行
                             int type = 1;
                             if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
                             if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
@@ -311,12 +313,13 @@ public class ExcelUtils {
                         LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                         if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
                             day_count = dayNotes.size();
+                            exportDayNote(null);
                         }
 
                     } else if (sheetName.contains("月")) { //月账单解析
                         monthNotes = new ArrayList<>();
                         monthNotes.clear();
-                        for (int j = 1; j < rows; j ++) {//行
+                        for (int j = 1; j < rows; j++) {//行
                             monthNotes.add(new MonthNote(
                                     sheet.getCell(0, j).getContents(),
                                     sheet.getCell(1, j).getContents(),
@@ -332,12 +335,13 @@ public class ExcelUtils {
                         LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                         if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
                             month_count = monthNotes.size();
+                            exportMonthNote(null);
                         }
 
                     } else if (sheetName.contains("理财")) { //理财记录解析
                         incomeNotes = new ArrayList<>();
                         incomeNotes.clear();
-                        for (int j = 1; j < rows; j ++) {//行
+                        for (int j = 1; j < rows; j++) {//行
                             incomeNotes.add(new IncomeNote(
                                     sheet.getCell(0, j).getContents(),
                                     sheet.getCell(1, j).getContents(),
@@ -354,13 +358,14 @@ public class ExcelUtils {
                         LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                         if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
                             income_count = incomeNotes.size();
+                            exportIncomeNote(null);
                         }
                     } else {
                         callBackImport.callback("导入失败！原因：非本APP导出的文件！");
                         return;
                     }
 
-                } else  LogUtils.i(tag, sheetName + "表单中没有可解析的数据！");
+                } else LogUtils.i(tag, sheetName + "表单中没有可解析的数据！");
             }
 
             if (callBackImport != null) {
@@ -380,6 +385,7 @@ public class ExcelUtils {
      */
     public interface ICallBackImport {
         void callback(String errorMsg);
+
         void callback(int day_count, int month_count, int income_count);
     }
 }

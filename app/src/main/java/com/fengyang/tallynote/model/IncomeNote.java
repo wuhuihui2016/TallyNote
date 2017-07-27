@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.model;
 
 import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class IncomeNote implements Serializable {
     public void setFinished(int finished) {
         this.finished = finished;
     }
-    
+
     public String getRemark() {
         return remark;
     }
@@ -137,23 +138,24 @@ public class IncomeNote implements Serializable {
     @Override
     public String toString() {
         return "IncomeNote{" +
-                "id='" + id + 
-                ", money='" + money + 
-                ", incomeRatio='" + incomeRatio + 
-                ", days='" + days + 
-                ", durtion='" + durtion + 
-                ", dayIncome='" + dayIncome + 
-                ", finalIncome='" + finalIncome + 
-                ", finalCash='" + finalCash + 
-                ", finalCashGo='" + finalCashGo + 
+                "id='" + id +
+                ", money='" + money +
+                ", incomeRatio='" + incomeRatio +
+                ", days='" + days +
+                ", durtion='" + durtion +
+                ", dayIncome='" + dayIncome +
+                ", finalIncome='" + finalIncome +
+                ", finalCash='" + finalCash +
+                ", finalCashGo='" + finalCashGo +
                 ", finished=" + finished +
-                ", remark='" + remark + 
-                ", time='" + time + 
+                ", remark='" + remark +
+                ", time='" + time +
                 '}';
     }
 
     /**
      * 获取未完成的理财列表
+     *
      * @return
      */
     public static List<IncomeNote> getUnFinished() {
@@ -165,5 +167,18 @@ public class IncomeNote implements Serializable {
             }
         }
         return unFinisheds;
+    }
+
+    //显示最近一次收益的理财记录
+    public static IncomeNote getLastIncomeNote() {
+        IncomeNote incomeNote = getUnFinished().get(0);
+        for (int i = 0; i < getUnFinished().size(); i++) {
+            String date = getUnFinished().get(i).getDurtion().split("-")[1];
+            String lasterDate = incomeNote.getDurtion().split("-")[1];
+            if (DateUtils.daysBetween(date) < DateUtils.daysBetween(lasterDate)) {
+                incomeNote = getUnFinished().get(i);
+            }
+        }
+        return incomeNote;
     }
 }

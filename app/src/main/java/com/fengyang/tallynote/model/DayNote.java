@@ -57,9 +57,9 @@ public class DayNote implements Serializable {
     public String toString() {
         return "DayNote{" +
                 "useType=" + useType +
-                ", money='" + money + 
-                ", remark='" + remark + 
-                ", time='" + time + 
+                ", money='" + money +
+                ", remark='" + remark +
+                ", time='" + time +
                 '}';
     }
 }

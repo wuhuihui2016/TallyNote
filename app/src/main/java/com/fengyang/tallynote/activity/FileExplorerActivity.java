@@ -1,10 +1,16 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.FileExplorerAdapter;
@@ -27,6 +33,7 @@ public class FileExplorerActivity extends BaseActivity {
 
     private List<File> fileList = new ArrayList<>();
     private FileExplorerAdapter adapter;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class FileExplorerActivity extends BaseActivity {
         init();
     }
 
-    private void init () {
+    private void init() {
         final ListView listView = (ListView) findViewById(R.id.listView);
 
         File excelDir = FileUtils.getExcelDir();
@@ -80,16 +87,17 @@ public class FileExplorerActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         if (adapter.selList.size() > 0) {
-                            DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener(){
+                            DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
                                 @Override
                                 public void onClick(View v) {
                                     super.onClick(v);
-                                    for (int i = 0; i < adapter.selList.size(); i++)  adapter.selList.get(i).delete();
+                                    for (int i = 0; i < adapter.selList.size(); i++)
+                                        adapter.selList.get(i).delete();
                                     adapter.selList.clear();
                                     choose_layout.setVisibility(View.GONE);
                                     init();
                                 }
-                            }, new DialogUtils.DialogListener(){
+                            }, new DialogUtils.DialogListener() {
                                 @Override
                                 public void onClick(View v) {
                                     super.onClick(v);
@@ -118,13 +126,60 @@ public class FileExplorerActivity extends BaseActivity {
             if (isSellect) {
                 adapter.setSelected(file);
             } else {
-                try {
-                    WPSUtils.openFile(getApplicationContext(), file.getPath());
-                } catch (Exception e) {
-                    ToastUtils.showWarningShort(context, "没有找到可打开" + file.getName() + "的应用！");
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                } else {
+                    initPopupWindow(file);
                 }
+
+
             }
         }
+    }
+
+    /**
+     * 初始化popupWindow
+     */
+    private void initPopupWindow(final File file) {
+        LayoutInflater inflater = (LayoutInflater) getApplication()
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.layout_file_pop, null);
+        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(false);
+        popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.BOTTOM, 0, 0);
+
+        layout.findViewById(R.id.open).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        try {
+                            WPSUtils.openFile(getApplicationContext(), file.getPath());
+                        } catch (Exception e) {
+                            ToastUtils.showWarningShort(context, "没有找到可打开" + file.getName() + "的应用！");
+                        }
+                    }
+                }
+        );
+        layout.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                //http://blog.csdn.net/yuxiaohui78/article/details/8232402
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                share.setType("*/*");//此处可发送多种文件
+                startActivity(Intent.createChooser(share, "发送文件"));
+
+            }
+        });
+        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 
 

@@ -83,13 +83,13 @@ public class ForgetPwdActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.num0:
                 onClickCallback("0");
                 break;
             case R.id.clear:
                 list.clear();
-                for (int i = 0; i < textViews.size(); i ++) {
+                for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
                 break;
@@ -98,13 +98,14 @@ public class ForgetPwdActivity extends BaseActivity {
 
     /**
      * 数字的点击事件回调
+     *
      * @param pwd
      */
     private void onClickCallback(String pwd) {
         if (list.size() < 6) {
 //        StringUtils.show1Toast(activity, pwd);
             list.add(pwd);
-            for (int i = 0; i < list.size(); i ++){
+            for (int i = 0; i < list.size(); i++) {
                 if (list.size() - 1 >= i) {
                     textViews.get(i).setText(list.get(i));
                 } else {
@@ -117,7 +118,7 @@ public class ForgetPwdActivity extends BaseActivity {
                     @Override
                     public void deal() {
                         String pwdKey = "";
-                        for (int i = 0; i < list.size(); i ++) {
+                        for (int i = 0; i < list.size(); i++) {
                             pwdKey += list.get(i);
                         }
 
@@ -127,10 +128,10 @@ public class ForgetPwdActivity extends BaseActivity {
                             String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
                             if (pwd.length() > 6) {
                                 pwd = pwd.substring(0, 5);
-                            } else if (pwd.length() < 6){
+                            } else if (pwd.length() < 6) {
                                 pwd = getPwdKey;
                             }
-                            DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener(){
+                            DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener() {
                                 @Override
                                 public void onClick(View v) {
                                     super.onClick(v);
@@ -141,7 +142,7 @@ public class ForgetPwdActivity extends BaseActivity {
                         } else {
                             ToastUtils.showToast(context, true, "验证失败！请重新输入！");
                             list.clear();
-                            for (int i = 0; i < textViews.size(); i ++) {
+                            for (int i = 0; i < textViews.size(); i++) {
                                 textViews.get(i).setText("");
                             }
                         }

@@ -84,7 +84,7 @@ public class WPSUtils {
         try {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            System.out.println("打开wps异常："+e.toString());
+            System.out.println("打开wps异常：" + e.toString());
             e.printStackTrace();
             return false;
         }

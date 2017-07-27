@@ -89,13 +89,13 @@ public class OnStartActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.num0:
                 onClickCallback("0");
                 break;
             case R.id.clear:
                 list.clear();
-                for (int i = 0; i < textViews.size(); i ++) {
+                for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
                 break;
@@ -107,13 +107,14 @@ public class OnStartActivity extends BaseActivity {
 
     /**
      * 数字的点击事件回调
+     *
      * @param pwd
      */
     private void onClickCallback(String pwd) {
         if (list.size() < 6) {
 //        StringUtils.show1Toast(activity, pwd);
             list.add(pwd);
-            for (int i = 0; i < list.size(); i ++){
+            for (int i = 0; i < list.size(); i++) {
                 if (list.size() - 1 >= i) {
                     textViews.get(i).setText(list.get(i));
                 } else {
@@ -126,14 +127,14 @@ public class OnStartActivity extends BaseActivity {
                     @Override
                     public void deal() {
                         String password = "";
-                        for (int i = 0; i < list.size(); i ++) {
+                        for (int i = 0; i < list.size(); i++) {
                             password += list.get(i);
                         }
 
                         String actual_balance = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
                         if (actual_balance.length() > 6) {
                             actual_balance = actual_balance.substring(0, 5);
-                        } else if (actual_balance.length() < 6){
+                        } else if (actual_balance.length() < 6) {
                             actual_balance = (String) ContansUtils.get("pwdKey", "");
                         }
                         if (password.equals(actual_balance)) {
@@ -142,7 +143,7 @@ public class OnStartActivity extends BaseActivity {
                         } else {
                             ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
                             list.clear();
-                            for (int i = 0; i < textViews.size(); i ++) {
+                            for (int i = 0; i < textViews.size(); i++) {
                                 textViews.get(i).setText("");
                             }
                         }

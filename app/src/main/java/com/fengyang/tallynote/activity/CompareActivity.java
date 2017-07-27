@@ -38,7 +38,7 @@ public class CompareActivity extends BaseActivity {
         initView();
     }
 
-    private void initView () {
+    private void initView() {
         info = (TextView) findViewById(R.id.info);
         listView = (ListView) findViewById(R.id.listView);
         emptyView = (TextView) findViewById(R.id.emptyView);
@@ -50,7 +50,7 @@ public class CompareActivity extends BaseActivity {
             String cal_result = getIntent().getStringExtra("cal_result");
             Double result = Double.parseDouble(cal_result);
             List<IncomeNote> list = new ArrayList<>();
-            for (int i = 0; i < incomeNotes.size(); i ++) {
+            for (int i = 0; i < incomeNotes.size(); i++) {
                 Double dayIncome = Double.parseDouble(incomeNotes.get(i).getDayIncome());
                 if (dayIncome > result) {
                     list.add(incomeNotes.get(i));

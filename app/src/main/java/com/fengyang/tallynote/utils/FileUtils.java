@@ -17,10 +17,11 @@ import java.text.DecimalFormat;
 public class FileUtils {
 
     public static final String dirPath = Environment.getExternalStorageDirectory() + "/TallyNote/";//项目根目录
-    public static final String excelPath = dirPath +  "/excel/";//excel根目录
+    public static final String excelPath = dirPath + "/excel/";//excel根目录
 
     /**
      * 获取APP文件夹
+     *
      * @return
      */
     public static File getAppDir() {
@@ -31,6 +32,7 @@ public class FileUtils {
 
     /**
      * 获取excel文件夹
+     *
      * @return
      */
     public static File getExcelDir() {
@@ -51,6 +53,7 @@ public class FileUtils {
 
     /**
      * 判断SDCard是否可用
+     *
      * @return
      */
     public static boolean isSDCardAvailable() {
@@ -61,6 +64,7 @@ public class FileUtils {
 
     /**
      * 获取文件路径
+     *
      * @param context
      * @param uri
      * @return
@@ -75,6 +79,7 @@ public class FileUtils {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(column_index);
                 }
+                cursor.close();
             } catch (Exception e) {
             }
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
@@ -85,9 +90,10 @@ public class FileUtils {
 
     /**
      * 获取指定文件大小
+     *
      * @param file
      * @return
-     * @throws Exception 　　
+     * @throws Exception
      */
     public static long getFileSize(File file) throws Exception {
         long size = 0;
@@ -104,10 +110,10 @@ public class FileUtils {
 
     /**
      * 获取指定文件夹
+     *
      * @param f
      * @return
      * @throws Exception
-     *
      */
     public static long getFileSizes(File f) throws Exception {
         long size = 0;
@@ -124,9 +130,9 @@ public class FileUtils {
 
     /**
      * 转换文件大小
+     *
      * @param fileS
      * @return
-     *
      */
     public static String FormetFileSize(long fileS) {
         DecimalFormat df = new DecimalFormat("#.00");
@@ -149,6 +155,7 @@ public class FileUtils {
 
     /**
      * 删除文件夹/文件
+     *
      * @param file
      */
     public static void delete(File file) {
@@ -157,7 +164,7 @@ public class FileUtils {
             return;
         }
 
-        if(file.isDirectory()){
+        if (file.isDirectory()) {
             File[] childFiles = file.listFiles();
             if (childFiles == null || childFiles.length == 0) {
                 file.delete();

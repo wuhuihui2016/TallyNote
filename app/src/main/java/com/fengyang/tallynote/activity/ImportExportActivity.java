@@ -33,7 +33,7 @@ public class ImportExportActivity extends BaseActivity {
         initDate();
     }
 
-    private void initDate () {
+    private void initDate() {
         TextView notesNum1 = (TextView) findViewById(R.id.notesNum1);
         TextView notesNum2 = (TextView) findViewById(R.id.notesNum2);
         TextView notesNum3 = (TextView) findViewById(R.id.notesNum3);
@@ -55,9 +55,12 @@ public class ImportExportActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
-            if (index == ContansUtils.DAY) startActivity(new Intent(activity, DayListActivity.class));
-            if (index == ContansUtils.MONTH) startActivity(new Intent(activity, MonthListActivity.class));
-            if (index == ContansUtils.INCOME) startActivity(new Intent(activity, IncomeListActivity.class));
+            if (index == ContansUtils.DAY)
+                startActivity(new Intent(activity, DayListActivity.class));
+            if (index == ContansUtils.MONTH)
+                startActivity(new Intent(activity, MonthListActivity.class));
+            if (index == ContansUtils.INCOME)
+                startActivity(new Intent(activity, IncomeListActivity.class));
         }
     }
 
@@ -68,7 +71,7 @@ public class ImportExportActivity extends BaseActivity {
             case R.id.import2file:
                 if (FileUtils.isSDCardAvailable()) {
 
-                    DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener(){
+                    DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -81,7 +84,7 @@ public class ImportExportActivity extends BaseActivity {
                                 ToastUtils.showToast(context, true, "Please install a File Manager.");
                             }
                         }
-                    }, new DialogUtils.DialogListener(){
+                    }, new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -121,7 +124,7 @@ public class ImportExportActivity extends BaseActivity {
                             public void callback(int day_count, int month_count, int income_count) {
                                 ToastUtils.showSucessLong(context, "导入成功！" +
                                         "\n日账记录：" + day_count +
-                                        "\n月账记录：" + month_count  +
+                                        "\n月账记录：" + month_count +
                                         "\n理财记录：" + income_count);
                                 initDate();
                             }

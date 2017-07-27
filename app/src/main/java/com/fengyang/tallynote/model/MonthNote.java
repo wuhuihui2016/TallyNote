@@ -18,9 +18,9 @@ public class MonthNote implements Serializable {
     String remark; //月结说明
     String time; //记录时间
 
-    public MonthNote(String last_balance, String pay, 
-                     String salary, String income, String homeuse, 
-                     String balance, String actual_balance, String duration, 
+    public MonthNote(String last_balance, String pay,
+                     String salary, String income, String homeuse,
+                     String balance, String actual_balance, String duration,
                      String remark, String time) {
         this.last_balance = last_balance;
         this.pay = pay;
@@ -117,16 +117,16 @@ public class MonthNote implements Serializable {
     @Override
     public String toString() {
         return "MonthNote{" +
-                "last_balance='" + last_balance  +
-                ", pay='" + pay  +
-                ", salary='" + salary  +
-                ", income='" + income  +
-                ", homeuse='" + homeuse  +
-                ", balance='" + balance  +
-                ", actual_balance='" + actual_balance  +
-                ", duration='" + duration  +
-                ", remark='" + remark  +
-                ", time='" + time  +
+                "last_balance='" + last_balance +
+                ", pay='" + pay +
+                ", salary='" + salary +
+                ", income='" + income +
+                ", homeuse='" + homeuse +
+                ", balance='" + balance +
+                ", actual_balance='" + actual_balance +
+                ", duration='" + duration +
+                ", remark='" + remark +
+                ", time='" + time +
                 '}';
     }
 }

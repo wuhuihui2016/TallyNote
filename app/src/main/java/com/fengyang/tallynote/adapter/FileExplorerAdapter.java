@@ -76,10 +76,10 @@ public class FileExplorerAdapter extends BaseAdapter {
 
             if (isSelect) {
                 viewHolder.select.setVisibility(View.VISIBLE);
-                if (selList.contains(file)) viewHolder.select.setImageResource(R.drawable.file_selected);
+                if (selList.contains(file))
+                    viewHolder.select.setImageResource(R.drawable.file_selected);
                 else viewHolder.select.setImageResource(R.drawable.file_unselect);
-            }
-            else viewHolder.select.setVisibility(View.GONE);
+            } else viewHolder.select.setVisibility(View.GONE);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,24 +90,24 @@ public class FileExplorerAdapter extends BaseAdapter {
 
 
     /**
-     * @Title: setSelected
-     * @Description: TODO 设置选取与舍弃
      * @param file
      * @return void
+     * @Title: setSelected
+     * @Description: TODO 设置选取与舍弃
      * @author wuhuihui
      * @date 2016年6月15日 上午11:01:04
      */
     public void setSelected(File file) {
-        if (selList.contains(file))  selList.remove(file);
+        if (selList.contains(file)) selList.remove(file);
         else selList.add(file);
         notifyDataSetChanged();
         LogUtils.i("setSelected", selList.toString());
     }
 
     /**
+     * @return void
      * @Title: selectAll
      * @Description: TODO 全选
-     * @return void
      * @author wuhuihui
      * @date 2016年6月15日 上午11:05:14
      */

@@ -74,7 +74,10 @@ public class KeyboardAdapter extends BaseAdapter {
         } else if (position >= 12 && position <= 14) {
             viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
             if (position == 12) viewHolder.num.setText("00");
-            if (position == 13) {viewHolder.num.setText("0"); viewHolder.num.setBackgroundColor(Color.WHITE);}
+            if (position == 13) {
+                viewHolder.num.setText("0");
+                viewHolder.num.setBackgroundColor(Color.WHITE);
+            }
             if (position == 14) viewHolder.num.setText("CE");
         } else if (position == 15) {
             viewHolder.num.setText("完成");

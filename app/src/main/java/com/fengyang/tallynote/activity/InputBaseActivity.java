@@ -37,6 +37,7 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 重写方法，增加键盘布局
+     *
      * @param title
      * @param layoutID
      */
@@ -53,7 +54,7 @@ public class InputBaseActivity extends BaseActivity {
     /**
      * 键盘布局初始化
      */
-    private void initView () {
+    private void initView() {
 
         keyboard = (GridView) findViewById(R.id.keyboard);
 
@@ -91,10 +92,11 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 设置界面中的数字输入的输入框触摸事件及输入完成的回调接口
+     *
      * @param callBackFinished
      */
     protected void setCallBack(ICallBackFinished callBackFinished) {
-        for (int i = 0; i < editTexts.size(); i ++) {
+        for (int i = 0; i < editTexts.size(); i++) {
             editTexts.get(i).setOnTouchListener(new OnTouchListener());
         }
 
@@ -127,7 +129,7 @@ public class InputBaseActivity extends BaseActivity {
      */
     private void nextInput() {
         getArea();
-        if(area == size - 1) setEditFocus(editTexts.get(0));
+        if (area == size - 1) setEditFocus(editTexts.get(0));
         else setEditFocus(editTexts.get(area + 1));
     }
 
@@ -137,7 +139,7 @@ public class InputBaseActivity extends BaseActivity {
     private void getArea() {
         size = editTexts.size();
         if (size > 1) {
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 if (editTexts.get(i).hasFocus()) {
                     area = i;
                 }
@@ -147,6 +149,7 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 设置某一输入框的焦点
+     *
      * @param edit
      */
     private void setEditFocus(EditText edit) {
@@ -158,14 +161,16 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 输入数字并显示数字在相应位置
+     *
      * @param num
      */
     private void inputNum(String num) {
-        if (! isStartWith0(num)) editTexts.get(area).append(num);
+        if (!isStartWith0(num)) editTexts.get(area).append(num);
     }
 
     /**
      * 判断当前是否可输入0，00,.
+     *
      * @param num
      * @return
      */
@@ -180,6 +185,7 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 清除当前位置输入的所有数字
+     *
      * @return
      */
     private void clear() {
@@ -193,12 +199,14 @@ public class InputBaseActivity extends BaseActivity {
 
     /**
      * 逐个删除当前位置输入的数字
+     *
      * @return
      */
     private void delNum() {
         getInputNum();
         String content = contents.get(area);
-        if (content.length() > 1) editTexts.get(area).setText(content.substring(0, content.length() - 1));
+        if (content.length() > 1)
+            editTexts.get(area).setText(content.substring(0, content.length() - 1));
         else if (content.length() == 1) clear();
         if (content.length() > 0) editTexts.get(area).setSelection(content.length() - 1);
     }
@@ -206,15 +214,16 @@ public class InputBaseActivity extends BaseActivity {
     /**
      * 分别获取当前输入区的数字
      */
-    protected void getInputNum () {
+    protected void getInputNum() {
         contents.clear();
-        for (int i = 0; i < editTexts.size(); i ++) {
+        for (int i = 0; i < editTexts.size(); i++) {
             contents.add(editTexts.get(i).getText().toString());
         }
     }
 
     /**
      * 控制键盘的显示隐藏
+     *
      * @param open
      */
     private void isShowKeyboard(boolean open) {
@@ -304,7 +313,10 @@ public class InputBaseActivity extends BaseActivity {
             } else if (position >= 12 && position <= 14) {
                 viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
                 if (position == 12) viewHolder.num.setText("00");
-                if (position == 13) {viewHolder.num.setText("0"); viewHolder.num.setBackgroundColor(Color.WHITE);}
+                if (position == 13) {
+                    viewHolder.num.setText("0");
+                    viewHolder.num.setBackgroundColor(Color.WHITE);
+                }
                 if (position == 14) viewHolder.num.setText("CE");
             } else if (position == 15) {
                 viewHolder.num.setText("完成");

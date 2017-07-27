@@ -63,6 +63,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 插入一条新日帐单
+     *
      * @param dayNote
      */
     public synchronized boolean newDNote(DayNote dayNote) {
@@ -79,6 +80,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 删除某个日记录账单（仅用于最后一次账单记录，删除后可重新记录）
+     *
      * @param dayNote
      */
     public synchronized void delDNote(DayNote dayNote) {
@@ -89,6 +91,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 查看所有的日记录账单
+     *
      * @return
      */
     public synchronized List<DayNote> getDayNotes() {
@@ -110,6 +113,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 清除所有日账单(仅用于每月总结时，每月的发工资总结时)
+     *
      * @param activity
      */
     public synchronized void clearDayNotes(final Activity activity) {
@@ -129,7 +133,6 @@ public class DBUtils extends SQLiteOpenHelper {
                                 activity.startActivity(new Intent(activity, NewMonthActivity.class));
                             }
 
-                            ;
                         });
 
                     }
@@ -139,6 +142,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 插入一条新月帐单
+     *
      * @param monthNote
      */
     public synchronized boolean newMNote(MonthNote monthNote) {
@@ -158,6 +162,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 查看所有的月记录账单
+     *
      * @return
      */
     public synchronized List<MonthNote> getMonNotes() {
@@ -186,6 +191,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 删除某个月记录账单（仅用于最后一次账单记录，删除后可重新记录）
+     *
      * @param monthNote
      */
     public synchronized void delMNote(MonthNote monthNote) {
@@ -197,6 +203,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 清除所有月账单(仅用于年度总结时，每年的1月发工资总结时)
+     *
      * @param activity
      */
     public synchronized void clearMonthNotes(Activity activity) {
@@ -208,6 +215,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 插入一条理财记录(默认未完成状态，修改状态需在列表中操作)
+     *
      * @param incomeNote
      */
     //理财记录：money 投入金额（单位万）,incomeRatio 预期年化（%）,days 投资期限(天),durtion 投资时期,dayIncome 拟日收益（万/天）,finalIncome 最终收益, time 记录时间
@@ -226,6 +234,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 完成某个理财记录
+     *
      * @param incomeNote
      * @return
      */
@@ -243,6 +252,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 删除某个理财记录（仅用于最后一次账单记录，删除后可重新记录）
+     *
      * @param incomeNote
      */
     public synchronized void delIncome(IncomeNote incomeNote) {
@@ -253,6 +263,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 查看所有的理财
+     *
      * @return
      */
     public synchronized List<IncomeNote> getIncomes() {
@@ -261,7 +272,7 @@ public class DBUtils extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from income_note", null);
         while (cursor.moveToNext()) {
             /*String money; //投入金额（单位万）
-			String incomeRatio; //预期年化（%）
+            String incomeRatio; //预期年化（%）
 			String days; //投资期限(天)
 			String durtion; //投资时期
 			String dayIncome; //拟日收益（万/天）
@@ -295,6 +306,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 清除所有理财记录(一般不用)
+     *
      * @param activity
      */
     public synchronized void clearIncomes(final Activity activity) {
@@ -322,6 +334,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 批量插入新月帐单
+     *
      * @param dayNotes
      */
     public synchronized boolean newDNotes(List<DayNote> dayNotes) {
@@ -344,6 +357,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 批量插入新月帐单
+     *
      * @param monthNotes
      */
     public synchronized boolean newMNotes(List<MonthNote> monthNotes) {
@@ -369,6 +383,7 @@ public class DBUtils extends SQLiteOpenHelper {
 
     /**
      * 批量插入理财记录
+     *
      * @param incomeNotes
      */
     public synchronized boolean newINotes(List<IncomeNote> incomeNotes) {

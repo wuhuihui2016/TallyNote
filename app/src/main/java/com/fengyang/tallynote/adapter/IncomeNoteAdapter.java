@@ -93,7 +93,8 @@ public class IncomeNoteAdapter extends BaseAdapter {
         viewHolder.income_durtion.setText(incomeNote.getDurtion());
         viewHolder.income_dayIncome.setText(StringUtils.showPrice(incomeNote.getDayIncome()) + "/万/天");
         viewHolder.income_finalIncome.setText(StringUtils.showPrice(incomeNote.getFinalIncome()));
-        if (incomeNote.getRemark().length() > 0) viewHolder.income_remark.setText(incomeNote.getRemark());
+        if (incomeNote.getRemark().length() > 0)
+            viewHolder.income_remark.setText(incomeNote.getRemark());
         else viewHolder.income_remark.setText("无");
 
         if (incomeNote.getFinished() == 0) {//未完成
@@ -105,7 +106,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
             } else if (day == 0) {
                 viewHolder.income_finished.setText("今日到期！可完成 >");
             } else {
-                viewHolder.income_finished.setText("计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
+                viewHolder.income_finished.setText("计息中,还剩 " + day + " 天");
             }
 
             if (day <= 0) {

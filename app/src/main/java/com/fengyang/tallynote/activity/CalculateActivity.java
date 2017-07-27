@@ -28,7 +28,7 @@ public class CalculateActivity extends InputBaseActivity {
 
     }
 
-    private void initView () {
+    private void initView() {
 
         editTexts.add((EditText) findViewById(R.id.cal_money));
         editTexts.add((EditText) findViewById(R.id.cal_ratio));
@@ -60,9 +60,10 @@ public class CalculateActivity extends InputBaseActivity {
      */
     private void calculate() {
         getInputNum();
-        for (int i = 0; i < size; i ++) {
-            if  (contents.get(i).length() > 0) continue;
-            else ToastUtils.showToast(context, true, "请填入所有数值！"); return;
+        for (int i = 0; i < size; i++) {
+            if (contents.get(i).length() > 0) continue;
+            else ToastUtils.showToast(context, true, "请填入所有数值！");
+            return;
         }
         double money = Double.parseDouble(contents.get(0));
         double ratio = Double.parseDouble(contents.get(1));

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/6/23.
  */
-public class MonthNoteAdapter extends BaseAdapter{
+public class MonthNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<MonthNote> monthNotes;
@@ -49,7 +49,7 @@ public class MonthNoteAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(activity).inflate(R.layout.month_item_layout, null);
             viewHolder = new ViewHolder();
             viewHolder.month_time = (TextView) convertView.findViewById(R.id.month_time);
@@ -63,7 +63,7 @@ public class MonthNoteAdapter extends BaseAdapter{
             viewHolder.month_actual_balance = (TextView) convertView.findViewById(R.id.month_actual_balance);
             viewHolder.month_del = (ImageView) convertView.findViewById(R.id.month_del);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -76,7 +76,8 @@ public class MonthNoteAdapter extends BaseAdapter{
         viewHolder.month_balance.setText(StringUtils.showPrice(monthNote.getBalance()));
         viewHolder.month_income.setText(StringUtils.showPrice(monthNote.getIncome()));
         viewHolder.month_homeuse.setText(StringUtils.showPrice(monthNote.getHomeuse()));
-        if (monthNote.getRemark().length() > 0) viewHolder.month_remark.setText(monthNote.getRemark());
+        if (monthNote.getRemark().length() > 0)
+            viewHolder.month_remark.setText(monthNote.getRemark());
         else viewHolder.month_remark.setText("无");
 
         viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()));
@@ -86,7 +87,7 @@ public class MonthNoteAdapter extends BaseAdapter{
             viewHolder.month_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener(){
+                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -97,7 +98,7 @@ public class MonthNoteAdapter extends BaseAdapter{
                             Intent intent = new Intent(ContansUtils.ACTION_MONTH);
                             activity.sendBroadcast(intent);
                         }
-                    }, new DialogUtils.DialogListener(){
+                    }, new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
@@ -110,7 +111,7 @@ public class MonthNoteAdapter extends BaseAdapter{
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         ImageView month_del;
         TextView month_time, month_pay, month_salary, month_last_balance;
         TextView month_balance, month_income, month_homeuse, month_remark, month_actual_balance;

@@ -87,10 +87,7 @@ public class IOSScrollView extends ScrollView {
 	private boolean isNeedMove() {
 		int offset = mView.getMeasuredHeight() - getHeight();
 		int scrollY = getScrollY();
-		if(scrollY == 0 || scrollY == offset){
-			return true;
-		}
-		return false;
+		return scrollY == 0 || scrollY == offset;
 	}
 
 	private boolean isNeedAnimation(){

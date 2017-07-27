@@ -16,6 +16,7 @@ public class PermissionUtils {
     /**
      * TODO 判断SDcard权限获取成功与否
      * 失败后本方法不调用系统弹出框
+     *
      * @param activity
      * @param checkCallback
      */
