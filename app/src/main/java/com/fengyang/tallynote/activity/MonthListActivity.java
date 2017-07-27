@@ -19,7 +19,7 @@ import com.fengyang.tallynote.adapter.MonthNoteAdapter;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
-import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +34,6 @@ public class MonthListActivity extends BaseActivity {
 
     private List<MonthNote> monthNotes;
     private MonthNoteAdapter monthNoteAdapter;
-    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +92,7 @@ public class MonthListActivity extends BaseActivity {
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_list_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
+        ViewUtils.setPopupWindow(context, popupWindow);
         popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.newNote).setOnClickListener(
@@ -121,23 +119,6 @@ public class MonthListActivity extends BaseActivity {
                 popupWindow.dismiss();
             }
         });
-    }
-
-    /**
-     * 导出结果回调
-     */
-    private ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
-        @Override
-        public void callback(boolean sucess, String fileName) {
-            if (sucess) ToastUtils.showSucessLong(context, "导出成功:" + fileName);
-            else ToastUtils.showErrorLong(context, "导出失败！");
-        }
-    };
-
-    @Override
-    public void onBackPressed() {
-        if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
-        else super.onBackPressed();
     }
 
     @Override

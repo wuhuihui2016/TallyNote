@@ -15,6 +15,6 @@
     <stroke
         android:dashGap="0dp"
         android:width="2dp"
-        android:color="@color/bitblack" />
+        android:color="@color/gray" />
 
 </shape>

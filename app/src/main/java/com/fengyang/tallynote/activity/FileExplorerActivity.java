@@ -17,6 +17,7 @@ import com.fengyang.tallynote.adapter.FileExplorerAdapter;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
 import java.io.File;
@@ -145,8 +146,7 @@ public class FileExplorerActivity extends BaseActivity {
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_file_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
+        ViewUtils.setPopupWindow(context, popupWindow);
         popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.open).setOnClickListener(

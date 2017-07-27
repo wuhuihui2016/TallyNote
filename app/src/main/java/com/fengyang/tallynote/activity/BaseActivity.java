@@ -11,11 +11,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.WPSUtils;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -26,6 +30,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected Activity activity;//获取当前对象
     protected String TAG;//当前界面输出log时的标签字段
     protected FrameLayout content_layout;
+    protected PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,30 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View v) {
     }
 
+    /**
+     * 导出结果回调
+     */
+    protected ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
+        @Override
+        public void callback(boolean sucess, final String fileName) {
+            if (sucess) {
+                DialogUtils.showMsgDialog(activity, "导出成功", fileName,
+                        "查看", new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                WPSUtils.openFile(context, fileName);
+                            }
+                        }, "忽略", new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
+            } else ToastUtils.showErrorLong(context, "导出失败！");
+        }
+    };
+
     @Override
     public void finish() {
         super.finish();
@@ -154,7 +183,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                             }
                         });
             } else {
-                finish();
+                if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
+                else super.onBackPressed();
             }
 
         }

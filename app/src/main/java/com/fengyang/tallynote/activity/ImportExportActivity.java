@@ -97,13 +97,7 @@ public class ImportExportActivity extends BaseActivity {
                 break;
 
             case R.id.exportAll:
-                ExcelUtils.exportAll(new ExcelUtils.ICallBackExport() {
-                    @Override
-                    public void callback(boolean sucess, String fileName) {
-                        if (sucess) ToastUtils.showToast(context, true, "导出成功:" + fileName);
-                        else ToastUtils.showToast(context, true, "导出失败！");
-                    }
-                });
+                ExcelUtils.exportAll(callBackExport);
                 break;
         }
     }

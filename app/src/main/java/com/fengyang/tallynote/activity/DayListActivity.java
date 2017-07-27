@@ -21,7 +21,7 @@ import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.StringUtils;
-import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +37,6 @@ public class DayListActivity extends BaseActivity {
     private List<DayNote> dayNotes;
     private List<DayNote> list = new ArrayList<>();
     private DayNoteAdapter dayNoteAdapter;
-    private PopupWindow popupWindow;
 
     private TextView info, all, consume, account_out, account_in;
 
@@ -100,8 +99,7 @@ public class DayListActivity extends BaseActivity {
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_list_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
+        ViewUtils.setPopupWindow(context, popupWindow);
         popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.newNote).setOnClickListener(
@@ -129,17 +127,6 @@ public class DayListActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * 导出结果回调
-     */
-    private ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
-        @Override
-        public void callback(boolean sucess, String fileName) {
-            if (sucess) ToastUtils.showSucessLong(context, "导出成功:" + fileName);
-            else ToastUtils.showErrorLong(context, "导出失败！");
-        }
-    };
 
     @Override
     public void onClick(View v) {
@@ -248,12 +235,6 @@ public class DayListActivity extends BaseActivity {
         info.setText("当前转入记录有 " + list.size() + " 条，转入金额：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
-        else super.onBackPressed();
     }
 
     @Override

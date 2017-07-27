@@ -23,7 +23,7 @@ import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
-import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +39,6 @@ public class IncomeListActivity extends BaseActivity {
     private List<IncomeNote> incomeNotes;
     private IncomeNoteAdapter incomeNoteAdapter;
     private TextView sort_info;
-    private PopupWindow sort_popupWindow, popupWindow;
     private boolean isStart = true;
 
     @Override
@@ -61,10 +60,10 @@ public class IncomeListActivity extends BaseActivity {
         sort_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sort_popupWindow != null && sort_popupWindow.isShowing()) {
-                    sort_popupWindow.dismiss();
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
                 } else {
-                    initSort_PopupWindow();
+                    initpopupWindow();
                 }
             }
         });
@@ -110,27 +109,15 @@ public class IncomeListActivity extends BaseActivity {
     }
 
     /**
-     * 导出结果回调
-     */
-    private ExcelUtils.ICallBackExport callBackExport = new ExcelUtils.ICallBackExport() {
-        @Override
-        public void callback(boolean sucess, String fileName) {
-            if (sucess) ToastUtils.showSucessLong(context, "导出成功:" + fileName);
-            else ToastUtils.showErrorLong(context, "导出失败！");
-        }
-    };
-
-    /**
      * 初始化popupWindow
      */
-    private void initSort_PopupWindow() {
+    private void initpopupWindow() {
         LayoutInflater inflater = (LayoutInflater) getApplication()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_sort_pop, null);
-        sort_popupWindow = new PopupWindow(layout, 300, 200);
-        sort_popupWindow.setOutsideTouchable(true);
-        sort_popupWindow.setFocusable(false);
-        sort_popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
+        popupWindow = new PopupWindow(layout, 300, 200);
+        ViewUtils.setPopupWindow(context, popupWindow);
+        popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
 
         final TextView start_time = (TextView) layout.findViewById(R.id.start_time);
         final TextView end_time = (TextView) layout.findViewById(R.id.end_time);
@@ -148,7 +135,7 @@ public class IncomeListActivity extends BaseActivity {
             public void onClick(View v) {
                 start_time.setTextColor(Color.RED);
                 end_time.setTextColor(Color.BLACK);
-                sort_popupWindow.dismiss();
+                popupWindow.dismiss();
                 sort4Start();
             }
         });
@@ -158,7 +145,7 @@ public class IncomeListActivity extends BaseActivity {
             public void onClick(View v) {
                 start_time.setTextColor(Color.BLACK);
                 end_time.setTextColor(Color.RED);
-                sort_popupWindow.dismiss();
+                popupWindow.dismiss();
                 sort4End();
             }
         });
@@ -170,8 +157,7 @@ public class IncomeListActivity extends BaseActivity {
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_list_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
+        ViewUtils.setPopupWindow(context, popupWindow);
         popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.newNote).setOnClickListener(
@@ -207,7 +193,7 @@ public class IncomeListActivity extends BaseActivity {
         if (!isStart) {
             incomeNotes = MyApp.utils.getIncomes();
             if (incomeNotes.size() > 0) {
-                sort_info.setText("按投资时间排序");
+                sort_info.setText("按投资时间排序：");
                 isStart = true;
                 Collections.reverse(incomeNotes);//倒序排列
                 incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
@@ -220,10 +206,10 @@ public class IncomeListActivity extends BaseActivity {
      * 以到期时间排序
      */
     private void sort4End() {
-        incomeNotes = MyApp.utils.getIncomes();
+        incomeNotes = IncomeNote.getUnFinished();
         if (incomeNotes.size() > 0) {
             isStart = false;
-            sort_info.setText("按到期时间排序");
+            sort_info.setText("按到期时间排序：");
             for (int i = 0; i < incomeNotes.size() - 1; i++) {
                 for (int j = 1; j < incomeNotes.size() - i; j++) {
                     IncomeNote incomeNote;
@@ -236,20 +222,10 @@ public class IncomeListActivity extends BaseActivity {
                     }
                 }
             }
-            Collections.reverse(incomeNotes);//倒序排列
             LogUtils.i("sort", incomeNotes.toString());
             incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
             listView.setAdapter(incomeNoteAdapter);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (sort_popupWindow != null && sort_popupWindow.isShowing()) sort_popupWindow.dismiss();
-        else super.onBackPressed();
-
-        if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
-        else super.onBackPressed();
     }
 
     @Override

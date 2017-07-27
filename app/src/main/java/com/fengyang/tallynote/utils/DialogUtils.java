@@ -138,6 +138,40 @@ public class DialogUtils {
     }
 
     /**
+     *
+     * @param activity
+     * @param title
+     * @param message
+     * @param comfireListener
+     * @param cancelListener
+     */
+    public static void showMsgDialog(Activity activity, String title, String message,
+                                     String comfireTxt, DialogListener comfireListener, String cancelTxt, DialogListener cancelListener) {
+        try {
+            initDialog(activity);
+            dialog.setCanceledOnTouchOutside(false);
+            if (TextUtils.isEmpty(title)) {
+                titleView.setText("温馨提示");
+            } else {
+                titleView.setText(title);
+            }
+            msgView.setText(message);
+
+            comfireView.setText(comfireTxt);
+            comfireView.setOnClickListener(comfireListener);
+
+            if (cancelListener == null)  cancel_layout.setVisibility(View.GONE);
+            else {
+                cancelView.setText(cancelTxt);
+                cancelView.setOnClickListener(cancelListener);
+            }
+            dialog.show();
+
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * 初始化dialog
      *
      * @param activity
