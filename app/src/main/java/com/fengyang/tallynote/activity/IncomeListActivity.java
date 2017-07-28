@@ -101,7 +101,7 @@ public class IncomeListActivity extends BaseActivity {
 
     private void initData() {
         incomeNotes = MyApp.utils.getIncomes();
-        info.setText("投资账单记录有" + incomeNotes.size() + "条,计息中" + IncomeNote.getUnFinished().size() + "条");
+        info.setText("投资账单记录有" + incomeNotes.size() + "条,计息中" + IncomeNote.getEarningInComes().size() + "条");
 
         Collections.reverse(incomeNotes);//倒序排列
         incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
@@ -206,7 +206,7 @@ public class IncomeListActivity extends BaseActivity {
      * 以到期时间排序
      */
     private void sort4End() {
-        incomeNotes = IncomeNote.getUnFinished();
+        incomeNotes = IncomeNote.getEarningInComes();
         if (incomeNotes.size() > 0) {
             isStart = false;
             sort_info.setText("按到期时间排序：");

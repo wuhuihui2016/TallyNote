@@ -1,11 +1,9 @@
 package com.fengyang.tallynote.activity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,14 +17,12 @@ import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
-
-import java.util.Calendar;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 public class NewMonthActivity extends BaseActivity {
 
     private EditText last_balanceEt, payEt, salaryEt, incomeEt, homeuseEt, actual_balanceEt, remarkEt;
     private TextView durationEt, balanceEt;
-    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +34,12 @@ public class NewMonthActivity extends BaseActivity {
 
     private void initView() {
         last_balanceEt = (EditText) findViewById(R.id.last_balanceEt);
+        if (MyApp.utils.getMonNotes().size() > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
+            String actual_balance = MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getActual_balance();
+            last_balanceEt.setText(StringUtils.showPrice(actual_balance));
+            last_balanceEt.setEnabled(false);
+        }
+
         payEt = (EditText) findViewById(R.id.payEt);
         salaryEt = (EditText) findViewById(R.id.salaryEt);
         incomeEt = (EditText) findViewById(R.id.incomeEt);
@@ -47,17 +49,13 @@ public class NewMonthActivity extends BaseActivity {
         remarkEt = (EditText) findViewById(R.id.remarkEt);
         actual_balanceEt = (EditText) findViewById(R.id.actual_balanceEt);
 
-        calendar = Calendar.getInstance();
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.durationEt) {
-            ToastUtils.showToast(context, true, "请选择月结算起始日期");
-            new DatePickerDialog(activity, mdateListener,
-                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)).show();
+            ViewUtils.showDatePickerDialog(activity, durationEt);
 
         } else if (v.getId() == R.id.balanceEt) {//自动结算结余
             final String last_balanceStr = StringUtils.formatePrice(last_balanceEt.getText().toString());
@@ -154,38 +152,5 @@ public class NewMonthActivity extends BaseActivity {
             }
         }
     }
-
-    private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            monthOfYear = monthOfYear + 1;
-            String month;
-            if (monthOfYear < 10) month = "0" + monthOfYear;
-            else month = "" + monthOfYear;
-            String day;
-            if (dayOfMonth < 10) day = "0" + dayOfMonth;
-            else day = "" + dayOfMonth;
-
-            String curDuration = durationEt.getText().toString();
-            if (curDuration.length() > 0) {
-                if (curDuration.endsWith("-")) {
-                    durationEt.setText(curDuration + year + month + day);
-                } else {
-                    ToastUtils.showToast(context, true, "请选择月结算终止日期");
-                    durationEt.setText(year + month + day + "-");
-                    new DatePickerDialog(activity, mdateListener,
-                            calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                            calendar.get(Calendar.DAY_OF_MONTH)).show();
-                }
-            } else {
-                ToastUtils.showToast(context, true, "请选择月结算终止日期");
-                durationEt.setText(year + month + day + "-");
-                new DatePickerDialog(activity, mdateListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        }
-    };
 
 }

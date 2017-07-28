@@ -47,7 +47,7 @@
         android:horizontalSpacing="1dp"
         android:verticalSpacing="1dp"
         android:padding="1dp"
-        android:background="@color/gray"
+        android:background="@color/gridline"
         android:layout_below="@id/user_info"
         android:gravity="center_horizontal|center"/>
 

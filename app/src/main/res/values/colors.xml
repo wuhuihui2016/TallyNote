@@ -11,9 +11,12 @@
     <color name="title">#333333</color>
     <color name="line">#d0d0d0</color>
     <color name="bitblack">#4F4F4F</color>
+    <color name="gridline">#8E8E8E</color>
 
     <color name="day_record">#009393</color>
     <color name="month_record">#007500</color>
-    <color name="income_record">#F75000</color>
+    <color name="income_record">#D67CDD</color>
     <color name="remark_bkg">#FFF7E9</color>
+
+
 </resources>

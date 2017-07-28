@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
     private FragmentViewPagerAdapter adapter;
     private int frag_index = 0;//当前加载fragment标志位
+    private LinearLayout tally, income, mine;
     private TextView tally_title, income_title, mine_title;
     private RelativeLayout cur_tab;//向导View
     private boolean canShow = false;//tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
@@ -47,6 +48,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView("我的账本", R.layout.activity_main);
 
+        tally = (LinearLayout) findViewById(R.id.tally);
+        income = (LinearLayout) findViewById(R.id.income);
+        mine = (LinearLayout) findViewById(R.id.mine);
         tally_title = (TextView) findViewById(R.id.tally_title);
         income_title = (TextView) findViewById(R.id.income_title);
         mine_title = (TextView) findViewById(R.id.mine_title);
@@ -113,6 +117,8 @@ public class MainActivity extends BaseActivity {
                                 }).execute();
                             }
                         });
+
+                        if (frag_index == 0) setCheked(frag_index);
                     }
                     isShow(true);
 
@@ -132,21 +138,28 @@ public class MainActivity extends BaseActivity {
 
         frag_index = index;
 
+        tally.setBackgroundColor(Color.WHITE);
+        income.setBackgroundColor(Color.WHITE);
+        mine.setBackgroundColor(Color.WHITE);
         tally_title.setTextColor(Color.BLACK);
         income_title.setTextColor(Color.BLACK);
         mine_title.setTextColor(Color.BLACK);
+
         switch (frag_index) {
             case 0:
                 setTitle("账本");
-                tally_title.setTextColor(Color.RED);
+                tally.setBackgroundResource(R.color.day_record);
+                tally_title.setTextColor(Color.WHITE);
                 break;
             case 1:
                 setTitle("理财");
-                income_title.setTextColor(Color.RED);
+                income.setBackgroundResource(R.color.income_record);
+                income_title.setTextColor(Color.WHITE);
                 break;
             case 2:
                 setTitle("我的");
-                mine_title.setTextColor(Color.RED);
+                mine.setBackgroundResource(R.color.red);
+                mine_title.setTextColor(Color.WHITE);
                 break;
         }
     }
@@ -185,7 +198,7 @@ public class MainActivity extends BaseActivity {
      */
     private void isShow(boolean isShow) {
         if (canShow) {
-            LinearLayout app_buttom = (LinearLayout) findViewById(R.id.app_buttom);
+            LinearLayout app_bottom = (LinearLayout) findViewById(R.id.app_bottom);
 
             Animation animation;
             LayoutAnimationController controller;
@@ -193,7 +206,7 @@ public class MainActivity extends BaseActivity {
             else animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_hidden);
             controller = new LayoutAnimationController(animation);
 
-            app_buttom.setLayoutAnimation(controller);// 设置动画
+            app_bottom.setLayoutAnimation(controller);// 设置动画
         }
 
     }

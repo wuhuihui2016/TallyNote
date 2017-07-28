@@ -79,7 +79,7 @@
             android:padding="10dp"
             android:layout_marginTop="20dp"
             android:gravity="center|center_horizontal"
-            android:background="@drawable/shape_btn_bkg"
+            android:background="@drawable/shape_income"
             android:orientation="horizontal">
 
             <ImageView

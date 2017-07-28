@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/gray"
+        android:background="#8E8E8E"
         android:layout_alignParentBottom="true">
         <ImageView
             android:id="@+id/hidekeyboard"
@@ -25,9 +25,9 @@
             android:layout_weight="1"
             android:numColumns="4"
             android:scrollbars="none"
-            android:horizontalSpacing="0.5dp"
-            android:verticalSpacing="0.5dp"
-            android:padding="0.5dp"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
+            android:padding="1dp"
             android:gravity="center_horizontal|center"/>
     </LinearLayout>
 

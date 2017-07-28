@@ -34,36 +34,38 @@ public class NotificationUtils {
     public static void notifyIncome(Context context) {
 
         IncomeNote lastIncomeNote = IncomeNote.getLastIncomeNote();
-        String title = "理财到期提醒,收益：" + StringUtils.showPrice(lastIncomeNote.getFinalIncome());
-        int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
-        String message;
-        if (day < 0) {
-            message = "已经结束,请完成!";
-        } else if (day == 0) {
-            message = "今日到期！可完成!";
-        } else {
-            message = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8) + "到期,还剩 " + day + " 天";
+        if (lastIncomeNote != null) {
+            String title = "理财到期提醒,收益：" + StringUtils.showPrice(lastIncomeNote.getFinalIncome());
+            int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
+            String message;
+            if (day < 0) {
+                message = "已经结束,请完成!";
+            } else if (day == 0) {
+                message = "今日到期！可完成!";
+            } else {
+                message = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8) + "到期,还剩 " + day + " 天";
+            }
+
+            //显示通知
+            notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+            //设置点击事件
+            Intent intent = new Intent(context, IncomeListActivity.class);
+            intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            builder.setContentTitle(title).setContentText(message).setAutoCancel(true).
+                    setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_launcher);
+
+            Notification notification = builder.build();
+            notification.icon = R.drawable.ic_launcher;
+            notification.defaults = Notification.DEFAULT_SOUND;//声音
+
+            setMIUICount(notification);
+            notifyManager.notify(requestCode, notification);//发送通知
         }
-
-        //显示通知
-        notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-
-        //设置点击事件
-        Intent intent = new Intent(context, IncomeListActivity.class);
-        intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        builder.setContentTitle(title).setContentText(message).setAutoCancel(true).
-                setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_launcher);
-
-        Notification notification = builder.build();
-        notification.icon = R.drawable.ic_launcher;
-        notification.defaults = Notification.DEFAULT_SOUND;//声音
-
-        setMIUICount(notification);
-        notifyManager.notify(requestCode, notification);//发送通知
 
     }
 

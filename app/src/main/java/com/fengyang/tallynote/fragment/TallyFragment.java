@@ -91,10 +91,9 @@ public class TallyFragment extends Fragment {
         current_payTv = (TextView) content.findViewById(R.id.current_pay);
         current_payTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
-        Calendar calendar = Calendar.getInstance();
-        year.setText(calendar.get(Calendar.YEAR) + ""); // 获取当前年份
-        month.setText((calendar.get(Calendar.MONTH) + 1) + ""); // 获取当前月份
-        day.setText(calendar.get(Calendar.DAY_OF_MONTH) + ""); // 获取当前日
+        year.setText(DateUtils.calendar.get(Calendar.YEAR) + ""); // 获取当前年份
+        month.setText((DateUtils.calendar.get(Calendar.MONTH) + 1) + ""); // 获取当前月份
+        day.setText(DateUtils.calendar.get(Calendar.DAY_OF_MONTH) + ""); // 获取当前日
 
         showDayNote();
         showMonthNote();

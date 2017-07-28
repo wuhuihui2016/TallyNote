@@ -90,14 +90,14 @@ public class IncomeFragment extends Fragment {
 
     private void showIncomeNote() {
 
-        List<IncomeNote> unFinisheds = IncomeNote.getUnFinished(); //未完成的
+        List<IncomeNote> earningInComes = IncomeNote.getEarningInComes(); //未完成的
         currIncomeSum = (TextView) content.findViewById(R.id.currIncomeSum);
         LinearLayout income_layout = (LinearLayout) content.findViewById(R.id.income_layout);
-        if (unFinisheds.size() > 0) {
+        if (earningInComes.size() > 0) {
             //显示当前未完成的理财投资的总金额
             Double sum = 0.00;
-            for (int i = 0; i < unFinisheds.size(); i++) {
-                sum += Double.parseDouble(unFinisheds.get(i).getMoney());
+            for (int i = 0; i < earningInComes.size(); i++) {
+                sum += Double.parseDouble(earningInComes.get(i).getMoney());
             }
 
             sumStr = "当前投资总金额：" + StringUtils.showPrice(sum + "");
@@ -106,42 +106,43 @@ public class IncomeFragment extends Fragment {
             income_layout.setVisibility(View.VISIBLE);
             //显示最近一次收益的理财记录
             lastIncomeNote = IncomeNote.getLastIncomeNote();
+            if (lastIncomeNote != null) {
+                LogUtils.i("lastIncomeNote", lastIncomeNote.toString());
+                TextView income_time = (TextView) content.findViewById(R.id.income_time);
+                TextView income_money = (TextView) content.findViewById(R.id.income_money);
+                TextView income_ratio = (TextView) content.findViewById(R.id.income_ratio);
+                TextView income_staus = (TextView) content.findViewById(R.id.income_staus);
 
-            LogUtils.i("lastIncomeNote", lastIncomeNote.toString());
-            TextView income_time = (TextView) content.findViewById(R.id.income_time);
-            TextView income_money = (TextView) content.findViewById(R.id.income_money);
-            TextView income_ratio = (TextView) content.findViewById(R.id.income_ratio);
-            TextView income_staus = (TextView) content.findViewById(R.id.income_staus);
+                String id = lastIncomeNote.getId();
+                String time = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8);
+                SpannableStringBuilder style = new SpannableStringBuilder(id + "\n" + time);
+                style.setSpan(new ForegroundColorSpan(Color.BLACK), 0, id.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.RED), id.length(), (id + "\n" + time).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                income_time.setText(style);
+                income_money.setText(StringUtils.showPrice(lastIncomeNote.getMoney()));
+                income_ratio.setText(lastIncomeNote.getIncomeRatio() + " %");
+                if (lastIncomeNote.getFinished() == 0) {//未完成
+                    int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
+                    if (day < 0) {
+                        income_staus.setText("已经结束,请完成 >");
+                    } else if (day == 0) {
+                        income_staus.setText("今日到期！可完成 >");
+                    } else {
+                        income_staus.setText("计息中,还剩 " + day + " 天");
+                    }
 
-            String id = lastIncomeNote.getId();
-            String time = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8);
-            SpannableStringBuilder style = new SpannableStringBuilder(id + "\n" + time);
-            style.setSpan(new ForegroundColorSpan(Color.BLACK), 0, id.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.RED), id.length(), (id + "\n" + time).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            income_time.setText(style);
-            income_money.setText(StringUtils.showPrice(lastIncomeNote.getMoney()));
-            income_ratio.setText(lastIncomeNote.getIncomeRatio() + " %");
-            if (lastIncomeNote.getFinished() == 0) {//未完成
-                int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
-                if (day < 0) {
-                    income_staus.setText("已经结束,请完成 >");
-                } else if (day == 0) {
-                    income_staus.setText("今日到期！可完成 >");
-                } else {
-                    income_staus.setText("计息中,还剩 " + day + " 天");
                 }
 
+                income_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(activity, IncomeListActivity.class);
+                        intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
+                        startActivity(intent);
+
+                    }
+                });
             }
-
-            income_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(activity, IncomeListActivity.class);
-                    intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
-                    startActivity(intent);
-
-                }
-            });
         } else {
             sumStr = "暂无投资";
             currIncomeSum.setText("....");

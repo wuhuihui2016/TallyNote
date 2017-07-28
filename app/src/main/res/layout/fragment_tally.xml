@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:text="上次结余 "
                     android:textColor="@color/month_record"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/bigtextSize"/>
 
                 <TextView
                     android:id="@+id/last_balanceTv"

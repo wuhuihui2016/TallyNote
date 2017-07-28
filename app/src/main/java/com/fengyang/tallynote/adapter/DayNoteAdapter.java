@@ -2,7 +2,6 @@ package com.fengyang.tallynote.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,8 +86,7 @@ public class DayNoteAdapter extends BaseAdapter {
             viewHolder.tag.setImageResource(R.drawable.account_in);
         }
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
-        if (!TextUtils.isEmpty(dayNote.getRemark())) viewHolder.remask.setText(dayNote.getRemark());
-        else viewHolder.remask.setText("");
+        viewHolder.remask.setText(dayNote.getRemark());
 
         if (position == 0 && isLast) {
             viewHolder.day_del.setVisibility(View.VISIBLE);

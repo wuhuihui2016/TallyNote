@@ -154,31 +154,33 @@ public class IncomeNote implements Serializable {
     }
 
     /**
-     * 获取未完成的理财列表
+     * 获取计息中的理财列表
      *
      * @return
      */
-    public static List<IncomeNote> getUnFinished() {
-        List<IncomeNote> unFinisheds = new ArrayList<>();
+    public static List<IncomeNote> getEarningInComes() {
+        List<IncomeNote> earningInComes = new ArrayList<>();
         List<IncomeNote> incomeNotes = MyApp.utils.getIncomes();
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (incomeNotes.get(i).getFinished() == 0) {
-                unFinisheds.add(incomeNotes.get(i));
+                earningInComes.add(incomeNotes.get(i));
             }
         }
-        return unFinisheds;
+        return earningInComes;
     }
 
     //显示最近一次收益的理财记录
     public static IncomeNote getLastIncomeNote() {
-        IncomeNote incomeNote = getUnFinished().get(0);
-        for (int i = 0; i < getUnFinished().size(); i++) {
-            String date = getUnFinished().get(i).getDurtion().split("-")[1];
-            String lasterDate = incomeNote.getDurtion().split("-")[1];
-            if (DateUtils.daysBetween(date) < DateUtils.daysBetween(lasterDate)) {
-                incomeNote = getUnFinished().get(i);
+        if (MyApp.utils.getIncomes().size() > 0) {
+            IncomeNote incomeNote = getEarningInComes().get(0);
+            for (int i = 0; i < getEarningInComes().size(); i++) {
+                String date = getEarningInComes().get(i).getDurtion().split("-")[1];
+                String lasterDate = incomeNote.getDurtion().split("-")[1];
+                if (DateUtils.daysBetween(date) < DateUtils.daysBetween(lasterDate)) {
+                    incomeNote = getEarningInComes().get(i);
+                }
             }
-        }
-        return incomeNote;
+            return incomeNote;
+        } else return null;
     }
 }

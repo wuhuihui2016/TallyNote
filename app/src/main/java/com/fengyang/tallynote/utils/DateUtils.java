@@ -1,7 +1,6 @@
 package com.fengyang.tallynote.utils;
 
-import android.text.TextUtils;
-
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +18,8 @@ public class DateUtils {
 	LogUtils.i("diffTime", DateUtils.diffTime("2017-1-12 12:30:31", "2017-1-12 12:24:31"));
     LogUtils.i("diffTime2", DateUtils.diffTime("2016-1-10 12:30:31"));
 	*/
+
+    public static Calendar calendar = Calendar.getInstance();
 
     private static SimpleDateFormat time_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
@@ -48,64 +49,6 @@ public class DateUtils {
     }
 
     /**
-     * @param lastTime  后一个时间 2016-08-30 12:30:31
-     * @param formeTime 前一个时间
-     * @return String
-     * @Title: ComTimeDiff
-     * @Description: TODO 不同日
-     * @author wuhuihui
-     * @date 2016年7月7日 上午11:19:42 前一个和后一个
-     */
-    public static String diffTime(String lastTime, String formeTime) {
-        try {
-
-            String year1 = lastTime.split("-")[0];//2016
-            String year2 = formeTime.split("-")[0];
-            String yMd = lastTime.split(" ")[0];
-            String Md = yMd.split("-")[1] + "-" + yMd.split("-")[2];//月日 08-30
-            String hms = lastTime.split(" ")[1];//时分秒 12:30:31
-            String hm = hms.split(":")[0] + ":" + hms.split(":")[1];//时分 12:30
-
-            if (TextUtils.isEmpty(formeTime)) {
-                return hm;
-            } else {
-
-//			LogUtils.i("diffTime", "lastTime" + lastTime + "-formeTime" + formeTime);
-//			LogUtils.i("diffTime", "年"  + year1 + "-日" + day1 + "-月日" + Md);
-//			LogUtils.i("diffTime", "时分秒"  + hms + "-时分" + hm);
-
-                if (!year1.equals(year2)) return diffTime(lastTime); //不同年
-                else {//同年,判断是否同日
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(time_sdf.parse(lastTime));
-                    int day1 = calendar.get(Calendar.DAY_OF_YEAR);//在一年中第几天
-                    calendar.setTime(time_sdf.parse(formeTime));
-                    int day2 = calendar.get(Calendar.DAY_OF_YEAR);
-
-                    if (day1 == day2) {//同一天
-                        Date laster = time_sdf.parse(lastTime);
-                        Date former = time_sdf.parse(formeTime);
-                        long m = (laster.getTime() - former.getTime()) / (60 * 1000);
-//							LogUtils.i("diffTime", lastTime + "-" + formeTime + "相差" + m + "分");
-                        if (m <= 5) {//相差小于5分不显示
-                            return "";
-                        } else {//相差大于5分则与当前时间比较
-                            return diffTime(lastTime);
-                        }
-                    } else {//不同一天则与当前时间比较
-                        return diffTime(lastTime);
-                    }
-
-                }
-
-            }
-        } catch (Exception e) {
-        }
-
-        return "";
-    }
-
-    /**
      * @param time
      * @return String
      * @Title: ComTimeDiff
@@ -130,7 +73,6 @@ public class DateUtils {
 
             if (!year1.equals(year2)) return time.split(" ")[0]; //不同年 2016-08-30
             else {//同年,判断是否同日
-                Calendar calendar = Calendar.getInstance();
                 calendar.setTime(time_sdf.parse(now));
                 int day1 = calendar.get(Calendar.DAY_OF_YEAR);//在一年中第几天
                 calendar.setTime(time_sdf.parse(time));
@@ -170,11 +112,10 @@ public class DateUtils {
     public static final int daysBetween(String date) {
         int days = 0;
         try {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date_sdf.parse(date));
-            long time1 = cal.getTimeInMillis();
-            cal.setTime(date_sdf.parse(formatDate()));
-            long time2 = cal.getTimeInMillis();
+            calendar.setTime(date_sdf.parse(date));
+            long time1 = calendar.getTimeInMillis();
+            calendar.setTime(date_sdf.parse(formatDate()));
+            long time2 = calendar.getTimeInMillis();
             long between_days = (time1 - time2) / (1000 * 3600 * 24);
             days = Integer.parseInt(String.valueOf(between_days));
         } catch (Exception e) {
@@ -184,45 +125,38 @@ public class DateUtils {
     }
 
     /**
-     * @param time 毫秒
-     * @return String
-     * @Title: getTimeFormat
-     * @Description: TODO 将毫秒转为00:00:00/00:00秒格式(适用于计算睡眠时间)
-     * @author wuhuihui
-     * @date 2016年5月12日 上午11:13:54
+     * 计算两日期间隔天数
+     *
+     * @param startDate
+     * @param endDate
+     * @return
      */
-    public static String getTimeFormat(int time) {
-        String timeStr = "";
-        int s = time / 1000;   //秒
-        int h = s / 3600;    //求整数部分 ，小时
-        int r = s % 3600;    //求余数
-        int m = 0;
-        if (r > 0) {
-            m = r / 60;    //分
-            r = r % 60;    //求分后的余数，即为秒
+    public static int getDaysBetween(String startDate, String endDate) {
+        int days = 0;
+        try {
+            calendar.setTime(date_sdf.parse(startDate));
+            long time1 = calendar.getTimeInMillis();
+            calendar.setTime(date_sdf.parse(endDate));
+            long time2 = calendar.getTimeInMillis();
+            long between_days = (time2 - time1) / (1000 * 3600 * 24);
+            days = Integer.parseInt(String.valueOf(between_days));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (h < 10) {
-            timeStr = "0" + h + ":";
-            if (h == 0) {
-                timeStr = "";
-            }
-        } else {
-            timeStr = h + ":";
-        }
-
-        if (m < 10) {
-            timeStr = timeStr + "0" + m + ":";
-        } else {
-            timeStr = timeStr + m + ":";
-        }
-
-        if (r < 10) {
-            timeStr = timeStr + "0" + r;
-        } else {
-            timeStr = timeStr + r;
-        }
-        return timeStr;
+        return days;
     }
 
+    /**
+     * 计算某个日期几天后的日期
+     *
+     * @param startDate
+     * @param days
+     */
+    public static Calendar getAfterDate(String startDate, int days) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date_sdf.parse(startDate));
+        calendar.add(Calendar.DATE, days);
+        return calendar;
+    }
 
 }
