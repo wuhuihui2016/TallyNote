@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.model.DayNote;
+import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -18,6 +20,8 @@ import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
+
+import java.util.List;
 
 public class NewMonthActivity extends BaseActivity {
 
@@ -36,13 +40,22 @@ public class NewMonthActivity extends BaseActivity {
         last_balanceEt = (EditText) findViewById(R.id.last_balanceEt);
         if (MyApp.utils.getMonNotes().size() > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
             String actual_balance = MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getActual_balance();
-            last_balanceEt.setText(StringUtils.showPrice(actual_balance));
+            last_balanceEt.setText(StringUtils.formatePrice(actual_balance));
             last_balanceEt.setEnabled(false);
         }
 
         payEt = (EditText) findViewById(R.id.payEt);
+        List<DayNote> dayNotes = MyApp.utils.getDayNotes();
+        if (dayNotes != null && dayNotes.size() > 0) { //如果已有日账记录自动填充本次支出，不得手动输入
+            payEt.setText(StringUtils.showPrice(DayNote.getAllSum() + ""));
+            payEt.setEnabled(false);
+        }
         salaryEt = (EditText) findViewById(R.id.salaryEt);
         incomeEt = (EditText) findViewById(R.id.incomeEt);
+        if (IncomeNote.getUnRecordSum() > 0) {
+            incomeEt.setText(StringUtils.formatePrice("" + IncomeNote.getUnRecordSum()));
+            incomeEt.setEnabled(false);
+        }
         homeuseEt = (EditText) findViewById(R.id.homeuseEt);
         balanceEt = (TextView) findViewById(R.id.balanceEt);
         durationEt = (TextView) findViewById(R.id.durationEt);
@@ -55,7 +68,7 @@ public class NewMonthActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.durationEt) {
-            ViewUtils.showDatePickerDialog(activity, durationEt);
+            ViewUtils.showDatePickerDialog(activity, durationEt, 0);
 
         } else if (v.getId() == R.id.balanceEt) {//自动结算结余
             final String last_balanceStr = StringUtils.formatePrice(last_balanceEt.getText().toString());
@@ -138,6 +151,9 @@ public class NewMonthActivity extends BaseActivity {
                                     ExcelUtils.exportMonthNote(null);
                                     if (getIntent().hasExtra("list"))
                                         sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
+                                    if (MyApp.utils.getMonNotes().size() > 1) {
+
+                                    }
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "新增月账单失败！");
                             }

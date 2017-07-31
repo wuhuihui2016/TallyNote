@@ -7,13 +7,22 @@
     <RelativeLayout
         android:id="@+id/info_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/type_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="10dp">
             <TextView
                 android:id="@+id/all"
                 android:layout_width="wrap_content"
@@ -79,6 +88,7 @@
         android:divider="@color/transparent"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:listSelector="@color/transparent"
         android:background="@drawable/shape_day"/>
 
     <TextView

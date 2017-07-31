@@ -1,37 +1,31 @@
 package com.fengyang.tallynote.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.model.DayNote;
-import com.fengyang.tallynote.utils.ContansUtils;
-import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.StringUtils;
-import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by wuhuihui on 2017/6/27.
  */
-public class DayListActivity extends BaseActivity {
+public class DayListOfMonthActivity extends BaseActivity {
 
+    private String duration;
+    private Spinner spinner;
     private ListView listView;
 
     private List<DayNote> dayNotes;
@@ -44,11 +38,35 @@ public class DayListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("日账单明细", R.layout.activity_day_list);
-        //删除后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_DAY);
-        registerReceiver(myReceiver, intentFilter);
+        duration = getIntent().getStringExtra("duration");
+        setContentView(duration, R.layout.activity_day_list);
+
+        //数据
+        final List<String> durations = new ArrayList<>();
+        List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            durations.add(monthNotes.get(i).getDuration());
+        }
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, durations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        for (int i = 0; i < durations.size(); i++) {
+            if (durations.get(i).equals(duration)) spinner.setSelection(i);
+        }
+        spinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        duration = durations.get(position);
+                        getAll();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                }
+        );
 
         info = (TextView) findViewById(R.id.info);
         all = (TextView) findViewById(R.id.all);
@@ -59,65 +77,7 @@ public class DayListActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
 
-        setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                } else {
-                    initPopupWindow();
-                }
-            }
-        });
-
         getAll();
-    }
-
-    //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_DAY)) {
-                getAll();
-            }
-        }
-    };
-
-    /**
-     * 初始化popupWindow
-     */
-    private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getApplication()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_list_pop, null);
-        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
-
-        layout.findViewById(R.id.newNote).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewDayActivity.class);
-                        intent.putExtra("list", true);
-                        startActivity(intent);
-                    }
-                }
-        );
-        layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ExcelUtils.exportDayNote(callBackExport);
-            }
-        });
-        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
     }
 
     @Override
@@ -147,11 +107,10 @@ public class DayListActivity extends BaseActivity {
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
-        dayNotes = MyApp.utils.getDayNotes();
-        Collections.reverse(dayNotes);
+        dayNotes = MyApp.utils.getDayNotes4History(duration);
         info.setText("账单记录有 " + dayNotes.size()
-                + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
+                + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum(duration) + ""));
+        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, false);
         listView.setAdapter(dayNoteAdapter);
     }
 
@@ -218,9 +177,4 @@ public class DayListActivity extends BaseActivity {
         listView.setAdapter(dayNoteAdapter);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
-    }
 }

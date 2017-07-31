@@ -9,6 +9,7 @@ import android.widget.DatePicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 /**
@@ -53,20 +54,26 @@ public class ViewUtils {
      */
     public static DatePickerDialog datePickerDialog;
 
-    public static void showDatePickerDialog(Activity activity, TextView textView) {
+    public static void showDatePickerDialog(Activity activity, TextView textView, int days) {
         try {
-            datePickerDialog = new DatePickerDialog(activity, new MyDateListener(activity, textView),
+            LogUtils.i("showDatePickerDialog", days + "");
+            //重置时间，回到当前日期
+            DateUtils.calendar.clear();
+            DateUtils.calendar = Calendar.getInstance();
+            datePickerDialog = new DatePickerDialog(activity, new MyDateListener(activity, textView, days),
                     DateUtils.calendar.get(Calendar.YEAR), DateUtils.calendar.get(Calendar.MONTH), DateUtils.calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.setTitle("选择日期");
 
             String curDuration = textView.getText().toString();
             if (curDuration.length() > 0 && curDuration.endsWith("-")) {
                 Calendar cal = DateUtils.getAfterDate(curDuration.substring(0, curDuration.length() - 1), 20);
-                datePickerDialog = new DatePickerDialog(activity, new MyDateListener(activity, textView),
+                datePickerDialog = new DatePickerDialog(activity, new MyDateListener(activity, textView, days),
                         cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.setMessage("已选起始日期："
                         + curDuration.substring(0, curDuration.length() - 1) + "\n请选择终止日期");
-            } else datePickerDialog.setMessage("请选择起始日期");
+            } else {
+                datePickerDialog.setMessage("请选择起始日期");
+            }
 
             datePickerDialog.show();
         } catch (Exception e) {
@@ -78,10 +85,12 @@ public class ViewUtils {
 
         private Activity activity;
         private TextView textView;
+        private int days;
 
-        public MyDateListener(Activity activity, TextView textView) {
+        public MyDateListener(Activity activity, TextView textView, int days) {
             this.activity = activity;
             this.textView = textView;
+            this.days = days;
         }
 
         @Override
@@ -104,15 +113,32 @@ public class ViewUtils {
                     } else {
                         ToastUtils.showWarningLong(activity, "起止日期必须间隔20天及以上，请重新选择起始日期");
                         textView.setText("");
-                        showDatePickerDialog(activity, textView);
+                        showDatePickerDialog(activity, textView, days);
                     }
                 } else {
                     textView.setText(year + month + day + "-");
-                    showDatePickerDialog(activity, textView);
+                    showDatePickerDialog(activity, textView, days);
                 }
             } else {
-                textView.setText(year + month + day + "-");
-                showDatePickerDialog(activity, textView);
+                curDuration = year + month + day + "-";
+                textView.setText(curDuration);
+                if (days > 0) { //如果已经设定天数，则自动计算结束日期
+                    try {
+                        LogUtils.i("showDatePickerDialog", curDuration.substring(0, curDuration.length() - 1) + " + " + days);
+                        Calendar cal = DateUtils.getAfterDate(curDuration.substring(0, curDuration.length() - 1), days);
+                        year = cal.get(Calendar.YEAR);
+                        monthOfYear = cal.get(Calendar.MONTH) + 1;
+                        if (monthOfYear < 10) month = "0" + monthOfYear;
+                        else month = "" + monthOfYear;
+                        if (dayOfMonth < 10) day = "0" + cal.get(Calendar.DAY_OF_MONTH);
+                        else day = "" + cal.get(Calendar.DAY_OF_MONTH);
+                        textView.append(year + month + day);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    showDatePickerDialog(activity, textView, days);
+                }
             }
         }
     }

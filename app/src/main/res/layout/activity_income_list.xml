@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:divider="@color/income_record"
         android:dividerHeight="2dp"
+        android:listSelector="@color/transparent"
         android:layout_below="@id/view"/>
 
     <TextView

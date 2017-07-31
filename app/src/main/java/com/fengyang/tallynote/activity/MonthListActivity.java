@@ -1,13 +1,11 @@
 package com.fengyang.tallynote.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -17,7 +15,6 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.MonthNoteAdapter;
 import com.fengyang.tallynote.model.MonthNote;
-import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
@@ -41,11 +38,6 @@ public class MonthListActivity extends BaseActivity {
 
         setContentView("月账单明细", R.layout.activity_month_list);
 
-        //删除后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_MONTH);
-        registerReceiver(myReceiver, intentFilter);
-
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
 
@@ -65,16 +57,6 @@ public class MonthListActivity extends BaseActivity {
 
     }
 
-    //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
-                initData();
-            }
-        }
-    };
-
     private void initData() {
         monthNotes = MyApp.utils.getMonNotes();
         info.setText("月账单记录有" + monthNotes.size() + "条");
@@ -82,6 +64,16 @@ public class MonthListActivity extends BaseActivity {
         Collections.reverse(monthNotes);//倒序排列
         monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
         listView.setAdapter(monthNoteAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (MyApp.utils.getDayNotes4History().size() > 0) {
+                    Intent intent = new Intent(activity, DayListOfMonthActivity.class);
+                    intent.putExtra("duration", monthNotes.get(position).getDuration());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     /**
@@ -121,9 +113,4 @@ public class MonthListActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
-    }
 }

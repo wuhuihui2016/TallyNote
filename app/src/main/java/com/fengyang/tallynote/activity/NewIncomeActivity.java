@@ -48,13 +48,18 @@ public class NewIncomeActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        final String daysStr = daysEt.getText().toString();
+
         if (v.getId() == R.id.durtionEt) {
-            ViewUtils.showDatePickerDialog(activity, durationEt);
+            if (!TextUtils.isEmpty(daysStr))  ViewUtils.showDatePickerDialog(activity, durationEt, Integer.parseInt(daysStr));
+            else {
+                ToastUtils.showToast(context, false, "请先输入投资期限！");
+                daysEt.requestFocus();
+            }
 
         } else if (v.getId() == R.id.dayIncomeEt) {//自动结算日收益
             final String moneyStr = StringUtils.formatePrice(moneyEt.getText().toString());
             final String finalIncomeStr = StringUtils.formatePrice(finalIncomeEt.getText().toString());
-            final String daysStr = daysEt.getText().toString();
 
             if (!TextUtils.isEmpty(moneyStr) &&
                     !TextUtils.isEmpty(finalIncomeStr) &&

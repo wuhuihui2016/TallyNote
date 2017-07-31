@@ -159,4 +159,24 @@ public class DateUtils {
         return calendar;
     }
 
+    /**
+     * 判断某一日期是否在dateStr日期之后
+     * @param dateStr
+     * @param currDateStr
+     * @return
+     */
+    public static boolean checkAfterDate(String dateStr, String currDateStr) {
+        boolean flag = false;
+        try {
+            Date date = date_sdf.parse(dateStr);
+            Date currDate = date_sdf.parse(currDateStr);
+            if (currDate.after(date)) flag = true;
+            else flag = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return flag;
+    }
+
 }

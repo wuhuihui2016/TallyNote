@@ -183,4 +183,42 @@ public class IncomeNote implements Serializable {
             return incomeNote;
         } else return null;
     }
+
+    /**
+     * 获取已完成的理财列表
+     *
+     * @return
+     */
+    public static List<IncomeNote> getFinishedInComes() {
+        List<IncomeNote> finishedIncomes = new ArrayList<>();
+        List<IncomeNote> incomeNotes = MyApp.utils.getIncomes();
+        for (int i = 0; i < incomeNotes.size(); i++) {
+            if (incomeNotes.get(i).getFinished() == 1) {
+                finishedIncomes.add(incomeNotes.get(i));
+            }
+        }
+        return finishedIncomes;
+    }
+
+    /**
+     * 获取截至到某一天已完成而未结算的收益总额
+     *
+     * @return
+     */
+    public static Double getUnRecordSum() {
+        Double sum = 0.00;
+        if (IncomeNote.getFinishedInComes().size() > 0 && MyApp.utils.getMonNotes().size() > 0) {
+            String dateStr = MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getDuration().split("-")[1];
+            List<IncomeNote> finishedInComes = IncomeNote.getFinishedInComes();
+            for (int i = 0; i < finishedInComes.size(); i++) {
+                String currDateStr = finishedInComes.get(i).getDurtion().split("-")[1];
+                if (DateUtils.checkAfterDate(dateStr, currDateStr)) {
+                    sum += Double.parseDouble(finishedInComes.get(i).getFinalIncome());
+                }
+            }
+        }
+        return sum;
+    }
+
+
 }

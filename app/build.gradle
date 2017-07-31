@@ -8,8 +8,8 @@ android {
         applicationId "com.fengyang.tallynote"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 130
-        versionName "1.3"
+        versionCode 140
+        versionName "1.4"
     }
     buildTypes {
         release {

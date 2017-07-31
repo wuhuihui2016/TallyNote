@@ -2,14 +2,10 @@ package com.fengyang.tallynote.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.view.View;
 
-import com.fengyang.tallynote.activity.NewIncomeActivity;
-import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
@@ -38,6 +34,10 @@ public class DBUtils extends SQLiteOpenHelper {
         //日消费记录：消费类型useType,金额money,消费明细remark,时间time
         db.execSQL("create table if not exists day_note(_id integer primary key," +
                 "useType integer,money varchar(20),remark varchar(100),time varchar(20))");
+
+        //日消费历史记录：消费类型useType,金额money,消费明细remark,时间time,duration消费区间
+        db.execSQL("create table if not exists day_note_history(_id integer primary key," +
+                "useType integer,money varchar(20),remark varchar(100),time varchar(20),duration varchar(20))");
 
         //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,期间duration,时间time,说明remark
         db.execSQL("create table if not exists month_note(_id integer primary key," +
@@ -109,35 +109,6 @@ public class DBUtils extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return dayNotes;
-    }
-
-    /**
-     * 清除所有日账单(仅用于每月总结时，每月的发工资总结时)
-     *
-     * @param activity
-     */
-    public synchronized void clearDayNotes(final Activity activity) {
-        DialogUtils.showMsgDialog(activity, "提示", "清除日账单，并导出日账单Excel",
-                new DialogUtils.DialogListener() {
-                    @Override
-                    public void onClick(View v) {
-                        super.onClick(v);
-                        ExcelUtils.exportDayNote(null);
-                        SQLiteDatabase db = getWritableDatabase();
-                        db.execSQL("delete from day_note", null);
-                        db.close();
-                        DialogUtils.showMsgDialog(activity, "清除完成", "请新增月账单！", new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                                activity.startActivity(new Intent(activity, NewMonthActivity.class));
-                            }
-
-                        });
-
-                    }
-                });
-
     }
 
     /**
@@ -305,35 +276,7 @@ public class DBUtils extends SQLiteOpenHelper {
     }
 
     /**
-     * 清除所有理财记录(一般不用)
-     *
-     * @param activity
-     */
-    public synchronized void clearIncomes(final Activity activity) {
-        DialogUtils.showMsgDialog(activity, "提示", "清除日账单，并导出日账单Excel",
-                new DialogUtils.DialogListener() {
-                    @Override
-                    public void onClick(View v) {
-                        super.onClick(v);
-                        ExcelUtils.exportIncomeNote(null);
-                        SQLiteDatabase db = getWritableDatabase();
-                        db.execSQL("delete from day_note", null);
-                        db.close();
-                        DialogUtils.showMsgDialog(activity, "清除完成", "可新增理财记录！", new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                                activity.startActivity(new Intent(activity, NewIncomeActivity.class));
-                            }
-                        });
-
-                    }
-                });
-
-    }
-
-    /**
-     * 批量插入新月帐单
+     * 批量插入新日帐单
      *
      * @param dayNotes
      */
@@ -353,6 +296,81 @@ public class DBUtils extends SQLiteOpenHelper {
         }
         db.close();
         return isExit;
+    }
+
+    /**
+     * 将所有临时日账单移植到历史日账单（在新建月账单时使用）
+     *
+     * @param duration
+     */
+    public synchronized boolean newDNotes4History(String duration) {
+        boolean isExit = true;
+        List<DayNote> dayNotes = getDayNotes();
+        SQLiteDatabase db = getWritableDatabase();
+        for (int i = 0; i < dayNotes.size(); i++) {
+            if (isExit) {
+                DayNote dayNote = dayNotes.get(i);
+                db.execSQL("insert into day_note_history(useType,money,remark,time,duration) values(?,?,?,?,?)",
+                        new Object[]{dayNote.getUseType(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime(), duration});
+                Cursor cursor = db.rawQuery("select * from day_note_history where money = ? and time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
+                isExit = cursor.moveToFirst();
+                cursor.close();
+            } else return false;
+        }
+        if (isExit) { //移植完成后，导出并清除数据
+            ExcelUtils.exportIncomeNote(null);
+            db.execSQL("delete from day_note"); //移植完成后，清楚数据
+        }
+        db.close();
+        return isExit;
+    }
+
+    /**
+     * 查看所有的历史日记录账单
+     *
+     * @return
+     */
+    public synchronized List<DayNote> getDayNotes4History() {
+        List<DayNote> dayNotes = new ArrayList<DayNote>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from day_note_history", null);
+        while (cursor.moveToNext()) {
+            //int useType, String money, String remark, String time
+            DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex("useType")),
+                    cursor.getString(cursor.getColumnIndex("money")),
+                    cursor.getString(cursor.getColumnIndex("remark")),
+                    cursor.getString(cursor.getColumnIndex("time")),
+                    cursor.getString(cursor.getColumnIndex("duration")));
+            dayNotes.add(dayNote);
+        }
+        cursor.close();
+        db.close();
+        return dayNotes;
+    }
+
+    /**
+     * 依据选择的时间段查看历史日记录账单
+     * @param duration
+     * @return
+     */
+    public synchronized List<DayNote> getDayNotes4History(String duration) {
+        List<DayNote> dayNotes = new ArrayList<DayNote>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from day_note_history", null);
+        while (cursor.moveToNext()) {
+            if (cursor.getString(cursor.getColumnIndex("duration")).equals(duration)) {
+                //int useType, String money, String remark, String time, String duration
+                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex("useType")),
+                        cursor.getString(cursor.getColumnIndex("money")),
+                        cursor.getString(cursor.getColumnIndex("remark")),
+                        cursor.getString(cursor.getColumnIndex("time")),
+                        cursor.getString(cursor.getColumnIndex("duration")));
+                dayNotes.add(dayNote);
+            }
+        }
+        cursor.close();
+        db.close();
+        return dayNotes;
     }
 
     /**
