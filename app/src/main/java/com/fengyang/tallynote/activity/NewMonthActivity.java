@@ -47,12 +47,12 @@ public class NewMonthActivity extends BaseActivity {
         payEt = (EditText) findViewById(R.id.payEt);
         List<DayNote> dayNotes = MyApp.utils.getDayNotes();
         if (dayNotes != null && dayNotes.size() > 0) { //如果已有日账记录自动填充本次支出，不得手动输入
-            payEt.setText(StringUtils.showPrice(DayNote.getAllSum() + ""));
+            payEt.setText(StringUtils.formatePrice(DayNote.getAllSum() + ""));
             payEt.setEnabled(false);
         }
         salaryEt = (EditText) findViewById(R.id.salaryEt);
         incomeEt = (EditText) findViewById(R.id.incomeEt);
-        if (IncomeNote.getUnRecordSum() > 0) {
+        if (IncomeNote.getUnRecordSum() > 0) { //计算本次收益
             incomeEt.setText(StringUtils.formatePrice("" + IncomeNote.getUnRecordSum()));
             incomeEt.setEnabled(false);
         }
@@ -151,8 +151,11 @@ public class NewMonthActivity extends BaseActivity {
                                     ExcelUtils.exportMonthNote(null);
                                     if (getIntent().hasExtra("list"))
                                         sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
-                                    if (MyApp.utils.getMonNotes().size() > 1) {
-
+                                    if (MyApp.utils.getMonNotes().size() > 1) { //移植日账单到历史日账单
+                                        if (MyApp.utils.newDNotes4History(monthNote.getDuration())) {
+                                            LogUtils.i("newDNotes4History", MyApp.utils.getDayNotes4History(monthNote.getDuration()).toString());
+                                            ExcelUtils.exportDayNote4History(null);
+                                        }
                                     }
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "新增月账单失败！");

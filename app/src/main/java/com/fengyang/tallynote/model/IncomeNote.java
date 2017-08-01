@@ -16,7 +16,7 @@ public class IncomeNote implements Serializable {
     String money; //投入金额（单位万）
     String incomeRatio; //预期年化（%）
     String days; //投资期限(天)
-    String durtion; //投资时期
+    String durtion; //投资时段
     String dayIncome; //拟日收益（万/天）
     String finalIncome; //最终收益
     String finalCash; //最终提现
@@ -208,7 +208,7 @@ public class IncomeNote implements Serializable {
     public static Double getUnRecordSum() {
         Double sum = 0.00;
         if (IncomeNote.getFinishedInComes().size() > 0 && MyApp.utils.getMonNotes().size() > 0) {
-            String dateStr = MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getDuration().split("-")[1];
+            String dateStr = MonthNote.getEndDate();
             List<IncomeNote> finishedInComes = IncomeNote.getFinishedInComes();
             for (int i = 0; i < finishedInComes.size(); i++) {
                 String currDateStr = finishedInComes.get(i).getDurtion().split("-")[1];

@@ -8,86 +8,93 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/white"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:id="@+id/income_time"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerInside"
-            android:textSize="@dimen/smalltextSize"
+            android:background="@drawable/shape_income_circle"
             android:gravity="center_vertical|center"
+            android:scaleType="centerInside"
             android:textColor="@color/black"
-            android:background="@drawable/shape_income_circle"/>
+            android:textSize="@dimen/smalltextSize" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="投入金额："
-                    android:textSize="@dimen/smalltextSize"/>
+                    android:textSize="@dimen/smalltextSize" />
+
                 <TextView
                     android:id="@+id/income_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/smalltextSize"/>
+                    android:textSize="@dimen/smalltextSize" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="预期年化："
-                    android:textSize="@dimen/smalltextSize"/>
+                    android:textSize="@dimen/smalltextSize" />
+
                 <TextView
                     android:id="@+id/income_ratio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/smalltextSize"/>
+                    android:textSize="@dimen/smalltextSize" />
             </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/income_delete"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="centerInside"
-                android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/note_delete"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:onClick="onClick"
-                android:visibility="gone"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/note_delete"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/income_edit"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="centerInside"
                 android:layout_centerInParent="true"
-                android:src="@drawable/note_edit"
-                android:layout_toLeftOf="@id/income_delete"
                 android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@id/income_delete"
                 android:onClick="onClick"
-                android:visibility="gone"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/note_edit"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -96,8 +103,8 @@
         android:id="@+id/detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="5dp"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -105,85 +112,99 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="投资期限："
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
+
             <TextView
                 android:id="@+id/income_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="投资时期："
-                android:textSize="@dimen/littletextSize"/>
+                android:text="投资时段："
+                android:textSize="@dimen/littletextSize" />
+
             <TextView
                 android:id="@+id/income_durtion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="拟日收益："
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
+
             <TextView
                 android:id="@+id/income_dayIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="最终收益："
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
+
             <TextView
                 android:id="@+id/income_finalIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="投资说明："
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
+
             <TextView
                 android:id="@+id/income_remark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textSize="@dimen/littletextSize"/>
+                android:textSize="@dimen/littletextSize" />
         </LinearLayout>
     </LinearLayout>
 
@@ -191,13 +212,13 @@
         android:id="@+id/income_finished"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/app_color"
-        android:gravity="right"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        android:onClick="onClick"
-        android:text="完成状态："
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/smalltextSize"/>
+        android:gravity="right"
+        android:onClick="onClick"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:text="完成状态："
+        android:textColor="@color/app_color"
+        android:textSize="@dimen/smalltextSize" />
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.fengyang.tallynote.model;
 
+import com.fengyang.tallynote.MyApp;
+
 import java.io.Serializable;
 
 /**
@@ -14,7 +16,7 @@ public class MonthNote implements Serializable {
     String homeuse; //家用补贴
     String balance; //本次结余
     String actual_balance; //实际结余
-    String duration; //月结期间
+    String duration; //月结时段
     String remark; //月结说明
     String time; //记录时间
 
@@ -128,5 +130,14 @@ public class MonthNote implements Serializable {
                 ", remark='" + remark +
                 ", time='" + time +
                 '}';
+    }
+
+    /*
+     * 获取最后一次月结算的截止时间
+     */
+    public static String getEndDate() {
+        if (MyApp.utils.getMonNotes().size() > 0)
+            return MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getDuration().split("-")[1];
+        else return null;
     }
 }

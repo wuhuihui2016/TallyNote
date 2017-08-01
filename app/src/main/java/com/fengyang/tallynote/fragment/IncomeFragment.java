@@ -102,7 +102,7 @@ public class IncomeFragment extends Fragment {
 
             sumStr = "当前投资总金额：" + StringUtils.showPrice(sum + "");
             if (IncomeNote.getUnRecordSum() > 0) {
-                sumStr += "\n待计入月账单的收益金额：" + StringUtils.formatePrice("" + IncomeNote.getUnRecordSum());
+                sumStr += "\n待计入月账单的收益金额：" + StringUtils.showPrice("" + IncomeNote.getUnRecordSum());
             }
             currIncomeSum.setText("....");
 

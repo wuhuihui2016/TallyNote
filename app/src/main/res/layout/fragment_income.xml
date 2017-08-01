@@ -18,9 +18,9 @@
                 android:id="@+id/currIncomeSum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/app_color"
                 android:text="暂无投资"
-                android:textSize="@dimen/bigtextSize"/>
+                android:textColor="@color/app_color"
+                android:textSize="@dimen/bigtextSize" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -31,22 +31,22 @@
                     android:id="@+id/seenCheck"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:scaleType="centerInside"
                     android:layout_toLeftOf="@+id/reload"
-                    android:src="@drawable/eye_close_pwd"
+                    android:background="@color/transparent"
                     android:onClick="onClick"
-                    android:background="@color/transparent"/>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/eye_close_pwd" />
 
                 <ImageButton
                     android:id="@+id/reload"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/reload"
-                    android:layout_marginLeft="20dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/transparent"
                     android:onClick="onClick"
-                    android:background="@color/transparent"/>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/reload" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -60,14 +60,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="最近一次投资"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:text="最近一次投资" />
 
             <include
+                layout="@layout/income_simple_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/income_simple_layout"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
         </LinearLayout>
 
@@ -75,27 +75,27 @@
             android:id="@+id/commitIncome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:padding="10dp"
             android:layout_marginTop="20dp"
-            android:gravity="center|center_horizontal"
             android:background="@drawable/shape_income"
-            android:orientation="horizontal">
+            android:gravity="center|center_horizontal"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/income_record"
-                android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/income_record" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:text="记一笔理财"
-                android:textSize="@dimen/bigtextSize"
-                android:textColor="@color/income_record"
+                android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="20dp"/>
+                android:text="记一笔理财"
+                android:textColor="@color/income_record"
+                android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
     </LinearLayout>

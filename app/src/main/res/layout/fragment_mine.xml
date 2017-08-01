@@ -7,31 +7,31 @@
         android:id="@+id/user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/app_color"
         android:padding="10dp"
-        android:paddingTop="30dp"
         android:paddingBottom="10dp"
-        android:background="@color/app_color">
+        android:paddingTop="30dp">
 
         <ImageView
             android:id="@+id/user_icon"
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/user"
             android:layout_marginTop="10dp"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/user" />
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/user_icon"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/user_icon"
             android:text="狒狒\n每天进步一点点"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
@@ -39,17 +39,17 @@
         android:id="@+id/settingGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="3"
-        android:scrollbars="none"
+        android:layout_below="@id/user_info"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:horizontalSpacing="1dp"
-        android:verticalSpacing="1dp"
-        android:padding="1dp"
         android:background="@color/gridline"
-        android:layout_below="@id/user_info"
-        android:gravity="center_horizontal|center"/>
+        android:gravity="center_horizontal|center"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:padding="1dp"
+        android:scrollbars="none"
+        android:verticalSpacing="1dp" />
 
 </RelativeLayout>
 

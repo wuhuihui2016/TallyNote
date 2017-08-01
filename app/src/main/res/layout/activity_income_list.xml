@@ -8,44 +8,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:textSize="@dimen/smalltextSize"/>
+        android:textSize="@dimen/smalltextSize" />
 
     <TextView
         android:id="@+id/sort_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="按投资时间排序"
-        android:onClick="onClick"
-        android:textColor="@color/red"
         android:layout_below="@id/info"
+        android:onClick="onClick"
         android:padding="10dp"
-        android:textSize="@dimen/bigtextSize"/>
+        android:text="按投资时间排序"
+        android:textColor="@color/red"
+        android:textSize="@dimen/bigtextSize" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_below="@id/sort_info"
-        android:background="@color/white"/>
+        android:background="@color/white" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/view"
         android:divider="@color/income_record"
         android:dividerHeight="2dp"
-        android:listSelector="@color/transparent"
-        android:layout_below="@id/view"/>
+        android:listSelector="@color/transparent" />
 
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:layout_below="@id/view"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"
+        android:textColor="@android:color/holo_orange_dark"
         android:textSize="20sp"
-        android:visibility="gone"
-        android:textColor="@android:color/holo_orange_dark"/>
+        android:visibility="gone" />
 </RelativeLayout>

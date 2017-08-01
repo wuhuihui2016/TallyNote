@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
@@ -199,4 +200,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         return !TAG.contains("MainActivity");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            MyApp.utils.db.close();
+        } catch (Exception e){}
+
+    }
 }

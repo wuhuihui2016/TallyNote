@@ -11,31 +11,31 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="投资金额(元)"
-            android:padding="10dp"
             android:layout_margin="5dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:padding="10dp"
+            android:text="投资金额(元)"
+            android:textSize="@dimen/bigtextSize" />
 
         <EditText
             android:id="@+id/cal_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入投资金额"
-            android:padding="10dp"
-            android:lines="1"
-            android:textCursorDrawable="@drawable/shape_cursor"
-            android:inputType="numberDecimal"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
             android:background="@null"
-            android:textSize="@dimen/bigtextSize"/>
+            android:hint="请输入投资金额"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:textSize="@dimen/bigtextSize" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack"/>
+        android:background="@color/bitblack" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,31 +45,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预期年化(%)"
             android:layout_margin="5dp"
             android:padding="10dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:text="预期年化(%)"
+            android:textSize="@dimen/bigtextSize" />
 
         <EditText
             android:id="@+id/cal_ratio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入预期年化"
-            android:padding="10dp"
-            android:lines="1"
-            android:textCursorDrawable="@drawable/shape_cursor"
-            android:inputType="numberDecimal"
-            android:background="@null"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:background="@null"
+            android:hint="请输入预期年化"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:textSize="@dimen/bigtextSize" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack"/>
+        android:background="@color/bitblack" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,31 +79,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="投资期限(天)"
-            android:padding="10dp"
             android:layout_margin="5dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:padding="10dp"
+            android:text="投资期限(天)"
+            android:textSize="@dimen/bigtextSize" />
 
         <EditText
             android:id="@+id/cal_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入投资期限"
-            android:padding="10dp"
-            android:inputType="numberDecimal"
-            android:lines="1"
-            android:textCursorDrawable="@drawable/shape_cursor"
-            android:background="@null"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:background="@null"
+            android:hint="请输入投资期限"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:textSize="@dimen/bigtextSize" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack"/>
+        android:background="@color/bitblack" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,62 +113,62 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="最终收益(元)"
+            android:layout_margin="5dp"
             android:onClick="onClick"
             android:padding="10dp"
-            android:layout_margin="5dp"
-            android:textSize="@dimen/bigtextSize"/>
+            android:text="最终收益(元)"
+            android:textSize="@dimen/bigtextSize" />
 
         <EditText
             android:id="@+id/cal_finalIncome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:hint="请输入最终收益"
-            android:padding="10dp"
-            android:inputType="numberDecimal"
-            android:lines="1"
-            android:textCursorDrawable="@drawable/shape_cursor"
             android:layout_margin="5dp"
             android:layout_marginLeft="5dp"
             android:background="@null"
-            android:textSize="@dimen/bigtextSize"/>
+            android:hint="请输入最终收益"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:textSize="@dimen/bigtextSize" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack"/>
+        android:background="@color/bitblack" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="计算结果(日/万/元)："
+            android:layout_margin="5dp"
             android:onClick="onClick"
             android:padding="10dp"
-            android:layout_margin="5dp"
+            android:text="计算结果(日/万/元)："
             android:textColor="@color/red"
-            android:textSize="@dimen/titletextSize"/>
+            android:textSize="@dimen/titletextSize" />
 
         <TextView
             android:id="@+id/cal_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_margin="5dp"
-            android:textColor="@color/red"
             android:layout_marginLeft="5dp"
-            android:lines="1"
             android:background="@drawable/shape_btn_bkg"
             android:enabled="false"
-            android:textSize="@dimen/titletextSize"/>
+            android:lines="1"
+            android:padding="10dp"
+            android:textColor="@color/red"
+            android:textSize="@dimen/titletextSize" />
 
     </LinearLayout>
 

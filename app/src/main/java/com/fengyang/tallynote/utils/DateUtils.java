@@ -125,7 +125,7 @@ public class DateUtils {
     }
 
     /**
-     * 计算两日期间隔天数
+     * 计算两日时段隔天数
      *
      * @param startDate
      * @param endDate

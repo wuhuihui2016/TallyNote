@@ -8,29 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/remark_bkg"
-        android:textColor="@color/red"
         android:padding="10dp"
+        android:textColor="@color/red"
         android:textSize="@dimen/bigtextSize"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:layout_below="@id/info"
         android:divider="@color/transparent"
-        android:dividerHeight="10dp"/>
+        android:dividerHeight="10dp"
+        android:padding="10dp" />
 
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:layout_below="@id/info"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"
+        android:textColor="@android:color/holo_orange_dark"
         android:textSize="20sp"
-        android:visibility="gone"
-        android:textColor="@android:color/holo_orange_dark"/>
+        android:visibility="gone" />
 </RelativeLayout>

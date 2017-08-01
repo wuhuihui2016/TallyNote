@@ -1,6 +1,5 @@
 package com.fengyang.tallynote.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,9 +21,11 @@ import java.util.List;
 public class DBUtils extends SQLiteOpenHelper {
 
     private static String TAG = "DBUtils";
+    public static SQLiteDatabase db = null;
 
     public DBUtils(Context context) {
         super(context, "tally_note.db", null, 1);
+        db = getWritableDatabase();
         LogUtils.i(TAG, "保存账本数据-->tally_note.db");
     }
 
@@ -35,16 +36,16 @@ public class DBUtils extends SQLiteOpenHelper {
         db.execSQL("create table if not exists day_note(_id integer primary key," +
                 "useType integer,money varchar(20),remark varchar(100),time varchar(20))");
 
-        //日消费历史记录：消费类型useType,金额money,消费明细remark,时间time,duration消费区间
+        //日消费历史日记录：消费类型useType,金额money,消费明细remark,时间time,duration消费时段
         db.execSQL("create table if not exists day_note_history(_id integer primary key," +
                 "useType integer,money varchar(20),remark varchar(100),time varchar(20),duration varchar(20))");
 
-        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,期间duration,时间time,说明remark
+        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,时段duration,时间time,说明remark
         db.execSQL("create table if not exists month_note(_id integer primary key," +
                 "last_balance varchar(20),pay varchar(20),salary varchar(20),income varchar(20),homeuse varchar(20),balance varchar(20),actual_balance varchar(20)," +
                 "duration varchar(20),remark varchar(100),time varchar(20))");
 
-        //理财记录：money投入金额（单位万）,incomeRatio预期年化（%）,days投资期限(天),durtion投资时期,dayIncome拟日收益（万/天）,finalIncome最终收益
+        //理财记录：money投入金额（单位万）,incomeRatio预期年化（%）,days投资期限(天),durtion投资时段,dayIncome拟日收益（万/天）,finalIncome最终收益
         //        finalCash最终提现,finalCashGo提现去处,finished完成状态,time记录时间
         db.execSQL("create table if not exists income_note(_id integer primary key," +
                 "money varchar(20),incomeRatio varchar(20),days varchar(20),durtion varchar(20),dayIncome varchar(20),finalIncome varchar(20)," +
@@ -173,23 +174,11 @@ public class DBUtils extends SQLiteOpenHelper {
     }
 
     /**
-     * 清除所有月账单(仅用于年度总结时，每年的1月发工资总结时)
-     *
-     * @param activity
-     */
-    public synchronized void clearMonthNotes(Activity activity) {
-        ExcelUtils.exportMonthNote(null);
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("delete from month_note", null);
-        db.close();
-    }
-
-    /**
      * 插入一条理财记录(默认未完成状态，修改状态需在列表中操作)
      *
      * @param incomeNote
      */
-    //理财记录：money 投入金额（单位万）,incomeRatio 预期年化（%）,days 投资期限(天),durtion 投资时期,dayIncome 拟日收益（万/天）,finalIncome 最终收益, time 记录时间
+    //理财记录：money 投入金额（单位万）,incomeRatio 预期年化（%）,days 投资期限(天),durtion 投资时段,dayIncome 拟日收益（万/天）,finalIncome 最终收益, time 记录时间
     public synchronized boolean newINote(IncomeNote incomeNote) {
         boolean isExit;
         SQLiteDatabase db = getWritableDatabase();
@@ -245,7 +234,7 @@ public class DBUtils extends SQLiteOpenHelper {
             /*String money; //投入金额（单位万）
             String incomeRatio; //预期年化（%）
 			String days; //投资期限(天)
-			String durtion; //投资时期
+			String durtion; //投资时段
 			String dayIncome; //拟日收益（万/天）
 			String finalIncome; //最终收益
 			String finalCash; //最终提现
@@ -299,6 +288,28 @@ public class DBUtils extends SQLiteOpenHelper {
     }
 
     /**
+     * 批量插入历史日账单（在导入账单时批量插入历史日账单）
+     *
+     */
+    public synchronized boolean newDNotes4History(List<DayNote> dayNotes) {
+        boolean isExit = true;
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from day_note_history"); //先清除本地数据,再一次添加新数据
+        for (int i = 0; i < dayNotes.size(); i++) {
+            if (isExit) {
+                DayNote dayNote = dayNotes.get(i);
+                db.execSQL("insert into day_note_history(useType,money,remark,time,duration) values(?,?,?,?,?)",
+                        new Object[]{dayNote.getUseType(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime(), dayNote.getDuration()});
+                Cursor cursor = db.rawQuery("select * from day_note_history where money = ? and time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
+                isExit = cursor.moveToFirst();
+                cursor.close();
+            } else return false;
+        }
+        db.close();
+        return isExit;
+    }
+
+    /**
      * 将所有临时日账单移植到历史日账单（在新建月账单时使用）
      *
      * @param duration
@@ -317,11 +328,10 @@ public class DBUtils extends SQLiteOpenHelper {
                 cursor.close();
             } else return false;
         }
-        if (isExit) { //移植完成后，导出并清除数据
-            ExcelUtils.exportIncomeNote(null);
-            db.execSQL("delete from day_note"); //移植完成后，清楚数据
+        if (isExit) { //移植完成后，清除临时日账单数据
+            db.execSQL("delete from day_note");
         }
-        db.close();
+//        db.close();
         return isExit;
     }
 

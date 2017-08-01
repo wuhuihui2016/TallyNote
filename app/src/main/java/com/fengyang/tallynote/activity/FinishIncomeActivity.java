@@ -37,7 +37,7 @@ public class FinishIncomeActivity extends BaseActivity {
         income_info.setText("投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
                 "\n预期年化：" + incomeNote.getIncomeRatio() +
                 " %\n投资期限：" + incomeNote.getDays() +
-                " 天\n投资时期：" + incomeNote.getDurtion() +
+                " 天\n投资时段：" + incomeNote.getDurtion() +
                 " \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome()) +
                 " 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                 "\n投资说明：" + incomeNote.getRemark());
@@ -58,7 +58,7 @@ public class FinishIncomeActivity extends BaseActivity {
                         "投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
                                 "\n预期年化：" + incomeNote.getIncomeRatio() +
                                 " %\n投资期限：" + incomeNote.getDays() +
-                                " 天\n投资时期：" + incomeNote.getDurtion() +
+                                " 天\n投资时段：" + incomeNote.getDurtion() +
                                 " \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome()) +
                                 " 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                                 "\n投资说明：" + incomeNote.getRemark() +

@@ -3,5 +3,5 @@
     android:id="@+id/image"
     android:layout_width="80dp"
     android:layout_height="80dp"
-    android:scaleType="centerInside"
-    android:padding="10dp"/>
+    android:padding="10dp"
+    android:scaleType="centerInside" />

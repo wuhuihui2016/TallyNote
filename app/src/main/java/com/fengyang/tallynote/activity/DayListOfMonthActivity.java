@@ -15,6 +15,7 @@ import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class DayListOfMonthActivity extends BaseActivity {
             durations.add(monthNotes.get(i).getDuration());
         }
         spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setVisibility(View.VISIBLE);
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, durations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -108,10 +110,15 @@ public class DayListOfMonthActivity extends BaseActivity {
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
         dayNotes = MyApp.utils.getDayNotes4History(duration);
-        info.setText("账单记录有 " + dayNotes.size()
-                + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum(duration) + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, false);
-        listView.setAdapter(dayNoteAdapter);
+        if (dayNotes.size() > 0) {
+            info.setText("账单记录：" + dayNotes.size()
+                    + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum(duration) + ""));
+            dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, false);
+            listView.setAdapter(dayNoteAdapter);
+        } else {
+            ToastUtils.showWarningLong(context, duration + "时段内未找到日账单明细！\n可能是首次月账！");
+            finish();
+        }
     }
 
     /**
@@ -130,7 +137,7 @@ public class DayListOfMonthActivity extends BaseActivity {
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("当前支出账单记录有 " + list.size() + " 条，支出金额：" + StringUtils.showPrice(sum + ""));
+        info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }

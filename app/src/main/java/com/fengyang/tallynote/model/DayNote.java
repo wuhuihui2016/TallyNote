@@ -1,7 +1,6 @@
 package com.fengyang.tallynote.model;
 
 import com.fengyang.tallynote.MyApp;
-import com.fengyang.tallynote.utils.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,7 +17,7 @@ public class DayNote implements Serializable {
     String remark; //消费说明
     String time; //消费时间
 
-    String duration; //消费区间，用于区别显示每月消费
+    String duration; //消费时段，用于区别显示每月消费
 
     public DayNote(int useType, String money, String remark, String time) {
         this.useType = useType;
@@ -90,7 +89,7 @@ public class DayNote implements Serializable {
      * 总消费
      * @return
      */
-    public static String getAllSum() {
+    public static Double getAllSum() {
         List<DayNote> dayNotes = MyApp.utils.getDayNotes();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
@@ -101,14 +100,14 @@ public class DayNote implements Serializable {
             if (dayNotes.get(i).getUseType() == DayNote.account_in)
                 sum -= Double.parseDouble(dayNotes.get(i).getMoney());
         }
-        return StringUtils.showPrice(sum + "");
+        return sum;
     }
 
     /**
      * 某一时段的总消费
      * @return
      */
-    public static String getAllSum(String duration) {
+    public static Double getAllSum(String duration) {
         List<DayNote> dayNotes = MyApp.utils.getDayNotes4History(duration);
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
@@ -119,7 +118,7 @@ public class DayNote implements Serializable {
             if (dayNotes.get(i).getUseType() == DayNote.account_in)
                 sum -= Double.parseDouble(dayNotes.get(i).getMoney());
         }
-        return StringUtils.showPrice(sum + "");
+        return sum;
     }
 
 }

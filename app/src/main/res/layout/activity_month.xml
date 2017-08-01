@@ -1,4 +1,4 @@
-<com.fengyang.tallynote.view.IOSScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -7,13 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,8 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:inputType="numberDecimal"
                 android:hint="必填"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -46,10 +47,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,10 +83,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:text="本次收益"
+                android:textColor="@color/title"
+                android:textSize="@dimen/bigtextSize" />
+
+            <EditText
+                android:id="@+id/incomeEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:hint="选填"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textSize="@dimen/bigtextSize" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,48 +151,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="本次收益"
-                android:textColor="@color/title"
-                android:textSize="@dimen/bigtextSize" />
-
-            <EditText
-                android:id="@+id/incomeEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
-                android:inputType="numberDecimal"
-                android:hint="可不填"
-                android:singleLine="true"
-                android:textSize="@dimen/bigtextSize" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -173,8 +176,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
+                android:hint="选填"
                 android:inputType="numberDecimal"
-                android:hint="可不填"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -184,13 +187,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -208,8 +212,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:inputType="numberDecimal"
                 android:hint="计算"
+                android:inputType="numberDecimal"
                 android:onClick="onClick"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
@@ -220,13 +224,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -244,8 +249,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:inputType="numberDecimal"
                 android:hint="必填"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -255,13 +260,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -269,7 +275,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:text="月结期间"
+                android:text="月结时段"
                 android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -278,8 +284,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:hint="必填"
                 android:clickable="true"
+                android:hint="必填"
                 android:onClick="onClick"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
@@ -294,9 +300,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_margin="10dp"
             android:gravity="center_vertical"
-            android:layout_margin="10dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -311,12 +317,12 @@
                 android:id="@+id/remarkEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edit"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/shape_edit"
                 android:gravity="left|top"
-                android:padding="5dp"
+                android:hint="选填"
                 android:lines="2"
-                android:hint="可不填"
+                android:padding="5dp"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -325,10 +331,10 @@
             android:id="@+id/commitNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="提交月账单"
-            android:onClick="onClick"
             android:layout_margin="30dp"
-            android:background="@drawable/shape_month"/>
+            android:background="@drawable/shape_month"
+            android:onClick="onClick"
+            android:text="提交月账单" />
     </LinearLayout>
 
-</com.fengyang.tallynote.view.IOSScrollView>
+</ScrollView>

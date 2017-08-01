@@ -1,4 +1,4 @@
-<com.fengyang.tallynote.view.IOSScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -12,18 +12,18 @@
             android:id="@+id/income_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_orange_light"
             android:background="#FFF7E9"
-            android:textSize="@dimen/bigtextSize"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="@dimen/bigtextSize" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:inputType="numberDecimal"
                 android:hint="必填"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 
@@ -56,9 +56,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_margin="10dp"
             android:gravity="center_vertical"
-            android:layout_margin="10dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,12 +73,12 @@
                 android:id="@+id/finalCashGoEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edit"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/shape_edit"
                 android:gravity="left|top"
-                android:padding="5dp"
-                android:lines="2"
                 android:hint="必填"
+                android:lines="2"
+                android:padding="5dp"
                 android:textSize="@dimen/bigtextSize" />
 
         </LinearLayout>
@@ -87,10 +87,10 @@
             android:id="@+id/commitNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="完成理财"
-            android:onClick="onClick"
             android:layout_marginTop="30dp"
-            android:background="@android:color/holo_red_light"/>
+            android:background="@android:color/holo_red_light"
+            android:onClick="onClick"
+            android:text="完成理财" />
     </LinearLayout>
 
-</com.fengyang.tallynote.view.IOSScrollView>
+</ScrollView>

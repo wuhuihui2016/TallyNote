@@ -149,7 +149,7 @@ public class DayListActivity extends BaseActivity {
         account_in.setTextColor(Color.GRAY);
         dayNotes = MyApp.utils.getDayNotes();
         Collections.reverse(dayNotes);
-        info.setText("账单记录有 " + dayNotes.size()
+        info.setText("账单记录：" + dayNotes.size()
                 + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
         listView.setAdapter(dayNoteAdapter);
@@ -171,7 +171,7 @@ public class DayListActivity extends BaseActivity {
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("当前支出账单记录有 " + list.size() + " 条，支出金额：" + StringUtils.showPrice(sum + ""));
+        info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }

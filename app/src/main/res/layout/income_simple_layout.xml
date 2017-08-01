@@ -3,71 +3,77 @@
     android:id="@+id/income_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@drawable/shape_income"
+    android:orientation="horizontal"
     android:padding="10dp">
 
     <TextView
         android:id="@+id/income_time"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:scaleType="centerInside"
-        android:textSize="@dimen/smalltextSize"
+        android:background="@drawable/shape_income_circle"
         android:gravity="center_vertical|center"
+        android:scaleType="centerInside"
         android:textColor="@color/black"
-        android:background="@drawable/shape_income_circle"/>
+        android:textSize="@dimen/smalltextSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="投入金额："
-                android:textSize="@dimen/smalltextSize"/>
+                android:textSize="@dimen/smalltextSize" />
+
             <TextView
                 android:id="@+id/income_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
-                android:textSize="@dimen/smalltextSize"/>
+                android:textSize="@dimen/smalltextSize" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="预期年化："
-                android:textSize="@dimen/smalltextSize"/>
+                android:textSize="@dimen/smalltextSize" />
+
             <TextView
                 android:id="@+id/income_ratio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
-                android:textSize="@dimen/smalltextSize"/>
+                android:textSize="@dimen/smalltextSize" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/income_staus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
-                android:text="计息中"
                 android:layout_alignParentRight="true"
-                android:textSize="@dimen/smalltextSize"/>
+                android:text="计息中"
+                android:textColor="@color/red"
+                android:textSize="@dimen/smalltextSize" />
         </RelativeLayout>
     </LinearLayout>
 

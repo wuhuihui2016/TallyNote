@@ -4,69 +4,72 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:visibility="gone"/>
+        android:layout_below="@id/spinner">
 
         <LinearLayout
             android:id="@+id/type_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/spinner"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
                 android:background="@drawable/shape_dialog"
                 android:clickable="true"
+                android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:textColor="@color/red"
-                android:text="综合"/>
+                android:text="综合"
+                android:textColor="@color/red" />
+
             <TextView
                 android:id="@+id/consume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
                 android:background="@drawable/shape_dialog"
                 android:clickable="true"
+                android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="支出"
-                android:layout_marginLeft="10dp"/>
+                android:text="支出" />
+
             <TextView
                 android:id="@+id/account_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
                 android:background="@drawable/shape_dialog"
                 android:clickable="true"
+                android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="转账"
-                android:layout_marginLeft="10dp"/>
+                android:text="转账" />
+
             <TextView
                 android:id="@+id/account_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal|center"
                 android:background="@drawable/shape_dialog"
                 android:clickable="true"
+                android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="转入"
-                android:layout_marginLeft="10dp"/>
+                android:text="转入" />
         </LinearLayout>
 
         <TextView
@@ -75,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/type_layout"
             android:padding="5dp"
-            android:textSize="@dimen/smalltextSize"/>
+            android:textSize="@dimen/smalltextSize" />
 
     </RelativeLayout>
 
@@ -85,21 +88,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/info_layout"
         android:layout_marginTop="10dp"
+        android:background="@drawable/shape_day"
         android:divider="@color/transparent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:listSelector="@color/transparent"
-        android:background="@drawable/shape_day"/>
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:layout_below="@id/info_layout"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"
+        android:textColor="@android:color/holo_orange_dark"
         android:textSize="20sp"
-        android:visibility="gone"
-        android:textColor="@android:color/holo_orange_dark"/>
+        android:visibility="gone" />
 </RelativeLayout>
