@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
 import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.ImportExportActivity;
+import com.fengyang.tallynote.activity.NotePadListActivity;
 import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 
@@ -61,8 +63,8 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.calculate);
         settings.add("文件浏览");
         drawableRes.add(R.drawable.file_explorer);
-        settings.add("");
-        drawableRes.add(R.drawable.blank);
+        settings.add("记事本");
+        drawableRes.add(R.drawable.notepad);
         settings.add("");
         drawableRes.add(R.drawable.blank);
 
@@ -82,6 +84,11 @@ public class MineFragment extends Fragment {
                         break;
                     case 3: //文件浏览
                         startActivity(new Intent(activity, FileExplorerActivity.class));
+                        break;
+                    case 4: //记事本
+                        MyApp.utils.newTable("create table if not exists note_pad(_id integer primary key," +
+                                "tag integer,words varchar(120),time varchar(20))");
+                        startActivity(new Intent(activity, NotePadListActivity.class));
                         break;
                 }
             }

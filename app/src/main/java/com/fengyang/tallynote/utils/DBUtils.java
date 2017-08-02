@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.model.NotePad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +52,32 @@ public class DBUtils extends SQLiteOpenHelper {
                 "money varchar(20),incomeRatio varchar(20),days varchar(20),durtion varchar(20),dayIncome varchar(20),finalIncome varchar(20)," +
                 "finalCash varchar(20),finalCashGo varchar(20),finished integer,remark varchar(100),time varchar(20))");
 
+        //记事本：tag标签,words内容,time记录时间
+        db.execSQL("create table if not exists note_pad(_id integer primary key," +
+                "tag integer,words varchar(120),time varchar(20))");
+
     }
 
     @Override
     public synchronized void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
             db.execSQL("drop table if exists day_note");
+            db.execSQL("drop table if exists day_note_history");
             db.execSQL("drop table if exists month_note");
+            db.execSQL("drop table if exists income_note");
+            db.execSQL("drop table if exists note_pad");
             onCreate(db);
         }
+    }
+
+    /**
+     * 新建数据表
+     * @param sql
+     */
+    public synchronized void newTable(String sql) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(sql);
+        db.close();
     }
 
     /**
@@ -426,6 +444,80 @@ public class DBUtils extends SQLiteOpenHelper {
                                 incomeNote.getDayIncome(), incomeNote.getFinalIncome(), incomeNote.getFinalCash(),
                                 incomeNote.getFinalCashGo(), incomeNote.getFinished(), incomeNote.getRemark(), incomeNote.getTime()});
                 Cursor cursor = db.rawQuery("select * from income_note where money = ? and finalIncome = ?", new String[]{incomeNote.getMoney(), incomeNote.getFinalIncome()});
+                isExit = cursor.moveToFirst();
+                cursor.close();
+            } else return false;
+        }
+        db.close();
+        return isExit;
+    }
+
+
+    /**
+     * 插入一条记事本
+     *
+     * @param notePad
+     */
+    public synchronized boolean newNotePad(NotePad notePad) {
+        boolean isExit;
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("insert into note_pad(tag,words,time) values(?,?,?)",
+                new Object[]{notePad.getTag(), notePad.getWords(), notePad.getTime()});
+        Cursor cursor = db.rawQuery("select * from note_pad where words = ? and time = ?", new String[]{notePad.getWords(), notePad.getTime()});
+        isExit = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isExit;
+    }
+
+    /**
+     * 删除记事本
+     *
+     * @param notePad
+     */
+    public synchronized void delNotePad(NotePad notePad) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from note_pad where words = ? and time = ?", new String[]{notePad.getWords(), notePad.getTime()});
+        db.close();
+    }
+
+    /**
+     * 查看所有的记事本
+     *
+     * @return
+     */
+    public synchronized List<NotePad> getNotePads() {
+        List<NotePad> notePads = new ArrayList<NotePad>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from note_pad", null);
+        while (cursor.moveToNext()) {
+            //int note_tag, String words, String time
+            NotePad notePad = new NotePad(cursor.getInt(cursor.getColumnIndex("tag")),
+                    cursor.getString(cursor.getColumnIndex("words")),
+                    cursor.getString(cursor.getColumnIndex("time")));
+            notePads.add(notePad);
+        }
+        cursor.close();
+        db.close();
+        return notePads;
+    }
+
+
+    /**
+     * 批量插入记事本
+     *
+     * @param notePads
+     */
+    public synchronized boolean newNotePads(List<NotePad> notePads) {
+        boolean isExit = true;
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from note_pad"); //先清除本地数据,再一次添加新数据
+        for (int i = 0; i < notePads.size(); i++) {
+            if (isExit) {
+                NotePad notePad = notePads.get(i);
+                db.execSQL("insert into note_pad(tag,words,time) values(?,?,?)",
+                        new Object[]{notePad.getTag(), notePad.getWords(), notePad.getTime()});
+                Cursor cursor = db.rawQuery("select * from note_pad where words = ? and time = ?", new String[]{notePad.getWords(), notePad.getTime()});
                 isExit = cursor.moveToFirst();
                 cursor.close();
             } else return false;

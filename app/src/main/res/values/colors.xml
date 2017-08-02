@@ -7,6 +7,8 @@
     <color name="white">@android:color/white</color>
     <color name="red">@android:color/holo_red_light</color>
     <color name="black">@android:color/black</color>
+    <color name="blue">#000093</color>
+
 
     <color name="title">#333333</color>
     <color name="line">#d0d0d0</color>
@@ -16,6 +18,7 @@
     <color name="day_record">#009393</color>
     <color name="month_record">#007500</color>
     <color name="income_record">#D67CDD</color>
+    <color name="notepad_record">#E1E100</color>
     <color name="remark_bkg">#FFF7E9</color>
 
 

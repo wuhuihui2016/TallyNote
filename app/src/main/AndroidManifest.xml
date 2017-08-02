@@ -78,6 +78,13 @@
         <!-- 文件浏览 -->
         <activity android:name=".activity.FileExplorerActivity" />
 
+        <!-- 记事本列表 -->
+        <activity android:name=".activity.NotePadListActivity" />
+        <!-- 新建记事本 -->
+        <activity android:name=".activity.NewNotePadActivity" />
+        <!-- 记事本详情 -->
+        <activity android:name=".activity.NotePadDetailActivity" />
+
     </application>
 
 </manifest>

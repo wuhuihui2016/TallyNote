@@ -38,6 +38,14 @@
         android:textSize="@dimen/bigtextSize" />
 
     <TextView
+        android:id="@+id/notesNum5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:textSize="@dimen/bigtextSize" />
+
+    <TextView
         android:id="@+id/import2file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

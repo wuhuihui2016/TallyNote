@@ -4,6 +4,7 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.model.NotePad;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,10 +20,11 @@ public class ExcelUtils {
 
     //文件名
     private static final String day_file = "day_note_", month_file = "month_note_", income_file = "income_note_",
-            tallynote_file = "tally_note_", day_history_file = "day_note_history_";
+            tallynote_file = "tally_note_", day_history_file = "day_note_history_", notepad_file = "notepad_";
 
     //表单名
-    private static final String day_sheetName = "日账单", month_sheetName = "月账单", income_sheetName = "理财记录", day_history_sheetName = "历史日账单";
+    private static final String day_sheetName = "日账单", month_sheetName = "月账单",
+            income_sheetName = "理财记录", day_history_sheetName = "历史日账单", notepad_sheetName = "记事本";
 
     //表单头部标题
     private static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
@@ -32,11 +34,14 @@ public class ExcelUtils {
     private static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时段", "拟日收益（元/万天）", "最终收益（元）",
             "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
 
+    private static String[] notepadTitle = {"标签", "内容", "记录时间"};
+
     //数据列表
     private static List<DayNote> dayNotes;
     private static List<DayNote> dayNotes_history;
     private static List<MonthNote> monthNotes;
     private static List<IncomeNote> incomeNotes;
+    private static List<NotePad> notePads;
 
     /**
      * 文件导出时清除旧文件
@@ -49,12 +54,14 @@ public class ExcelUtils {
         for (int i = 0; i < files.length; i++) {
             if (type == ContansUtils.DAY) {
                 if (files[i].getName().contains(day_file)) files[i].delete();
-            } else if (type == ContansUtils.DAY_HISTORY){
+            } else if (type == ContansUtils.DAY_HISTORY) {
                 if (files[i].getName().contains(day_history_file)) files[i].delete();
             } else if (type == ContansUtils.MONTH) {
                 if (files[i].getName().contains(month_file)) files[i].delete();
             } else if (type == ContansUtils.INCOME) {
                 if (files[i].getName().contains(income_file)) files[i].delete();
+            } else if (type == ContansUtils.NOTEPAD) {
+                if (files[i].getName().contains(notepad_file)) files[i].delete();
             } else {
                 if (files[i].getName().contains(tallynote_file)) files[i].delete();
             }
@@ -92,6 +99,7 @@ public class ExcelUtils {
         }
 
     }
+
     /**
      * 历史日账单表
      *
@@ -194,6 +202,38 @@ public class ExcelUtils {
     }
 
     /**
+     * 记事本表
+     *
+     * @param callBackExport
+     */
+    public static void exportNotePad(ICallBackExport callBackExport) {
+        try {
+            clearOldExcelFile(ContansUtils.NOTEPAD);
+            File file = new File(FileUtils.excelPath + notepad_file + DateUtils.formatDate4fileName() + ".xls");
+            if (!file.exists()) file.createNewFile();
+            WritableWorkbook writebook = Workbook.createWorkbook(file);
+
+            // 创建工作表
+            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 0);
+
+            //添加表头
+            for (int i = 0; i < notepadTitle.length; i++) {
+                notepad_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
+            }
+            //写入数据
+            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
+            writebook.write();
+            writebook.close();
+            if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
+
+        } catch (Exception e) {
+            if (callBackExport != null) callBackExport.callback(false, null);
+            LogUtils.i("Exception", e.toString());
+        }
+
+    }
+
+    /**
      * 导出所有账单到一个Excel中
      *
      * @param callBackExport
@@ -229,10 +269,17 @@ public class ExcelUtils {
                 day_history_sheet.addCell(new Label(i, 0, dayHistoryTitle[i]));//列，行
             }
 
+            //初始化记事本工作表
+            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 4);
+            for (int i = 0; i < notepadTitle.length; i++) {
+                day_history_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
+            }
+
             writeSheet(ContansUtils.DAY, day_sheet);
             writeSheet(ContansUtils.MONTH, month_sheet);
             writeSheet(ContansUtils.INCOME, income_sheet);
             writeSheet(ContansUtils.DAY_HISTORY, day_history_sheet);
+            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
             writebook.write();//只能执行一次
             writebook.close();
 
@@ -320,14 +367,29 @@ public class ExcelUtils {
                     if (dayNotes_history.size() > 0) {
                         for (int i = 0; i < dayNotes_history.size(); i++) {
                             String dayType = null;
-                            if (dayNotes_history.get(i).getUseType() == DayNote.consume) dayType = "支出";
-                            if (dayNotes_history.get(i).getUseType() == DayNote.account_out) dayType = "转账";
-                            if (dayNotes_history.get(i).getUseType() == DayNote.account_in) dayType = "转入";
+                            if (dayNotes_history.get(i).getUseType() == DayNote.consume)
+                                dayType = "支出";
+                            if (dayNotes_history.get(i).getUseType() == DayNote.account_out)
+                                dayType = "转账";
+                            if (dayNotes_history.get(i).getUseType() == DayNote.account_in)
+                                dayType = "转入";
                             sheet.addCell(new Label(0, i + 1, dayType));
                             sheet.addCell(new Label(1, i + 1, dayNotes_history.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes_history.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes_history.get(i).getTime()));
                             sheet.addCell(new Label(4, i + 1, dayNotes_history.get(i).getDuration()));
+                        }
+                    }
+                    break;
+
+                case ContansUtils.NOTEPAD:
+                    LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
+                    if (notePads.size() > 0) {
+                        for (int i = 0; i < notePads.size(); i++) {
+                            String tagStr = NotePad.getTagList().get(notePads.get(i).getTag());
+                            sheet.addCell(new Label(0, i + 1, tagStr));
+                            sheet.addCell(new Label(1, i + 1, notePads.get(i).getWords()));
+                            sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getTime()));
                         }
                     }
                     break;
@@ -349,7 +411,7 @@ public class ExcelUtils {
      */
     public static void importExcel(String filePath, ICallBackImport callBackImport) {
         String tag = "importExcel";
-        int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0;
+        int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0, notepad_count = 0;
         try {
             Workbook book = Workbook.getWorkbook(new File(filePath));
             int num = book.getNumberOfSheets();
@@ -444,10 +506,26 @@ public class ExcelUtils {
                             );
                         }
                         LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
-                        if (dayNotes_history.size() > 0) if (MyApp.utils.newDNotes4History(dayNotes_history)) {
-                            day_history_count = dayNotes_history.size();
-                            exportDayNote4History(null);
+                        if (dayNotes_history.size() > 0)
+                            if (MyApp.utils.newDNotes4History(dayNotes_history)) {
+                                day_history_count = dayNotes_history.size();
+                                exportDayNote4History(null);
+                            }
+                    } else if (sheetName.equals(notepad_sheetName)) { //历史日账单解析
+                        notePads = new ArrayList<>();
+                        notePads.clear();
+                        for (int j = 1; j < rows; j++) {//行
+                            String tagStr = sheet.getCell(0, j).getContents();
+                            notePads.add(new NotePad(NotePad.getTag(tagStr),
+                                    sheet.getCell(1, j).getContents(),sheet.getCell(2, j).getContents())
+                            );
                         }
+                        LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
+                        if (notePads.size() > 0)
+                            if (MyApp.utils.newNotePads(notePads)) {
+                                notepad_count = notePads.size();
+                                exportNotePad(null);
+                            }
                     } else {
                         callBackImport.callback("导入失败！原因：非本APP导出的文件！");
                         return;
@@ -457,8 +535,8 @@ public class ExcelUtils {
             }
 
             if (callBackImport != null) {
-                if (day_count > 0 || day_history_count > 0 || month_count > 0 || income_count > 0) {
-                    callBackImport.callback(day_count, month_count, income_count, day_history_count);
+                if (day_count > 0 || day_history_count > 0 || month_count > 0 || income_count > 0 || notepad_count > 0) {
+                    callBackImport.callback(day_count, month_count, income_count, day_history_count, notepad_count);
                 } else callBackImport.callback("导入失败, 原因：表单中没有可解析的数据！");
             }
             book.close();
@@ -472,8 +550,8 @@ public class ExcelUtils {
      * 导出结果回调
      */
     public interface ICallBackImport {
-        void callback(String errorMsg);
 
-        void callback(int day_count, int month_count, int income_count, int day_history_count);
+        void callback(String errorMsg);
+        void callback(int day_count, int month_count, int income_count, int day_history_count, int notepad_count);
     }
 }

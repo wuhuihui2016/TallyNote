@@ -41,14 +41,17 @@ public class ImportExportActivity extends BaseActivity {
         TextView notesNum2 = (TextView) findViewById(R.id.notesNum2);
         TextView notesNum3 = (TextView) findViewById(R.id.notesNum3);
         TextView notesNum4 = (TextView) findViewById(R.id.notesNum4);
+        TextView notesNum5 = (TextView) findViewById(R.id.notesNum5);
         notesNum1.setText("日账记录：" + MyApp.utils.getDayNotes().size());
         notesNum2.setText("月账记录：" + MyApp.utils.getMonNotes().size());
         notesNum3.setText("理财记录：" + MyApp.utils.getIncomes().size());
         notesNum4.setText("历史日账记录：" + MyApp.utils.getDayNotes4History().size());
+        notesNum4.setText("记事本记录：" + MyApp.utils.getNotePads().size());
         notesNum1.setOnClickListener(new MyOnClickListener(ContansUtils.DAY));
         notesNum2.setOnClickListener(new MyOnClickListener(ContansUtils.MONTH));
         notesNum3.setOnClickListener(new MyOnClickListener(ContansUtils.INCOME));
         notesNum4.setOnClickListener(new MyOnClickListener(ContansUtils.DAY_HISTORY));
+        notesNum5.setOnClickListener(new MyOnClickListener(ContansUtils.NOTEPAD));
     }
 
     private class MyOnClickListener implements View.OnClickListener {
@@ -74,6 +77,8 @@ public class ImportExportActivity extends BaseActivity {
                 intent.putExtra("duration", dayNotes4History.get(0).getDuration());
                 startActivity(intent);
             }
+            if (index == ContansUtils.NOTEPAD && MyApp.utils.getNotePads().size() > 0)
+                startActivity(new Intent(activity, NotePadListActivity.class));
         }
     }
 
@@ -128,12 +133,13 @@ public class ImportExportActivity extends BaseActivity {
                         ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
 
                             @Override
-                            public void callback(int day_count, int month_count, int income_count, int day_history_count) {
+                            public void callback(int day_count, int month_count, int income_count, int day_history_count, int notepad_count) {
                                 ToastUtils.showSucessLong(context, "导入成功！" +
                                         "\n日账记录：" + day_count +
                                         "\n月账记录：" + month_count +
                                         "\n理财记录：" + income_count +
-                                        "\n历史日账记录：" + day_history_count);
+                                        "\n历史日账记录：" + day_history_count +
+                                        "\n记事本记录：" + notepad_count);
                                 initDate();
                             }
 
