@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,7 +23,9 @@ import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
+import com.fengyang.tallynote.view.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,11 +34,13 @@ import java.util.List;
  */
 public class NotePadListActivity extends BaseActivity {
 
+    private FlowLayout flowLayout;
     private TextView info;
     private ListView listView;
 
     private List<NotePad> notePads;
     private NotePadAdapter notePadAdapter;
+    private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,37 @@ public class NotePadListActivity extends BaseActivity {
                 } else {
                     initPopupWindow();
                 }
+            }
+        });
+
+        flowLayout = (FlowLayout) findViewById(R.id.flowLayout);
+        flowLayout.removeAllViews();//避免多次执行后出现重复多余View
+        final List<String> tagList = NotePad.getTagList();
+        for (int i = 0; i < tagList.size(); i++) {
+            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tag_view, null);
+            TextView tagView = (TextView) view.findViewById(R.id.tagView);
+            tagView.setText(tagList.get(i));
+            final int finalI = i;
+            tagView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i <  flowLayout.getChildCount(); i++) {
+                        TextView textView = (TextView) flowLayout.getChildAt(i);
+                        textView.setTextColor(Color.BLACK);
+                    }
+                    TextView textView = (TextView) flowLayout.getChildAt(finalI);
+                    textView.setTextColor(Color.RED);
+                    getAll4Tag(finalI);
+                }
+            });
+            flowLayout.addView(view);
+        }
+
+        findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAll();
             }
         });
 
@@ -134,12 +170,34 @@ public class NotePadListActivity extends BaseActivity {
         listView.setAdapter(notePadAdapter);
 
         //如果当前无记录，则跳转写记录页面
-        if (notePads.size() == 0) new DelayTask(500, new DelayTask.ICallBack() {
+        if (isFirst && notePads.size() == 0) new DelayTask(500, new DelayTask.ICallBack() {
             @Override
             public void deal() {
-                startActivity(new Intent(activity, NewNotePadActivity.class));
+                isFirst = false;
+                Intent intent = new Intent(activity, NewNotePadActivity.class);
+                intent.putExtra("list", true);
+                startActivity(intent);
             }
         }).execute();
+    }
+
+    /*
+     * 依据标签过滤显示
+     */
+    private void getAll4Tag(int tag) {
+        notePads = MyApp.utils.getNotePads();
+        Collections.reverse(notePads);
+
+        List<NotePad> list = new ArrayList<>();
+        for (int i = 0; i < notePads.size(); i++) {
+            if (notePads.get(i).getTag() == tag) {
+                list.add(notePads.get(i));
+            }
+        }
+        info.setText(NotePad.getTagList().get(tag) + "：" + list.size());
+        notePadAdapter = new NotePadAdapter(activity, list);
+        listView.setAdapter(notePadAdapter);
+
     }
 
 

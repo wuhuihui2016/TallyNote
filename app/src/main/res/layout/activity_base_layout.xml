@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/app_color"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <ImageButton
             android:id="@+id/return_btn"

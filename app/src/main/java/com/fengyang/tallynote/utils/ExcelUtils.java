@@ -305,6 +305,7 @@ public class ExcelUtils {
             dayNotes_history = MyApp.utils.getDayNotes4History();
             monthNotes = MyApp.utils.getMonNotes();
             incomeNotes = MyApp.utils.getIncomes();
+            notePads = MyApp.utils.getNotePads();
 
             switch (type) {
                 case ContansUtils.DAY:

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
@@ -22,13 +24,17 @@ import com.fengyang.tallynote.activity.DayListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
 import com.fengyang.tallynote.activity.NewDayActivity;
 import com.fengyang.tallynote.activity.NewMonthActivity;
+import com.fengyang.tallynote.activity.NewNotePadActivity;
+import com.fengyang.tallynote.activity.NotePadListActivity;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -99,6 +105,8 @@ public class TallyFragment extends Fragment {
         showMonthNote();
 
         clickListener();
+
+        showNotepad();
 
     }
 
@@ -184,6 +192,7 @@ public class TallyFragment extends Fragment {
         content.findViewById(R.id.toMonthNotes).setOnClickListener(clickListener);
         content.findViewById(R.id.commitDNote).setOnClickListener(clickListener);
         content.findViewById(R.id.commitMNote).setOnClickListener(clickListener);
+        content.findViewById(R.id.commitNotepad).setOnClickListener(clickListener);
 
     }
 
@@ -210,8 +219,9 @@ public class TallyFragment extends Fragment {
                     break;
 
                 case R.id.reload:
-                    LogUtils.i("reload", "showIncomeNote");
+                    LogUtils.i("reload", "reload");
                     showDayNote();
+                    showNotepad();
                     break;
 
                 case R.id.current_pay:
@@ -231,7 +241,71 @@ public class TallyFragment extends Fragment {
                 case R.id.commitMNote:
                     startActivity(new Intent(activity, NewMonthActivity.class));
                     break;
+
+                case R.id.commitNotepad:
+                    startActivity(new Intent(activity, NewNotePadActivity.class));
+                    break;
             }
+        }
+    };
+
+    /**
+     * 显示记事本
+     */
+    private ViewAnimator animator;
+    private List<NotePad> notePads = new ArrayList<>();
+
+    private void showNotepad() {
+        try {
+            if (MyApp.utils.getNotePads().size() > 0) {
+                for (int i = 0; i < MyApp.utils.getNotePads().size(); i++) {
+                    if (MyApp.utils.getNotePads().get(i).getTag() == 0) { //过滤显示代办事项
+                        notePads.add(MyApp.utils.getNotePads().get(i));
+                    }
+                }
+
+                if (notePads.size() > 0) {
+                    animator = (ViewAnimator) content.findViewById(R.id.animator);
+                    animator.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < notePads.size(); i++) {
+                        final int finalI = i;
+                        View view_streaner = View.inflate(getActivity(), R.layout.view_streaner, null);
+                        TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
+                        streamer_txt.setText(notePads.get(finalI).getWords());
+
+                        view_streaner.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(getActivity(), NotePadListActivity.class));
+                            }
+                        });
+                        animator.addView(view_streaner);
+                    }
+                    showNext();
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 横幅加载下一条,条幅仅1条则不轮播
+     */
+    private void showNext() {
+        try {
+            if (animator != null && notePads.size() > 1) {
+                animator.setOutAnimation(getActivity(), R.anim.slide_out_up);
+                animator.setInAnimation(getActivity(), R.anim.slide_in_down);
+                animator.showNext();
+                handler.sendEmptyMessageDelayed(0, 8000);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            showNext();//条幅滚到下一条
         }
     };
 

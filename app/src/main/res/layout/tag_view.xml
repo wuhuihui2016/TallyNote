@@ -1,15 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tagView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/shape_write">
-
-    <TextView
-        android:id="@+id/tagView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:gravity="center_horizontal|center"
-        android:onClick="onClick"
-        android:textColor="@color/black" />
-</RelativeLayout>
+    android:background="@drawable/shape_write"
+    android:clickable="true"
+    android:gravity="center_horizontal|center"
+    android:onClick="onClick"
+    android:textColor="@color/black" />

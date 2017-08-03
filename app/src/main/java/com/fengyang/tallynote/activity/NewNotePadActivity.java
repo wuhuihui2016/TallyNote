@@ -1,8 +1,10 @@
 package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,12 @@ public class NewNotePadActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View v) {
+                    for (int i = 0; i <  flowLayout.getChildCount(); i++) {
+                        TextView textView = (TextView) flowLayout.getChildAt(i);
+                        textView.setTextColor(Color.BLACK);
+                    }
+                    TextView textView = (TextView) flowLayout.getChildAt(finalI);
+                    textView.setTextColor(Color.RED);
                     tag = finalI;
                     tagStr = tagList.get(finalI);
                     note_tagTv.setText(tagStr);
@@ -90,14 +98,17 @@ public class NewNotePadActivity extends BaseActivity {
         setRightBtnListener("发表", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotePad notePad = new NotePad(tag, wordsEt.getText().toString(), DateUtils.formatDateTime());
-                if (MyApp.utils.newNotePad(notePad)) {
-                    ToastUtils.showSucessLong(context, "发表成功！");
-                    ExcelUtils.exportDayNote(null);
-                    if (getIntent().hasExtra("list"))
-                        sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
-                    finish();
-                } else ToastUtils.showErrorLong(context, "发表失败！");
+                String words = wordsEt.getText().toString();
+                if (!TextUtils.isEmpty(words)) {
+                    NotePad notePad = new NotePad(tag, wordsEt.getText().toString(), DateUtils.formatDateTime());
+                    if (MyApp.utils.newNotePad(notePad)) {
+                        ToastUtils.showSucessLong(context, "发表成功！");
+                        ExcelUtils.exportDayNote(null);
+                        if (getIntent().hasExtra("list"))
+                            sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
+                        finish();
+                    } else ToastUtils.showErrorLong(context, "发表失败！");
+                } else ToastUtils.showToast(context, false, "请输入内容！");
             }
         });
 
