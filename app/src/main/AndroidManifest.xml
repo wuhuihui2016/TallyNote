@@ -85,6 +85,13 @@
         <!-- 记事本详情 -->
         <activity android:name=".activity.NotePadDetailActivity" />
 
+        <!-- 备忘录列表 -->
+        <activity android:name=".activity.MemoNoteListActivity" />
+        <!-- 新建备忘录 -->
+        <activity android:name=".activity.NewMemoNoteActivity" />
+        <!-- 备忘录详情 -->
+        <activity android:name=".activity.MemoNoteDetailActivity" />
+
     </application>
 
 </manifest>

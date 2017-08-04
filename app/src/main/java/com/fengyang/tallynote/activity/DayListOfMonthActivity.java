@@ -9,9 +9,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.DayNoteAdapter;
+import com.fengyang.tallynote.database.DayNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -44,7 +45,7 @@ public class DayListOfMonthActivity extends BaseActivity {
 
         //数据
         final List<String> durations = new ArrayList<>();
-        List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             durations.add(monthNotes.get(i).getDuration());
         }
@@ -109,7 +110,7 @@ public class DayListOfMonthActivity extends BaseActivity {
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
-        dayNotes = MyApp.utils.getDayNotes4History(duration);
+        dayNotes = DayNoteDao.getDayNotes4History(duration);
         if (dayNotes.size() > 0) {
             info.setText("账单记录：" + dayNotes.size()
                     + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum(duration) + ""));

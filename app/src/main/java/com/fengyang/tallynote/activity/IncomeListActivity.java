@@ -14,9 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -100,7 +100,7 @@ public class IncomeListActivity extends BaseActivity {
     };
 
     private void initData() {
-        incomeNotes = MyApp.utils.getIncomes();
+        incomeNotes = IncomeNoteDao.getIncomes();
         info.setText("投资账单记录有" + incomeNotes.size() + "条,计息中" + IncomeNote.getEarningInComes().size() + "条");
 
         Collections.reverse(incomeNotes);//倒序排列
@@ -191,7 +191,7 @@ public class IncomeListActivity extends BaseActivity {
      */
     private void sort4Start() {
         if (!isStart) {
-            incomeNotes = MyApp.utils.getIncomes();
+            incomeNotes = IncomeNoteDao.getIncomes();
             if (incomeNotes.size() > 0) {
                 sort_info.setText("按投资时间排序：");
                 isStart = true;

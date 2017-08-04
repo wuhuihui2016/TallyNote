@@ -9,9 +9,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
@@ -45,7 +45,7 @@ public class OnStartActivity extends BaseActivity {
      * 初始化View
      */
     private void initView() {
-        monthNotes = MyApp.utils.getMonNotes();
+        monthNotes = MonthNoteDao.getMonthNotes();
         if (monthNotes.size() > 0) {
             //密码输入显示的TextView集合
             textViews.add((TextView) findViewById(R.id.pwd1));

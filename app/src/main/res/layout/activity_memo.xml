@@ -5,28 +5,14 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/note_tagTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_write"
-        android:hint="请选择你想表达的标签"
-        android:lines="1" />
-
-    <com.fengyang.tallynote.view.FlowLayout
-        android:id="@+id/flowLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
-
     <EditText
-        android:id="@+id/wordsEt"
+        android:id="@+id/contentEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shape_write"
         android:gravity="top|left"
-        android:hint="这一刻的想法..."
+        android:hint="接下来我要做什么..."
         android:lines="10"
         android:textSize="@dimen/smalltextSize"
         android:maxLength="200" />

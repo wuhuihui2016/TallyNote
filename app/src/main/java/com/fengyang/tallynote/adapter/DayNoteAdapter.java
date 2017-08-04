@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -97,8 +97,8 @@ public class DayNoteAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
-                            MyApp.utils.delDNote(dayNote);
-                            dayNotes = MyApp.utils.getDayNotes();
+                            DayNoteDao.delDNote(dayNote);
+                            dayNotes = DayNoteDao.getDayNotes();
                             notifyDataSetChanged();
 
                             activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));

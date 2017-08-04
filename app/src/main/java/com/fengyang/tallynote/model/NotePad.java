@@ -59,7 +59,6 @@ public class NotePad implements Serializable {
      */
     public static List<String> getTagList() {
         List<String> tagList = new ArrayList<String>();
-        tagList.add("待办事项");
         tagList.add("生活琐事");
         tagList.add("突发奇想");
         tagList.add("励志感言");

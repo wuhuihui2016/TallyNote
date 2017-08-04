@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.lang.reflect.Field;
@@ -52,7 +53,7 @@ public class NotificationUtils {
 
             //设置点击事件
             Intent intent = new Intent(context, IncomeListActivity.class);
-            intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
+            intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
             intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

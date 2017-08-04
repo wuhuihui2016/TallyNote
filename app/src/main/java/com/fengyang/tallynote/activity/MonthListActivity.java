@@ -11,9 +11,10 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.MonthNoteAdapter;
+import com.fengyang.tallynote.database.DayNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
@@ -58,7 +59,7 @@ public class MonthListActivity extends BaseActivity {
     }
 
     private void initData() {
-        monthNotes = MyApp.utils.getMonNotes();
+        monthNotes = MonthNoteDao.getMonthNotes();
         info.setText("月账单记录有" + monthNotes.size() + "条");
 
         Collections.reverse(monthNotes);//倒序排列
@@ -67,7 +68,7 @@ public class MonthListActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (MyApp.utils.getDayNotes4History().size() > 0) {
+                if (DayNoteDao.getDayNotes4History().size() > 0) {
                     Intent intent = new Intent(activity, DayListOfMonthActivity.class);
                     intent.putExtra("duration", monthNotes.get(position).getDuration());
                     startActivity(intent);

@@ -8,9 +8,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
@@ -124,7 +124,7 @@ public class ForgetPwdActivity extends BaseActivity {
 
                         String getPwdKey = (String) ContansUtils.get("pwdKey", "");
                         if (pwdKey.equals(getPwdKey)) {
-                            List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
+                            List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
                             String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
                             if (pwd.length() > 6) {
                                 pwd = pwd.substring(0, 5);

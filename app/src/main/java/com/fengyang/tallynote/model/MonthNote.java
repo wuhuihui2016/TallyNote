@@ -1,6 +1,6 @@
 package com.fengyang.tallynote.model;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.database.MonthNoteDao;
 
 import java.io.Serializable;
 
@@ -136,8 +136,8 @@ public class MonthNote implements Serializable {
      * 获取最后一次月结算的截止时间
      */
     public static String getEndDate() {
-        if (MyApp.utils.getMonNotes().size() > 0)
-            return MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getDuration().split("-")[1];
+        if (MonthNoteDao.getMonthNotes().size() > 0)
+            return MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getDuration().split("-")[1];
         else return null;
     }
 }

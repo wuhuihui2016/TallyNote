@@ -14,9 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.DayNoteAdapter;
+import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
@@ -147,7 +147,7 @@ public class DayListActivity extends BaseActivity {
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
-        dayNotes = MyApp.utils.getDayNotes();
+        dayNotes = DayNoteDao.getDayNotes();
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()
                 + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum() + ""));

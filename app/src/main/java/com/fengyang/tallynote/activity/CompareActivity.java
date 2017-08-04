@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.IncomeNoteAdapter;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class CompareActivity extends BaseActivity {
         emptyView = (TextView) findViewById(R.id.emptyView);
         listView.setEmptyView(emptyView);
 
-        incomeNotes = MyApp.utils.getIncomes();
+        incomeNotes = IncomeNoteDao.getIncomes();
 
         if (getIntent().hasExtra("cal_result")) {
             String cal_result = getIntent().getStringExtra("cal_result");

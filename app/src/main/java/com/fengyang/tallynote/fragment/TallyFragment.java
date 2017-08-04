@@ -18,7 +18,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.DayListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
@@ -26,6 +25,9 @@ import com.fengyang.tallynote.activity.NewDayActivity;
 import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.activity.NewNotePadActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
+import com.fengyang.tallynote.database.DayNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
+import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.model.NotePad;
@@ -35,7 +37,6 @@ import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TallyFragment extends Fragment {
@@ -44,7 +45,7 @@ public class TallyFragment extends Fragment {
     private Activity activity;
     private View content;//内容布局
 
-    private TextView year, month, day, last_balanceTv, current_payTv;
+    private TextView today, last_balanceTv, current_payTv;
     private String last_balance, current_pay;
     private boolean isSeen = false;
 
@@ -88,18 +89,14 @@ public class TallyFragment extends Fragment {
             });
         }
 
-        year = (TextView) content.findViewById(R.id.year);
-        month = (TextView) content.findViewById(R.id.month);
-        day = (TextView) content.findViewById(R.id.day);
+        today = (TextView) content.findViewById(R.id.today);
+        today.setText(DateUtils.getDate());
 
         last_balanceTv = (TextView) content.findViewById(R.id.last_balanceTv);
         last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         current_payTv = (TextView) content.findViewById(R.id.current_pay);
         current_payTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
-        year.setText(DateUtils.calendar.get(Calendar.YEAR) + ""); // 获取当前年份
-        month.setText((DateUtils.calendar.get(Calendar.MONTH) + 1) + ""); // 获取当前月份
-        day.setText(DateUtils.calendar.get(Calendar.DAY_OF_MONTH) + ""); // 获取当前日
 
         showDayNote();
         showMonthNote();
@@ -114,7 +111,7 @@ public class TallyFragment extends Fragment {
      * 显示最近一次日账单记录
      */
     private void showDayNote() {
-        List<DayNote> dayNotes = MyApp.utils.getDayNotes();
+        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
         LinearLayout cur_layout = (LinearLayout) content.findViewById(R.id.cur_layout);
         if (dayNotes.size() > 0) {
             //显示本次月记录总支出
@@ -171,7 +168,7 @@ public class TallyFragment extends Fragment {
      * 显示最近一次月结算记录
      */
     private void showMonthNote() {
-        List<MonthNote> monthNotes = MyApp.utils.getMonNotes();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
         LinearLayout last_layout = (LinearLayout) content.findViewById(R.id.last_layout);
         if (monthNotes.size() > 0) {
             last_layout.setVisibility(View.VISIBLE);
@@ -257,10 +254,10 @@ public class TallyFragment extends Fragment {
 
     private void showNotepad() {
         try {
-            if (MyApp.utils.getNotePads().size() > 0) {
-                for (int i = 0; i < MyApp.utils.getNotePads().size(); i++) {
-                    if (MyApp.utils.getNotePads().get(i).getTag() == 0) { //过滤显示代办事项
-                        notePads.add(MyApp.utils.getNotePads().get(i));
+            if (NotePadDao.getNotePads().size() > 0) {
+                for (int i = 0; i < NotePadDao.getNotePads().size(); i++) {
+                    if (NotePadDao.getNotePads().get(i).getTag() == 0) { //过滤显示代办事项
+                        notePads.add(NotePadDao.getNotePads().get(i));
                     }
                 }
 
@@ -282,6 +279,7 @@ public class TallyFragment extends Fragment {
                         animator.addView(view_streaner);
                     }
                     showNext();
+                    handler.sendEmptyMessageDelayed(0, 5000);
                 }
             }
         } catch (Exception e) {
@@ -297,7 +295,6 @@ public class TallyFragment extends Fragment {
                 animator.setOutAnimation(getActivity(), R.anim.slide_out_up);
                 animator.setInAnimation(getActivity(), R.anim.slide_in_down);
                 animator.showNext();
-                handler.sendEmptyMessageDelayed(0, 8000);
             }
         } catch (Exception e) {
         }
@@ -306,6 +303,7 @@ public class TallyFragment extends Fragment {
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             showNext();//条幅滚到下一条
+            handler.sendEmptyMessageDelayed(0, 5000);
         }
     };
 

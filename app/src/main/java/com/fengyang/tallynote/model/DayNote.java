@@ -1,6 +1,6 @@
 package com.fengyang.tallynote.model;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.database.DayNoteDao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -90,7 +90,7 @@ public class DayNote implements Serializable {
      * @return
      */
     public static Double getAllSum() {
-        List<DayNote> dayNotes = MyApp.utils.getDayNotes();
+        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.consume)
@@ -108,7 +108,7 @@ public class DayNote implements Serializable {
      * @return
      */
     public static Double getAllSum(String duration) {
-        List<DayNote> dayNotes = MyApp.utils.getDayNotes4History(duration);
+        List<DayNote> dayNotes = DayNoteDao.getDayNotes4History(duration);
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.consume)

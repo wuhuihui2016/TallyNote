@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -110,7 +110,7 @@ public class NewIncomeActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                if (MyApp.utils.newINote(incomeNote)) {
+                                if (IncomeNoteDao.newINote(incomeNote)) {
                                     ToastUtils.showSucessLong(context, "新增理财成功！");
                                     ExcelUtils.exportIncomeNote(null);
                                     if (getIntent().hasExtra("list"))

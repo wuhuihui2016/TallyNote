@@ -204,7 +204,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         try {
-            MyApp.utils.db.close();
+            MyApp.dbHelper.db.close();
         } catch (Exception e){}
 
     }

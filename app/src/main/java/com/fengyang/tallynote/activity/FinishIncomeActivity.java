@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -68,7 +68,7 @@ public class FinishIncomeActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                if (MyApp.utils.finishIncome(incomeNote)) {
+                                if (IncomeNoteDao.finishIncome(incomeNote)) {
                                     ToastUtils.showSucessLong(context, "完成理财成功！");
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "完成理财失败！");

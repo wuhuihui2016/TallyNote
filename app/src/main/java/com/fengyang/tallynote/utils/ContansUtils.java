@@ -18,12 +18,13 @@ public class ContansUtils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
 
-    public static final int DAY = 0, MONTH = 1, INCOME = 2, DAY_HISTORY = 3, NOTEPAD = 4, ALL = 5;
+    public static final int DAY = 0, MONTH = 1, INCOME = 2, DAY_HISTORY = 3, MEMO = 4, NOTEPAD = 5, ALL = 6;
 
     public static final String ACTION_DAY = "day";
     public static final String ACTION_MONTH = "month";
     public static final String ACTION_INCOME = "income";
     public static final String ACTION_NOTE = "notepad";
+    public static final String ACTION_MEMO = "memo";
 
     /**
      * 设置存储空间，获取编辑器

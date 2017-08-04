@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.DayNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
@@ -38,14 +39,14 @@ public class NewMonthActivity extends BaseActivity {
 
     private void initView() {
         last_balanceEt = (EditText) findViewById(R.id.last_balanceEt);
-        if (MyApp.utils.getMonNotes().size() > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
-            String actual_balance = MyApp.utils.getMonNotes().get(MyApp.utils.getMonNotes().size() - 1).getActual_balance();
+        if (MonthNoteDao.getMonthNotes().size() > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
+            String actual_balance = MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getActual_balance();
             last_balanceEt.setText(StringUtils.formatePrice(actual_balance));
             last_balanceEt.setEnabled(false);
         }
 
         payEt = (EditText) findViewById(R.id.payEt);
-        List<DayNote> dayNotes = MyApp.utils.getDayNotes();
+        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
         if (dayNotes != null && dayNotes.size() > 0) { //如果已有日账记录自动填充本次支出，不得手动输入
             payEt.setText(StringUtils.formatePrice(DayNote.getAllSum() + ""));
             payEt.setEnabled(false);
@@ -146,14 +147,14 @@ public class NewMonthActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                if (MyApp.utils.newMNote(monthNote)) {
+                                if (MonthNoteDao.newMNote(monthNote)) {
                                     ToastUtils.showSucessLong(context, "新增月账单成功！");
                                     ExcelUtils.exportMonthNote(null);
                                     if (getIntent().hasExtra("list"))
                                         sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
-                                    if (MyApp.utils.getMonNotes().size() > 1) { //移植日账单到历史日账单
-                                        if (MyApp.utils.newDNotes4History(monthNote.getDuration())) {
-                                            LogUtils.i("newDNotes4History", MyApp.utils.getDayNotes4History(monthNote.getDuration()).toString());
+                                    if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
+                                        if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
+                                            LogUtils.i("newDNotes4History", DayNoteDao.getDayNotes4History(monthNote.getDuration()).toString());
                                             ExcelUtils.exportDayNote4History(null);
                                         }
                                     }

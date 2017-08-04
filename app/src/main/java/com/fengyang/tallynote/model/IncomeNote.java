@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.model;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.database.IncomeNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.utils.DateUtils;
 
 import java.io.Serializable;
@@ -24,6 +25,8 @@ public class IncomeNote implements Serializable {
     int finished; //完成状态
     String remark;//投资说明
     String time; //记录时间
+
+    public static int ON = 0, OFF = 1;
 
     public IncomeNote(String money, String incomeRatio, String days, String durtion, String dayIncome, String finalIncome, String finalCash, String finalCashGo, int finished, String remark, String time) {
         this.money = money;
@@ -160,9 +163,9 @@ public class IncomeNote implements Serializable {
      */
     public static List<IncomeNote> getEarningInComes() {
         List<IncomeNote> earningInComes = new ArrayList<>();
-        List<IncomeNote> incomeNotes = MyApp.utils.getIncomes();
+        List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
         for (int i = 0; i < incomeNotes.size(); i++) {
-            if (incomeNotes.get(i).getFinished() == 0) {
+            if (incomeNotes.get(i).getFinished() == IncomeNote.ON) {
                 earningInComes.add(incomeNotes.get(i));
             }
         }
@@ -171,7 +174,7 @@ public class IncomeNote implements Serializable {
 
     //显示最近一次收益的理财记录
     public static IncomeNote getLastIncomeNote() {
-        if (MyApp.utils.getIncomes().size() > 0) {
+        if (IncomeNoteDao.getIncomes().size() > 0) {
             IncomeNote incomeNote = getEarningInComes().get(0);
             for (int i = 0; i < getEarningInComes().size(); i++) {
                 String date = getEarningInComes().get(i).getDurtion().split("-")[1];
@@ -191,7 +194,7 @@ public class IncomeNote implements Serializable {
      */
     public static List<IncomeNote> getFinishedInComes() {
         List<IncomeNote> finishedIncomes = new ArrayList<>();
-        List<IncomeNote> incomeNotes = MyApp.utils.getIncomes();
+        List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (incomeNotes.get(i).getFinished() == 1) {
                 finishedIncomes.add(incomeNotes.get(i));
@@ -207,7 +210,7 @@ public class IncomeNote implements Serializable {
      */
     public static Double getUnRecordSum() {
         Double sum = 0.00;
-        if (IncomeNote.getFinishedInComes().size() > 0 && MyApp.utils.getMonNotes().size() > 0) {
+        if (IncomeNote.getFinishedInComes().size() > 0 && MonthNoteDao.getMonthNotes().size() > 0) {
             String dateStr = MonthNote.getEndDate();
             List<IncomeNote> finishedInComes = IncomeNote.getFinishedInComes();
             for (int i = 0; i < finishedInComes.size(); i++) {

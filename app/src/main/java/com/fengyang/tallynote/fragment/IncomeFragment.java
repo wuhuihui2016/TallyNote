@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
 import com.fengyang.tallynote.activity.NewIncomeActivity;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -124,7 +124,7 @@ public class IncomeFragment extends Fragment {
                 income_time.setText(style);
                 income_money.setText(StringUtils.showPrice(lastIncomeNote.getMoney()));
                 income_ratio.setText(lastIncomeNote.getIncomeRatio() + " %");
-                if (lastIncomeNote.getFinished() == 0) {//未完成
+                if (lastIncomeNote.getFinished() == IncomeNote.ON) {//未完成
                     int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
                     if (day < 0) {
                         income_staus.setText("已经结束,请完成 >");
@@ -140,7 +140,7 @@ public class IncomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(activity, IncomeListActivity.class);
-                        intent.putExtra("position", MyApp.utils.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
+                        intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
                         startActivity(intent);
 
                     }

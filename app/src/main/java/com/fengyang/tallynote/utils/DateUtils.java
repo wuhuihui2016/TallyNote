@@ -23,6 +23,7 @@ public class DateUtils {
 
     private static SimpleDateFormat time_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
+    private static SimpleDateFormat show_date_sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     /**
      * 日期格式
@@ -47,6 +48,32 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmmss");
         return sdf.format(new Date());
     }
+
+    /*获取当前日期*/
+    public static String getDate(){
+        String date = show_date_sdf.format(new Date());
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (i) {
+            case 1:
+                return date + " 星期日";
+            case 2:
+                return date + " 星期一";
+            case 3:
+                return date + " 星期二";
+            case 4:
+                return date + " 星期三";
+            case 5:
+                return date + " 星期四";
+            case 6:
+                return date + " 星期五";
+            case 7:
+                return date + " 星期六";
+            default:
+                return date + "";
+        }
+    }
+
+
 
     /**
      * @param time

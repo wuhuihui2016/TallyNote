@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -101,9 +101,9 @@ public class NewNotePadActivity extends BaseActivity {
                 String words = wordsEt.getText().toString();
                 if (!TextUtils.isEmpty(words)) {
                     NotePad notePad = new NotePad(tag, wordsEt.getText().toString(), DateUtils.formatDateTime());
-                    if (MyApp.utils.newNotePad(notePad)) {
+                    if (NotePadDao.newNotePad(notePad)) {
                         ToastUtils.showSucessLong(context, "发表成功！");
-                        ExcelUtils.exportDayNote(null);
+                        ExcelUtils.exportNotePad(null);
                         if (getIntent().hasExtra("list"))
                             sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
                         finish();

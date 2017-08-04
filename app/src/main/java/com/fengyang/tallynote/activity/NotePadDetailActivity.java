@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -50,7 +50,7 @@ public class NotePadDetailActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                MyApp.utils.delNotePad(notePad);
+                                NotePadDao.delNotePad(notePad);
                                 sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
                                 finish();
 

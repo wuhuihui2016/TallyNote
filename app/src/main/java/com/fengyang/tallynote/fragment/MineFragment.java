@@ -15,6 +15,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
 import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.ImportExportActivity;
+import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
 import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
@@ -55,6 +56,11 @@ public class MineFragment extends Fragment {
         settingGrid = (GridView) content.findViewById(R.id.settingGrid);
         settings.clear();
         drawableRes.clear();
+
+        settings.add("备忘录");
+        drawableRes.add(R.drawable.memo);
+        settings.add("记事本");
+        drawableRes.add(R.drawable.notepad);
         settings.add("导入/导出");
         drawableRes.add(R.drawable.import_export);
         settings.add("重置密保");
@@ -63,32 +69,38 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.calculate);
         settings.add("文件浏览");
         drawableRes.add(R.drawable.file_explorer);
-        settings.add("记事本");
-        drawableRes.add(R.drawable.notepad);
-        settings.add("");
-        drawableRes.add(R.drawable.blank);
 
         settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
         settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 0: //导入/导出
+                    case 0: //备忘录
+                        MyApp.dbHelper.newTable("create table if not exists memo_note(_id integer primary key," +
+                                "content varchar(200),status integer,time varchar(20))");
+                        startActivity(new Intent(activity, MemoNoteListActivity.class));
+                        break;
+
+                    case 1: //记事本
+                        MyApp.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
+                                "tag integer,words varchar(200),time varchar(20))");
+                        startActivity(new Intent(activity, NotePadListActivity.class));
+                        break;
+
+                    case 2: //导入/导出
                         startActivity(new Intent(activity, ImportExportActivity.class));
                         break;
-                    case 1: //重置密保
+
+                    case 3: //重置密保
                         startActivity(new Intent(activity, ReSetPwdKeyActivity.class));
                         break;
-                    case 2: //计算日收益
+
+                    case 4: //计算日收益
                         startActivity(new Intent(activity, CalculateActivity.class));
                         break;
-                    case 3: //文件浏览
+
+                    case 5: //文件浏览
                         startActivity(new Intent(activity, FileExplorerActivity.class));
-                        break;
-                    case 4: //记事本
-                        MyApp.utils.newTable("create table if not exists note_pad(_id integer primary key," +
-                                "tag integer,words varchar(120),time varchar(20))");
-                        startActivity(new Intent(activity, NotePadListActivity.class));
                         break;
                 }
             }

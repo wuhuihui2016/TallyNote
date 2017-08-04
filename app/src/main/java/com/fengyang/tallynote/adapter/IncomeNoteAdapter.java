@@ -14,9 +14,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.FinishIncomeActivity;
+import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -97,7 +97,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
             viewHolder.income_remark.setText(incomeNote.getRemark());
         else viewHolder.income_remark.setText("无");
 
-        if (incomeNote.getFinished() == 0) {//未完成
+        if (incomeNote.getFinished() == IncomeNote.ON) {//未完成
             viewHolder.income_finished.setTextColor(Color.RED);
 
             int day = DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]);
@@ -146,8 +146,8 @@ public class IncomeNoteAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
-                            MyApp.utils.delIncome(incomeNotes.get(0));
-                            incomeNotes = MyApp.utils.getIncomes();
+                            IncomeNoteDao.delIncome(incomeNotes.get(0));
+                            incomeNotes = IncomeNoteDao.getIncomes();
                             notifyDataSetChanged();
 
                             activity.sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));

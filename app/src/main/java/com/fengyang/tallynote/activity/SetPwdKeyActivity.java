@@ -10,9 +10,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
+import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
@@ -164,7 +164,7 @@ public class SetPwdKeyActivity extends BaseActivity {
      */
     private void skip() {
         finish();
-        if (MyApp.utils.getMonNotes().size() > 0) {//当月账单有记录时，密码生成即跳转密码输入界面
+        if (MonthNoteDao.getMonthNotes().size() > 0) {//当月账单有记录时，密码生成即跳转密码输入界面
             startActivity(new Intent(activity, OnStartActivity.class));
         } else {//当月账单无记录时，无密码生成时即跳转首页
             startActivity(new Intent(activity, MainActivity.class));

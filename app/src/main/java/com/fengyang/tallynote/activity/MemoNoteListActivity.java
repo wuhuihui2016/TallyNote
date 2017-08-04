@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,14 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.adapter.NotePadAdapter;
-import com.fengyang.tallynote.database.NotePadDao;
-import com.fengyang.tallynote.model.NotePad;
+import com.fengyang.tallynote.adapter.MemoNoteAdapter;
+import com.fengyang.tallynote.database.MemoNoteDao;
+import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
-import com.fengyang.tallynote.view.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,24 +30,23 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/6/27.
  */
-public class NotePadListActivity extends BaseActivity {
+public class MemoNoteListActivity extends BaseActivity {
 
-    private FlowLayout flowLayout;
     private TextView info;
     private ListView listView;
 
-    private List<NotePad> notePads;
-    private NotePadAdapter notePadAdapter;
+    private List<MemoNote> memoNotes;
+    private MemoNoteAdapter memoNoteAdapter;
     private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("我的记事本", R.layout.activity_notepad_list);
+        setContentView("我的备忘录", R.layout.activity_memonote_list);
         //删除后广播接收
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_NOTE);
+        intentFilter.addAction(ContansUtils.ACTION_MEMO);
         registerReceiver(myReceiver, intentFilter);
 
         info = (TextView) findViewById(R.id.info);
@@ -67,45 +64,14 @@ public class NotePadListActivity extends BaseActivity {
             }
         });
 
-        flowLayout = (FlowLayout) findViewById(R.id.flowLayout);
-        flowLayout.removeAllViews();//避免多次执行后出现重复多余View
-        final List<String> tagList = NotePad.getTagList();
-        for (int i = 0; i < tagList.size(); i++) {
-            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tag_view, null);
-            TextView tagView = (TextView) view.findViewById(R.id.tagView);
-            tagView.setText(tagList.get(i));
-            final int finalI = i;
-            tagView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    for (int i = 0; i <  flowLayout.getChildCount(); i++) {
-                        TextView textView = (TextView) flowLayout.getChildAt(i);
-                        textView.setTextColor(Color.BLACK);
-                    }
-                    TextView textView = (TextView) flowLayout.getChildAt(finalI);
-                    textView.setTextColor(Color.RED);
-                    getAll4Tag(finalI);
-                }
-            });
-            flowLayout.addView(view);
-        }
-
-        findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAll();
-            }
-        });
-
         getAll();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, NotePadDetailActivity.class);
+                Intent intent = new Intent(context, MemoNoteDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("notepad", notePads.get(position));
+                bundle.putSerializable("memoNote", memoNotes.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -138,7 +104,7 @@ public class NotePadListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewNotePadActivity.class);
+                        Intent intent = new Intent(activity, NewMemoNoteActivity.class);
                         intent.putExtra("list", true);
                         startActivity(intent);
                     }
@@ -159,22 +125,38 @@ public class NotePadListActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.all:
+                getAll();
+                break;
+            case R.id.ongoing:
+                getAll4Status(0);
+                break;
+            case R.id.completed:
+                getAll4Status(1);
+                break;
+        }
+    }
+
     /**
-     * 总记事本记录
+     * 总备忘录记录
      */
     private void getAll() {
-        notePads = NotePadDao.getNotePads();
-        Collections.reverse(notePads);
-        info.setText("我的记事本：" + notePads.size());
-        notePadAdapter = new NotePadAdapter(activity, notePads);
-        listView.setAdapter(notePadAdapter);
+        memoNotes = MemoNoteDao.getMemoNotes();
+        Collections.reverse(memoNotes);
+        info.setText("我的备忘录：" + memoNotes.size());
+        memoNoteAdapter = new MemoNoteAdapter(activity, memoNotes);
+        listView.setAdapter(memoNoteAdapter);
 
         //如果当前无记录，则跳转写记录页面
-        if (isFirst && notePads.size() == 0) new DelayTask(500, new DelayTask.ICallBack() {
+        if (isFirst && memoNotes.size() == 0) new DelayTask(500, new DelayTask.ICallBack() {
             @Override
             public void deal() {
                 isFirst = false;
-                Intent intent = new Intent(activity, NewNotePadActivity.class);
+                Intent intent = new Intent(activity, NewMemoNoteActivity.class);
                 intent.putExtra("list", true);
                 startActivity(intent);
             }
@@ -182,21 +164,22 @@ public class NotePadListActivity extends BaseActivity {
     }
 
     /*
-     * 依据标签过滤显示
+     * 依据状态过滤显示
      */
-    private void getAll4Tag(int tag) {
-        notePads = NotePadDao.getNotePads();
-        Collections.reverse(notePads);
+    private void getAll4Status(int status) {
+        memoNotes = MemoNoteDao.getMemoNotes();
+        Collections.reverse(memoNotes);
 
-        List<NotePad> list = new ArrayList<>();
-        for (int i = 0; i < notePads.size(); i++) {
-            if (notePads.get(i).getTag() == tag) {
-                list.add(notePads.get(i));
+        List<MemoNote> list = new ArrayList<>();
+        for (int i = 0; i < memoNotes.size(); i++) {
+            if (memoNotes.get(i).getStatus() == status) {
+                list.add(memoNotes.get(i));
             }
         }
-        info.setText(NotePad.getTagList().get(tag) + "：" + list.size());
-        notePadAdapter = new NotePadAdapter(activity, list);
-        listView.setAdapter(notePadAdapter);
+        if (status == MemoNote.ON) info.setText("进行中：" + list.size());
+        else info.setText("已完成：" + list.size());
+        memoNoteAdapter = new MemoNoteAdapter(activity, list);
+        listView.setAdapter(memoNoteAdapter);
 
     }
 

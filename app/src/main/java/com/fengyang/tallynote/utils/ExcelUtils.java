@@ -1,8 +1,13 @@
 package com.fengyang.tallynote.utils;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.database.DayNoteDao;
+import com.fengyang.tallynote.database.IncomeNoteDao;
+import com.fengyang.tallynote.database.MemoNoteDao;
+import com.fengyang.tallynote.database.MonthNoteDao;
+import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.IncomeNote;
+import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.model.NotePad;
 
@@ -19,12 +24,13 @@ import jxl.write.WritableWorkbook;
 public class ExcelUtils {
 
     //文件名
-    private static final String day_file = "day_note_", month_file = "month_note_", income_file = "income_note_",
-            tallynote_file = "tally_note_", day_history_file = "day_note_history_", notepad_file = "notepad_";
+    private static final String day_file = "day_note_", month_file = "month_note_",
+            income_file = "income_note_", tallynote_file = "tally_note_",
+            day_history_file = "day_note_history_", memo_file = "memo_note_", notepad_file = "notepad_";
 
     //表单名
-    private static final String day_sheetName = "日账单", month_sheetName = "月账单",
-            income_sheetName = "理财记录", day_history_sheetName = "历史日账单", notepad_sheetName = "记事本";
+    private static final String day_sheetName = "日账单", month_sheetName = "月账单", income_sheetName = "理财记录",
+            day_history_sheetName = "历史日账单", memo_sheetName = "备忘录", notepad_sheetName = "记事本";
 
     //表单头部标题
     private static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
@@ -33,7 +39,7 @@ public class ExcelUtils {
             "月结时段", "月结说明", "记录时间"};
     private static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时段", "拟日收益（元/万天）", "最终收益（元）",
             "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
-
+    private static String[] memoTitle = {"内容", "状态", "记录时间"};
     private static String[] notepadTitle = {"标签", "内容", "记录时间"};
 
     //数据列表
@@ -41,6 +47,7 @@ public class ExcelUtils {
     private static List<DayNote> dayNotes_history;
     private static List<MonthNote> monthNotes;
     private static List<IncomeNote> incomeNotes;
+    private static List<MemoNote> memoNotes;
     private static List<NotePad> notePads;
 
     /**
@@ -60,6 +67,8 @@ public class ExcelUtils {
                 if (files[i].getName().contains(month_file)) files[i].delete();
             } else if (type == ContansUtils.INCOME) {
                 if (files[i].getName().contains(income_file)) files[i].delete();
+            } else if (type == ContansUtils.MEMO) {
+                if (files[i].getName().contains(memo_file)) files[i].delete();
             } else if (type == ContansUtils.NOTEPAD) {
                 if (files[i].getName().contains(notepad_file)) files[i].delete();
             } else {
@@ -234,6 +243,38 @@ public class ExcelUtils {
     }
 
     /**
+     * 备忘录表
+     *
+     * @param callBackExport
+     */
+    public static void exportMemoNote(ICallBackExport callBackExport) {
+        try {
+            clearOldExcelFile(ContansUtils.MEMO);
+            File file = new File(FileUtils.excelPath + memo_file + DateUtils.formatDate4fileName() + ".xls");
+            if (!file.exists()) file.createNewFile();
+            WritableWorkbook writebook = Workbook.createWorkbook(file);
+
+            // 创建工作表
+            WritableSheet memo_sheet = writebook.createSheet(memo_sheetName, 0);
+
+            //添加表头
+            for (int i = 0; i < memoTitle.length; i++) {
+                memo_sheet.addCell(new Label(i, 0, memoTitle[i]));//列，行
+            }
+            //写入数据
+            writeSheet(ContansUtils.MEMO, memo_sheet);
+            writebook.write();
+            writebook.close();
+            if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
+
+        } catch (Exception e) {
+            if (callBackExport != null) callBackExport.callback(false, null);
+            LogUtils.i("Exception", e.toString());
+        }
+
+    }
+
+    /**
      * 导出所有账单到一个Excel中
      *
      * @param callBackExport
@@ -269,17 +310,24 @@ public class ExcelUtils {
                 day_history_sheet.addCell(new Label(i, 0, dayHistoryTitle[i]));//列，行
             }
 
+            //初始化备忘录工作表
+            WritableSheet memo_sheet = writebook.createSheet(memo_sheetName, 4);
+            for (int i = 0; i < memoTitle.length; i++) {
+                memo_sheet.addCell(new Label(i, 0, memoTitle[i]));//列，行
+            }
+
             //初始化记事本工作表
             WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 4);
             for (int i = 0; i < notepadTitle.length; i++) {
-                day_history_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
+                notepad_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
             }
 
             writeSheet(ContansUtils.DAY, day_sheet);
             writeSheet(ContansUtils.MONTH, month_sheet);
             writeSheet(ContansUtils.INCOME, income_sheet);
             writeSheet(ContansUtils.DAY_HISTORY, day_history_sheet);
-            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
+            writeSheet(ContansUtils.MEMO, notepad_sheet);
+            writeSheet(ContansUtils.NOTEPAD, memo_sheet);
             writebook.write();//只能执行一次
             writebook.close();
 
@@ -301,11 +349,11 @@ public class ExcelUtils {
     private static void writeSheet(int type, WritableSheet sheet) {
         try {
             String tag = "writeSheet";
-            dayNotes = MyApp.utils.getDayNotes();
-            dayNotes_history = MyApp.utils.getDayNotes4History();
-            monthNotes = MyApp.utils.getMonNotes();
-            incomeNotes = MyApp.utils.getIncomes();
-            notePads = MyApp.utils.getNotePads();
+            dayNotes = DayNoteDao.getDayNotes();
+            dayNotes_history = DayNoteDao.getDayNotes4History();
+            monthNotes = MonthNoteDao.getMonthNotes();
+            incomeNotes = IncomeNoteDao.getIncomes();
+            notePads = NotePadDao.getNotePads();
 
             switch (type) {
                 case ContansUtils.DAY:
@@ -354,7 +402,7 @@ public class ExcelUtils {
                             sheet.addCell(new Label(5, i + 1, incomeNotes.get(i).getFinalIncome()));
                             sheet.addCell(new Label(6, i + 1, incomeNotes.get(i).getFinalCash()));
                             sheet.addCell(new Label(7, i + 1, incomeNotes.get(i).getFinalCashGo()));
-                            if (incomeNotes.get(i).getFinished() == 0)
+                            if (incomeNotes.get(i).getFinished() == IncomeNote.ON)
                                 sheet.addCell(new Label(8, i + 1, "未完结"));
                             else sheet.addCell(new Label(8, i + 1, "已完结"));
                             sheet.addCell(new Label(9, i + 1, incomeNotes.get(i).getRemark()));
@@ -383,6 +431,17 @@ public class ExcelUtils {
                     }
                     break;
 
+                case ContansUtils.MEMO:
+                    LogUtils.i(tag, memoNotes.size() + "---" + memoNotes.toString());
+                    if (memoNotes.size() > 0) {
+                        for (int i = 0; i < memoNotes.size(); i++) {
+                            String status = memoNotes.get(i).getStatus() == 0 ? "进行中" : "已完成";
+                            sheet.addCell(new Label(0, i + 1, memoNotes.get(i).getContent()));
+                            sheet.addCell(new Label(1, i + 1, status));
+                            sheet.addCell(new Label(2, i + 1, memoNotes.get(i).getTime()));
+                        }
+                    }
+                    break;
                 case ContansUtils.NOTEPAD:
                     LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
                     if (notePads.size() > 0) {
@@ -412,7 +471,7 @@ public class ExcelUtils {
      */
     public static void importExcel(String filePath, ICallBackImport callBackImport) {
         String tag = "importExcel";
-        int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0, notepad_count = 0;
+        int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0, memo_count = 0, notepad_count = 0;
         try {
             Workbook book = Workbook.getWorkbook(new File(filePath));
             int num = book.getNumberOfSheets();
@@ -440,7 +499,7 @@ public class ExcelUtils {
                                     sheet.getCell(3, j).getContents()));
                         }
                         LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
-                        if (dayNotes.size() > 0) if (MyApp.utils.newDNotes(dayNotes)) {
+                        if (dayNotes.size() > 0) if (DayNoteDao.newDNotes(dayNotes)) {
                             day_count = dayNotes.size();
                             exportDayNote(null);
                         }
@@ -462,7 +521,7 @@ public class ExcelUtils {
                                     sheet.getCell(9, j).getContents()));
                         }
                         LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
-                        if (monthNotes.size() > 0) if (MyApp.utils.newMNotes(monthNotes)) {
+                        if (monthNotes.size() > 0) if (MonthNoteDao.newMNotes(monthNotes)) {
                             month_count = monthNotes.size();
                             exportMonthNote(null);
                         }
@@ -485,7 +544,7 @@ public class ExcelUtils {
                                     sheet.getCell(10, j).getContents()));
                         }
                         LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
-                        if (incomeNotes.size() > 0) if (MyApp.utils.newINotes(incomeNotes)) {
+                        if (incomeNotes.size() > 0) if (IncomeNoteDao.newINotes(incomeNotes)) {
                             income_count = incomeNotes.size();
                             exportIncomeNote(null);
                         }
@@ -508,22 +567,36 @@ public class ExcelUtils {
                         }
                         LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
                         if (dayNotes_history.size() > 0)
-                            if (MyApp.utils.newDNotes4History(dayNotes_history)) {
+                            if (DayNoteDao.newDNotes4History(dayNotes_history)) {
                                 day_history_count = dayNotes_history.size();
                                 exportDayNote4History(null);
                             }
-                    } else if (sheetName.equals(notepad_sheetName)) { //历史日账单解析
+                    } else if (sheetName.equals(memo_sheetName)) { //备忘录解析
+                        memoNotes = new ArrayList<>();
+                        memoNotes.clear();
+                        for (int j = 1; j < rows; j++) {//行
+                            int status = sheet.getCell(1, j).getContents().equals("进行中") ? 0 : 1;
+                            memoNotes.add(new MemoNote(sheet.getCell(0, j).getContents(),
+                                    status, sheet.getCell(2, j).getContents()));
+                        }
+                        LogUtils.i(tag, memoNotes.size() + "---" + memoNotes.toString());
+                        if (memoNotes.size() > 0)
+                            if (MemoNoteDao.newMemoNotes(memoNotes)) {
+                                memo_count = memoNotes.size();
+                                exportMemoNote(null);
+                            }
+                    } else if (sheetName.equals(notepad_sheetName)) { //记事本解析
                         notePads = new ArrayList<>();
                         notePads.clear();
                         for (int j = 1; j < rows; j++) {//行
                             String tagStr = sheet.getCell(0, j).getContents();
                             notePads.add(new NotePad(NotePad.getTag(tagStr),
-                                    sheet.getCell(1, j).getContents(),sheet.getCell(2, j).getContents())
+                                    sheet.getCell(1, j).getContents(), sheet.getCell(2, j).getContents())
                             );
                         }
                         LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
                         if (notePads.size() > 0)
-                            if (MyApp.utils.newNotePads(notePads)) {
+                            if (NotePadDao.newNotePads(notePads)) {
                                 notepad_count = notePads.size();
                                 exportNotePad(null);
                             }
@@ -537,7 +610,7 @@ public class ExcelUtils {
 
             if (callBackImport != null) {
                 if (day_count > 0 || day_history_count > 0 || month_count > 0 || income_count > 0 || notepad_count > 0) {
-                    callBackImport.callback(day_count, month_count, income_count, day_history_count, notepad_count);
+                    callBackImport.callback(day_count, month_count, income_count, day_history_count, memo_count, notepad_count);
                 } else callBackImport.callback("导入失败, 原因：表单中没有可解析的数据！");
             }
             book.close();
@@ -553,6 +626,7 @@ public class ExcelUtils {
     public interface ICallBackImport {
 
         void callback(String errorMsg);
-        void callback(int day_count, int month_count, int income_count, int day_history_count, int notepad_count);
+
+        void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count);
     }
 }

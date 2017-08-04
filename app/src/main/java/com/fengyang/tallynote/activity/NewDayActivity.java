@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -87,7 +87,7 @@ public class NewDayActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                if (MyApp.utils.newDNote(dayNote)) {
+                                if (DayNoteDao.newDNote(dayNote)) {
                                     ToastUtils.showSucessLong(context, "新增日账单成功！");
                                     ExcelUtils.exportDayNote(null);
                                     if (getIntent().hasExtra("list"))
