@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class MemoNoteListActivity extends BaseActivity {
 
-    private TextView info;
+    private TextView info, all, ongoing, completed;
     private ListView listView;
 
     private List<MemoNote> memoNotes;
@@ -50,6 +50,9 @@ public class MemoNoteListActivity extends BaseActivity {
         registerReceiver(myReceiver, intentFilter);
 
         info = (TextView) findViewById(R.id.info);
+        all = (TextView) findViewById(R.id.all);
+        ongoing = (TextView) findViewById(R.id.ongoing);
+        completed = (TextView) findViewById(R.id.completed);
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
 
@@ -82,7 +85,8 @@ public class MemoNoteListActivity extends BaseActivity {
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_NOTE)) {
+            if (intent.getAction().equals(ContansUtils.ACTION_MEMO)) {
+                isFirst = false;
                 getAll();
             }
         }
@@ -104,7 +108,7 @@ public class MemoNoteListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewMemoNoteActivity.class);
+                        Intent intent = new Intent(activity, NewMemoActivity.class);
                         intent.putExtra("list", true);
                         startActivity(intent);
                     }
@@ -133,10 +137,10 @@ public class MemoNoteListActivity extends BaseActivity {
                 getAll();
                 break;
             case R.id.ongoing:
-                getAll4Status(0);
+                getAll4Status(MemoNote.ON);
                 break;
             case R.id.completed:
-                getAll4Status(1);
+                getAll4Status(MemoNote.OFF);
                 break;
         }
     }
@@ -145,6 +149,9 @@ public class MemoNoteListActivity extends BaseActivity {
      * 总备忘录记录
      */
     private void getAll() {
+        all.setTextColor(Color.RED);
+        ongoing.setTextColor(Color.GRAY);
+        completed.setTextColor(Color.GRAY);
         memoNotes = MemoNoteDao.getMemoNotes();
         Collections.reverse(memoNotes);
         info.setText("我的备忘录：" + memoNotes.size());
@@ -156,7 +163,7 @@ public class MemoNoteListActivity extends BaseActivity {
             @Override
             public void deal() {
                 isFirst = false;
-                Intent intent = new Intent(activity, NewMemoNoteActivity.class);
+                Intent intent = new Intent(activity, NewMemoActivity.class);
                 intent.putExtra("list", true);
                 startActivity(intent);
             }
@@ -167,17 +174,20 @@ public class MemoNoteListActivity extends BaseActivity {
      * 依据状态过滤显示
      */
     private void getAll4Status(int status) {
-        memoNotes = MemoNoteDao.getMemoNotes();
-        Collections.reverse(memoNotes);
-
-        List<MemoNote> list = new ArrayList<>();
-        for (int i = 0; i < memoNotes.size(); i++) {
-            if (memoNotes.get(i).getStatus() == status) {
-                list.add(memoNotes.get(i));
-            }
+        List<MemoNote> list;
+        if (status == MemoNote.ON) {
+            all.setTextColor(Color.GRAY);
+            ongoing.setTextColor(Color.RED);
+            completed.setTextColor(Color.GRAY);
+            list = MemoNote.getUnFinish();
+            info.setText("进行中：" + list.size());
+        } else {
+            all.setTextColor(Color.GRAY);
+            ongoing.setTextColor(Color.GRAY);
+            completed.setTextColor(Color.RED);
+            list = MemoNote.getFinished();
+            info.setText("已完成：" + list.size());
         }
-        if (status == MemoNote.ON) info.setText("进行中：" + list.size());
-        else info.setText("已完成：" + list.size());
         memoNoteAdapter = new MemoNoteAdapter(activity, list);
         listView.setAdapter(memoNoteAdapter);
 

@@ -8,20 +8,25 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.DayListActivity;
+import com.fengyang.tallynote.activity.MemoNoteDetailActivity;
+import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
 import com.fengyang.tallynote.activity.NewDayActivity;
+import com.fengyang.tallynote.activity.NewMemoActivity;
 import com.fengyang.tallynote.activity.NewMonthActivity;
 import com.fengyang.tallynote.activity.NewNotePadActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
@@ -29,11 +34,12 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.DayNote;
+import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.DateUtils;
-import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.ArrayList;
@@ -97,14 +103,20 @@ public class TallyFragment extends Fragment {
         current_payTv = (TextView) content.findViewById(R.id.current_pay);
         current_payTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
+        showData();
 
+    }
+
+    /**
+     * 显示数据
+     */
+    private void showData() {
+        play(false);
         showDayNote();
         showMonthNote();
-
         clickListener();
-
+        showMemo();
         showNotepad();
-
     }
 
     /**
@@ -179,7 +191,6 @@ public class TallyFragment extends Fragment {
         }
     }
 
-
     private void clickListener() {
         content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
@@ -187,9 +198,8 @@ public class TallyFragment extends Fragment {
         content.findViewById(R.id.todayNotes).setOnClickListener(clickListener);
         content.findViewById(R.id.last_balanceTv).setOnClickListener(clickListener);
         content.findViewById(R.id.toMonthNotes).setOnClickListener(clickListener);
-        content.findViewById(R.id.commitDNote).setOnClickListener(clickListener);
-        content.findViewById(R.id.commitMNote).setOnClickListener(clickListener);
-        content.findViewById(R.id.commitNotepad).setOnClickListener(clickListener);
+        content.findViewById(R.id.more_memo).setOnClickListener(clickListener);
+        content.findViewById(R.id.addNote).setOnClickListener(clickListener);
 
     }
 
@@ -216,9 +226,7 @@ public class TallyFragment extends Fragment {
                     break;
 
                 case R.id.reload:
-                    LogUtils.i("reload", "reload");
-                    showDayNote();
-                    showNotepad();
+                    showData();
                     break;
 
                 case R.id.current_pay:
@@ -231,59 +239,141 @@ public class TallyFragment extends Fragment {
                     startActivity(new Intent(activity, MonthListActivity.class));
                     break;
 
-                case R.id.commitDNote:
-                    startActivity(new Intent(activity, NewDayActivity.class));
+                case R.id.more_memo:
+                    startActivity(new Intent(activity, MemoNoteListActivity.class));
                     break;
 
-                case R.id.commitMNote:
-                    startActivity(new Intent(activity, NewMonthActivity.class));
-                    break;
-
-                case R.id.commitNotepad:
-                    startActivity(new Intent(activity, NewNotePadActivity.class));
+                case R.id.addNote:
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    } else {
+                        initPopupWindow();
+                    }
                     break;
             }
         }
     };
 
     /**
+     * 初始化popupWindow
+     */
+    private PopupWindow popupWindow;
+    private void initPopupWindow() {
+        View layout = View.inflate(getActivity(), R.layout.layout_add_note_pop, null);
+        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, 600);
+        ViewUtils.setPopupWindow(getActivity(), popupWindow);
+        popupWindow.showAtLocation(content.findViewById(R.id.tally_layout), Gravity.BOTTOM, 200, 350);
+        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+
+        layout.findViewById(R.id.commitDNote).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewDayActivity.class));
+                    }
+                }
+        );
+        layout.findViewById(R.id.commitMNote).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewMonthActivity.class));
+                    }
+                }
+        );
+        layout.findViewById(R.id.commitMemo).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewMemoActivity.class));
+                    }
+                }
+        );
+        layout.findViewById(R.id.commitNotepad).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        startActivity(new Intent(activity, NewNotePadActivity.class));
+                    }
+                }
+        );
+    }
+
+    /**
+     * 显示备忘录
+     */
+    private void showMemo() {
+        try {
+            TextView more_memo = (TextView) content.findViewById(R.id.more_memo);
+            final List<MemoNote> memoNoteList = MemoNote.getUnFinish();
+            if (memoNoteList.size() > 0) {
+                more_memo.setVisibility(View.VISIBLE);
+                LinearLayout memo_layout = (LinearLayout) content.findViewById(R.id.memo_layout);
+                memo_layout.setVisibility(View.VISIBLE);
+                memo_layout.removeAllViews();
+                View memo_view = View.inflate(getActivity(), R.layout.memo_view, null);
+                TextView memoView = (TextView) memo_view.findViewById(R.id.memoView);
+
+                for (int i = 0; i < memoNoteList.size(); i++) {
+                    MemoNote memoNote = memoNoteList.get(i);
+                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
+                    final int finalI = i;
+                    memo_view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), MemoNoteDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("memoNote", memoNoteList.get(finalI));
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
+                    memo_layout.addView(memo_view);
+                }
+            } else more_memo.setVisibility(View.GONE);
+        } catch (Exception e) {
+        }
+
+    }
+
+    /**
      * 显示记事本
      */
-    private ViewAnimator animator;
+    private boolean isRunning;
+    private ViewAnimator animator_notepad;
     private List<NotePad> notePads = new ArrayList<>();
 
     private void showNotepad() {
         try {
-            if (NotePadDao.getNotePads().size() > 0) {
-                for (int i = 0; i < NotePadDao.getNotePads().size(); i++) {
-                    if (NotePadDao.getNotePads().get(i).getTag() == 0) { //过滤显示代办事项
-                        notePads.add(NotePadDao.getNotePads().get(i));
-                    }
+            notePads = NotePadDao.getNotePads();
+            if (notePads.size() > 0) {
+                animator_notepad = (ViewAnimator) content.findViewById(R.id.animator_notepad);
+                animator_notepad.setVisibility(View.VISIBLE);
+                animator_notepad.removeAllViews();
+                for (int i = 0; i < notePads.size(); i++) {
+                    final int finalI = i;
+                    View view_streaner = View.inflate(getActivity(), R.layout.view_streaner, null);
+                    TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
+                    streamer_txt.setText(notePads.get(finalI).getWords());
+
+                    view_streaner.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getActivity(), NotePadListActivity.class));
+                        }
+                    });
+                    animator_notepad.addView(view_streaner);
                 }
 
-                if (notePads.size() > 0) {
-                    animator = (ViewAnimator) content.findViewById(R.id.animator);
-                    animator.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < notePads.size(); i++) {
-                        final int finalI = i;
-                        View view_streaner = View.inflate(getActivity(), R.layout.view_streaner, null);
-                        TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
-                        streamer_txt.setText(notePads.get(finalI).getWords());
-
-                        view_streaner.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(getActivity(), NotePadListActivity.class));
-                            }
-                        });
-                        animator.addView(view_streaner);
-                    }
-                    showNext();
-                    handler.sendEmptyMessageDelayed(0, 5000);
-                }
+                play(true);
             }
         } catch (Exception e) {
         }
+
     }
 
     /**
@@ -291,13 +381,24 @@ public class TallyFragment extends Fragment {
      */
     private void showNext() {
         try {
-            if (animator != null && notePads.size() > 1) {
-                animator.setOutAnimation(getActivity(), R.anim.slide_out_up);
-                animator.setInAnimation(getActivity(), R.anim.slide_in_down);
-                animator.showNext();
+            if (animator_notepad != null && notePads.size() > 1) {
+                animator_notepad.setOutAnimation(getActivity(), R.anim.slide_out_up);
+                animator_notepad.setInAnimation(getActivity(), R.anim.slide_in_down);
+                animator_notepad.showNext();
             }
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * 轮播控制
+     *
+     * @param flag true开始，false停止
+     */
+    private void play(boolean flag) {
+        isRunning = flag;
+        if (isRunning) handler.sendEmptyMessageDelayed(0, 5000);
+        else handler.removeMessages(0);
     }
 
     private Handler handler = new Handler() {
@@ -306,5 +407,6 @@ public class TallyFragment extends Fragment {
             handler.sendEmptyMessageDelayed(0, 5000);
         }
     };
+
 
 }

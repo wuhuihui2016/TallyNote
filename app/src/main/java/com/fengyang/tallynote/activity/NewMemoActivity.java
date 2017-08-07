@@ -21,7 +21,7 @@ import com.fengyang.tallynote.utils.ToastUtils;
  * 备忘录
  * Created by wuhuihui on 2017/8/02.
  */
-public class NewMemoNoteActivity extends BaseActivity {
+public class NewMemoActivity extends BaseActivity {
 
     private TextView words_numTv;
     private EditText contentEt;
@@ -66,7 +66,7 @@ public class NewMemoNoteActivity extends BaseActivity {
                     MemoNote memoNote = new MemoNote(contentEt.getText().toString(), DateUtils.formatDateTime());
                     if (MemoNoteDao.newMemoNote(memoNote)) {
                         ToastUtils.showSucessLong(context, "保存成功！");
-                        ExcelUtils.exportDayNote(null);
+                        ExcelUtils.exportMemoNote(null);
                         if (getIntent().hasExtra("list"))
                             sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
                         finish();

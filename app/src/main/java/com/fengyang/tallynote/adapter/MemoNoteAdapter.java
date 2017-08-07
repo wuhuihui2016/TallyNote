@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.adapter;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,11 @@ public class MemoNoteAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(activity).inflate(R.layout.notepad_item_layout, null);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.memonote_item_layout, null);
 
             viewHolder = new ViewHolder();
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
-            viewHolder.content = (TextView) convertView.findViewById(R.id.words);
+            viewHolder.content = (TextView) convertView.findViewById(R.id.content);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -60,6 +61,9 @@ public class MemoNoteAdapter extends BaseAdapter {
         final MemoNote memoNote = memoNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(memoNote.getTime()));
         viewHolder.content.setText(memoNote.getContent());
+        if (memoNote.getStatus() == MemoNote.OFF) {
+            viewHolder.content.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
 
         return convertView;
     }

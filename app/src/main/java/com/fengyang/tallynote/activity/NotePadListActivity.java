@@ -117,6 +117,7 @@ public class NotePadListActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_NOTE)) {
+                isFirst = false;
                 getAll();
             }
         }

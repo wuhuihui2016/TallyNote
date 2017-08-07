@@ -1,6 +1,11 @@
 package com.fengyang.tallynote.model;
 
+import com.fengyang.tallynote.database.MemoNoteDao;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by fengyangtech on 2017/8/4.
@@ -55,5 +60,29 @@ public class MemoNote implements Serializable{
                 ", status=" + status +
                 ", time='" + time  +
                 '}';
+    }
+
+    public static List<MemoNote> getUnFinish(){
+        List<MemoNote> unFinishMemoNotes = new ArrayList<>();
+        List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
+        for (int i = 0; i < memoNotes.size(); i++) {
+            if (memoNotes.get(i).getStatus() == ON) {
+                unFinishMemoNotes.add(memoNotes.get(i));
+            }
+        }
+        Collections.reverse(unFinishMemoNotes);
+        return unFinishMemoNotes;
+    }
+
+    public static List<MemoNote> getFinished(){
+        List<MemoNote> unFinishMemoNotes = new ArrayList<>();
+        List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
+        for (int i = 0; i < memoNotes.size(); i++) {
+            if (memoNotes.get(i).getStatus() == OFF) {
+                unFinishMemoNotes.add(memoNotes.get(i));
+            }
+        }
+        Collections.reverse(unFinishMemoNotes);
+        return unFinishMemoNotes;
     }
 }

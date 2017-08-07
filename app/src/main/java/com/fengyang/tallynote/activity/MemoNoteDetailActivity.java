@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 
 /**
  * 备忘录详情
@@ -32,7 +34,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
     private void init() {
 
         time = (TextView) findViewById(R.id.time);
-        content = (TextView) findViewById(R.id.words);
+        content = (TextView) findViewById(R.id.content);
 
         memoNote = (MemoNote) getIntent().getSerializableExtra("memoNote");
 
@@ -40,27 +42,55 @@ public class MemoNoteDetailActivity extends BaseActivity {
             time.setText(DateUtils.diffTime(memoNote.getTime()));
             content.setText(memoNote.getContent());
 
-            setRightImgBtnListener(R.drawable.note_delete, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            if (memoNote.getStatus() == MemoNote.ON) {
 
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                            MemoNoteDao.delMemoNote(memoNote);
-                            sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
-                            finish();
+                setRightImgBtnListener(R.drawable.memo_finished, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                        }
-                    }, new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                        }
-                    });
-                }
-            });
+                        DialogUtils.showMsgDialog(activity, "完成提示", "是否确定完成此条备注", new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                MemoNoteDao.finishMemoNote(memoNote);
+                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                finish();
+                            }
+                        }, new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
+                    }
+                });
+            } else {
+
+                //增加删除线
+                content.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+                setRightImgBtnListener(R.drawable.note_delete, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                MemoNoteDao.delMemoNote(memoNote);
+                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                finish();
+
+                            }
+                        }, new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
+                    }
+                });
+            }
 
         } else finish();
 

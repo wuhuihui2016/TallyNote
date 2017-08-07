@@ -88,7 +88,7 @@
         <!-- 备忘录列表 -->
         <activity android:name=".activity.MemoNoteListActivity" />
         <!-- 新建备忘录 -->
-        <activity android:name=".activity.NewMemoNoteActivity" />
+        <activity android:name=".activity.NewMemoActivity" />
         <!-- 备忘录详情 -->
         <activity android:name=".activity.MemoNoteDetailActivity" />
 

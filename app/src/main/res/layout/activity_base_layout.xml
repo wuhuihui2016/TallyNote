@@ -42,8 +42,10 @@
             android:layout_centerVertical="true"
             android:background="@color/transparent"
             android:textColor="@color/white"
+            android:text="提交"
+            android:gravity="right|center_vertical"
             android:textSize="@dimen/bigtextSize"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/right_imgbtn"
@@ -51,10 +53,12 @@
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:onClick="onClick"
+            android:background="@color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/icon_action_bar_more"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

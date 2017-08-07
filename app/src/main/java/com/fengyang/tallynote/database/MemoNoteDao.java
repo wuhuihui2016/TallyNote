@@ -44,6 +44,22 @@ public class MemoNoteDao {
     }
 
     /**
+     * 完成一条备忘录
+     *
+     * @param memoNote
+     */
+    public static synchronized boolean finishMemoNote(MemoNote memoNote) {
+        boolean isFinished;
+        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        db.execSQL("update memo_note set status = 1 where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
+        Cursor cursor = db.rawQuery("select * from memo_note where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
+        isFinished = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isFinished;
+    }
+
+    /**
      * 查看所有的备忘录
      *
      * @return
@@ -53,7 +69,7 @@ public class MemoNoteDao {
         SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from memo_note", null);
         while (cursor.moveToNext()) {
-            MemoNote memoNote = new MemoNote(cursor.getString(cursor.getColumnIndex("words")),
+            MemoNote memoNote = new MemoNote(cursor.getString(cursor.getColumnIndex("content")),
                     cursor.getInt(cursor.getColumnIndex("status")),
                     cursor.getString(cursor.getColumnIndex("time")));
             memoNotes.add(memoNote);

@@ -12,4 +12,9 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/tabbar_show</item>
+        <item name="android:windowExitAnimation">@anim/tabbar_hidden</item>
+    </style>
+
 </resources>
