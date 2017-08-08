@@ -353,6 +353,7 @@ public class ExcelUtils {
             dayNotes_history = DayNoteDao.getDayNotes4History();
             monthNotes = MonthNoteDao.getMonthNotes();
             incomeNotes = IncomeNoteDao.getIncomes();
+            memoNotes = MemoNoteDao.getMemoNotes();
             notePads = NotePadDao.getNotePads();
 
             switch (type) {

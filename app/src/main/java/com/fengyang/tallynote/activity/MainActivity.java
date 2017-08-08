@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -14,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.PermissionUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +73,13 @@ public class MainActivity extends BaseActivity {
         setRightBtnListener("V " + SystemUtils.getVersion(context), null);
 
         NotificationUtils.notifyIncome(context); //理财到期提醒
+
+        findViewById(R.id.addNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initPopupWindow();
+            }
+        });
 
     }
 
@@ -120,6 +131,7 @@ public class MainActivity extends BaseActivity {
 
                         if (frag_index == 0) setCheked(frag_index);
                     }
+
                     isShow(true);
 
                 } else {
@@ -209,6 +221,69 @@ public class MainActivity extends BaseActivity {
             app_bottom.setLayoutAnimation(controller);// 设置动画
         }
 
+    }
+
+    /**
+     * 初始化popupWindow
+     */
+    private void initPopupWindow() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = mLayoutInflater.inflate(R.layout.layout_add_note_pop, null);
+            popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, 800);
+            ViewUtils.setPopupWindow(activity, popupWindow);
+            // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
+            popupWindow.showAsDropDown(findViewById(R.id.addNote), 0, 20);
+            popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+
+            layout.findViewById(R.id.commitDNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            startActivity(new Intent(activity, NewDayActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.commitMNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            startActivity(new Intent(activity, NewMonthActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.commitIncome).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            startActivity(new Intent(activity, NewIncomeActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.commitMemo).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            startActivity(new Intent(activity, NewMemoActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.commitNotepad).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            startActivity(new Intent(activity, NewNotePadActivity.class));
+                        }
+                    }
+            );
+        }
     }
 
     /**

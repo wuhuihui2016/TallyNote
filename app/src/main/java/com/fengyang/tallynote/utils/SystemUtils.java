@@ -1,9 +1,11 @@
 package com.fengyang.tallynote.utils;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Vibrator;
 import android.text.InputType;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -59,6 +61,14 @@ public class SystemUtils {
             e.printStackTrace();
         }
         return info.versionName;
+    }
+
+    /*
+      手机震动
+     */
+    public static void Vibrate(Activity activity, long milliseconds) {
+        Vibrator vib = (Vibrator) activity.getSystemService(Service.VIBRATOR_SERVICE);
+        vib.vibrate(milliseconds);
     }
 
 }

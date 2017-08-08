@@ -8,14 +8,12 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
@@ -25,10 +23,6 @@ import com.fengyang.tallynote.activity.DayListActivity;
 import com.fengyang.tallynote.activity.MemoNoteDetailActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
-import com.fengyang.tallynote.activity.NewDayActivity;
-import com.fengyang.tallynote.activity.NewMemoActivity;
-import com.fengyang.tallynote.activity.NewMonthActivity;
-import com.fengyang.tallynote.activity.NewNotePadActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
 import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.MonthNoteDao;
@@ -38,8 +32,8 @@ import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
-import com.fengyang.tallynote.utils.ViewUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.ArrayList;
@@ -199,7 +193,6 @@ public class TallyFragment extends Fragment {
         content.findViewById(R.id.last_balanceTv).setOnClickListener(clickListener);
         content.findViewById(R.id.toMonthNotes).setOnClickListener(clickListener);
         content.findViewById(R.id.more_memo).setOnClickListener(clickListener);
-        content.findViewById(R.id.addNote).setOnClickListener(clickListener);
 
     }
 
@@ -242,66 +235,10 @@ public class TallyFragment extends Fragment {
                 case R.id.more_memo:
                     startActivity(new Intent(activity, MemoNoteListActivity.class));
                     break;
-
-                case R.id.addNote:
-                    if (popupWindow != null && popupWindow.isShowing()) {
-                        popupWindow.dismiss();
-                    } else {
-                        initPopupWindow();
-                    }
-                    break;
             }
         }
     };
 
-    /**
-     * 初始化popupWindow
-     */
-    private PopupWindow popupWindow;
-    private void initPopupWindow() {
-        View layout = View.inflate(getActivity(), R.layout.layout_add_note_pop, null);
-        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, 600);
-        ViewUtils.setPopupWindow(getActivity(), popupWindow);
-        popupWindow.showAtLocation(content.findViewById(R.id.tally_layout), Gravity.BOTTOM, 200, 350);
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-
-        layout.findViewById(R.id.commitDNote).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewDayActivity.class));
-                    }
-                }
-        );
-        layout.findViewById(R.id.commitMNote).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewMonthActivity.class));
-                    }
-                }
-        );
-        layout.findViewById(R.id.commitMemo).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewMemoActivity.class));
-                    }
-                }
-        );
-        layout.findViewById(R.id.commitNotepad).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        startActivity(new Intent(activity, NewNotePadActivity.class));
-                    }
-                }
-        );
-    }
 
     /**
      * 显示备忘录
@@ -310,17 +247,20 @@ public class TallyFragment extends Fragment {
         try {
             TextView more_memo = (TextView) content.findViewById(R.id.more_memo);
             final List<MemoNote> memoNoteList = MemoNote.getUnFinish();
+            LogUtils.i("showMemo", memoNoteList.size() + "--" + memoNoteList.toString());
+
+            LinearLayout memo_layout = (LinearLayout) content.findViewById(R.id.memo_layout);
+            memo_layout.removeAllViews();
+
             if (memoNoteList.size() > 0) {
                 more_memo.setVisibility(View.VISIBLE);
-                LinearLayout memo_layout = (LinearLayout) content.findViewById(R.id.memo_layout);
                 memo_layout.setVisibility(View.VISIBLE);
-                memo_layout.removeAllViews();
-                View memo_view = View.inflate(getActivity(), R.layout.memo_view, null);
-                TextView memoView = (TextView) memo_view.findViewById(R.id.memoView);
+                View memo_view = View.inflate(getActivity(), R.layout.view_streaner, null);
+                TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
 
                 for (int i = 0; i < memoNoteList.size(); i++) {
                     MemoNote memoNote = memoNoteList.get(i);
-                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
+                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "：" + memoNote.getContent());
                     final int finalI = i;
                     memo_view.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -334,7 +274,10 @@ public class TallyFragment extends Fragment {
                     });
                     memo_layout.addView(memo_view);
                 }
-            } else more_memo.setVisibility(View.GONE);
+            } else {
+                more_memo.setVisibility(View.GONE);
+                memo_layout.setVisibility(View.GONE);
+            }
         } catch (Exception e) {
         }
 
@@ -407,6 +350,5 @@ public class TallyFragment extends Fragment {
             handler.sendEmptyMessageDelayed(0, 5000);
         }
     };
-
 
 }

@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,57 +62,82 @@ public class FileExplorerActivity extends BaseActivity {
 
         listView.setEmptyView(findViewById(R.id.emptyView));
 
-        setRightImgBtnListener(R.drawable.file_delete, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
-                choose_layout.setVisibility(View.VISIBLE);
-                listView.setOnItemClickListener(new MyItemClickListener(true));
-                adapter.setSelect(true);
-                findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+        if (getIntent().hasExtra("import")) {
+
+                DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
                     @Override
                     public void onClick(View v) {
-                        adapter.selectAll(true);
+                        super.onClick(v);
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent();
+                                intent.putExtra("path", fileList.get(position).getPath());
+                                setResult(Activity.RESULT_OK, intent);
+                                finish();
+                            }
+                        });
                     }
-                });
-
-                findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+                }, new DialogUtils.DialogListener() {
                     @Override
                     public void onClick(View v) {
-                        adapter.selList.clear();
-                        choose_layout.setVisibility(View.GONE);
-                        init();
+                        super.onClick(v);
+                        finish();
                     }
                 });
+        } else {
+            setRightImgBtnListener(R.drawable.file_delete, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
+                    choose_layout.setVisibility(View.VISIBLE);
+                    listView.setOnItemClickListener(new MyItemClickListener(true));
+                    adapter.setSelect(true);
+                    findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapter.selectAll(true);
+                        }
+                    });
 
-                findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (adapter.selList.size() > 0) {
-                            DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
-                                    for (int i = 0; i < adapter.selList.size(); i++)
-                                        adapter.selList.get(i).delete();
-                                    adapter.selList.clear();
-                                    choose_layout.setVisibility(View.GONE);
-                                    init();
-                                }
-                            }, new DialogUtils.DialogListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
-                                }
-                            });
-                        } else ToastUtils.showWarningShort(context, "请至少选择1个文件！");
+                    findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapter.selList.clear();
+                            choose_layout.setVisibility(View.GONE);
+                            init();
+                        }
+                    });
 
-                    }
-                });
+                    findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (adapter.selList.size() > 0) {
+                                DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        super.onClick(v);
+                                        for (int i = 0; i < adapter.selList.size(); i++)
+                                            adapter.selList.get(i).delete();
+                                        adapter.selList.clear();
+                                        choose_layout.setVisibility(View.GONE);
+                                        init();
+                                    }
+                                }, new DialogUtils.DialogListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        super.onClick(v);
+                                    }
+                                });
+                            } else ToastUtils.showWarningShort(context, "请至少选择1个文件！");
 
-            }
+                        }
+                    });
 
-        });
+                }
+
+            });
+        }
     }
 
     private class MyItemClickListener implements AdapterView.OnItemClickListener {

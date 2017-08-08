@@ -46,7 +46,7 @@ public class NotePad implements Serializable {
     @Override
     public String toString() {
         return "NotePad{" +
-                "tag=" + tag +
+                "tag=" + getTagList().get(tag) +
                 ", words='" + words +
                 ", time='" + time +
                 '}';
@@ -54,7 +54,7 @@ public class NotePad implements Serializable {
 
 
     /**
-     * 标签集合
+     * 标签集合 只能增，不能减
      * @return
      */
     public static List<String> getTagList() {
@@ -63,6 +63,7 @@ public class NotePad implements Serializable {
         tagList.add("突发奇想");
         tagList.add("励志感言");
         tagList.add("心情树洞");
+        tagList.add("收藏分享");
         return tagList;
     }
 

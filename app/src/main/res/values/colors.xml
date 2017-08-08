@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="app_color">@android:color/holo_red_light</color>
-    <color name="gray">#F0F0F0</color>
+    <color name="gray">#F5F5F5</color>
     <color name="darker_gray">@android:color/darker_gray</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="white">@android:color/white</color>

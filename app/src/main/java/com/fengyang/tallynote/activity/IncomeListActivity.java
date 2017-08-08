@@ -71,11 +71,7 @@ public class IncomeListActivity extends BaseActivity {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                } else {
-                    initPopupWindow();
-                }
+                initPopupWindow();
             }
         });
 
@@ -112,44 +108,48 @@ public class IncomeListActivity extends BaseActivity {
      * 初始化popupWindow
      */
     private void initpopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getApplication()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_sort_pop, null);
-        popupWindow = new PopupWindow(layout, 300, 200);
-        ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
-
-        final TextView start_time = (TextView) layout.findViewById(R.id.start_time);
-        final TextView end_time = (TextView) layout.findViewById(R.id.end_time);
-
-        if (isStart) {
-            start_time.setTextColor(Color.RED);
-            end_time.setTextColor(Color.BLACK);
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
         } else {
-            start_time.setTextColor(Color.BLACK);
-            end_time.setTextColor(Color.RED);
-        }
+            LayoutInflater inflater = (LayoutInflater) getApplication()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.layout_sort_pop, null);
+            popupWindow = new PopupWindow(layout, 300, 200);
+            ViewUtils.setPopupWindow(context, popupWindow);
+            popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
 
-        start_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            final TextView start_time = (TextView) layout.findViewById(R.id.start_time);
+            final TextView end_time = (TextView) layout.findViewById(R.id.end_time);
+
+            if (isStart) {
                 start_time.setTextColor(Color.RED);
                 end_time.setTextColor(Color.BLACK);
-                popupWindow.dismiss();
-                sort4Start();
-            }
-        });
-
-        end_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            } else {
                 start_time.setTextColor(Color.BLACK);
                 end_time.setTextColor(Color.RED);
-                popupWindow.dismiss();
-                sort4End();
             }
-        });
 
+            start_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    start_time.setTextColor(Color.RED);
+                    end_time.setTextColor(Color.BLACK);
+                    popupWindow.dismiss();
+                    sort4Start();
+                }
+            });
+
+            end_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    start_time.setTextColor(Color.BLACK);
+                    end_time.setTextColor(Color.RED);
+                    popupWindow.dismiss();
+                    sort4End();
+                }
+            });
+
+        }
     }
 
     private void initPopupWindow() {

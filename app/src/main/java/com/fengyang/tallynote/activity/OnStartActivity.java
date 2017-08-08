@@ -15,6 +15,7 @@ import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -141,6 +142,7 @@ public class OnStartActivity extends BaseActivity {
                             finish();
                             startActivity(new Intent(context, MainActivity.class));
                         } else {
+                            SystemUtils.Vibrate(activity, 100);
                             ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
                             list.clear();
                             for (int i = 0; i < textViews.size(); i++) {

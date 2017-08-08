@@ -62,11 +62,7 @@ public class DayListActivity extends BaseActivity {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                } else {
-                    initPopupWindow();
-                }
+                initPopupWindow();
             }
         });
 
@@ -87,37 +83,41 @@ public class DayListActivity extends BaseActivity {
      * 初始化popupWindow
      */
     private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getApplication()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_list_pop, null);
-        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            LayoutInflater inflater = (LayoutInflater) getApplication()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.layout_list_pop, null);
+            popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            ViewUtils.setPopupWindow(context, popupWindow);
+            popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
 
-        layout.findViewById(R.id.newNote).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewDayActivity.class);
-                        intent.putExtra("list", true);
-                        startActivity(intent);
+            layout.findViewById(R.id.newNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            Intent intent = new Intent(activity, NewDayActivity.class);
+                            intent.putExtra("list", true);
+                            startActivity(intent);
+                        }
                     }
+            );
+            layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                    ExcelUtils.exportDayNote(callBackExport);
                 }
-        );
-        layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ExcelUtils.exportDayNote(callBackExport);
-            }
-        });
-        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
+            });
+            layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+        }
     }
 
     @Override
@@ -177,7 +177,7 @@ public class DayListActivity extends BaseActivity {
             account_out.setTextColor(Color.GRAY);
             account_in.setTextColor(Color.GRAY);
             info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
-        } else if (type == DayNote.account_out){
+        } else if (type == DayNote.account_out) {
             all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.GRAY);
             account_out.setTextColor(Color.RED);

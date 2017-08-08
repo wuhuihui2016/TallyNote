@@ -54,22 +54,60 @@
         android:textSize="@dimen/bigtextSize" />
 
     <TextView
-        android:id="@+id/import2file"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/shape_btn_bkg"
-        android:gravity="center_horizontal|center"
-        android:onClick="onClick"
-        android:padding="10dp"
         android:text="从本地文件中导入"
+        android:textColor="@color/darker_gray"
+        android:textSize="@dimen/bigtextSize" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/shape_btn_bkg"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/import2file4APP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center"
+            android:onClick="onClick"
+            android:text="APP目录" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="35dp"
+            android:background="@color/red" />
+
+        <TextView
+            android:id="@+id/import2file4Other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center"
+            android:onClick="onClick"
+            android:text="其他目录" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="导出已有的所有记录"
+        android:textColor="@color/darker_gray"
         android:textSize="@dimen/bigtextSize" />
 
     <TextView
         android:id="@+id/exportAll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/shape_btn_bkg"
         android:gravity="center_horizontal|center"
         android:onClick="onClick"

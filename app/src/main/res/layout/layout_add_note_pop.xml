@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="50dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape_gradient"
@@ -57,6 +57,30 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center"
                 android:text="月账"
+                android:textColor="@color/day_record"
+                android:textSize="@dimen/smalltextSize" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/commitIncome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal|center"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/income_record" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center"
+                android:text="理财"
                 android:textColor="@color/day_record"
                 android:textSize="@dimen/smalltextSize" />
 

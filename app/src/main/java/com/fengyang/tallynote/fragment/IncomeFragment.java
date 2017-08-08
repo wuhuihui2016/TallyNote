@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
-import com.fengyang.tallynote.activity.NewIncomeActivity;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -154,7 +153,6 @@ public class IncomeFragment extends Fragment {
 
         content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
-        content.findViewById(R.id.commitIncome).setOnClickListener(clickListener);
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -177,12 +175,7 @@ public class IncomeFragment extends Fragment {
                     break;
 
                 case R.id.reload:
-                    LogUtils.i("reload", "showIncomeNote");
                     showIncomeNote();
-                    break;
-
-                case R.id.commitIncome:
-                    startActivity(new Intent(activity, NewIncomeActivity.class));
                     break;
             }
         }

@@ -10,6 +10,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
@@ -69,6 +70,7 @@ public class FinishIncomeActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 if (IncomeNoteDao.finishIncome(incomeNote)) {
+                                    ExcelUtils.exportIncomeNote(null);
                                     ToastUtils.showSucessLong(context, "完成理财成功！");
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "完成理财失败！");

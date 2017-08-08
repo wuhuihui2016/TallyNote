@@ -44,7 +44,7 @@ public class MemoNoteListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("我的备忘录", R.layout.activity_memonote_list);
-        //删除后广播接收
+        //完成后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_MEMO);
         registerReceiver(myReceiver, intentFilter);
@@ -59,11 +59,7 @@ public class MemoNoteListActivity extends BaseActivity {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                } else {
                     initPopupWindow();
-                }
             }
         });
 
@@ -96,37 +92,41 @@ public class MemoNoteListActivity extends BaseActivity {
      * 初始化popupWindow
      */
     private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getApplication()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_list_pop, null);
-        popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            LayoutInflater inflater = (LayoutInflater) getApplication()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.layout_list_pop, null);
+            popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            ViewUtils.setPopupWindow(context, popupWindow);
+            popupWindow.showAtLocation(findViewById(R.id.list_layout), Gravity.BOTTOM, 0, 0);
 
-        layout.findViewById(R.id.newNote).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewMemoActivity.class);
-                        intent.putExtra("list", true);
-                        startActivity(intent);
+            layout.findViewById(R.id.newNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            Intent intent = new Intent(activity, NewMemoActivity.class);
+                            intent.putExtra("list", true);
+                            startActivity(intent);
+                        }
                     }
+            );
+            layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                    ExcelUtils.exportMemoNote(callBackExport);
                 }
-        );
-        layout.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ExcelUtils.exportNotePad(callBackExport);
-            }
-        });
-        layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
+            });
+            layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+        }
     }
 
     @Override

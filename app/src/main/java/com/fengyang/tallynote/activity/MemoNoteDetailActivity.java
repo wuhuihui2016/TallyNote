@@ -12,7 +12,8 @@ import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
-import com.fengyang.tallynote.utils.LogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 /**
  * 备忘录详情
@@ -44,7 +45,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
 
             if (memoNote.getStatus() == MemoNote.ON) {
 
-                setRightImgBtnListener(R.drawable.memo_finished, new View.OnClickListener() {
+                setRightBtnListener("完成", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -52,9 +53,14 @@ public class MemoNoteDetailActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
-                                MemoNoteDao.finishMemoNote(memoNote);
-                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
-                                finish();
+                                if (MemoNoteDao.finishMemoNote(memoNote)) {
+                                    ExcelUtils.exportMemoNote(null);
+                                    ToastUtils.showSucessLong(context, "完成备注成功！");
+                                    sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                    finish();
+                                } else {
+                                    ToastUtils.showErrorLong(context, "完成备注失败！");
+                                }
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override

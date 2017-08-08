@@ -37,7 +37,7 @@ public class ViewUtils {
     public static void setPopupWindow(final Context context, PopupWindow popupWindow) {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(false);
+        popupWindow.setFocusable(true);
         setBackgroundAlpha(context, 0.8f);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

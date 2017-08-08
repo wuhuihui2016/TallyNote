@@ -71,33 +71,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/commitIncome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_income"
-            android:gravity="center|center_horizontal"
-            android:onClick="onClick"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/income_record" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_vertical"
-                android:text="记一笔理财"
-                android:textColor="@color/income_record"
-                android:textSize="@dimen/bigtextSize" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </com.fengyang.tallynote.view.IOSScrollView>

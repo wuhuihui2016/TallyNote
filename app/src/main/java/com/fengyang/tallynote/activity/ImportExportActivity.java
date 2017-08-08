@@ -3,6 +3,7 @@ package com.fengyang.tallynote.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class ImportExportActivity extends BaseActivity {
 
-    private static final int FILE_SELECT_CODE = 0;
+    private static final int APP_FILE_SELECT_CODE = 0, FILE_SELECT_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +96,13 @@ public class ImportExportActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.import2file:
+            case R.id.import2file4APP:
+                Intent intent = new Intent(activity, FileExplorerActivity.class);
+                intent.putExtra("import", true);
+                startActivityForResult(intent, APP_FILE_SELECT_CODE);
+                break;
+            case R.id.import2file4Other:
                 if (FileUtils.isSDCardAvailable()) {
-
                     DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
@@ -132,32 +137,16 @@ public class ImportExportActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String path = "";
         switch (requestCode) {
+            case APP_FILE_SELECT_CODE:
+                path = data.getStringExtra("path");
+                break;
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
                     try {
                         Uri uri = data.getData();
-                        String path = FileUtils.getPath(context, uri);
-                        LogUtils.i(TAG, "File Path: " + path);
-                        ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
-
-                            @Override
-                            public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
-                                ToastUtils.showSucessLong(context, "导入成功！" +
-                                        "\n日账记录：" + day_count +
-                                        "\n月账记录：" + month_count +
-                                        "\n理财记录：" + income_count +
-                                        "\n历史日账记录：" + day_history_count +
-                                        "\n备忘录记录：" + memo_count +
-                                        "\n记事本记录：" + notepad_count);
-                                initDate();
-                            }
-
-                            @Override
-                            public void callback(String errorMsg) {
-                                ToastUtils.showSucessLong(context, errorMsg);
-                            }
-                        });
+                        path = FileUtils.getPath(context, uri);
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
@@ -165,6 +154,30 @@ public class ImportExportActivity extends BaseActivity {
                 break;
         }
 
+        if (!TextUtils.isEmpty(path)) {
+            LogUtils.i(TAG, "File Path: " + path);
+            ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
+
+                @Override
+                public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
+                    ToastUtils.showSucessLong(context, "导入成功！" +
+                            "\n日账记录：" + day_count +
+                            "\n月账记录：" + month_count +
+                            "\n理财记录：" + income_count +
+                            "\n历史日账记录：" + day_history_count +
+                            "\n备忘录记录：" + memo_count +
+                            "\n记事本记录：" + notepad_count);
+                    initDate();
+                }
+
+                @Override
+                public void callback(String errorMsg) {
+                    ToastUtils.showSucessLong(context, errorMsg);
+                }
+            });
+
+
+        }
     }
 
 }
