@@ -23,6 +23,9 @@ import com.fengyang.tallynote.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 记日账
+ */
 public class NewDayActivity extends BaseActivity {
 
     private EditText moneyEt, remarkEt;

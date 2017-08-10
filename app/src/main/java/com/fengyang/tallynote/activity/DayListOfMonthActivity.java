@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 依据月账显示该月的日账明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class DayListOfMonthActivity extends BaseActivity {
@@ -91,13 +92,13 @@ public class DayListOfMonthActivity extends BaseActivity {
                 getAll();
                 break;
             case R.id.consume:
-                getConsume();
+                getAll4UseType(DayNote.consume);
                 break;
             case R.id.account_out:
-                getAccountOut();
+                getAll4UseType(DayNote.account_out);
                 break;
             case R.id.account_in:
-                getAccountIn();
+                getAll4UseType(DayNote.account_in);
                 break;
         }
     }
@@ -123,9 +124,9 @@ public class DayListOfMonthActivity extends BaseActivity {
     }
 
     /**
-     * 支出账单记录
+     * 依据类型显示
      */
-    private void getConsume() {
+    private void getAll4UseType(int type) {
         all.setTextColor(Color.GRAY);
         consume.setTextColor(Color.RED);
         account_out.setTextColor(Color.GRAY);
@@ -133,54 +134,30 @@ public class DayListOfMonthActivity extends BaseActivity {
         list.clear();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.consume) {
+            if (dayNotes.get(i).getUseType() == type) {
                 list.add(dayNotes.get(i));
                 sum += Double.parseDouble(dayNotes.get(i).getMoney());
             }
         }
-        info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, list, false);
-        listView.setAdapter(dayNoteAdapter);
-    }
-
-    /**
-     * 转账记录
-     */
-    private void getAccountOut() {
-        all.setTextColor(Color.GRAY);
-        consume.setTextColor(Color.GRAY);
-        account_out.setTextColor(Color.RED);
-        account_in.setTextColor(Color.GRAY);
-        list.clear();
-        Double sum = 0.00;
-        for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.account_out) {
-                list.add(dayNotes.get(i));
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            }
+        if (type == DayNote.consume) {
+            all.setTextColor(Color.GRAY);
+            consume.setTextColor(Color.RED);
+            account_out.setTextColor(Color.GRAY);
+            account_in.setTextColor(Color.GRAY);
+            info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
+        } else if (type == DayNote.account_out) {
+            all.setTextColor(Color.GRAY);
+            consume.setTextColor(Color.GRAY);
+            account_out.setTextColor(Color.RED);
+            account_in.setTextColor(Color.GRAY);
+            info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
+        } else {
+            all.setTextColor(Color.GRAY);
+            consume.setTextColor(Color.GRAY);
+            account_out.setTextColor(Color.GRAY);
+            account_in.setTextColor(Color.RED);
+            info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
         }
-        info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
-        dayNoteAdapter = new DayNoteAdapter(activity, list, false);
-        listView.setAdapter(dayNoteAdapter);
-    }
-
-    /**
-     * 转入记录
-     */
-    private void getAccountIn() {
-        all.setTextColor(Color.GRAY);
-        consume.setTextColor(Color.GRAY);
-        account_out.setTextColor(Color.GRAY);
-        account_in.setTextColor(Color.RED);
-        list.clear();
-        Double sum = 0.00;
-        for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.account_in) {
-                list.add(dayNotes.get(i));
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            }
-        }
-        info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
     }

@@ -12,6 +12,7 @@ import com.fengyang.tallynote.utils.ToastUtils;
 import java.text.DecimalFormat;
 
 /**
+ * 计算日收益
  * Created by wuhuihui on 2017/6/27.
  */
 public class CalculateActivity extends InputBaseActivity {

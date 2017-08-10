@@ -39,7 +39,7 @@ public class NotePadDetailActivity extends BaseActivity {
 
         if (notePad != null) {
             tag.setText(NotePad.getTagList().get(notePad.getTag()));
-            time.setText(DateUtils.diffTime(notePad.getTime()));
+            time.setText(DateUtils.showTime4Detail(notePad.getTime()));
             words.setText(notePad.getWords());
 
             setRightImgBtnListener(R.drawable.note_delete, new View.OnClickListener() {

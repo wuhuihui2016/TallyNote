@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 日账单明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class DayListActivity extends BaseActivity {

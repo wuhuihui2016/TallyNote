@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class ForgetPwdActivity extends BaseActivity {
 
-    private List<TextView> textViews = new ArrayList<>();
-    private GridView numGridView;
-    private List<String> list = new ArrayList<>();
+    private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
+    private GridView numGridView; //输入密码的按键
+    private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ForgetPwdActivity extends BaseActivity {
         //输入数字View
         numGridView = (GridView) findViewById(R.id.numGridView);
         //输入后数字集合
-        list = new ArrayList<>();
+        pwds = new ArrayList<>();
 
         //数字显示集合
         List<Drawable> numRes = new ArrayList<>();
@@ -86,10 +86,10 @@ public class ForgetPwdActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.num0:
-                onClickCallback("0");
+                onClickCallback("0"); // "0"按键的点击
                 break;
-            case R.id.clear:
-                list.clear();
+            case R.id.clear: //清空已输入的密码数字
+                pwds.clear();
                 for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
@@ -103,33 +103,32 @@ public class ForgetPwdActivity extends BaseActivity {
      * @param pwd
      */
     private void onClickCallback(String pwd) {
-        if (list.size() < 6) {
-//        StringUtils.show1Toast(activity, pwd);
-            list.add(pwd);
-            for (int i = 0; i < list.size(); i++) {
-                if (list.size() - 1 >= i) {
-                    textViews.get(i).setText(list.get(i));
+        if (pwds.size() < 6) {
+            pwds.add(pwd);
+            for (int i = 0; i < pwds.size(); i++) {
+                if (pwds.size() - 1 >= i) {
+                    textViews.get(i).setText(pwds.get(i));
                 } else {
                     textViews.get(i).setText("");
                 }
             }
 
-            if (list.size() == 6) {
+            if (pwds.size() == 6) {
                 new DelayTask(300, new DelayTask.ICallBack() {
                     @Override
                     public void deal() {
                         String pwdKey = "";
-                        for (int i = 0; i < list.size(); i++) {
-                            pwdKey += list.get(i);
+                        for (int i = 0; i < pwds.size(); i++) {
+                            pwdKey += pwds.get(i);
                         }
 
                         String getPwdKey = (String) ContansUtils.get("pwdKey", "");
                         if (pwdKey.equals(getPwdKey)) {
                             List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
                             String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
-                            if (pwd.length() > 6) {
+                            if (pwd.length() >= 6) {
                                 pwd = pwd.substring(0, 5);
-                            } else if (pwd.length() < 6) {
+                            } else {
                                 pwd = getPwdKey;
                             }
                             DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener() {
@@ -141,9 +140,9 @@ public class ForgetPwdActivity extends BaseActivity {
                             });
 
                         } else {
-                            SystemUtils.Vibrate(activity, 100);
+                            SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
                             ToastUtils.showToast(context, true, "验证失败！请重新输入！");
-                            list.clear();
+                            pwds.clear();
                             for (int i = 0; i < textViews.size(); i++) {
                                 textViews.get(i).setText("");
                             }

@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="今天"
         android:textColor="@color/black"
-        android:textSize="@dimen/bigtextSize" />
+        android:textSize="@dimen/titletextSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,10 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tag"
             android:ellipsize="end"
-            android:lines="2"
             android:text="我想说..."
             android:textColor="@color/bitblack"
-            android:textSize="@dimen/smalltextSize" />
+            android:textSize="@dimen/bigtextSize" />
 
         <TextView
             android:id="@+id/tag"

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 重置密保
  * Created by wuhuihui on 2017/6/27.
  */
 public class ReSetPwdKeyActivity extends BaseActivity {
@@ -134,7 +135,7 @@ public class ReSetPwdKeyActivity extends BaseActivity {
                             finish();
 
                         } else {
-                            SystemUtils.Vibrate(activity, 100);
+                            SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
                             ToastUtils.showToast(context, true, "验证失败，请新输入");
                             list.clear();
                             for (int i = 0; i < textViews.size(); i++) {

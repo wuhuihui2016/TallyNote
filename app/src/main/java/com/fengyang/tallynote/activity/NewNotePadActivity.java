@@ -23,7 +23,7 @@ import com.fengyang.tallynote.view.FlowLayout;
 import java.util.List;
 
 /**
- * 记事本
+ * 新建记事本
  * Created by wuhuihui on 2017/8/02.
  */
 public class NewNotePadActivity extends BaseActivity {

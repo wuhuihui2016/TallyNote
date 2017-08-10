@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 记事本列表
  * Created by wuhuihui on 2017/6/27.
  */
 public class NotePadListActivity extends BaseActivity {
@@ -165,10 +166,15 @@ public class NotePadListActivity extends BaseActivity {
      * 总记事本记录
      */
     private void getAll() {
+        for (int i = 0; i < flowLayout.getChildCount(); i++) {
+            TextView textView = (TextView) flowLayout.getChildAt(i);
+            textView.setTextColor(Color.BLACK);
+        }
+
         notePads = NotePadDao.getNotePads();
         Collections.reverse(notePads);
         info.setText("我的记事本：" + notePads.size());
-        notePadAdapter = new NotePadAdapter(activity, notePads);
+        notePadAdapter = new NotePadAdapter(activity, notePads, true);
         listView.setAdapter(notePadAdapter);
 
         //如果当前无记录，则跳转写记录页面
@@ -187,6 +193,14 @@ public class NotePadListActivity extends BaseActivity {
      * 依据标签过滤显示
      */
     private void getAll4Tag(int tag) {
+
+        for (int i = 0; i < flowLayout.getChildCount(); i++) {
+            TextView textView = (TextView) flowLayout.getChildAt(i);
+            textView.setTextColor(Color.BLACK);
+        }
+        TextView textView = (TextView) flowLayout.getChildAt(tag);
+        textView.setTextColor(Color.RED);
+
         notePads = NotePadDao.getNotePads();
         Collections.reverse(notePads);
 
@@ -197,7 +211,7 @@ public class NotePadListActivity extends BaseActivity {
             }
         }
         info.setText(NotePad.getTagList().get(tag) + "：" + list.size());
-        notePadAdapter = new NotePadAdapter(activity, list);
+        notePadAdapter = new NotePadAdapter(activity, list, false);
         listView.setAdapter(notePadAdapter);
 
     }

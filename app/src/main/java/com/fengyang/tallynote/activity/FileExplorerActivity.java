@@ -17,6 +17,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.FileExplorerAdapter;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.FileUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
@@ -159,7 +160,6 @@ public class FileExplorerActivity extends BaseActivity {
                     initPopupWindow(file);
                 }
 
-
             }
         }
     }
@@ -183,6 +183,7 @@ public class FileExplorerActivity extends BaseActivity {
                         try {
                             WPSUtils.openFile(getApplicationContext(), file.getPath());
                         } catch (Exception e) {
+                            LogUtils.e(TAG + "openEXL", e.toString());
                             ToastUtils.showWarningShort(context, "没有找到可打开" + file.getName() + "的应用！");
                         }
                     }

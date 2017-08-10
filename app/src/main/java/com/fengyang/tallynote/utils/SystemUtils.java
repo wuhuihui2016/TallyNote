@@ -7,7 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.text.InputType;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 
 import java.lang.reflect.Method;
@@ -43,7 +47,7 @@ public class SystemUtils {
                 setShowSoftInputOnFocus.invoke(editText, false);
             }
         } catch (Exception e) {
-            LogUtils.i("hideSoftInputMethod", e.toString());
+            LogUtils.e(TAG + "-hideSoftInputMethod", e.toString());
         }
     }
 
@@ -58,17 +62,25 @@ public class SystemUtils {
         try {
             info = manager.getPackageInfo(context.getPackageName(), 0);
         } catch (Exception e) {
+            LogUtils.e(TAG + "-getVersion", e.toString());
             e.printStackTrace();
         }
         return info.versionName;
     }
 
     /*
-      手机震动
+      密码输入错误手机震动,界面晃动
      */
-    public static void Vibrate(Activity activity, long milliseconds) {
+    public static void Vibrate(Activity activity, long milliseconds, View view) {
         Vibrator vib = (Vibrator) activity.getSystemService(Service.VIBRATOR_SERVICE);
         vib.vibrate(milliseconds);
+
+        TranslateAnimation animation = new TranslateAnimation(0, -5, 0, 0);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setDuration(100);
+        animation.setRepeatCount(3);
+        animation.setRepeatMode(Animation.REVERSE);
+        view.startAnimation(animation);
     }
 
 }

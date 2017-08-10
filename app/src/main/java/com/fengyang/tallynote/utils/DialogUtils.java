@@ -17,6 +17,8 @@ import com.fengyang.tallynote.R;
  */
 public class DialogUtils {
 
+    private static final String TAG = "DialogUtils";
+
     public static Dialog dialog;
     private static TextView titleView, msgView, comfireView, cancelView;
     private static LinearLayout title_layout, cancel_layout;
@@ -45,6 +47,7 @@ public class DialogUtils {
             dialog.show();
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog", e.toString());
         }
     }
 
@@ -77,6 +80,7 @@ public class DialogUtils {
             dialog.show();
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog", e.toString());
         }
     }
 
@@ -104,6 +108,7 @@ public class DialogUtils {
             dialog.show();
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog", e.toString());
         }
     }
 
@@ -134,6 +139,7 @@ public class DialogUtils {
             dialog.show();
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog", e.toString());
         }
     }
 
@@ -168,6 +174,7 @@ public class DialogUtils {
             dialog.show();
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog", e.toString());
         }
     }
 

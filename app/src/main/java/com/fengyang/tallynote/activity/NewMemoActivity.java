@@ -18,7 +18,7 @@ import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 /**
- * 备忘录
+ * 新建备忘录
  * Created by wuhuihui on 2017/8/02.
  */
 public class NewMemoActivity extends BaseActivity {

@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:lines="6"
+        android:autoLink="all"
+        android:textIsSelectable="true"
         android:background="@drawable/shape_write"
         android:gravity="top|left"/>
 

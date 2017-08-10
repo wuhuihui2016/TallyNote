@@ -23,6 +23,8 @@ import jxl.write.WritableWorkbook;
 
 public class ExcelUtils {
 
+    private static final String TAG = "ExcelUtils";
+
     //文件名
     private static final String day_file = "day_note_", month_file = "month_note_",
             income_file = "income_note_", tallynote_file = "tally_note_",
@@ -104,7 +106,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportDayNote", e.toString());
         }
 
     }
@@ -136,7 +138,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportDayNote4History", e.toString());
         }
 
     }
@@ -171,7 +173,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportMonthNote", e.toString());
         }
 
     }
@@ -205,7 +207,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportIncomeNote", e.toString());
         }
 
     }
@@ -237,7 +239,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportNotePad", e.toString());
         }
 
     }
@@ -269,7 +271,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportMemoNote", e.toString());
         }
 
     }
@@ -335,7 +337,7 @@ public class ExcelUtils {
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.i("Exception", e.toString());
+            LogUtils.e(TAG + "-exportAll", e.toString());
         }
 
     }
@@ -457,6 +459,7 @@ public class ExcelUtils {
 
             }
         } catch (Exception e) {
+            LogUtils.e(TAG + "-writeSheet", e.toString());
         }
     }
 
@@ -616,7 +619,7 @@ public class ExcelUtils {
             }
             book.close();
         } catch (Exception e) {
-            System.out.println(e);
+            LogUtils.e(TAG + "-importExcel", e.toString());
             callBackImport.callback("导入失败！");
         }
     }

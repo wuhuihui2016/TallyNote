@@ -21,6 +21,9 @@ import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.text.DecimalFormat;
 
+/**
+ * 记理财
+ */
 public class NewIncomeActivity extends BaseActivity {
 
     private EditText moneyEt, incomeRatioEt, daysEt, finalIncomeEt, remarkEt;

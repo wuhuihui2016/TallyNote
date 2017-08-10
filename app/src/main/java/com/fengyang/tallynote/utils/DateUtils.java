@@ -13,6 +13,8 @@ import java.util.Date;
  */
 public class DateUtils {
 
+    private static final String TAG = "DateUtils";
+
 	/*
     方法测试数据
 	LogUtils.i("diffTime", DateUtils.diffTime("2017-1-12 12:30:31", "2017-1-12 12:24:31"));
@@ -23,7 +25,8 @@ public class DateUtils {
 
     private static SimpleDateFormat time_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
-    private static SimpleDateFormat show_date_sdf = new SimpleDateFormat("yyyy年MM月dd日");
+    private static SimpleDateFormat show_date_sdf1 = new SimpleDateFormat("yyyy年MM月dd日");
+    private static SimpleDateFormat show_date_sdf2 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
     /**
      * 日期格式
@@ -50,8 +53,8 @@ public class DateUtils {
     }
 
     /*获取当前日期*/
-    public static String getDate(){
-        String date = show_date_sdf.format(new Date());
+    public static String getDate() {
+        String date = show_date_sdf1.format(new Date());
         int i = calendar.get(Calendar.DAY_OF_WEEK);
         switch (i) {
             case 1:
@@ -72,7 +75,6 @@ public class DateUtils {
                 return date + "";
         }
     }
-
 
 
     /**
@@ -125,9 +127,26 @@ public class DateUtils {
             }
 
         } catch (Exception e) {
+            LogUtils.e(TAG + "-diffTime", e.toString());
         }
 
         return "";
+    }
+
+    /**
+     * 详情页面显示时间
+     *
+     * @param time
+     * @return
+     */
+    public static String showTime4Detail(String time) {
+        Date date = null;
+        try {
+            date = time_sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return show_date_sdf2.format(date);
     }
 
     /**
@@ -146,6 +165,7 @@ public class DateUtils {
             long between_days = (time1 - time2) / (1000 * 3600 * 24);
             days = Integer.parseInt(String.valueOf(between_days));
         } catch (Exception e) {
+            LogUtils.e(TAG + "-daysBetween", e.toString());
             e.printStackTrace();
         }
         return days;
@@ -188,6 +208,7 @@ public class DateUtils {
 
     /**
      * 判断某一日期是否在dateStr日期之后
+     *
      * @param dateStr
      * @param currDateStr
      * @return
@@ -200,6 +221,7 @@ public class DateUtils {
             if (currDate.after(date)) flag = true;
             else flag = false;
         } catch (Exception e) {
+            LogUtils.e(TAG + "-checkAfterDate", e.toString());
             e.printStackTrace();
         }
 

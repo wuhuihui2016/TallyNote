@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 往期理财记录日收益比较
+ * 往期理财记录日收益比较 比较显示收益大的理财列表
  * Created by wuhuihui on 2017/07/07.
  */
 public class CompareActivity extends BaseActivity {

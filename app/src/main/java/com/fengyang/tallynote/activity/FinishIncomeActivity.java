@@ -15,6 +15,9 @@ import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
+/**
+ * 完成理财
+ */
 public class FinishIncomeActivity extends BaseActivity {
 
     private IncomeNote incomeNote;

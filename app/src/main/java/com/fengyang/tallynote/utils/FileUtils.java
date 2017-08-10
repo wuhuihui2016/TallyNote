@@ -16,6 +16,8 @@ import java.text.DecimalFormat;
  */
 public class FileUtils {
 
+    private static final String TAG = "FileUtils";
+
     public static final String dirPath = Environment.getExternalStorageDirectory() + "/TallyNote/";//项目根目录
     public static final String excelPath = dirPath + "/excel/";//excel根目录
 
@@ -81,6 +83,7 @@ public class FileUtils {
                 }
                 cursor.close();
             } catch (Exception e) {
+                LogUtils.e(TAG + "-getPath", e.toString());
             }
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();

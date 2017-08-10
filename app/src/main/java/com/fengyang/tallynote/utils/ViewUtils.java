@@ -17,6 +17,8 @@ import java.util.Calendar;
  */
 public class ViewUtils {
 
+    private static String TAG = "ViewUtils";
+
     /**
      * 设置添加屏幕的背景透明度
      *
@@ -77,6 +79,7 @@ public class ViewUtils {
 
             datePickerDialog.show();
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showDatePickerDialog", e.toString());
         }
     }
 

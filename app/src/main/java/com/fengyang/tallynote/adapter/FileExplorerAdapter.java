@@ -82,6 +82,7 @@ public class FileExplorerAdapter extends BaseAdapter {
             } else viewHolder.select.setVisibility(View.GONE);
 
         } catch (Exception e) {
+            LogUtils.e("FileExplorerAdapter-getView", e.toString());
             e.printStackTrace();
         }
 

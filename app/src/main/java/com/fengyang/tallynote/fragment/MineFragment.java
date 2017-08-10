@@ -23,6 +23,9 @@ import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 我的
+ */
 public class MineFragment extends Fragment {
 
 

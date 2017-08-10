@@ -28,6 +28,9 @@ import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.List;
 
+/**
+ * 理财
+ */
 public class IncomeFragment extends Fragment {
 
     private static final String TAG = "IncomeFragment";
@@ -36,7 +39,7 @@ public class IncomeFragment extends Fragment {
 
     private boolean isSeen = false;
     private TextView currIncomeSum;
-    private String sumStr;
+    private String sumStr; //投资总额
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

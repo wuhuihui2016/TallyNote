@@ -24,6 +24,9 @@ import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.List;
 
+/**
+ * 记月账
+ */
 public class NewMonthActivity extends BaseActivity {
 
     private EditText last_balanceEt, payEt, salaryEt, incomeEt, homeuseEt, actual_balanceEt, remarkEt;

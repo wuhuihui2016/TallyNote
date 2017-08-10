@@ -19,6 +19,7 @@ import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
@@ -205,7 +206,9 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         super.onDestroy();
         try {
             MyApp.dbHelper.db.close();
-        } catch (Exception e){}
+        } catch (Exception e){
+            LogUtils.e(TAG + "-onDestroy", e.toString());
+        }
 
     }
 }

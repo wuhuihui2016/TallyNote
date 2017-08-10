@@ -20,10 +20,12 @@ public class NotePadAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<NotePad> notePads;
+    private boolean isShowTag;
 
-    public NotePadAdapter(Activity activity, List<NotePad> notePads) {
+    public NotePadAdapter(Activity activity, List<NotePad> notePads, boolean isShowTag) {
         this.activity = activity;
         this.notePads = notePads;
+        this.isShowTag = isShowTag;
     }
 
 
@@ -60,7 +62,12 @@ public class NotePadAdapter extends BaseAdapter {
         //获取当前对象
         final NotePad notePad = notePads.get(position);
         viewHolder.time.setText(DateUtils.diffTime(notePad.getTime()));
-        viewHolder.tag.setText(NotePad.getTagList().get(notePad.getTag()));
+        if (isShowTag) {
+            viewHolder.tag.setVisibility(View.VISIBLE);
+            viewHolder.tag.setText(NotePad.getTagList().get(notePad.getTag()));
+        } else {
+            viewHolder.tag.setVisibility(View.GONE);
+        }
         viewHolder.words.setText(notePad.getWords());
 
         return convertView;

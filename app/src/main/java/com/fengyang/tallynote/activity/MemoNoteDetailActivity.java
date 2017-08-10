@@ -40,7 +40,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
         memoNote = (MemoNote) getIntent().getSerializableExtra("memoNote");
 
         if (memoNote != null) {
-            time.setText(DateUtils.diffTime(memoNote.getTime()));
+            time.setText(DateUtils.showTime4Detail(memoNote.getTime()));
             content.setText(memoNote.getContent());
 
             if (memoNote.getStatus() == MemoNote.ON) {
@@ -49,17 +49,18 @@ public class MemoNoteDetailActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
 
-                        DialogUtils.showMsgDialog(activity, "完成提示", "是否确定完成此条备注", new DialogUtils.DialogListener() {
+                        DialogUtils.showMsgDialog(activity, "完成提示", "是否确定完成此条备忘录", new DialogUtils.DialogListener() {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
                                 if (MemoNoteDao.finishMemoNote(memoNote)) {
                                     ExcelUtils.exportMemoNote(null);
-                                    ToastUtils.showSucessLong(context, "完成备注成功！");
+                                    ToastUtils.showSucessLong(context, "完成备忘录成功！");
                                     sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
-                                    finish();
+                                    //增加删除线
+                                    content.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                                 } else {
-                                    ToastUtils.showErrorLong(context, "完成备注失败！");
+                                    ToastUtils.showErrorLong(context, "完成备忘录失败！");
                                 }
                             }
                         }, new DialogUtils.DialogListener() {

@@ -93,12 +93,9 @@ public class DayNote implements Serializable {
         List<DayNote> dayNotes = DayNoteDao.getDayNotes();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.consume)
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            if (dayNotes.get(i).getUseType() == DayNote.account_out)
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
             if (dayNotes.get(i).getUseType() == DayNote.account_in)
                 sum -= Double.parseDouble(dayNotes.get(i).getMoney());
+            else sum += Double.parseDouble(dayNotes.get(i).getMoney());
         }
         return sum;
     }
@@ -111,12 +108,9 @@ public class DayNote implements Serializable {
         List<DayNote> dayNotes = DayNoteDao.getDayNotes4History(duration);
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
-            if (dayNotes.get(i).getUseType() == DayNote.consume)
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
-            if (dayNotes.get(i).getUseType() == DayNote.account_out)
-                sum += Double.parseDouble(dayNotes.get(i).getMoney());
             if (dayNotes.get(i).getUseType() == DayNote.account_in)
                 sum -= Double.parseDouble(dayNotes.get(i).getMoney());
+            else sum += Double.parseDouble(dayNotes.get(i).getMoney());
         }
         return sum;
     }

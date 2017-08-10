@@ -96,6 +96,7 @@ public class NotificationUtils {
             field.setAccessible(true);
             field.set(notification, miuiNotification);
         } catch (Exception e) {
+            LogUtils.e(TAG + "-setMIUICount", e.toString());
         }
 
     }

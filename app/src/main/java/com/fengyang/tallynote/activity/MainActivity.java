@@ -36,16 +36,19 @@ import com.fengyang.tallynote.utils.ViewUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 我的账本
+ */
 public class MainActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
     private FragmentViewPagerAdapter adapter;
-    private int frag_index = 0;//当前加载fragment标志位
+    private int frag_index = 0; //当前加载fragment标志位
     private LinearLayout tally, income, mine;
     private TextView tally_title, income_title, mine_title;
-    private RelativeLayout cur_tab;//向导View
-    private boolean canShow = false;//tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
+    private RelativeLayout cur_tab; //向导游标View
+    private boolean canShow = false; //tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +125,7 @@ public class MainActivity extends BaseActivity {
 
                                 new DelayTask(200, new DelayTask.ICallBack() {
                                     @Override
-                                    public void deal() {
+                                    public void deal() {//游标消失
                                         cur_tab.setVisibility(View.GONE);
                                     }
                                 }).execute();
@@ -185,6 +188,9 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /*
+      tab点击事件
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tally:
@@ -235,7 +241,7 @@ public class MainActivity extends BaseActivity {
             popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, 800);
             ViewUtils.setPopupWindow(activity, popupWindow);
             // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
-            popupWindow.showAsDropDown(findViewById(R.id.addNote), 0, 20);
+            popupWindow.showAsDropDown(findViewById(R.id.addNote), 50, 20);
             popupWindow.setAnimationStyle(R.style.popwin_anim_style);
 
             layout.findViewById(R.id.commitDNote).setOnClickListener(

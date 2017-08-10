@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:ellipsize="end"
-        android:lines="2"
         android:textColor="@color/bitblack"
         android:textSize="@dimen/smalltextSize" />
 

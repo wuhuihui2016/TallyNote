@@ -67,6 +67,11 @@ public class NotePad implements Serializable {
         return tagList;
     }
 
+    /**
+     * 获取标签对应的int值
+     * @param tagStr
+     * @return
+     */
     public static int getTag(String tagStr) {
         List<String> tagList = getTagList();
         for (int i = 0; i < tagList.size(); i++) {

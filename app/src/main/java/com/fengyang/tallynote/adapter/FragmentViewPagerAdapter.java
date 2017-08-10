@@ -12,11 +12,6 @@ import java.util.List;
 
 /**
  * 为ViewPager添加布局（Fragment），绑定和处理fragments和viewpager之间的逻辑关系
- * <p>
- * Created with IntelliJ IDEA.
- * Author: wangjie  email:tiantian.china.2@gmail.com
- * Date: 13-10-11
- * Time: 下午3:03
  */
 public class FragmentViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
     private List<Fragment> fragments; // 每个Fragment对应一个Page

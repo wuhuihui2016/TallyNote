@@ -89,9 +89,11 @@ public class TallyFragment extends Fragment {
             });
         }
 
+        //显示当前日期
         today = (TextView) content.findViewById(R.id.today);
         today.setText(DateUtils.getDate());
 
+        //默认隐藏当前结余和当前支出
         last_balanceTv = (TextView) content.findViewById(R.id.last_balanceTv);
         last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         current_payTv = (TextView) content.findViewById(R.id.current_pay);
@@ -106,11 +108,11 @@ public class TallyFragment extends Fragment {
      */
     private void showData() {
         play(false);
-        showDayNote();
-        showMonthNote();
-        clickListener();
-        showMemo();
-        showNotepad();
+        showDayNote(); //日账
+        showMonthNote(); //月账
+        clickListener(); //点击事件
+        showMemo(); //备忘录
+        showNotepad(); //记事本
     }
 
     /**
@@ -255,17 +257,17 @@ public class TallyFragment extends Fragment {
             if (memoNoteList.size() > 0) {
                 more_memo.setVisibility(View.VISIBLE);
                 memo_layout.setVisibility(View.VISIBLE);
-                View memo_view = View.inflate(getActivity(), R.layout.view_streaner, null);
-                TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
 
                 for (int i = 0; i < memoNoteList.size(); i++) {
+                    View memo_view = View.inflate(activity, R.layout.view_streaner, null);
+                    TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
                     MemoNote memoNote = memoNoteList.get(i);
-                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "：" + memoNote.getContent());
+                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
                     final int finalI = i;
                     memo_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), MemoNoteDetailActivity.class);
+                            Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("memoNote", memoNoteList.get(finalI));
                             intent.putExtras(bundle);
@@ -274,11 +276,13 @@ public class TallyFragment extends Fragment {
                     });
                     memo_layout.addView(memo_view);
                 }
+
             } else {
                 more_memo.setVisibility(View.GONE);
                 memo_layout.setVisibility(View.GONE);
             }
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showMemo", e.toString());
         }
 
     }
@@ -299,14 +303,14 @@ public class TallyFragment extends Fragment {
                 animator_notepad.removeAllViews();
                 for (int i = 0; i < notePads.size(); i++) {
                     final int finalI = i;
-                    View view_streaner = View.inflate(getActivity(), R.layout.view_streaner, null);
+                    View view_streaner = View.inflate(activity, R.layout.view_streaner, null);
                     TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
                     streamer_txt.setText(notePads.get(finalI).getWords());
 
                     view_streaner.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(getActivity(), NotePadListActivity.class));
+                            startActivity(new Intent(activity, NotePadListActivity.class));
                         }
                     });
                     animator_notepad.addView(view_streaner);
@@ -315,6 +319,7 @@ public class TallyFragment extends Fragment {
                 play(true);
             }
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showNotepad", e.toString());
         }
 
     }
@@ -325,11 +330,12 @@ public class TallyFragment extends Fragment {
     private void showNext() {
         try {
             if (animator_notepad != null && notePads.size() > 1) {
-                animator_notepad.setOutAnimation(getActivity(), R.anim.slide_out_up);
-                animator_notepad.setInAnimation(getActivity(), R.anim.slide_in_down);
+                animator_notepad.setOutAnimation(activity, R.anim.slide_out_up);
+                animator_notepad.setInAnimation(activity, R.anim.slide_in_down);
                 animator_notepad.showNext();
             }
         } catch (Exception e) {
+            LogUtils.e(TAG + "-showNext", e.toString());
         }
     }
 

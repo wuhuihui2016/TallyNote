@@ -27,7 +27,7 @@ import com.fengyang.tallynote.utils.ViewUtils;
 import java.util.Collections;
 import java.util.List;
 
-/**
+/**我的备忘录
  * Created by wuhuihui on 2017/6/27.
  */
 public class MemoNoteListActivity extends BaseActivity {

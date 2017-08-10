@@ -62,6 +62,10 @@ public class MemoNote implements Serializable{
                 '}';
     }
 
+    /**
+     * 未完成的备忘录
+     * @return
+     */
     public static List<MemoNote> getUnFinish(){
         List<MemoNote> unFinishMemoNotes = new ArrayList<>();
         List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
@@ -74,6 +78,10 @@ public class MemoNote implements Serializable{
         return unFinishMemoNotes;
     }
 
+    /**
+     * 已完成的备忘录
+     * @return
+     */
     public static List<MemoNote> getFinished(){
         List<MemoNote> unFinishMemoNotes = new ArrayList<>();
         List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 设置密保
  * Created by wuhuihui on 2017/6/27.
  */
 public class SetPwdKeyActivity extends BaseActivity {

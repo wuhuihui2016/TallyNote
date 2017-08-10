@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 验证密码
  * Created by wuhuihui on 2017/6/27.
  */
 public class OnStartActivity extends BaseActivity {
 
-    private List<TextView> textViews = new ArrayList<>();
-    private GridView numGridView;
-    private List<String> list = new ArrayList<>();
-    private List<MonthNote> monthNotes;
+    private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
+    private GridView numGridView; //输入密码的按键
+    private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
+    private List<MonthNote> monthNotes; //月账集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,8 @@ public class OnStartActivity extends BaseActivity {
      */
     private void initView() {
         monthNotes = MonthNoteDao.getMonthNotes();
-        if (monthNotes.size() > 0) {
+
+        if (monthNotes.size() > 0) { //如果有月账单,需要输入密码验证进入
             //密码输入显示的TextView集合
             textViews.add((TextView) findViewById(R.id.pwd1));
             textViews.add((TextView) findViewById(R.id.pwd2));
@@ -59,7 +61,7 @@ public class OnStartActivity extends BaseActivity {
             //输入数字View
             numGridView = (GridView) findViewById(R.id.numGridView);
             //输入后数字集合
-            list = new ArrayList<>();
+            pwds = new ArrayList<>();
 
             //数字显示集合
             List<Drawable> numRes = new ArrayList<>();
@@ -92,15 +94,15 @@ public class OnStartActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.num0:
-                onClickCallback("0");
+                onClickCallback("0"); // "0"按键的点击
                 break;
-            case R.id.clear:
-                list.clear();
+            case R.id.clear: //清空已输入的密码数字
+                pwds.clear();
                 for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
                 break;
-            case R.id.forgetPwd:
+            case R.id.forgetPwd: //忘记验证密码
                 startActivity(new Intent(activity, ForgetPwdActivity.class));
                 break;
         }
@@ -112,39 +114,39 @@ public class OnStartActivity extends BaseActivity {
      * @param pwd
      */
     private void onClickCallback(String pwd) {
-        if (list.size() < 6) {
-//        StringUtils.show1Toast(activity, pwd);
-            list.add(pwd);
-            for (int i = 0; i < list.size(); i++) {
-                if (list.size() - 1 >= i) {
-                    textViews.get(i).setText(list.get(i));
+        if (pwds.size() < 6) { //输入的数字加入密码集
+            pwds.add(pwd);
+            for (int i = 0; i < pwds.size(); i++) {
+                if (pwds.size() - 1 >= i) {
+                    textViews.get(i).setText(pwds.get(i));
                 } else {
                     textViews.get(i).setText("");
                 }
             }
 
-            if (list.size() == 6) {
+            if (pwds.size() == 6) { //输入完毕，验证密码
                 new DelayTask(300, new DelayTask.ICallBack() {
                     @Override
                     public void deal() {
                         String password = "";
-                        for (int i = 0; i < list.size(); i++) {
-                            password += list.get(i);
+                        for (int i = 0; i < pwds.size(); i++) {
+                            password += pwds.get(i);
                         }
 
+                        //密码取最后一笔月账的整数部分
                         String actual_balance = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
-                        if (actual_balance.length() > 6) {
+                        if (actual_balance.length() >= 6) { //如果整数部分为6位数或以上，取前6位数字作为密码
                             actual_balance = actual_balance.substring(0, 5);
-                        } else if (actual_balance.length() < 6) {
+                        } else { //否则密码取之前的密保值
                             actual_balance = (String) ContansUtils.get("pwdKey", "");
                         }
-                        if (password.equals(actual_balance)) {
+                        if (password.equals(actual_balance)) { //验证通过：进入APP
                             finish();
                             startActivity(new Intent(context, MainActivity.class));
-                        } else {
-                            SystemUtils.Vibrate(activity, 100);
+                        } else { //验证不通过：提示，震动，布局摇晃，密码清空
+                            SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
                             ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
-                            list.clear();
+                            pwds.clear();
                             for (int i = 0; i < textViews.size(); i++) {
                                 textViews.get(i).setText("");
                             }
