@@ -114,6 +114,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             right_btn.setVisibility(View.VISIBLE);
             right_btn.setText(text);
             right_btn.setOnClickListener(listener);
+            findViewById(R.id.right_imgbtn).setVisibility(View.GONE);
         }
     }
 
@@ -128,6 +129,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         right_imgbtn.setVisibility(View.VISIBLE);
         right_imgbtn.setImageResource(resId);
         right_imgbtn.setOnClickListener(listener);
+
+        findViewById(R.id.right_btn).setVisibility(View.GONE);
     }
 
     @Override

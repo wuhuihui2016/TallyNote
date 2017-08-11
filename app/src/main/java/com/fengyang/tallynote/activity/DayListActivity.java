@@ -144,6 +144,7 @@ public class DayListActivity extends BaseActivity {
      * 总账单记录
      */
     private void getAll() {
+        showHigh_Consume(false);
         all.setTextColor(Color.RED);
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
@@ -160,6 +161,7 @@ public class DayListActivity extends BaseActivity {
      * 依据类型显示
      */
     private void getAll4UseType(int type) {
+        showHigh_Consume(false);
         all.setTextColor(Color.GRAY);
         consume.setTextColor(Color.RED);
         account_out.setTextColor(Color.GRAY);
@@ -173,6 +175,7 @@ public class DayListActivity extends BaseActivity {
             }
         }
         if (type == DayNote.consume) {
+            showHigh_Consume(true);
             all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.RED);
             account_out.setTextColor(Color.GRAY);
@@ -183,7 +186,7 @@ public class DayListActivity extends BaseActivity {
             consume.setTextColor(Color.GRAY);
             account_out.setTextColor(Color.RED);
             account_in.setTextColor(Color.GRAY);
-            info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
+            info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
         } else {
             all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.GRAY);
@@ -193,6 +196,25 @@ public class DayListActivity extends BaseActivity {
         }
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
+    }
+
+    /**
+     * 高额消费显示
+     * @param show
+     */
+    private void showHigh_Consume(boolean show) {
+        if(show) {
+            findViewById(R.id.high_consume).setVisibility(View.VISIBLE);
+            findViewById(R.id.high_consume).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(activity, HighConsumeDayListActivity.class));
+                }
+            });
+
+        } else {
+            findViewById(R.id.high_consume).setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -12,7 +12,6 @@
         android:layout_marginTop="10dp"
         android:autoLink="all"
         android:textIsSelectable="true"
-        android:background="@drawable/shape_write"
         android:gravity="top|left"/>
 
     <TextView

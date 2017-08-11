@@ -139,16 +139,14 @@ public class TallyFragment extends Fragment {
             time.setText(DateUtils.diffTime(dayNote.getTime()));
             TextView usage = (TextView) content.findViewById(R.id.usage);
             time.setText(DateUtils.diffTime(dayNote.getTime()));
+            usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
             if (dayNote.getUseType() == DayNote.consume) {
-                usage.setText("支出：");
                 spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
                 tag.setImageResource(R.drawable.consume);
             } else if (dayNote.getUseType() == DayNote.account_out) {
-                usage.setText("转账：");
                 spot.setBackgroundResource(R.drawable.shape_day_out_spot);
                 tag.setImageResource(R.drawable.account_out);
             } else if (dayNote.getUseType() == DayNote.account_in) {
-                usage.setText("转入：");
                 spot.setBackgroundResource(R.drawable.shape_day_in_spot);
                 tag.setImageResource(R.drawable.account_in);
             }

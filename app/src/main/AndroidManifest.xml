@@ -93,6 +93,12 @@
         <!-- 记事本详情 -->
         <activity android:name=".activity.NotePadDetailActivity" />
 
+        <!-- 搜索 -->
+        <activity android:name=".activity.SearchActivity" />
+
+        <!-- 筛选高额消费 -->
+        <activity android:name=".activity.HighConsumeDayListActivity" />
+
     </application>
 
 </manifest>

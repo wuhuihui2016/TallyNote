@@ -20,9 +20,6 @@ import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 记日账
  */
@@ -44,13 +41,7 @@ public class NewDayActivity extends BaseActivity {
         remarkEt = (EditText) findViewById(R.id.remarkEt);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        //数据
-        List<String> types = new ArrayList<>();
-        types.add("支出");
-        types.add("转账");
-        types.add("转入");
-
-        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, DayNote.getUserTypes());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(
@@ -80,11 +71,7 @@ public class NewDayActivity extends BaseActivity {
                 final DayNote dayNote = new DayNote(type, money, remark, DateUtils.formatDateTime());
                 LogUtils.i("commit", dayNote.toString());
                 String message;
-                String dayType = null;
-                if (dayNote.getUseType() == DayNote.consume) dayType = "支出";
-                if (dayNote.getUseType() == DayNote.account_out) dayType = "转账";
-                if (dayNote.getUseType() == DayNote.account_in) dayType = "转入";
-                message = dayType + "：" + StringUtils.showPrice(dayNote.getMoney()) + " " + dayNote.getRemark();
+                message = DayNote.getUserTypeStr(dayNote.getUseType()) + StringUtils.showPrice(dayNote.getMoney()) + " " + dayNote.getRemark();
                 DialogUtils.showMsgDialog(activity, "新增日账单", message,
                         new DialogUtils.DialogListener() {
                             @Override

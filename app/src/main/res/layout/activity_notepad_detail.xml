@@ -9,7 +9,8 @@
         android:id="@+id/tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_write"
+        android:autoLink="all"
+        android:textIsSelectable="true"
         android:textColor="@color/blue"/>
 
     <TextView

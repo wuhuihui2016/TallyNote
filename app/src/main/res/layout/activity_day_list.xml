@@ -72,13 +72,31 @@
                 android:text="转入" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/info"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/type_layout"
-            android:padding="5dp"
-            android:textSize="@dimen/smalltextSize" />
+            android:layout_below="@id/type_layout">
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="@dimen/smalltextSize" />
+
+            <TextView
+                android:id="@+id/high_consume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:textColor="@color/red"
+                android:text="高额支出"
+                android:textSize="@dimen/smalltextSize" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

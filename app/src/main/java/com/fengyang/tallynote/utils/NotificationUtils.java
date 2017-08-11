@@ -6,14 +6,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author wuhuihui
@@ -33,41 +35,42 @@ public class NotificationUtils {
      * @param context
      */
     public static void notifyIncome(Context context) {
+        if (isNeedInComeReminder()) {
+            IncomeNote lastIncomeNote = IncomeNote.getLastIncomeNote();
+            if (lastIncomeNote != null) {
+                String title = "理财到期提醒,收益：" + StringUtils.showPrice(lastIncomeNote.getFinalIncome());
+                int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
+                String message;
+                if (day < 0) {
+                    message = "已经结束,请完成!";
+                } else if (day == 0) {
+                    message = "今日到期！可完成!";
+                } else {
+                    message = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8) + "到期,还剩 " + day + " 天";
+                }
 
-        IncomeNote lastIncomeNote = IncomeNote.getLastIncomeNote();
-        if (lastIncomeNote != null) {
-            String title = "理财到期提醒,收益：" + StringUtils.showPrice(lastIncomeNote.getFinalIncome());
-            int day = DateUtils.daysBetween(lastIncomeNote.getDurtion().split("-")[1]);
-            String message;
-            if (day < 0) {
-                message = "已经结束,请完成!";
-            } else if (day == 0) {
-                message = "今日到期！可完成!";
-            } else {
-                message = lastIncomeNote.getDurtion().split("-")[1].substring(4, 8) + "到期,还剩 " + day + " 天";
+                //显示通知
+                notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+                //设置点击事件
+                Intent intent = new Intent(context, IncomeListActivity.class);
+                intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                builder.setContentTitle(title).setContentText(message).setAutoCancel(true).
+                        setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_launcher);
+
+                Notification notification = builder.build();
+                notification.icon = R.drawable.ic_launcher;
+                notification.defaults = Notification.DEFAULT_SOUND;//声音
+
+                setMIUICount(notification);
+                notifyManager.notify(requestCode, notification);//发送通知
             }
 
-            //显示通知
-            notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-
-            //设置点击事件
-            Intent intent = new Intent(context, IncomeListActivity.class);
-            intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            builder.setContentTitle(title).setContentText(message).setAutoCancel(true).
-                    setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_launcher);
-
-            Notification notification = builder.build();
-            notification.icon = R.drawable.ic_launcher;
-            notification.defaults = Notification.DEFAULT_SOUND;//声音
-
-            setMIUICount(notification);
-            notifyManager.notify(requestCode, notification);//发送通知
         }
-
     }
 
     /**
@@ -97,6 +100,28 @@ public class NotificationUtils {
             field.set(notification, miuiNotification);
         } catch (Exception e) {
             LogUtils.e(TAG + "-setMIUICount", e.toString());
+        }
+
+    }
+
+    /**
+     * 判断是否需要提醒（理财到期提醒），确保一天提醒一次
+     */
+    private static boolean isNeedInComeReminder() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+
+        //获取上次提醒时间
+        String lastTime = (String) ContansUtils.get("incomeReminder", "");
+
+        //写入当前日期
+        String nowTime = sdf.format(new Date());
+        ContansUtils.put("incomeReminder", nowTime);
+
+        if (!TextUtils.isEmpty(lastTime)) {
+            if (nowTime.equals(lastTime)) return false;
+            else return true;//不同日期，去提示
+        } else {
+            return true;//从未提醒过，去提示
         }
 
     }

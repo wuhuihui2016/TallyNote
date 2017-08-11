@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.DayNoteAdapter;
 import com.fengyang.tallynote.database.DayNoteDao;
-import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -45,11 +45,7 @@ public class DayListOfMonthActivity extends BaseActivity {
         setContentView(duration, R.layout.activity_day_list);
 
         //数据
-        final List<String> durations = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
-        for (int i = 0; i < monthNotes.size(); i++) {
-            durations.add(monthNotes.get(i).getDuration());
-        }
+        final List<String> durations = MonthNote.getDurations();
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, durations);
@@ -107,6 +103,7 @@ public class DayListOfMonthActivity extends BaseActivity {
      * 总账单记录
      */
     private void getAll() {
+        showHigh_Consume(false);
         all.setTextColor(Color.RED);
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
@@ -127,6 +124,7 @@ public class DayListOfMonthActivity extends BaseActivity {
      * 依据类型显示
      */
     private void getAll4UseType(int type) {
+        showHigh_Consume(false);
         all.setTextColor(Color.GRAY);
         consume.setTextColor(Color.RED);
         account_out.setTextColor(Color.GRAY);
@@ -140,6 +138,7 @@ public class DayListOfMonthActivity extends BaseActivity {
             }
         }
         if (type == DayNote.consume) {
+            showHigh_Consume(true);
             all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.RED);
             account_out.setTextColor(Color.GRAY);
@@ -150,7 +149,7 @@ public class DayListOfMonthActivity extends BaseActivity {
             consume.setTextColor(Color.GRAY);
             account_out.setTextColor(Color.RED);
             account_in.setTextColor(Color.GRAY);
-            info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
+            info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
         } else {
             all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.GRAY);
@@ -158,8 +157,30 @@ public class DayListOfMonthActivity extends BaseActivity {
             account_in.setTextColor(Color.RED);
             info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
         }
+
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
+    }
+
+    /**
+     * 高额消费显示
+     * @param show
+     */
+    private void showHigh_Consume(boolean show) {
+        if(show) {
+            findViewById(R.id.high_consume).setVisibility(View.VISIBLE);
+            findViewById(R.id.high_consume).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(activity, HighConsumeDayListActivity.class);
+                    intent.putExtra("duration", duration);
+                    startActivity(intent);
+                }
+            });
+
+        } else {
+            findViewById(R.id.high_consume).setVisibility(View.GONE);
+        }
     }
 
 }

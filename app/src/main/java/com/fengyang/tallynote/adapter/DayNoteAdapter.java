@@ -72,16 +72,14 @@ public class DayNoteAdapter extends BaseAdapter {
         //获取当前对象
         final DayNote dayNote = dayNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
+        viewHolder.usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
         if (dayNote.getUseType() == DayNote.consume) {
-            viewHolder.usage.setText("支出：");
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
             viewHolder.tag.setImageResource(R.drawable.consume);
         } else if (dayNote.getUseType() == DayNote.account_out) {
-            viewHolder.usage.setText("转账：");
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_out_spot);
             viewHolder.tag.setImageResource(R.drawable.account_out);
         } else if (dayNote.getUseType() == DayNote.account_in) {
-            viewHolder.usage.setText("转入：");
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_in_spot);
             viewHolder.tag.setImageResource(R.drawable.account_in);
         }

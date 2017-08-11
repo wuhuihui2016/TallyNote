@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.lang.reflect.Method;
@@ -22,6 +23,14 @@ import java.lang.reflect.Method;
 public class SystemUtils {
 
     private static String TAG = "SystemUtils";
+
+    //隐藏键盘
+    public static void hideInput(Activity activity) {
+        ((InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(
+                        activity.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 
     /**
      * 针对与某个输入框的方法：禁掉系统软键盘

@@ -3,6 +3,8 @@ package com.fengyang.tallynote.model;
 import com.fengyang.tallynote.database.MonthNoteDao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wuhuihui on 2017/6/23.
@@ -140,4 +142,18 @@ public class MonthNote implements Serializable {
             return MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getDuration().split("-")[1];
         else return null;
     }
+
+    /**
+     * 获取所有月账的时段
+     * @return
+     */
+    public static List<String> getDurations() {
+        List<String> durations = new ArrayList<>();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            durations.add(monthNotes.get(i).getDuration());
+        }
+        return durations;
+    }
+
 }

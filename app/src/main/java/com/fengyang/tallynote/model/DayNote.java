@@ -3,6 +3,7 @@ package com.fengyang.tallynote.model;
 import com.fengyang.tallynote.database.DayNoteDao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,15 +79,37 @@ public class DayNote implements Serializable {
     public String toString() {
         return "DayNote{" +
                 "useType=" + useType +
-                ", money='" + money + 
-                ", remark='" + remark + 
-                ", time='" + time + 
-                ", duration='" + duration + 
+                ", money='" + money +
+                ", remark='" + remark +
+                ", time='" + time +
+                ", duration='" + duration +
                 '}';
     }
 
     /**
+     * 消费类型集合
+     * @return
+     */
+    public static List<String> getUserTypes() {
+        List<String> types = new ArrayList<>();
+        types.add("支出：");
+        types.add("转账：");
+        types.add("转入：");
+        return types;
+    }
+
+    /**
+     * 返回消费类型
+     * @param useType
+     * @return
+     */
+    public static String getUserTypeStr(int useType) {
+        return getUserTypes().get(useType - 1);
+    }
+
+    /**
      * 总消费
+     *
      * @return
      */
     public static Double getAllSum() {
@@ -102,6 +125,7 @@ public class DayNote implements Serializable {
 
     /**
      * 某一时段的总消费
+     *
      * @return
      */
     public static Double getAllSum(String duration) {

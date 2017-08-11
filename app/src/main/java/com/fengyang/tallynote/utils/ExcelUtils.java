@@ -363,11 +363,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
-                            String dayType = null;
-                            if (dayNotes.get(i).getUseType() == DayNote.consume) dayType = "支出";
-                            if (dayNotes.get(i).getUseType() == DayNote.account_out) dayType = "转账";
-                            if (dayNotes.get(i).getUseType() == DayNote.account_in) dayType = "转入";
-                            sheet.addCell(new Label(0, i + 1, dayType));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes.get(i).getUseType() )));
                             sheet.addCell(new Label(1, i + 1, dayNotes.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes.get(i).getTime()));
@@ -418,14 +414,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
                     if (dayNotes_history.size() > 0) {
                         for (int i = 0; i < dayNotes_history.size(); i++) {
-                            String dayType = null;
-                            if (dayNotes_history.get(i).getUseType() == DayNote.consume)
-                                dayType = "支出";
-                            if (dayNotes_history.get(i).getUseType() == DayNote.account_out)
-                                dayType = "转账";
-                            if (dayNotes_history.get(i).getUseType() == DayNote.account_in)
-                                dayType = "转入";
-                            sheet.addCell(new Label(0, i + 1, dayType));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes_history.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes_history.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes_history.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes_history.get(i).getTime()));
