@@ -1,60 +1,74 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical|center"
-        android:text="暂无记录~~"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="20sp"
-        android:visibility="gone" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/darker_gray"
+            android:dividerHeight="1dp" />
 
-    <LinearLayout
-        android:id="@+id/choose_layout"
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|center"
+            android:text="暂无记录~~"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="20sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:layout_marginTop="10dp"
+        android:layout_weight="12">
 
-        <Button
-            android:id="@+id/ok"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/choose_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/shape_btn_bkg"
-            android:text="全部选定" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-        <Button
-            android:id="@+id/no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_btn_bkg"
-            android:text="取消" />
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_btn_bkg"
+                android:text="全部选定" />
 
-        <Button
-            android:id="@+id/del"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_btn_bkg"
-            android:text="删除" />
+            <Button
+                android:id="@+id/no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_btn_bkg"
+                android:text="取消" />
 
-    </LinearLayout>
-</RelativeLayout>
+            <Button
+                android:id="@+id/del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_btn_bkg"
+                android:text="删除" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

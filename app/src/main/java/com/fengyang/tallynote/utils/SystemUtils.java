@@ -7,6 +7,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.text.InputType;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -90,6 +92,19 @@ public class SystemUtils {
         animation.setRepeatCount(3);
         animation.setRepeatMode(Animation.REVERSE);
         view.startAnimation(animation);
+    }
+
+    /**
+     * px转dp
+     * @param activity
+     * @param value
+     * @return
+     */
+    public static float pxTodp(Activity activity, float value) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float valueDP = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
+        return valueDP;
     }
 
 }

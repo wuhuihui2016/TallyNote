@@ -99,6 +99,9 @@
         <!-- 筛选高额消费 -->
         <activity android:name=".activity.HighConsumeDayListActivity" />
 
+        <!-- 月账单记录分析统计 -->
+        <activity android:name=".activity.MonthNotesAnalyseActivity" />
+
     </application>
 
 </manifest>

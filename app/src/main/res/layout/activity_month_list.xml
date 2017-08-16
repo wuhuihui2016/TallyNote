@@ -10,11 +10,28 @@
         android:padding="5dp"
         android:textSize="@dimen/smalltextSize" />
 
+    <TextView
+        android:id="@+id/chartAnalyse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="月账分析"
+        android:textColor="@color/white"
+        android:textSize="@dimen/bigtextSize"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/month_record"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/info"
+        android:layout_below="@id/chartAnalyse"
         android:divider="@color/month_record"
         android:dividerHeight="2dp" />
 
@@ -22,7 +39,7 @@
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/info"
+        android:layout_below="@id/chartAnalyse"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"

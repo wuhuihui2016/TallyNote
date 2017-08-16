@@ -156,4 +156,56 @@ public class MonthNote implements Serializable {
         return durations;
     }
 
+    /**
+     * 获取所有月账的时段
+     * @return
+     */
+    public static List<String> formateDurations() {
+        List<String> durations = new ArrayList<>();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            durations.add(monthNotes.get(i).getDuration().split("-")[0].substring(4, 6));
+        }
+        return durations;
+    }
+
+    /**
+     * 获取所有月账的支出
+     * @return
+     */
+    public static List<Double> getPays() {
+        List<Double> pays = new ArrayList<>();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            pays.add(Double.parseDouble(monthNotes.get(i).getPay()));
+        }
+        return pays;
+    }
+
+    /**
+     * 获取所有月账的工资
+     * @return
+     */
+    public static List<Double> getSalarys() {
+        List<Double> salarys = new ArrayList<>();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            salarys.add(Double.parseDouble(monthNotes.get(i).getSalary()));
+        }
+        return salarys;
+    }
+
+    /**
+     * 获取所有月账的收益
+     * @return
+     */
+    public static List<Double> getIncomes() {
+        List<Double> incomes = new ArrayList<>();
+        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        for (int i = 0; i < monthNotes.size(); i++) {
+            incomes.add(Double.parseDouble(monthNotes.get(i).getIncome()));
+        }
+        return incomes;
+    }
+
 }

@@ -72,7 +72,7 @@ public class FileExplorerAdapter extends BaseAdapter {
             final File file = fileList.get(position);
             viewHolder.name.setText(file.getName());
             String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(file.lastModified()));
-            viewHolder.info.setText(FileUtils.FormetFileSize(FileUtils.getFileSize(file)) + " | " + time);
+            viewHolder.info.setText(FileUtils.FormatFileSize(FileUtils.getFileSize(file)) + " | " + time);
 
             if (isSelect) {
                 viewHolder.select.setVisibility(View.VISIBLE);

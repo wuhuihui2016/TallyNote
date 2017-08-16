@@ -1,6 +1,9 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import com.fengyang.tallynote.adapter.MonthNoteAdapter;
 import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
@@ -39,6 +43,10 @@ public class MonthListActivity extends BaseActivity {
 
         setContentView("月账单明细", R.layout.activity_month_list);
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ContansUtils.ACTION_MONTH);
+        registerReceiver(myReceiver, intentFilter);
+
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
 
@@ -58,6 +66,16 @@ public class MonthListActivity extends BaseActivity {
         monthNotes = MonthNoteDao.getMonthNotes();
         info.setText("月账单记录有" + monthNotes.size() + "条");
 
+        if (monthNotes.size() > 1){
+            findViewById(R.id.chartAnalyse).setVisibility(View.VISIBLE);
+            findViewById(R.id.chartAnalyse).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(activity, MonthNotesAnalyseActivity.class));
+                }
+            });
+        }
+
         Collections.reverse(monthNotes);//倒序排列
         monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
         listView.setAdapter(monthNoteAdapter);
@@ -72,6 +90,16 @@ public class MonthListActivity extends BaseActivity {
             }
         });
     }
+
+    //新增月账监听
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
+                initData();
+            }
+        }
+    };
 
     /**
      * 初始化popupWindow
@@ -114,4 +142,9 @@ public class MonthListActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myReceiver != null) unregisterReceiver(myReceiver);
+    }
 }

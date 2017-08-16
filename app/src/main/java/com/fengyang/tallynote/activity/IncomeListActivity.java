@@ -20,6 +20,7 @@ import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
@@ -78,14 +79,19 @@ public class IncomeListActivity extends BaseActivity {
         initData();
 
         if (getIntent().hasExtra("position")) {
-            listView.setSelection(getIntent().getIntExtra("position", 0));
-        }
+            new DelayTask(1000, new DelayTask.ICallBack() {
+            @Override
+            public void deal() {
+                listView.setSelection(getIntent().getIntExtra("position", 0));
+            }
+        }).execute();
+    }
 
         NotificationUtils.cancel();//关闭通知
 
     }
 
-    //删除后刷新界面
+    //删除或新增后刷新界面
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

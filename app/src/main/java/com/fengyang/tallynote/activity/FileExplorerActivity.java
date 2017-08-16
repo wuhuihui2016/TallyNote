@@ -37,6 +37,7 @@ public class FileExplorerActivity extends BaseActivity {
     private List<File> fileList = new ArrayList<>();
     private FileExplorerAdapter adapter;
     private PopupWindow popupWindow;
+    private boolean isSellect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,111 +57,65 @@ public class FileExplorerActivity extends BaseActivity {
         Collections.sort(fileList, new FileComparator());
         if (fileList.size() > 0) {
             adapter = new FileExplorerAdapter(context, fileList);
-            adapter.setSelect(false);
+            setSellect(false);
             listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new MyItemClickListener(false));
+
+            //长按进入选择模式
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (!isSellect) {
+                        setSellect(true);
+                    }
+                    return false;
+                }
+            });
+
+            //默认操作文件，选择状态下选择文件以删除
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    File file = fileList.get(position);
+                    if (isSellect) {
+                        adapter.setSelected(file);
+                    } else {
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        } else {
+                            initPopupWindow(file);
+                        }
+
+                    }
+                }
+
+            });
+
         }
 
         listView.setEmptyView(findViewById(R.id.emptyView));
 
         if (getIntent().hasExtra("import")) {
-
-                DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
-                    @Override
-                    public void onClick(View v) {
-                        super.onClick(v);
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intent = new Intent();
-                                intent.putExtra("path", fileList.get(position).getPath());
-                                setResult(Activity.RESULT_OK, intent);
-                                finish();
-                            }
-                        });
-                    }
-                }, new DialogUtils.DialogListener() {
-                    @Override
-                    public void onClick(View v) {
-                        super.onClick(v);
-                        finish();
-                    }
-                });
-        } else {
-            setRightImgBtnListener(R.drawable.file_delete, new View.OnClickListener() {
+            DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
                 @Override
                 public void onClick(View v) {
-                    final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
-                    choose_layout.setVisibility(View.VISIBLE);
-                    listView.setOnItemClickListener(new MyItemClickListener(true));
-                    adapter.setSelect(true);
-                    findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+                    super.onClick(v);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            adapter.selectAll(true);
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent();
+                            intent.putExtra("path", fileList.get(position).getPath());
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
                         }
                     });
-
-                    findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            adapter.selList.clear();
-                            choose_layout.setVisibility(View.GONE);
-                            init();
-                        }
-                    });
-
-                    findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (adapter.selList.size() > 0) {
-                                DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        super.onClick(v);
-                                        for (int i = 0; i < adapter.selList.size(); i++)
-                                            adapter.selList.get(i).delete();
-                                        adapter.selList.clear();
-                                        choose_layout.setVisibility(View.GONE);
-                                        init();
-                                    }
-                                }, new DialogUtils.DialogListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        super.onClick(v);
-                                    }
-                                });
-                            } else ToastUtils.showWarningShort(context, "请至少选择1个文件！");
-
-                        }
-                    });
-
                 }
-
+            }, new DialogUtils.DialogListener() {
+                @Override
+                public void onClick(View v) {
+                    super.onClick(v);
+                    finish();
+                }
             });
-        }
-    }
-
-    private class MyItemClickListener implements AdapterView.OnItemClickListener {
-        private boolean isSellect;
-
-        public MyItemClickListener(boolean isSellect) {
-            this.isSellect = isSellect;
-        }
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            File file = fileList.get(position);
-            if (isSellect) {
-                adapter.setSelected(file);
-            } else {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                } else {
-                    initPopupWindow(file);
-                }
-
-            }
         }
     }
 
@@ -207,6 +162,65 @@ public class FileExplorerActivity extends BaseActivity {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    /**
+     * 选择模式的切换
+     *
+     * @param isSellect
+     */
+    private void setSellect(boolean isSellect) {
+        this.isSellect = isSellect;
+        adapter.setSelect(isSellect);
+
+        if (isSellect) {
+            final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
+            choose_layout.setVisibility(View.VISIBLE);
+
+            findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapter.selectAll(true);
+                }
+            });
+
+            findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapter.selList.clear();
+                    choose_layout.setVisibility(View.GONE);
+                    init();
+                }
+            });
+
+            findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (adapter.selList.size() > 0) {
+                        DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                for (int i = 0; i < adapter.selList.size(); i++)
+                                    adapter.selList.get(i).delete();
+                                adapter.selList.clear();
+                                choose_layout.setVisibility(View.GONE);
+                                init();
+                            }
+                        }, new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
+                    } else ToastUtils.showWarningShort(context, "请至少选择1个文件！");
+
+                }
+            });
+
+        } else {
+
+        }
     }
 
 
