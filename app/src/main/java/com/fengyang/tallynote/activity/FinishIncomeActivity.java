@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -75,6 +77,7 @@ public class FinishIncomeActivity extends BaseActivity {
                                 if (IncomeNoteDao.finishIncome(incomeNote)) {
                                     ExcelUtils.exportIncomeNote(null);
                                     ToastUtils.showSucessLong(context, "完成理财成功！");
+                                    sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "完成理财失败！");
                             }

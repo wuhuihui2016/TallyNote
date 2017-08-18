@@ -604,6 +604,7 @@ public class ExcelUtils {
             if (callBackImport != null) {
                 if (day_count > 0 || day_history_count > 0 || month_count > 0 || income_count > 0 || notepad_count > 0) {
                     callBackImport.callback(day_count, month_count, income_count, day_history_count, memo_count, notepad_count);
+                    exportAll(null);
                 } else callBackImport.callback("导入失败, 原因：表单中没有可解析的数据！");
             }
             book.close();

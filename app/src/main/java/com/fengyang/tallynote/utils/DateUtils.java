@@ -24,7 +24,7 @@ public class DateUtils {
     public static Calendar calendar = Calendar.getInstance();
 
     private static SimpleDateFormat time_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
+    public static SimpleDateFormat date_sdf = new SimpleDateFormat("yyyyMMdd");
     private static SimpleDateFormat show_date_sdf1 = new SimpleDateFormat("yyyy年MM月dd日");
     private static SimpleDateFormat show_date_sdf2 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 

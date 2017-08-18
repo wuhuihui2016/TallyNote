@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivity {
         } else {
             LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layout = mLayoutInflater.inflate(R.layout.layout_add_note_pop, null);
-            popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, 800);
+            popupWindow = new PopupWindow(layout, 400, 800);
             ViewUtils.setPopupWindow(activity, popupWindow);
             // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
             popupWindow.showAsDropDown(findViewById(R.id.addNote), 50, 20);

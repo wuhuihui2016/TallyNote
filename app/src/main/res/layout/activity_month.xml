@@ -4,6 +4,7 @@
     android:scrollbars="none">
 
     <LinearLayout
+        android:id="@+id/month_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -243,14 +244,16 @@
                 android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 
-            <EditText
+            <TextView
                 android:id="@+id/actual_balanceEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:hint="必填"
+                android:clickable="true"
+                android:hint="结算总资产"
                 android:inputType="numberDecimal"
+                android:onClick="onClick"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 

@@ -76,7 +76,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/shape_edit"
                 android:gravity="left|top"
-                android:hint="必填"
+                android:hint="必填 如转27，转支付宝"
                 android:lines="2"
                 android:padding="5dp"
                 android:textSize="@dimen/bigtextSize" />

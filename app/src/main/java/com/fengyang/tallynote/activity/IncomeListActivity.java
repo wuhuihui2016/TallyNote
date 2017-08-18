@@ -29,7 +29,8 @@ import com.fengyang.tallynote.utils.ViewUtils;
 import java.util.Collections;
 import java.util.List;
 
-/**理财明细
+/**
+ * 理财明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class IncomeListActivity extends BaseActivity {
@@ -37,25 +38,47 @@ public class IncomeListActivity extends BaseActivity {
     private TextView info;
     private ListView listView;
 
-    private List<IncomeNote> incomeNotes;
+    private int index = 0;
+    private List<IncomeNote> incomeNotes4index;
     private IncomeNoteAdapter incomeNoteAdapter;
-    private TextView sort_info;
+    private TextView sort_info, income_earning, income_finished;
     private boolean isStart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView("理财明细", R.layout.activity_income_list);
-        //删除后广播接收
+
+        initView();
+
+        initData(0);
+
+
+    }
+
+    private void initView() {
+        //新增或完成后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_INCOME);
         registerReceiver(myReceiver, intentFilter);
 
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
+        income_earning = (TextView) findViewById(R.id.income_earning);
+        income_earning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData(0);
+            }
+        });
+        income_finished = (TextView) findViewById(R.id.income_finished);
+        income_finished.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData(1);
+            }
+        });
 
         info = (TextView) findViewById(R.id.info);
+        info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "条,计息中" + IncomeNote.getEarningInComes().size() + "条");
         sort_info = (TextView) findViewById(R.id.sort_info);
         sort_info.setVisibility(View.VISIBLE);
         sort_info.setOnClickListener(new View.OnClickListener() {
@@ -76,38 +99,62 @@ public class IncomeListActivity extends BaseActivity {
             }
         });
 
-        initData();
-
-        if (getIntent().hasExtra("position")) {
-            new DelayTask(1000, new DelayTask.ICallBack() {
-            @Override
-            public void deal() {
-                listView.setSelection(getIntent().getIntExtra("position", 0));
-            }
-        }).execute();
-    }
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
         NotificationUtils.cancel();//关闭通知
-
     }
 
-    //删除或新增后刷新界面
+    //新增或完成后刷新界面
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
-                initData();
+                initData(0);
             }
         }
     };
 
-    private void initData() {
-        incomeNotes = IncomeNoteDao.getIncomes();
-        info.setText("投资账单记录有" + incomeNotes.size() + "条,计息中" + IncomeNote.getEarningInComes().size() + "条");
+    /**
+     * 依据计息中还是已完成来显示理财记录
+     *
+     * @param index
+     */
+    private boolean unSelected = true;
+    private void initData(int index) {
 
-        Collections.reverse(incomeNotes);//倒序排列
-        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
+        income_earning.setBackgroundResource(R.color.transparent);
+        income_finished.setBackgroundResource(R.color.transparent);
+        this.index = index;
+        if (index == 0) {
+            income_earning.setBackgroundResource(R.drawable.shape_left_btn_bkg);
+            incomeNotes4index = IncomeNote.getEarningInComes();
+        } else {
+            income_finished.setBackgroundResource(R.drawable.shape_right_btn_bkg);
+            incomeNotes4index = IncomeNote.getFinishedInComes();
+        }
+        Collections.reverse(incomeNotes4index);
+        incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes4index);
         listView.setAdapter(incomeNoteAdapter);
+
+        if (unSelected) {
+            if (getIntent().hasExtra("position")) {
+                new DelayTask(1000, new DelayTask.ICallBack() {
+                    @Override
+                    public void deal() {
+                        int position = getIntent().getIntExtra("position", 0);
+                        IncomeNote curIncomeNote = IncomeNoteDao.getIncomes().get(position);
+                        for (int i = 0; i < incomeNotes4index.size(); i++) {
+                            if (curIncomeNote.getId().equals(incomeNotes4index.get(i).getId())) {
+                                listView.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                }).execute();
+            }
+        }
+        unSelected = false;
     }
 
     /**
@@ -196,15 +243,13 @@ public class IncomeListActivity extends BaseActivity {
      * 以投资时间排序
      */
     private void sort4Start() {
-        if (!isStart) {
-            incomeNotes = IncomeNoteDao.getIncomes();
-            if (incomeNotes.size() > 0) {
-                sort_info.setText("按投资时间排序：");
-                isStart = true;
-                Collections.reverse(incomeNotes);//倒序排列
-                incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);
-                listView.setAdapter(incomeNoteAdapter);
-            }
+        if (incomeNotes4index.size() > 0) {
+            sort_info.setText("按投资时间排序");
+            if (index == 0) isStart = true;
+            else isStart = false;
+            Collections.reverse(incomeNotes4index);//倒序排列
+            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes4index);
+            listView.setAdapter(incomeNoteAdapter);
         }
     }
 
@@ -212,24 +257,23 @@ public class IncomeListActivity extends BaseActivity {
      * 以到期时间排序
      */
     private void sort4End() {
-        incomeNotes = IncomeNote.getEarningInComes();
-        if (incomeNotes.size() > 0) {
+        if (incomeNotes4index.size() > 0) {
             isStart = false;
-            sort_info.setText("按到期时间排序：");
-            for (int i = 0; i < incomeNotes.size() - 1; i++) {
-                for (int j = 1; j < incomeNotes.size() - i; j++) {
+            sort_info.setText("按到期时间排序");
+            for (int i = 0; i < incomeNotes4index.size() - 1; i++) {
+                for (int j = 1; j < incomeNotes4index.size() - i; j++) {
                     IncomeNote incomeNote;
-                    int days1 = DateUtils.daysBetween(incomeNotes.get(j).getDurtion().split("-")[1]);
-                    int days2 = DateUtils.daysBetween(incomeNotes.get(j - 1).getDurtion().split("-")[1]);
+                    int days1 = DateUtils.daysBetween(incomeNotes4index.get(j).getDurtion().split("-")[1]);
+                    int days2 = DateUtils.daysBetween(incomeNotes4index.get(j - 1).getDurtion().split("-")[1]);
                     if (days1 < days2) {
-                        incomeNote = incomeNotes.get(j - 1);
-                        incomeNotes.set((j - 1), incomeNotes.get(j));
-                        incomeNotes.set(j, incomeNote);
+                        incomeNote = incomeNotes4index.get(j - 1);
+                        incomeNotes4index.set((j - 1), incomeNotes4index.get(j));
+                        incomeNotes4index.set(j, incomeNote);
                     }
                 }
             }
-            LogUtils.i("sort", incomeNotes.toString());
-            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes, isStart);//列表显示按投资时间排序时，最后一个才可做删除操作
+            LogUtils.i("sort", incomeNotes4index.toString());
+            incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes4index);
             listView.setAdapter(incomeNoteAdapter);
         }
     }

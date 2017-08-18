@@ -102,6 +102,9 @@
         <!-- 月账单记录分析统计 -->
         <activity android:name=".activity.MonthNotesAnalyseActivity" />
 
+        <!-- 本次月结的理财明细 -->
+        <activity android:name=".activity.IncomeList4UnRecordActivity" />
+
     </application>
 
 </manifest>

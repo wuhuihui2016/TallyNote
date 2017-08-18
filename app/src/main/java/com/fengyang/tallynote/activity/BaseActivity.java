@@ -67,7 +67,25 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             return_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    if (TAG.contains("New")) {
+                        DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
+                                new DialogUtils.DialogListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        super.onClick(v);
+                                        finish();
+
+                                    }
+                                }, new DialogUtils.DialogListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        super.onClick(v);
+                                    }
+                                });
+                    } else {
+                        if (popupWindow != null && popupWindow.isShowing()) popupWindow.dismiss();
+                        else finish();
+                    }
                 }
             });
         } else {
@@ -209,7 +227,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         super.onDestroy();
         try {
             MyApp.dbHelper.db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             LogUtils.e(TAG + "-onDestroy", e.toString());
         }
 

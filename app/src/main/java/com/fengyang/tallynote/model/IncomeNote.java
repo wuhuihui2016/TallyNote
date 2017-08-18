@@ -204,20 +204,36 @@ public class IncomeNote implements Serializable {
     }
 
     /**
-     * 获取截至到某一天已完成而未结算的收益总额
+     * 获取截至到某一天已完成而未结算的理财列表
      *
      * @return
      */
-    public static Double getUnRecordSum() {
-        Double sum = 0.00;
+    public static List<IncomeNote> getUnRecordInComes() {
+        List<IncomeNote> unRecordInComes = new ArrayList<>();
         if (IncomeNote.getFinishedInComes().size() > 0 && MonthNoteDao.getMonthNotes().size() > 0) {
             String dateStr = MonthNote.getEndDate();
             List<IncomeNote> finishedInComes = IncomeNote.getFinishedInComes();
             for (int i = 0; i < finishedInComes.size(); i++) {
                 String currDateStr = finishedInComes.get(i).getDurtion().split("-")[1];
                 if (DateUtils.checkAfterDate(dateStr, currDateStr)) {
-                    sum += Double.parseDouble(finishedInComes.get(i).getFinalIncome());
+                    unRecordInComes.add(finishedInComes.get(i));
                 }
+            }
+        }
+        return unRecordInComes;
+    }
+
+    /**
+     * 获取截至到某一天已完成而未结算的收益总额
+     *
+     * @return
+     */
+    public static Double getUnRecordSum() {
+        Double sum = 0.00;
+        List<IncomeNote> unRecordInComes = getUnRecordInComes();
+        if (unRecordInComes.size() > 0) {
+            for (int i = 0; i < unRecordInComes.size(); i++) {
+                sum += Double.parseDouble(unRecordInComes.get(i).getFinalIncome());
             }
         }
         return sum;

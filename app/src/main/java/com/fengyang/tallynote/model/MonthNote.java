@@ -1,9 +1,12 @@
 package com.fengyang.tallynote.model;
 
 import com.fengyang.tallynote.database.MonthNoteDao;
+import com.fengyang.tallynote.utils.DateUtils;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -140,24 +143,43 @@ public class MonthNote implements Serializable {
     public static String getEndDate() {
         if (MonthNoteDao.getMonthNotes().size() > 0)
             return MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getDuration().split("-")[1];
-        else return null;
+        else return "";
     }
 
     /**
-     * 获取所有月账的时段
+     * 获取最后一次月结算的截止时间的后一天
+     * @return
+     */
+    public static String getAfterEndDate() {
+        String getDate = "";
+        if (getEndDate().length() > 0) {
+            try {
+                Calendar cal = DateUtils.getAfterDate(getEndDate(), 1);
+                getDate = DateUtils.date_sdf.format(cal.getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return getDate + "";
+        } else return getDate;
+    }
+
+    /**
+     * 获取所有月账的时段(不取第一个，没有历史日账记录)
+     *
      * @return
      */
     public static List<String> getDurations() {
         List<String> durations = new ArrayList<>();
         List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
-            durations.add(monthNotes.get(i).getDuration());
+            if (i != 0) durations.add(monthNotes.get(i).getDuration());
         }
         return durations;
     }
 
     /**
      * 获取所有月账的时段
+     *
      * @return
      */
     public static List<String> formateDurations() {
@@ -171,6 +193,7 @@ public class MonthNote implements Serializable {
 
     /**
      * 获取所有月账的支出
+     *
      * @return
      */
     public static List<Double> getPays() {
@@ -184,6 +207,7 @@ public class MonthNote implements Serializable {
 
     /**
      * 获取所有月账的工资
+     *
      * @return
      */
     public static List<Double> getSalarys() {
@@ -197,6 +221,7 @@ public class MonthNote implements Serializable {
 
     /**
      * 获取所有月账的收益
+     *
      * @return
      */
     public static List<Double> getIncomes() {

@@ -16,11 +16,8 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.FinishIncomeActivity;
-import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
-import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
-import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
@@ -33,13 +30,18 @@ public class IncomeNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<IncomeNote> incomeNotes;
-    private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
+//    private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
 
-    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes, boolean isLast) {
+    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes) {
         this.activity = activity;
         this.incomeNotes = incomeNotes;
-        this.isLast = isLast;
     }
+
+//    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes, boolean isLast) {
+//        this.activity = activity;
+//        this.incomeNotes = incomeNotes;
+//        this.isLast = isLast;
+//    }
 
     @Override
     public int getCount() {
@@ -137,30 +139,30 @@ public class IncomeNoteAdapter extends BaseAdapter {
                     "已提现，" + incomeNote.getFinalCashGo());
         }
 
-        if (position == 0 && isLast) {
-            viewHolder.income_del.setVisibility(View.VISIBLE);
-            viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                            IncomeNoteDao.delIncome(incomeNotes.get(0));
-                            incomeNotes = IncomeNoteDao.getIncomes();
-                            notifyDataSetChanged();
-
-                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
-                        }
-                    }, new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                        }
-                    });
-                }
-            });
-        } else viewHolder.income_del.setVisibility(View.GONE);
+//        if (position == 0 && isLast) {
+//            viewHolder.income_del.setVisibility(View.VISIBLE);
+//            viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            super.onClick(v);
+//                            IncomeNoteDao.delIncome(incomeNotes.get(0));
+//                            incomeNotes = IncomeNoteDao.getIncomes();
+//                            notifyDataSetChanged();
+//
+//                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
+//                        }
+//                    }, new DialogUtils.DialogListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            super.onClick(v);
+//                        }
+//                    });
+//                }
+//            });
+//        } else viewHolder.income_del.setVisibility(View.GONE);
 
         return convertView;
     }
