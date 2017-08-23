@@ -155,7 +155,7 @@ public class ViewUtils {
                         }
                     }
                 } else {
-                    if (days > 0) {
+                    if (days > 0 || MonthNote.getEndDate().length() == 0) {
                         textView.setText(year + month + day + "-");
                     } else {
                         textView.setText(MonthNote.getAfterEndDate());
@@ -163,8 +163,7 @@ public class ViewUtils {
                     showDatePickerDialog(activity, textView, days);
                 }
             } else {
-                curDuration = year + month + day + "-";
-                textView.setText(curDuration);
+                textView.setText(year + month + day + "-");
                 showDatePickerDialog(activity, textView, days);
             }
         }

@@ -159,7 +159,7 @@ public class MonthNote implements Serializable {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return getDate + "";
+            return getDate + "-";
         } else return getDate;
     }
 
