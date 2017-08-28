@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:autoLink="all"
+        android:gravity="top|left"
         android:textIsSelectable="true"
-        android:gravity="top|left"/>
+        android:textSize="@dimen/bigtextSize" />
 
     <TextView
         android:id="@+id/time"

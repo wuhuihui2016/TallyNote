@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="all"
-        android:textIsSelectable="true"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/blue"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/words"
@@ -19,10 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:autoLink="all"
-        android:textIsSelectable="true"
         android:background="@drawable/shape_write"
         android:gravity="top|left"
-        android:hint="这一刻的想法..." />
+        android:hint="这一刻的想法..."
+        android:textIsSelectable="true"
+        android:textSize="@dimen/bigtextSize" />
 
     <TextView
         android:id="@+id/time"

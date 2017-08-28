@@ -37,6 +37,7 @@ import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TallyFragment extends Fragment {
@@ -295,11 +296,15 @@ public class TallyFragment extends Fragment {
     private void showNotepad() {
         try {
             notePads = NotePadDao.getNotePads();
+            Collections.reverse(notePads);
             if (notePads.size() > 0) {
+                int size = 0;
+                if (notePads.size() > 3) {size = 3;}
+                else size = notePads.size();
                 animator_notepad = (ViewAnimator) content.findViewById(R.id.animator_notepad);
                 animator_notepad.setVisibility(View.VISIBLE);
                 animator_notepad.removeAllViews();
-                for (int i = 0; i < notePads.size(); i++) {
+                for (int i = 0; i < size; i++) {
                     final int finalI = i;
                     View view_streaner = View.inflate(activity, R.layout.view_streaner, null);
                     TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
@@ -344,14 +349,14 @@ public class TallyFragment extends Fragment {
      */
     private void play(boolean flag) {
         isRunning = flag;
-        if (isRunning) handler.sendEmptyMessageDelayed(0, 5000);
+        if (isRunning) handler.sendEmptyMessageDelayed(0, 3000);
         else handler.removeMessages(0);
     }
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             showNext();//条幅滚到下一条
-            handler.sendEmptyMessageDelayed(0, 5000);
+            handler.sendEmptyMessageDelayed(0, 3000);
         }
     };
 

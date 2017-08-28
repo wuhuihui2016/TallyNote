@@ -27,7 +27,7 @@
         android:gravity="top|left"
         android:hint="这一刻的想法..."
         android:lines="10"
-        android:textSize="@dimen/smalltextSize"
+        android:textSize="@dimen/bigtextSize"
         android:maxLength="200" />
 
     <RelativeLayout

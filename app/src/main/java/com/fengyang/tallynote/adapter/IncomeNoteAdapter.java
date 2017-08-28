@@ -93,7 +93,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
         viewHolder.income_ratio.setText(incomeNote.getIncomeRatio() + " %");
         viewHolder.income_days.setText(incomeNote.getDays() + " 天");
         viewHolder.income_durtion.setText(incomeNote.getDurtion());
-        viewHolder.income_dayIncome.setText(StringUtils.showPrice(incomeNote.getDayIncome()) + "/万/天");
+        viewHolder.income_dayIncome.setText(incomeNote.getDayIncome() + " 元/万/天");
         viewHolder.income_finalIncome.setText(StringUtils.showPrice(incomeNote.getFinalIncome()));
         if (incomeNote.getRemark().length() > 0)
             viewHolder.income_remark.setText(incomeNote.getRemark());

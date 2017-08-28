@@ -106,7 +106,7 @@ public class NewIncomeActivity extends BaseActivity {
                                 "\n预期年化：" + incomeNote.getIncomeRatio() +
                                 " %\n投资期限：" + incomeNote.getDays() +
                                 " 天\n投资时段：" + incomeNote.getDurtion() +
-                                " \n拟日收益：" + StringUtils.showPrice(incomeNote.getDayIncome()) +
+                                " \n拟日收益：" + incomeNote.getDayIncome() +
                                 " 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                                 "\n投资说明：" + incomeNote.getRemark(),
                         new DialogUtils.DialogListener() {
