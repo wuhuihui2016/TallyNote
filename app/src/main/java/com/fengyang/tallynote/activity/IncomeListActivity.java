@@ -73,6 +73,7 @@ public class IncomeListActivity extends BaseActivity {
         income_finished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sort_info.setText("按投资时间排序");
                 initData(1);
             }
         });

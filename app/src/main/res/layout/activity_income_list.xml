@@ -12,7 +12,8 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_btn_bkg"
         android:gravity="center|center_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/income_earning"
@@ -42,7 +43,7 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_marginTop="10dp"
@@ -51,22 +52,25 @@
 
     <TextView
         android:id="@+id/sort_info"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/info"
+        android:layout_below="@id/tab_layout"
         android:onClick="onClick"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="按投资时间排序"
-        android:gravity="right"
-        android:textColor="@color/red"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/white"
+        android:background="@color/app_color"
+        android:layout_marginRight="10dp"
         android:textSize="@dimen/bigtextSize" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="5dp"
         android:layout_below="@id/sort_info"
-        android:background="@color/white" />
+        android:layout_marginTop="5dp"
+        android:background="@color/income_record"/>
 
     <ListView
         android:id="@+id/listView"
