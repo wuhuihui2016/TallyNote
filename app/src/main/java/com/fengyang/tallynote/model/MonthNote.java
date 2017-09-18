@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
+/** 月账model
  * Created by wuhuihui on 2017/6/23.
  */
 public class MonthNote implements Serializable {

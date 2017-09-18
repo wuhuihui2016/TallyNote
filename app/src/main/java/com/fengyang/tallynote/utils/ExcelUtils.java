@@ -80,7 +80,7 @@ public class ExcelUtils {
     }
 
     /**
-     * 日账单表
+     * 导出日账单表
      *
      * @param callBackExport
      */
@@ -102,6 +102,7 @@ public class ExcelUtils {
             writeSheet(ContansUtils.DAY, day_sheet);
             writebook.write();
             writebook.close();
+            exportAll(null);
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
 
         } catch (Exception e) {
@@ -112,7 +113,7 @@ public class ExcelUtils {
     }
 
     /**
-     * 历史日账单表
+     * 导出历史日账单表
      *
      * @param callBackExport
      */
@@ -134,6 +135,7 @@ public class ExcelUtils {
             writeSheet(ContansUtils.DAY_HISTORY, day_history_sheet);
             writebook.write();
             writebook.close();
+            exportAll(null);
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
 
         } catch (Exception e) {
@@ -144,7 +146,7 @@ public class ExcelUtils {
     }
 
     /**
-     * 月账单表
+     * 导出月账单表
      *
      * @param callBackExport
      */
@@ -168,7 +170,7 @@ public class ExcelUtils {
             writeSheet(ContansUtils.MONTH, month_sheet);
             writebook.write();
             writebook.close();
-
+            exportAll(null);
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
 
         } catch (Exception e) {
@@ -179,7 +181,7 @@ public class ExcelUtils {
     }
 
     /**
-     * 理财记录表
+     * 导出理财记录表
      *
      * @param callBackExport
      */
@@ -202,7 +204,7 @@ public class ExcelUtils {
             writeSheet(ContansUtils.INCOME, income_sheet);
             writebook.write();
             writebook.close();
-
+            exportAll(null);
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
 
         } catch (Exception e) {
@@ -212,40 +214,9 @@ public class ExcelUtils {
 
     }
 
-    /**
-     * 记事本表
-     *
-     * @param callBackExport
-     */
-    public static void exportNotePad(ICallBackExport callBackExport) {
-        try {
-            clearOldExcelFile(ContansUtils.NOTEPAD);
-            File file = new File(FileUtils.excelPath + notepad_file + DateUtils.formatDate4fileName() + ".xls");
-            if (!file.exists()) file.createNewFile();
-            WritableWorkbook writebook = Workbook.createWorkbook(file);
-
-            // 创建工作表
-            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 0);
-
-            //添加表头
-            for (int i = 0; i < notepadTitle.length; i++) {
-                notepad_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
-            }
-            //写入数据
-            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
-            writebook.write();
-            writebook.close();
-            if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
-
-        } catch (Exception e) {
-            if (callBackExport != null) callBackExport.callback(false, null);
-            LogUtils.e(TAG + "-exportNotePad", e.toString());
-        }
-
-    }
 
     /**
-     * 备忘录表
+     * 导出备忘录表
      *
      * @param callBackExport
      */
@@ -267,11 +238,45 @@ public class ExcelUtils {
             writeSheet(ContansUtils.MEMO, memo_sheet);
             writebook.write();
             writebook.close();
+            exportAll(null);
             if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
 
         } catch (Exception e) {
             if (callBackExport != null) callBackExport.callback(false, null);
             LogUtils.e(TAG + "-exportMemoNote", e.toString());
+        }
+
+    }
+
+    /**
+     * 导出记事本表
+     *
+     * @param callBackExport
+     */
+    public static void exportNotePad(ICallBackExport callBackExport) {
+        try {
+            clearOldExcelFile(ContansUtils.NOTEPAD);
+            File file = new File(FileUtils.excelPath + notepad_file + DateUtils.formatDate4fileName() + ".xls");
+            if (!file.exists()) file.createNewFile();
+            WritableWorkbook writebook = Workbook.createWorkbook(file);
+
+            // 创建工作表
+            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 0);
+
+            //添加表头
+            for (int i = 0; i < notepadTitle.length; i++) {
+                notepad_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
+            }
+            //写入数据
+            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
+            writebook.write();
+            writebook.close();
+            exportAll(null);
+            if (callBackExport != null) callBackExport.callback(true, file.getAbsolutePath());
+
+        } catch (Exception e) {
+            if (callBackExport != null) callBackExport.callback(false, null);
+            LogUtils.e(TAG + "-exportNotePad", e.toString());
         }
 
     }

@@ -3,11 +3,12 @@ package com.fengyang.tallynote.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.model.MemoNote;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fengyang.tallynote.MyApp.dbHelper;
 
 /**
  * Created by fengyangtech on 2017/8/4.
@@ -22,7 +23,7 @@ public class MemoNoteDao {
      */
     public static synchronized boolean newMemoNote(MemoNote memoNote) {
         boolean isExit;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("insert into memo_note(content,status,time) values(?,?,?)",
                 new Object[]{memoNote.getContent(), MemoNote.ON, memoNote.getTime()});
         Cursor cursor = db.rawQuery("select * from memo_note where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
@@ -33,12 +34,30 @@ public class MemoNoteDao {
     }
 
     /**
+     * 修改一条备忘录
+     *
+     * @param memoNote
+     */
+    public static synchronized boolean alterMemoNote(MemoNote memoNote) {
+        boolean isFinished;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("update memo_note set content = ? where time = ?",
+                new String[]{memoNote.getContent(), memoNote.getTime()});
+        Cursor cursor = db.rawQuery("select * from memo_note where time = ?", new String[]{memoNote.getTime()});
+        isFinished = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isFinished;
+
+    }
+
+    /**
      * 删除一条备忘录
      *
      * @param memoNote
      */
     public static synchronized void delMemoNote(MemoNote memoNote) {
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("delete from memo_note where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
         db.close();
     }
@@ -50,7 +69,7 @@ public class MemoNoteDao {
      */
     public static synchronized boolean finishMemoNote(MemoNote memoNote) {
         boolean isFinished;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("update memo_note set status = 1 where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
         Cursor cursor = db.rawQuery("select * from memo_note where content = ? and time = ?", new String[]{memoNote.getContent(), memoNote.getTime()});
         isFinished = cursor.moveToFirst();
@@ -66,7 +85,7 @@ public class MemoNoteDao {
      */
     public static synchronized List<MemoNote> getMemoNotes() {
         List<MemoNote> memoNotes = new ArrayList<MemoNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from memo_note", null);
         while (cursor.moveToNext()) {
             MemoNote memoNote = new MemoNote(cursor.getString(cursor.getColumnIndex("content")),
@@ -86,7 +105,7 @@ public class MemoNoteDao {
      */
     public static synchronized boolean newMemoNotes(List<MemoNote> memoNotes) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("delete from memo_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < memoNotes.size(); i++) {
             if (isExit) {

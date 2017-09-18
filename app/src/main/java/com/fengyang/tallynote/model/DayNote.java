@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/** 日账model
  * Created by wuhuihui on 2017/6/23.
  */
 public class DayNote implements Serializable {

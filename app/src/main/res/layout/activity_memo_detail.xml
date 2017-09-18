@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
@@ -13,16 +13,28 @@
         android:autoLink="all"
         android:gravity="top|left"
         android:textIsSelectable="true"
-        android:textSize="@dimen/bigtextSize" />
+        android:textSize="@dimen/bigtextSize"
+        android:background="@drawable/shape_write"/>
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/content"
         android:layout_marginTop="10dp"
-        android:gravity="right"
         android:text="今天"
         android:textColor="@color/darker_gray"
         android:textSize="@dimen/smalltextSize" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/finishNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/holo_red_light"
+        android:onClick="onClick"
+        android:layout_alignParentBottom="true"
+        android:text="完成" />
+
+</RelativeLayout>

@@ -63,7 +63,7 @@ public class KeyboardAdapter extends BaseAdapter {
             viewHolder.num.setBackgroundColor(Color.WHITE);
             viewHolder.num.setText((position) + "");
         } else if (position == 7) {
-            viewHolder.num.setText(".");
+            viewHolder.num.setText("");
             viewHolder.num.setBackgroundColor(Color.parseColor("#f5f5f5"));
         } else if (position >= 8 && position <= 10) {
             viewHolder.num.setBackgroundColor(Color.WHITE);

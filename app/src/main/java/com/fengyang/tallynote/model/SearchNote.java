@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.model;
 
 /**
+ * 搜索
  * Created by wuhuihui on 2017/8/11.
  */
 

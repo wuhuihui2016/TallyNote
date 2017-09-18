@@ -6,6 +6,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="计算结果(日/万/元)："
+            android:textSize="@dimen/bigtextSize" />
+
+        <TextView
+            android:id="@+id/cal_result"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_write"
+            android:enabled="false"
+            android:lines="1"
+            android:textColor="@color/red"
+            android:textSize="@dimen/bigtextSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -35,7 +62,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack" />
+        android:background="@color/line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,7 +96,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack" />
+        android:background="@color/line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,7 +130,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack" />
+        android:background="@color/line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,37 +166,17 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bitblack" />
+        android:background="@color/line" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/calculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:onClick="onClick"
-            android:padding="10dp"
-            android:text="计算结果(日/万/元)："
-            android:textColor="@color/red"
-            android:textSize="@dimen/titletextSize" />
-
-        <TextView
-            android:id="@+id/cal_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/shape_btn_bkg"
-            android:enabled="false"
-            android:lines="1"
-            android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="@dimen/titletextSize" />
-
-    </LinearLayout>
+        android:layout_margin="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/shape_edit"
+        android:gravity="center"
+        android:onClick="calculate"
+        android:text="计        算" />
 
 </LinearLayout>

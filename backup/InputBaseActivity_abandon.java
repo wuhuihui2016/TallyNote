@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by wuhuihui on 2017/6/27.
  */
-public class InputBaseActivity extends BaseActivity {
+public class InputBaseActivity_abandon extends BaseActivity {
 
     protected int area = 0, size = 0;
     protected RelativeLayout keyboard_layout;
@@ -65,7 +65,7 @@ public class InputBaseActivity extends BaseActivity {
                 } else if (position >= 4 && position <= 6) { //4，5，6
                     inputNum((position) + "");
                 } else if (position == 7) { //小数点
-                    inputNum(".");
+                    inputNum("");
                 } else if (position >= 8 && position <= 10) { //7，8，9
                     inputNum((position - 1) + "");
                 } else if (position == 11) { //下一个
@@ -172,9 +172,9 @@ public class InputBaseActivity extends BaseActivity {
      */
     private boolean isStartWith0(String num) {
         getArea();
-        if (num.equals("0") || num.equals("00") || num.equals(".")) {
+        if (num.equals("0") || num.equals("00") || num.equals("")) {
             getInputNum();
-            if (contents.get(area).length() == 0 || contents.get(area).contains(".")) return true;
+            if (contents.get(area).length() == 0 || contents.get(area).contains("")) return true;
         }
         return false;
     }

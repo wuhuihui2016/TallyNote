@@ -32,7 +32,7 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="综合"
+                android:text="@string/all"
                 android:textColor="@color/red" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="支出" />
+                android:text="@string/consume" />
 
             <TextView
                 android:id="@+id/account_out"
@@ -57,7 +57,7 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="转账" />
+                android:text="@string/account_out" />
 
             <TextView
                 android:id="@+id/account_in"
@@ -69,7 +69,7 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="转入" />
+                android:text="@string/account_in" />
         </LinearLayout>
 
         <RelativeLayout
@@ -93,7 +93,7 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:textColor="@color/red"
-                android:text="高额支出"
+                android:text="@string/high_consume"
                 android:textSize="@dimen/smalltextSize" />
 
         </RelativeLayout>
@@ -119,7 +119,7 @@
         android:layout_below="@id/info_layout"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
-        android:text="暂无记录~~"
+        android:text="@string/emptyInfo"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="20sp"
         android:visibility="gone" />

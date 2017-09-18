@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 记事本
  * Created by wuhuihui on 2017/8/2.
  */
 public class NotePad implements Serializable {

@@ -24,6 +24,7 @@ import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
+import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.Collections;
@@ -53,7 +54,6 @@ public class IncomeListActivity extends BaseActivity {
 
         initData(0);
 
-
     }
 
     private void initView() {
@@ -79,7 +79,9 @@ public class IncomeListActivity extends BaseActivity {
         });
 
         info = (TextView) findViewById(R.id.info);
-        info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "条,计息中" + IncomeNote.getEarningInComes().size() + "条");
+        info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "条" +
+                "\n计息中" + IncomeNote.getEarningInComes().size() + "条" +
+                "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
         sort_info = (TextView) findViewById(R.id.sort_info);
         sort_info.setVisibility(View.VISIBLE);
         sort_info.setOnClickListener(new View.OnClickListener() {

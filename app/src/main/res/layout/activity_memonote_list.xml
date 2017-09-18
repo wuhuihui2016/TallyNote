@@ -24,7 +24,7 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="综合"
+                android:text="全部"
                 android:textColor="@color/red" />
 
             <TextView

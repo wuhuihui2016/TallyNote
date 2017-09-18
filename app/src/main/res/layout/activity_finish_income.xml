@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="#FFF7E9"
             android:padding="10dp"
-            android:textColor="@android:color/holo_orange_light"
+            android:textColor="@android:color/holo_red_light"
             android:textSize="@dimen/bigtextSize" />
 
         <LinearLayout

@@ -220,6 +220,7 @@ public class NewMonthActivity extends BaseActivity {
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2);
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3);
             final EditText editText4 = (EditText) layout.findViewById(R.id.editText4);
+            if (IncomeNote.getEarningInComes().size() > 0) editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
 
             layout.findViewById(R.id.comfire).setOnClickListener(
                     new View.OnClickListener() {

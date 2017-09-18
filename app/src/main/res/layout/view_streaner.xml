@@ -5,6 +5,7 @@
     android:layout_margin="10dp"
     android:ellipsize="end"
     android:clickable="true"
+    android:paddingBottom="5dp"
     android:lines="1"
     android:onClick="onClick"
     android:textColor="@color/black" />

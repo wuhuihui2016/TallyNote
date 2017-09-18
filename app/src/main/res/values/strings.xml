@@ -3,5 +3,12 @@
 
     <string name="app_name">记账本</string>
     <string name="forgetPwd"><u>忘记密码？</u></string>
+    <string name="all">全部</string>
+    <string name="consume">支出</string>
+    <string name="account_out">转账</string>
+    <string name="account_in">转入</string>
+    <string name="high_consume">高额支出</string>
+    <string name="emptyInfo">暂无记录~~</string>
+    <string name="commit">提交</string>
 
 </resources>

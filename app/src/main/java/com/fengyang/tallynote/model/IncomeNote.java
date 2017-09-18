@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/** 理财model
  * Created by wuhuihui on 2017/6/28.
  */
 public class IncomeNote implements Serializable {
@@ -171,6 +171,24 @@ public class IncomeNote implements Serializable {
         }
         return earningInComes;
     }
+
+    /**
+     * 获取计息中的理财资产(不包含收益，仅计算投入金额)
+     *
+     * @return
+     */
+    public static Double getEarningMoney() {
+        Double sum = 0.00;
+        List<IncomeNote> earningInComes = getEarningInComes();
+        if (earningInComes.size() > 0) {
+            for (int i = 0; i < earningInComes.size(); i++) {
+                sum += Double.parseDouble(earningInComes.get(i).getMoney());
+            }
+        }
+        return sum;
+
+    }
+
 
     //显示最近一次收益的理财记录
     public static IncomeNote getLastIncomeNote() {
