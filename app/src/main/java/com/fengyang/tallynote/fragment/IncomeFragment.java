@@ -97,12 +97,7 @@ public class IncomeFragment extends Fragment {
         LinearLayout income_layout = (LinearLayout) content.findViewById(R.id.income_layout);
         if (earningInComes.size() > 0) {
             //显示当前未完成的理财投资的总金额
-            Double sum = 0.00;
-            for (int i = 0; i < earningInComes.size(); i++) {
-                sum += Double.parseDouble(earningInComes.get(i).getMoney());
-            }
-
-            sumStr = "当前投资总金额：" + StringUtils.showPrice(sum + "");
+            sumStr = "当前投资总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + "");
             if (IncomeNote.getUnRecordSum() > 0) {
                 sumStr += "\n待计入月账单的收益金额：" + StringUtils.showPrice("" + IncomeNote.getUnRecordSum());
             }

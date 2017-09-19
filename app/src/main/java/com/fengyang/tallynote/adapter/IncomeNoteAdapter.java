@@ -60,7 +60,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(activity).inflate(R.layout.income_item_layout, null);
             viewHolder = new ViewHolder();
@@ -99,16 +99,21 @@ public class IncomeNoteAdapter extends BaseAdapter {
             viewHolder.income_remark.setText(incomeNote.getRemark());
         else viewHolder.income_remark.setText("无");
 
+        final int day = DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]);
         if (incomeNote.getFinished() == IncomeNote.ON) {//未完成
             viewHolder.income_finished.setTextColor(Color.RED);
 
-            int day = DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]);
             if (day < 0) {
                 viewHolder.income_finished.setText("已经结束,请完成 >");
             } else if (day == 0) {
                 viewHolder.income_finished.setText("今日到期！可完成 >");
             } else {
-                viewHolder.income_finished.setText("计息中,还剩 " + day + " 天");
+                if (day > Integer.parseInt(incomeNote.getDays())) {
+                    viewHolder.income_finished.setText("理财还未开始！倒计时"
+                            + (day - Integer.parseInt(incomeNote.getDays()) + "天"));
+                } else {
+                    viewHolder.income_finished.setText("计息中,还剩 " + day + " 天");
+                }
             }
 
             if (day <= 0) {
@@ -127,8 +132,12 @@ public class IncomeNoteAdapter extends BaseAdapter {
                 viewHolder.income_finished.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtils.showToast(activity, true,
-                                "计息中,还剩 " + DateUtils.daysBetween(incomeNote.getDurtion().split("-")[1]) + " 天");
+                        if (day > Integer.parseInt(incomeNote.getDays())) {
+                            ToastUtils.showToast(activity, true, "理财还未开始！倒计时"
+                                    + (day - Integer.parseInt(incomeNote.getDays()) + "天"));
+                        } else {
+                            ToastUtils.showToast(activity, true, "计息中,还剩 " + day + " 天");
+                        }
                     }
                 });
             }

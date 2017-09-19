@@ -177,13 +177,16 @@ public class NewMonthActivity extends BaseActivity {
                                 if (MonthNoteDao.newMNote(monthNote)) {
                                     ToastUtils.showSucessLong(context, "新增月账单成功！");
                                     ExcelUtils.exportMonthNote(null);
-                                    if (getIntent().hasExtra("list"))
-                                        sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
                                     if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
                                         if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
                                             LogUtils.i("newDNotes4History", DayNoteDao.getDayNotes4History(monthNote.getDuration()).toString());
                                             ExcelUtils.exportDayNote4History(null);
                                         }
+                                    }
+                                    if (getIntent().hasExtra("list")) {
+                                        sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
+                                    } else {
+                                        startActivity(new Intent(activity, MonthListActivity.class));
                                     }
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "新增月账单失败！");
@@ -220,7 +223,8 @@ public class NewMonthActivity extends BaseActivity {
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2);
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3);
             final EditText editText4 = (EditText) layout.findViewById(R.id.editText4);
-            if (IncomeNote.getEarningInComes().size() > 0) editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
+            if (IncomeNote.getEarningInComes().size() > 0)
+                editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
 
             layout.findViewById(R.id.comfire).setOnClickListener(
                     new View.OnClickListener() {

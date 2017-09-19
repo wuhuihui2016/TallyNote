@@ -62,7 +62,7 @@ public class NewNotePadActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View v) {
-                    for (int i = 0; i <  flowLayout.getChildCount(); i++) {
+                    for (int i = 0; i < flowLayout.getChildCount(); i++) {
                         TextView textView = (TextView) flowLayout.getChildAt(i);
                         textView.setTextColor(Color.BLACK);
                     }
@@ -104,8 +104,11 @@ public class NewNotePadActivity extends BaseActivity {
                     if (NotePadDao.newNotePad(notePad)) {
                         ToastUtils.showSucessLong(context, "发表成功！");
                         ExcelUtils.exportNotePad(null);
-                        if (getIntent().hasExtra("list"))
+                        if (getIntent().hasExtra("list")) {
                             sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
+                        } else {
+                            startActivity(new Intent(activity, NotePadListActivity.class));
+                        }
                         finish();
                     } else ToastUtils.showErrorLong(context, "发表失败！");
                 } else ToastUtils.showToast(context, false, "请输入内容！");

@@ -257,8 +257,13 @@ public class TallyFragment extends Fragment {
                 more_memo.setVisibility(View.VISIBLE);
                 memo_layout.setVisibility(View.VISIBLE);
 
-                for (int i = 0; i < memoNoteList.size(); i++) {
-                    View memo_view = View.inflate(activity, R.layout.view_streaner, null);
+                int size;
+                if (memoNoteList.size() > 3) {
+                    size = 3;
+                } else size = memoNoteList.size();
+
+                for (int i = 0; i < size; i++) {
+                    View memo_view = View.inflate(activity, R.layout.view_streaner_memo, null);
                     TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
                     MemoNote memoNote = memoNoteList.get(i);
                     memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
@@ -273,6 +278,12 @@ public class TallyFragment extends Fragment {
                             startActivity(intent);
                         }
                     });
+
+                    if (i == size - 1) {
+                        memo_view.findViewById(R.id.line).setVisibility(View.GONE);
+                    } else {
+                        memo_view.findViewById(R.id.line).setVisibility(View.VISIBLE);
+                    }
                     memo_layout.addView(memo_view);
                 }
 
@@ -298,25 +309,28 @@ public class TallyFragment extends Fragment {
             notePads = NotePadDao.getNotePads();
             Collections.reverse(notePads);
             if (notePads.size() > 0) {
-                int size = 0;
-                if (notePads.size() > 3) {size = 3;}
-                else size = notePads.size();
+                int size;
+                if (notePads.size() > 3) {
+                    size = 3;
+                } else size = notePads.size();
                 animator_notepad = (ViewAnimator) content.findViewById(R.id.animator_notepad);
                 animator_notepad.setVisibility(View.VISIBLE);
                 animator_notepad.removeAllViews();
                 for (int i = 0; i < size; i++) {
                     final int finalI = i;
-                    View view_streaner = View.inflate(activity, R.layout.view_streaner, null);
-                    TextView streamer_txt = (TextView) view_streaner.findViewById(R.id.streamer_txt);
+                    View notepad_view = View.inflate(activity, R.layout.view_streaner_notepad, null);
+                    TextView streamer_txt = (TextView) notepad_view.findViewById(R.id.streamer_txt);
                     streamer_txt.setText(notePads.get(finalI).getWords());
 
-                    view_streaner.setOnClickListener(new View.OnClickListener() {
+                    notepad_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(activity, NotePadListActivity.class));
                         }
                     });
-                    animator_notepad.addView(view_streaner);
+
+                    notepad_view.findViewById(R.id.line).setVisibility(View.GONE);
+                    animator_notepad.addView(notepad_view);
                 }
 
                 play(true);

@@ -116,8 +116,11 @@ public class NewIncomeActivity extends BaseActivity {
                                 if (IncomeNoteDao.newINote(incomeNote)) {
                                     ToastUtils.showSucessLong(context, "新增理财成功！");
                                     ExcelUtils.exportIncomeNote(null);
-                                    if (getIntent().hasExtra("list"))
+                                    if (getIntent().hasExtra("list")) {
                                         sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
+                                    } else {
+                                        startActivity(new Intent(activity, IncomeListActivity.class));
+                                    }
                                     finish();
                                 } else ToastUtils.showErrorLong(context, "新增理财失败！");
                             }

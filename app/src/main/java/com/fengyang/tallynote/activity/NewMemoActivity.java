@@ -96,8 +96,11 @@ public class NewMemoActivity extends BaseActivity {
                         if (MemoNoteDao.newMemoNote(memoNote)) {
                             ToastUtils.showSucessLong(context, "保存成功！");
                             ExcelUtils.exportMemoNote(null);
-                            if (getIntent().hasExtra("list"))
+                            if (getIntent().hasExtra("list")) {
                                 sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                            } else {
+                                startActivity(new Intent(activity, MemoNoteListActivity.class));
+                            }
                             finish();
                         } else ToastUtils.showErrorLong(context, "保存失败！");
                     }
