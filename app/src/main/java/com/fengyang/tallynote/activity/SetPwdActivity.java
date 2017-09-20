@@ -3,6 +3,7 @@ package com.fengyang.tallynote.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -13,17 +14,16 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
-import com.fengyang.tallynote.utils.SystemUtils;
-import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 重置密保
+ * 设置密码
  * Created by wuhuihui on 2017/6/27.
  */
-public class ReSetPwdKeyActivity extends BaseActivity {
+public class SetPwdActivity extends BaseActivity {
 
     private List<TextView> textViews = new ArrayList<>();
     private GridView numGridView;
@@ -35,9 +35,14 @@ public class ReSetPwdKeyActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_forgetpwd);
+        setContentView(R.layout.activity_setpwd);
 
-        initView();
+        if (TextUtils.isEmpty((String) ContansUtils.get("pwd", ""))
+                || getIntent().hasExtra("reSetPwd")) {
+            initView();
+        } else {
+            skip(false);
+        }
 
     }
 
@@ -47,7 +52,8 @@ public class ReSetPwdKeyActivity extends BaseActivity {
     private void initView() {
 
         TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
-        edit_tips.setHint("请输入上次设置的6位密保");
+        edit_tips.setHint("请输入6位密码，为进入APP验证使用");
+        if (getIntent().hasExtra("reSetPwd")) edit_tips.setHint("请输入新的6位密码");
 
         //密码输入显示的TextView集合
         textViews.add((TextView) findViewById(R.id.pwd1));
@@ -107,7 +113,6 @@ public class ReSetPwdKeyActivity extends BaseActivity {
      */
     private void onClickCallback(String pwd) {
         if (list.size() < 6) {
-//        StringUtils.show1Toast(activity, pwd);
             list.add(pwd);
             for (int i = 0; i < list.size(); i++) {
                 if (list.size() - 1 >= i) {
@@ -126,27 +131,43 @@ public class ReSetPwdKeyActivity extends BaseActivity {
                             pwdKey += list.get(i);
                         }
 
-                        final String finalPwdKey = pwdKey;
-                        String oldKey = (String) ContansUtils.get("pwdKey", "");
-                        if (finalPwdKey.equals(oldKey)) {
-                            Intent intent = new Intent(activity, SetPwdKeyActivity.class);
-                            intent.putExtra("reSetPwdKey", true);
-                            startActivity(intent);
-                            finish();
-
-                        } else {
-                            SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
-                            ToastUtils.showToast(context, true, "验证失败，请新输入");
-                            list.clear();
-                            for (int i = 0; i < textViews.size(); i++) {
-                                textViews.get(i).setText("");
+                        final String pwd = pwdKey;
+                        DialogUtils.showMsgDialog(activity, "设置密码", "pwd：" + pwdKey, new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                ContansUtils.put("pwd", pwd);
+                                skip(true);
                             }
+                        }, new DialogUtils.DialogListener() {
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                list.clear();
+                                for (int i = 0; i < textViews.size(); i++) {
+                                    textViews.get(i).setText("");
+                                }
 
-                        }
+                            }
+                        });
+
                     }
                 }).execute();
             }
         }
     }
+
+    /**
+     * 设置密保后跳转页面
+     */
+    private void skip(boolean isFirst) {
+        finish();
+        if (isFirst) {
+            startActivity(new Intent(activity, MainActivity.class));
+        } else {
+            startActivity(new Intent(activity, OnStartActivity.class));
+        }
+    }
+
 
 }

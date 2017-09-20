@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
-import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
@@ -36,13 +35,12 @@ public class SetPwdKeyActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_forgetpwd);
+        setContentView(R.layout.activity_setpwd);
 
-        if (TextUtils.isEmpty((String) ContansUtils.get("pwdKey", ""))
-                || getIntent().hasExtra("reSetPwdKey")) {
+        if (TextUtils.isEmpty((String) ContansUtils.get("pwdKey", ""))) {
             initView();
         } else {
-            skip();
+            startActivity(new Intent(activity, OnStartActivity.class));
         }
 
     }
@@ -53,8 +51,7 @@ public class SetPwdKeyActivity extends BaseActivity {
     private void initView() {
 
         TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
-        edit_tips.setHint("请输入6位密保，为找回密码时使用");
-        if (getIntent().hasExtra("reSetPwdKey")) edit_tips.setHint("请输入新的6位密保");
+        edit_tips.setHint("请输入6位密保，为找回密码时使用\n永久有效，需牢记！");
 
         //密码输入显示的TextView集合
         textViews.add((TextView) findViewById(R.id.pwd1));
@@ -114,7 +111,6 @@ public class SetPwdKeyActivity extends BaseActivity {
      */
     private void onClickCallback(String pwd) {
         if (list.size() < 6) {
-//        StringUtils.show1Toast(activity, pwd);
             list.add(pwd);
             for (int i = 0; i < list.size(); i++) {
                 if (list.size() - 1 >= i) {
@@ -139,7 +135,7 @@ public class SetPwdKeyActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 ContansUtils.put("pwdKey", finalPwdKey);
-                                skip();
+                                startActivity(new Intent(activity, SetPwdActivity.class));
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override
@@ -160,17 +156,6 @@ public class SetPwdKeyActivity extends BaseActivity {
     }
 
 
-    /**
-     * 设置密保后跳转页面
-     */
-    private void skip() {
-        finish();
-        if (MonthNoteDao.getMonthNotes().size() > 0) {//当月账单有记录时，密码生成即跳转密码输入界面
-            startActivity(new Intent(activity, OnStartActivity.class));
-        } else {//当月账单无记录时，无密码生成时即跳转首页
-            startActivity(new Intent(activity, MainActivity.class));
-        }
-    }
 
 
 }

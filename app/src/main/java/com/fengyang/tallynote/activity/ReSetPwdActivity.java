@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 验证密码
+ * 重置密保
  * Created by wuhuihui on 2017/6/27.
  */
-public class OnStartActivity extends BaseActivity {
+public class ReSetPwdActivity extends BaseActivity {
 
-    private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
-    private GridView numGridView; //输入密码的按键
-    private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
+    private List<TextView> textViews = new ArrayList<>();
+    private GridView numGridView;
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,20 @@ public class OnStartActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_setpwd);
 
         initView();
+
     }
 
     /**
      * 初始化View
      */
     private void initView() {
+
+        TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
+        edit_tips.setHint("请输入上次设置的6位密保");
+
         //密码输入显示的TextView集合
         textViews.add((TextView) findViewById(R.id.pwd1));
         textViews.add((TextView) findViewById(R.id.pwd2));
@@ -55,7 +60,7 @@ public class OnStartActivity extends BaseActivity {
         //输入数字View
         numGridView = (GridView) findViewById(R.id.numGridView);
         //输入后数字集合
-        pwds = new ArrayList<>();
+        list = new ArrayList<>();
 
         //数字显示集合
         List<Drawable> numRes = new ArrayList<>();
@@ -84,16 +89,13 @@ public class OnStartActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.num0:
-                onClickCallback("0"); // "0"按键的点击
+                onClickCallback("0");
                 break;
-            case R.id.clear: //清空已输入的密码数字
-                pwds.clear();
+            case R.id.clear:
+                list.clear();
                 for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
-                break;
-            case R.id.forgetPwd: //忘记验证密码
-                startActivity(new Intent(activity, ForgetPwdActivity.class));
                 break;
         }
     }
@@ -104,39 +106,42 @@ public class OnStartActivity extends BaseActivity {
      * @param pwd
      */
     private void onClickCallback(String pwd) {
-        if (pwds.size() < 6) { //输入的数字加入密码集
-            pwds.add(pwd);
-            for (int i = 0; i < pwds.size(); i++) {
-                if (pwds.size() - 1 >= i) {
-                    textViews.get(i).setText(pwds.get(i));
+        if (list.size() < 6) {
+//        StringUtils.show1Toast(activity, pwd);
+            list.add(pwd);
+            for (int i = 0; i < list.size(); i++) {
+                if (list.size() - 1 >= i) {
+                    textViews.get(i).setText(list.get(i));
                 } else {
                     textViews.get(i).setText("");
                 }
             }
 
-            if (pwds.size() == 6) { //输入完毕，验证密码
+            if (list.size() == 6) {
                 new DelayTask(300, new DelayTask.ICallBack() {
                     @Override
                     public void deal() {
-                        String password = "";
-                        for (int i = 0; i < pwds.size(); i++) {
-                            password += pwds.get(i);
+                        String pwdKey = "";
+                        for (int i = 0; i < list.size(); i++) {
+                            pwdKey += list.get(i);
                         }
 
-                        //密码取已保存的密保
-                        String pwdKey = (String) ContansUtils.get("pwd", "");
-                        if (password.equals(pwdKey)) { //验证通过：进入APP
+                        final String finalPwdKey = pwdKey;
+                        String oldKey = (String) ContansUtils.get("pwdKey", "");
+                        if (finalPwdKey.equals(oldKey)) {
+                            Intent intent = new Intent(activity, SetPwdActivity.class);
+                            intent.putExtra("reSetPwd", true);
+                            startActivity(intent);
                             finish();
-                            if (!getIntent().hasExtra(SystemUtils.key)) {
-                                startActivity(new Intent(context, MainActivity.class));
-                            }
-                        } else { //验证不通过：提示，震动，布局摇晃，密码清空
+
+                        } else {
                             SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
-                            ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
-                            pwds.clear();
+                            ToastUtils.showToast(context, true, "验证失败，请新输入");
+                            list.clear();
                             for (int i = 0; i < textViews.size(); i++) {
                                 textViews.get(i).setText("");
                             }
+
                         }
                     }
                 }).execute();
@@ -144,10 +149,4 @@ public class OnStartActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!getIntent().hasExtra(SystemUtils.key)) {
-            super.onBackPressed();
-        }
-    }
 }

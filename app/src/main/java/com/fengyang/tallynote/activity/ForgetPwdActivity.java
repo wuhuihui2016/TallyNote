@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
-import com.fengyang.tallynote.database.MonthNoteDao;
-import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
@@ -37,7 +35,7 @@ public class ForgetPwdActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_forgetpwd);
+        setContentView(R.layout.activity_setpwd);
 
         initView();
     }
@@ -124,13 +122,7 @@ public class ForgetPwdActivity extends BaseActivity {
 
                         String getPwdKey = (String) ContansUtils.get("pwdKey", "");
                         if (pwdKey.equals(getPwdKey)) {
-                            List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
-                            String pwd = monthNotes.get(monthNotes.size() - 1).getActual_balance().split("\\.")[0];
-                            if (pwd.length() >= 6) {
-                                pwd = pwd.substring(0, 5);
-                            } else {
-                                pwd = getPwdKey;
-                            }
+                            String pwd = (String) ContansUtils.get("pwd", "");
                             DialogUtils.showMsgDialog(activity, "密码提示", pwd, new DialogUtils.DialogListener() {
                                 @Override
                                 public void onClick(View v) {

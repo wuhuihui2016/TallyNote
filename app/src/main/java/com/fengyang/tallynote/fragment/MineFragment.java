@@ -17,7 +17,7 @@ import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.ImportExportActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
-import com.fengyang.tallynote.activity.ReSetPwdKeyActivity;
+import com.fengyang.tallynote.activity.ReSetPwdActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class MineFragment extends Fragment {
                         break;
 
                     case 3: //重置密保
-                        startActivity(new Intent(activity, ReSetPwdKeyActivity.class));
+                        startActivity(new Intent(activity, ReSetPwdActivity.class));
                         break;
 
                     case 4: //计算日收益

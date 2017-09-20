@@ -20,6 +20,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
+import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
@@ -180,6 +181,15 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //判断APP是否在前台运行，否则重新进入APP时验证密码
+        if (!TAG.contains("Pwd") && !TAG.contains("OnStart")) {
+            SystemUtils.getIsRunningForeground(TAG, context);
+        }
+    }
+
+    @Override
     public void finish() {
         super.finish();
         if (isOtherActivity()) {
@@ -212,6 +222,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         }
     }
+
 
     /**
      * 判断当前activity是不是非MainActivity

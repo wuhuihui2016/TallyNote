@@ -1,14 +1,16 @@
 package com.fengyang.tallynote.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -17,7 +19,11 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.fengyang.tallynote.activity.OnStartActivity;
+
 import java.lang.reflect.Method;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -28,7 +34,7 @@ public class SystemUtils {
 
     //隐藏键盘
     public static void hideInput(Activity activity) {
-        ((InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE))
+        ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(
                         activity.getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
@@ -95,16 +101,57 @@ public class SystemUtils {
     }
 
     /**
-     * px转dp
-     * @param activity
-     * @param value
+     * @Title: getIsBackgroup
+     * @Description: TODO 判断APP是否在前台运行
      * @return
+     * @return boolean
+     * @author wuhuihui
+     * @date 2016年3月29日 下午4:58:34
      */
-    public static float pxTodp(Activity activity, float value) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float valueDP = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-        return valueDP;
+    public static String key = "isBack";
+    private static Timer timer;
+    private static TimerTask task;
+
+    public static void getIsRunningForeground(final String tag, final Context context) {
+        timer = new Timer();
+        task = new TimerTask() {
+
+            @Override
+            public void run() {
+                ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                String currentPackageName = cn.getPackageName();
+                if (!TextUtils.isEmpty(currentPackageName)
+                        && currentPackageName.equals(context.getPackageName())) {
+//                    LogUtils.i(tag, "APP is running foreground");
+                    if ((Boolean) ContansUtils.get(key, false)) {
+                        Intent intent = new Intent(context, OnStartActivity.class);
+                        intent.putExtra(key, true);
+                        context.startActivity(intent);
+                        ContansUtils.put(key, false);
+                    }
+                } else {
+//                    LogUtils.i(tag, "APP is running background");
+                    ContansUtils.put(key, true);
+                }
+            }
+        };
+        timer.schedule(task, 0, 1000);//每1秒执行一次
+    }
+
+    /**
+     * 停止判断APP前台运行的状态轮询
+     *
+     * @param tag
+     */
+    public static void stopIsForeTimer(final String tag) {
+        if (timer != null && task != null) {
+            LogUtils.i(tag, "APP is stopIsForeTimer");
+            timer.cancel();
+            timer = null;
+            task.cancel();
+            task = null;
+        }
     }
 
 }
