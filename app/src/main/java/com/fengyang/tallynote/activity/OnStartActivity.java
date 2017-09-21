@@ -3,6 +3,7 @@ package com.fengyang.tallynote.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -125,6 +126,10 @@ public class OnStartActivity extends BaseActivity {
 
                         //密码取已保存的密保
                         String pwdKey = (String) ContansUtils.get("pwd", "");
+                        if (TextUtils.isEmpty(pwdKey)) {
+                            pwdKey = (String) ContansUtils.get("pwdKey", "");
+                            ContansUtils.put("pwd", pwdKey);
+                        }
                         if (password.equals(pwdKey)) { //验证通过：进入APP
                             finish();
                             if (!getIntent().hasExtra(SystemUtils.key)) {

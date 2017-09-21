@@ -13,6 +13,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
@@ -129,11 +130,27 @@ public class ReSetPwdActivity extends BaseActivity {
                         final String finalPwdKey = pwdKey;
                         String oldKey = (String) ContansUtils.get("pwdKey", "");
                         if (finalPwdKey.equals(oldKey)) {
-                            Intent intent = new Intent(activity, SetPwdActivity.class);
-                            intent.putExtra("reSetPwd", true);
-                            startActivity(intent);
-                            finish();
+                            DialogUtils.showMsgDialog(activity, "重置选项", "密保 or 密码？", "重置密保",
+                                    new DialogUtils.DialogListener() {
 
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(activity, SetPwdKeyActivity.class);
+                                            intent.putExtra("reSetPwdKey", true);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }, "重置密码",
+                                    new DialogUtils.DialogListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(activity, SetPwdActivity.class);
+                                            intent.putExtra("reSetPwd", true);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                         } else {
                             SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
                             ToastUtils.showToast(context, true, "验证失败，请新输入");

@@ -37,7 +37,8 @@ public class SetPwdKeyActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_setpwd);
 
-        if (TextUtils.isEmpty((String) ContansUtils.get("pwdKey", ""))) {
+        if (TextUtils.isEmpty((String) ContansUtils.get("pwdKey", ""))
+                || getIntent().hasExtra("reSetPwdKey")) {
             initView();
         } else {
             startActivity(new Intent(activity, OnStartActivity.class));
@@ -52,6 +53,7 @@ public class SetPwdKeyActivity extends BaseActivity {
 
         TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
         edit_tips.setHint("请输入6位密保，为找回密码时使用\n永久有效，需牢记！");
+        if (getIntent().hasExtra("reSetPwdKey")) edit_tips.setHint("请输入新的6位密保\n永久有效，需牢记！");
 
         //密码输入显示的TextView集合
         textViews.add((TextView) findViewById(R.id.pwd1));

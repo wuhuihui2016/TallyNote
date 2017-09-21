@@ -30,7 +30,9 @@
         <activity android:name=".activity.SetPwdActivity" />
 
         <!-- 验证密码 -->
-        <activity android:name=".activity.OnStartActivity" />
+        <activity
+            android:name=".activity.OnStartActivity"
+            android:launchMode="singleTask" />
 
         <!-- 忘记密码 -->
         <activity android:name=".activity.ForgetPwdActivity" />

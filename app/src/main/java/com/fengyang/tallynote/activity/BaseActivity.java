@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -53,6 +54,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         context = this;
         activity = this;
         TAG = getLocalClassName(); //初始化常量
+
+        Log.i(TAG, TAG + " is onCreated!");
 
     }
 
@@ -184,7 +187,16 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         //判断APP是否在前台运行，否则重新进入APP时验证密码
-        if (!TAG.contains("Pwd") && !TAG.contains("OnStart")) {
+        if (!TAG.contains("Pwd") && !TAG.contains("OnStart") && !TAG.contains("Main")) {
+            SystemUtils.getIsRunningForeground(TAG, context);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //判断APP是否在前台运行，否则重新进入APP时验证密码,避免刚启动APP时就有后台运行的标志导致再次验证密码
+        if (TAG.contains("Main")) {
             SystemUtils.getIsRunningForeground(TAG, context);
         }
     }
