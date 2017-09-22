@@ -21,7 +21,6 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
@@ -182,24 +181,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             } else ToastUtils.showErrorLong(context, "导出失败！");
         }
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //判断APP是否在前台运行，否则重新进入APP时验证密码
-        if (!TAG.contains("Pwd") && !TAG.contains("OnStart") && !TAG.contains("Main")) {
-            SystemUtils.getIsRunningForeground(TAG, context);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //判断APP是否在前台运行，否则重新进入APP时验证密码,避免刚启动APP时就有后台运行的标志导致再次验证密码
-        if (TAG.contains("Main")) {
-            SystemUtils.getIsRunningForeground(TAG, context);
-        }
-    }
 
     @Override
     public void finish() {

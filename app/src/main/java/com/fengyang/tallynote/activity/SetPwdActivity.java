@@ -41,7 +41,7 @@ public class SetPwdActivity extends BaseActivity {
                 || getIntent().hasExtra("reSetPwd")) {
             initView();
         } else {
-            skip(false);
+            skip();
         }
 
     }
@@ -137,7 +137,7 @@ public class SetPwdActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 ContansUtils.put("pwd", pwd);
-                                skip(true);
+                                skip();
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override
@@ -160,13 +160,9 @@ public class SetPwdActivity extends BaseActivity {
     /**
      * 设置密保后跳转页面
      */
-    private void skip(boolean isFirst) {
+    private void skip() {
         finish();
-        if (isFirst) {
-            startActivity(new Intent(activity, MainActivity.class));
-        } else {
-            startActivity(new Intent(activity, OnStartActivity.class));
-        }
+        startActivity(new Intent(activity, MainActivity.class));
     }
 
 

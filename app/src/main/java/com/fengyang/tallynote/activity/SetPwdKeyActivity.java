@@ -41,7 +41,7 @@ public class SetPwdKeyActivity extends BaseActivity {
                 || getIntent().hasExtra("reSetPwdKey")) {
             initView();
         } else {
-            startActivity(new Intent(activity, OnStartActivity.class));
+            startActivity(new Intent(activity, MainActivity.class));
         }
 
     }

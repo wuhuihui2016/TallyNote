@@ -112,31 +112,39 @@ public class SystemUtils {
     private static Timer timer;
     private static TimerTask task;
 
-    public static void getIsRunningForeground(final String tag, final Context context) {
+    public static void getIsRunningForeground(final Context context) {
+        LogUtils.i(TAG, "getIsRunningForeground");
         timer = new Timer();
         task = new TimerTask() {
 
             @Override
             public void run() {
+                ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                String runningActivity = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
                 ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
                 ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                 String currentPackageName = cn.getPackageName();
                 if (!TextUtils.isEmpty(currentPackageName)
                         && currentPackageName.equals(context.getPackageName())) {
-//                    LogUtils.i(tag, "APP is running foreground");
+//                        LogUtils.i(runningActivity, "APP is running foreground");
                     if ((Boolean) ContansUtils.get(key, false)) {
-                        Intent intent = new Intent(context, OnStartActivity.class);
-                        intent.putExtra(key, true);
-                        context.startActivity(intent);
-                        ContansUtils.put(key, false);
+                        if (!runningActivity.contains("Pwd") && !runningActivity.contains("OnStart")) {
+                            Intent intent = new Intent(context, OnStartActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(key, true);
+                            context.startActivity(intent);
+                            ContansUtils.put(key, false);
+                        }
                     }
                 } else {
-//                    LogUtils.i(tag, "APP is running background");
+//                        LogUtils.i(runningActivity, "APP is running background");
                     ContansUtils.put(key, true);
                 }
             }
+
+
         };
-        timer.schedule(task, 0, 1000);//每1秒执行一次
+        timer.schedule(task, 0, 200);//每0.8秒执行一次
     }
 
     /**

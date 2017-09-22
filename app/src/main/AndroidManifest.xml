@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 读取网络状态-->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 连接网络 -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动 -->
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 运行任务 -->
 
     <application
         android:name=".MyApp"
