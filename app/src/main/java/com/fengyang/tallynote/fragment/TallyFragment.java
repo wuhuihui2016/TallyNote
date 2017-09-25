@@ -124,11 +124,7 @@ public class TallyFragment extends Fragment {
         LinearLayout cur_layout = (LinearLayout) content.findViewById(R.id.cur_layout);
         if (dayNotes.size() > 0) {
             //显示本次月记录总支出
-            double sum = 0.00;
-            for (int i = 0; i < dayNotes.size(); i++) {
-                sum = sum + Double.parseDouble(dayNotes.get(i).getMoney());
-            }
-            current_pay = StringUtils.showPrice(sum + "");
+            current_pay = StringUtils.showPrice(DayNote.getAllSum() + "");
             current_payTv.setText("....");
 
             //显示最近一次日记录支出

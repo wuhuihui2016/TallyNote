@@ -43,9 +43,10 @@ public class IncomeNoteDao {
     public static synchronized boolean finishIncome(IncomeNote incomeNote) {
         boolean isFinished;
         SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
-        db.execSQL("update income_note set finished = 1,finalCash = ?,finalCashGo = ? where money = ? and finalIncome = ? ",
-                new String[]{incomeNote.getFinalCash(), incomeNote.getFinalCashGo(), incomeNote.getMoney(), incomeNote.getFinalIncome()});
-        Cursor cursor = db.rawQuery("select * from income_note where money = ? and finalIncome = ? and finalCash= ?", new String[]{incomeNote.getMoney(), incomeNote.getFinalIncome(), incomeNote.getFinalCash()});
+        db.execSQL("update income_note set finished = 1,finalCash = ?,finalCashGo = ? where _id = ? and money = ?",
+                new String[]{incomeNote.getFinalCash(), incomeNote.getFinalCashGo(), incomeNote.getId(), incomeNote.getFinalIncome()});
+        Cursor cursor = db.rawQuery("select * from income_note where _id = ? and money = ? and finalIncome = ?",
+                new String[]{incomeNote.getId(), incomeNote.getMoney(), incomeNote.getFinalIncome()});
         isFinished = cursor.moveToFirst();
         cursor.close();
         db.close();

@@ -306,6 +306,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SystemUtils.setBack(); //页面消销毁时，APP设为后台运行
+    }
+
     /**
      * 再按一次退出程序
      */

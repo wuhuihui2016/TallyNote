@@ -6,7 +6,6 @@ import com.fengyang.tallynote.database.DBHelper;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.CrashHandler;
 import com.fengyang.tallynote.utils.FileUtils;
-import com.fengyang.tallynote.utils.SystemUtils;
 
 /**
  * Created by wuhuihui on 2017/6/23.
@@ -26,8 +25,6 @@ public class MyApp extends Application {
         dbHelper = new DBHelper(this); //开辟用户数据库
 
         FileUtils.createDir(); //创建项目文件目录
-
-        SystemUtils.getIsRunningForeground(getApplicationContext());
 
     }
 

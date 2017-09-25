@@ -79,9 +79,11 @@
 
             <TextView
                 android:id="@+id/info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/remark_bkg"
                 android:padding="5dp"
+                android:textColor="@color/red"
                 android:textSize="@dimen/smalltextSize" />
 
             <TextView
@@ -89,11 +91,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:padding="5dp"
                 android:clickable="true"
                 android:onClick="onClick"
-                android:textColor="@color/red"
+                android:padding="5dp"
                 android:text="@string/high_consume"
+                android:textColor="@color/red"
                 android:textSize="@dimen/smalltextSize" />
 
         </RelativeLayout>

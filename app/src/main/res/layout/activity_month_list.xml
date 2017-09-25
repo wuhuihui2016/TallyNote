@@ -7,25 +7,27 @@
         android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/remark_bkg"
         android:padding="5dp"
+        android:textColor="@color/red"
         android:textSize="@dimen/smalltextSize" />
 
     <TextView
         android:id="@+id/chartAnalyse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/month_record"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:padding="5dp"
         android:text="月账分析"
         android:textColor="@color/white"
         android:textSize="@dimen/bigtextSize"
-        android:padding="5dp"
-        android:layout_alignParentRight="true"
-        android:clickable="true"
-        android:onClick="onClick"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/month_record"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/listView"

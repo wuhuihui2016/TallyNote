@@ -13,10 +13,12 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:layout_below="@id/spinner"
+        android:background="@color/remark_bkg"
+        android:padding="5dp"
+        android:textColor="@color/red"
         android:textSize="@dimen/smalltextSize" />
 
     <ListView
