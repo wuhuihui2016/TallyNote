@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/shape_write"
+            android:background="@drawable/shape_income"
             android:enabled="false"
             android:lines="1"
             android:textColor="@color/red"

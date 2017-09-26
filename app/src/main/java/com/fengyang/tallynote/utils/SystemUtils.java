@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -118,12 +119,7 @@ public class SystemUtils {
 
             @Override
             public void run() {
-                ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-                ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                String currentPackageName = cn.getPackageName();
-                if (!TextUtils.isEmpty(currentPackageName)
-                        && currentPackageName.equals(context.getPackageName())) {
-//                    LogUtils.i(tag, "APP is running foreground");
+                if (!checkOnBack(tag, context)) {
                     if ((Boolean) ContansUtils.get(key, false)) {
                         Intent intent = new Intent(context, OnStartActivity.class);
                         intent.putExtra(key, true);
@@ -131,7 +127,6 @@ public class SystemUtils {
                         ContansUtils.put(key, false);
                     }
                 } else {
-//                    LogUtils.i(tag, "APP is running background");
                     ContansUtils.put(key, true);
                 }
             }
@@ -139,8 +134,31 @@ public class SystemUtils {
         timer.schedule(task, 0, 500);//每0.5秒执行一次
     }
 
+    private static boolean checkOnBack(String tag, Context context) {
+        boolean flag = false;
+
+        //判断是否为前台运行,true为后台运行，false为前台运行
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        String currentPackageName = cn.getPackageName();
+        if (!TextUtils.isEmpty(currentPackageName)
+                && currentPackageName.equals(context.getPackageName())) {
+//            LogUtils.i(tag, "APP is running foreground");
+        } else {
+//            LogUtils.i(tag, "APP is running background");
+            flag = true;
+        }
+
+        //判断手机屏幕是否亮着
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        boolean ifOpen = powerManager.isScreenOn(); //true为打开，false为关闭
+
+        return flag || (!ifOpen); //后台运行或屏幕灭屏返回true,需要验证密码
+
+    }
+
     /**
-     * 手动设置为后台运行，用于首页Activity被销毁的时候
+     * 手动设置为后台运行，用于首页MainActivity被销毁的时候
      */
     public static void setBack() {
         ContansUtils.put(key, true);
