@@ -187,9 +187,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         //判断APP是否在前台运行，否则重新进入APP时验证密码
-        if (!TAG.contains("Pwd") && !TAG.contains("OnStart")) {
-            SystemUtils.getIsRunningForeground(TAG, context);
-        }
+        SystemUtils.getIsRunningForeground(TAG, context);
     }
 
     @Override

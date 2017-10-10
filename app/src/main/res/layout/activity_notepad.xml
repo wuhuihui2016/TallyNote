@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_write"
         android:hint="请选择你想表达的标签"
+        android:textColor="@color/app_color"
         android:textSize="@dimen/titletextSize"/>
 
     <com.fengyang.tallynote.view.FlowLayout

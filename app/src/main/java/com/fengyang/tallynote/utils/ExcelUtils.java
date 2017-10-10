@@ -324,7 +324,7 @@ public class ExcelUtils {
             }
 
             //初始化记事本工作表
-            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 4);
+            WritableSheet notepad_sheet = writebook.createSheet(notepad_sheetName, 5);
             for (int i = 0; i < notepadTitle.length; i++) {
                 notepad_sheet.addCell(new Label(i, 0, notepadTitle[i]));//列，行
             }
@@ -333,8 +333,8 @@ public class ExcelUtils {
             writeSheet(ContansUtils.MONTH, month_sheet);
             writeSheet(ContansUtils.INCOME, income_sheet);
             writeSheet(ContansUtils.DAY_HISTORY, day_history_sheet);
-            writeSheet(ContansUtils.MEMO, notepad_sheet);
-            writeSheet(ContansUtils.NOTEPAD, memo_sheet);
+            writeSheet(ContansUtils.MEMO, memo_sheet);
+            writeSheet(ContansUtils.NOTEPAD, notepad_sheet);
             writebook.write();//只能执行一次
             writebook.close();
 
@@ -446,7 +446,7 @@ public class ExcelUtils {
                             String tagStr = NotePad.getTagList().get(notePads.get(i).getTag());
                             sheet.addCell(new Label(0, i + 1, tagStr));
                             sheet.addCell(new Label(1, i + 1, notePads.get(i).getWords()));
-                            sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getTime()));
+                            sheet.addCell(new Label(2, i + 1, notePads.get(i).getTime()));
                         }
                     }
                     break;

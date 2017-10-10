@@ -113,6 +113,9 @@ public class IncomeListActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
+                info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "条" +
+                        "\n计息中" + IncomeNote.getEarningInComes().size() + "条" +
+                        "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
                 initData(0);
             }
         }
@@ -124,6 +127,7 @@ public class IncomeListActivity extends BaseActivity {
      * @param index
      */
     private boolean unSelected = true;
+
     private void initData(int index) {
 
         income_earning.setBackgroundResource(R.color.transparent);

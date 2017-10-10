@@ -114,24 +114,26 @@ public class SystemUtils {
     private static TimerTask task;
 
     public static void getIsRunningForeground(final String tag, final Context context) {
-        timer = new Timer();
-        task = new TimerTask() {
+        if (tag.contains("Main") && tag.contains("New") && tag.contains("Note") && tag.contains("List")) {
+            timer = new Timer();
+            task = new TimerTask() {
 
-            @Override
-            public void run() {
-                if (!checkOnBack(tag, context)) {
-                    if ((Boolean) ContansUtils.get(key, false)) {
-                        Intent intent = new Intent(context, OnStartActivity.class);
-                        intent.putExtra(key, true);
-                        context.startActivity(intent);
-                        ContansUtils.put(key, false);
+                @Override
+                public void run() {
+                    if (!checkOnBack(tag, context)) {
+                        if ((Boolean) ContansUtils.get(key, false)) {
+                            Intent intent = new Intent(context, OnStartActivity.class);
+                            intent.putExtra(key, true);
+                            context.startActivity(intent);
+                            ContansUtils.put(key, false);
+                        }
+                    } else {
+                        ContansUtils.put(key, true);
                     }
-                } else {
-                    ContansUtils.put(key, true);
                 }
-            }
-        };
-        timer.schedule(task, 0, 500);//每0.5秒执行一次
+            };
+            timer.schedule(task, 0, 500);//每0.5秒执行一次
+        }
     }
 
     private static boolean checkOnBack(String tag, Context context) {

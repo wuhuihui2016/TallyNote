@@ -53,6 +53,7 @@ public class NewNotePadActivity extends BaseActivity {
         flowLayout.removeAllViews();//避免多次执行后出现重复多余View
 
         final List<String> tagList = NotePad.getTagList();
+        note_tagTv.setText(tagList.get(0));
         for (int i = 0; i < tagList.size(); i++) {
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tag_view, null);
             TextView tagView = (TextView) view.findViewById(R.id.tagView);

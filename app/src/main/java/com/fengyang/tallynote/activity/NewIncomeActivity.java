@@ -107,7 +107,7 @@ public class NewIncomeActivity extends BaseActivity {
                                 " %\n投资期限：" + incomeNote.getDays() +
                                 " 天\n投资时段：" + incomeNote.getDurtion() +
                                 " \n拟日收益：" + incomeNote.getDayIncome() +
-                                " 元万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
+                                " 元/万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                                 "\n投资说明：" + incomeNote.getRemark(),
                         new DialogUtils.DialogListener() {
                             @Override
