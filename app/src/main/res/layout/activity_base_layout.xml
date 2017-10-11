@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/right_imgbtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:clickable="true"

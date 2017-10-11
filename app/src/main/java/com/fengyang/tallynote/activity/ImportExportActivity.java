@@ -103,11 +103,13 @@ public class ImportExportActivity extends BaseActivity {
                 break;
             case R.id.import2file4Other:
                 if (FileUtils.isSDCardAvailable()) {
+
                     DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
                         @Override
                         public void onClick(View v) {
                             super.onClick(v);
                             try {
+                                //跳转系统文件目录
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                 intent.setType("*/*");
                                 intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -140,10 +142,10 @@ public class ImportExportActivity extends BaseActivity {
         try {
             String path = "";
             switch (requestCode) {
-                case APP_FILE_SELECT_CODE:
+                case APP_FILE_SELECT_CODE: //从APP目录导入
                     path = data.getStringExtra("path");
                     break;
-                case FILE_SELECT_CODE:
+                case FILE_SELECT_CODE: //从其他目录导入
                     if (resultCode == RESULT_OK) {
                         try {
                             Uri uri = data.getData();

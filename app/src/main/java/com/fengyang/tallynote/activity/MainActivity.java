@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity {
                 tally_title.setTextColor(Color.WHITE);
 
                 //搜索
-                setRightImgBtnListener(R.drawable.search, new View.OnClickListener() {
+                setRightImgBtnListener(R.drawable.ic_search, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(activity, SearchActivity.class));
@@ -304,12 +304,6 @@ public class MainActivity extends BaseActivity {
                     }
             );
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SystemUtils.setBack(); //页面消销毁时，APP设为后台运行
     }
 
     /**

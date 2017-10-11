@@ -25,6 +25,8 @@ import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
+import java.util.Timer;
+
 /**
  * Created by wuhuihui on 2017/3/24.
  */
@@ -187,7 +189,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         //判断APP是否在前台运行，否则重新进入APP时验证密码
-        SystemUtils.getIsRunningForeground(TAG, context);
+        if (!TAG.contains("Import")) {
+            if (SystemUtils.timer == null) SystemUtils.timer = new Timer();
+            SystemUtils.getIsRunningForeground(TAG, context);
+        } else {
+            SystemUtils.stopIsForeTimer();
+        }
     }
 
     @Override
@@ -242,6 +249,5 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         } catch (Exception e) {
             LogUtils.e(TAG + "-onDestroy", e.toString());
         }
-
     }
 }

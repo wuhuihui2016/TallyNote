@@ -21,5 +21,7 @@
     <color name="notepad_record">#E1E100</color>
     <color name="remark_bkg">#FFF7E9</color>
 
+    <color name="search_info">#7D7DFF</color>
+
 
 </resources>

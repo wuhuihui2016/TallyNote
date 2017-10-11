@@ -21,7 +21,8 @@
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/smalltextSize" />
+            android:textColor="@color/search_info"
+            android:textSize="@dimen/bigtextSize" />
 
         <TextView
             android:id="@+id/time"

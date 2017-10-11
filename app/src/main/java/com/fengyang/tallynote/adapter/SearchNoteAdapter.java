@@ -15,6 +15,7 @@ import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.model.SearchNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class SearchNoteAdapter extends BaseAdapter {
         if (searchNote.getType() == ContansUtils.DAY) {
             viewHolder.type.setImageResource(R.drawable.day_record);
             DayNote dayNote = (DayNote) searchNote.getObject();
-            viewHolder.info.setText(DayNote.getUserTypeStr(dayNote.getUseType()) + dayNote.getRemark());
+            viewHolder.info.setText(DayNote.getUserTypeStr(dayNote.getUseType()) + dayNote.getRemark() + "  " + StringUtils.showPrice(dayNote.getMoney()));
             viewHolder.time.setText(DateUtils.showTime4Detail(dayNote.getTime()));
 
         } else if (searchNote.getType() == ContansUtils.MEMO) {
@@ -81,7 +82,7 @@ public class SearchNoteAdapter extends BaseAdapter {
         } else {
             viewHolder.type.setImageResource(R.drawable.notepad);
             NotePad notePad = (NotePad) searchNote.getObject();
-            viewHolder.info.setText("【" + NotePad.getTagList().get(notePad.getTag()) + "】\n" + notePad.getWords());
+            viewHolder.info.setText("【" + NotePad.getTagList().get(notePad.getTag()) + "】  " + notePad.getWords());
             viewHolder.time.setText(DateUtils.showTime4Detail(notePad.getTime()));
         }
 

@@ -38,6 +38,11 @@ public class NewIncomeActivity extends BaseActivity {
     }
 
     private void initView() {
+
+        //新建理财显示新的编码
+        TextView incomeNum = (TextView) findViewById(R.id.incomeNum);
+        incomeNum.setText(IncomeNote.getNewIncomeID());
+
         moneyEt = (EditText) findViewById(R.id.moneyEt);
         incomeRatioEt = (EditText) findViewById(R.id.incomeRatioEt);
         daysEt = (EditText) findViewById(R.id.daysEt);

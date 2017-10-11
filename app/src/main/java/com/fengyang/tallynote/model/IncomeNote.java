@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 理财model
+/**
+ * 理财model
  * Created by wuhuihui on 2017/6/28.
  */
 public class IncomeNote implements Serializable {
@@ -255,6 +256,20 @@ public class IncomeNote implements Serializable {
             }
         }
         return sum;
+    }
+
+    /*
+     * 新建理财获取新的编码
+     */
+    public static String getNewIncomeID() {
+        String newIncomeID;
+        if (IncomeNoteDao.getIncomes().size() > 0) {
+            List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
+            String id = incomeNotes.get(incomeNotes.size() - 1).getId();
+            newIncomeID = "新的理财ID：" + (Integer.parseInt(id) + 1);
+        } else newIncomeID = "新的理财ID：1";
+
+        return newIncomeID;
     }
 
 

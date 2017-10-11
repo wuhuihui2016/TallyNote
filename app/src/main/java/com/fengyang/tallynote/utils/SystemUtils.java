@@ -110,33 +110,44 @@ public class SystemUtils {
      * @date 2016年3月29日 下午4:58:34
      */
     public static String key = "isBack";
-    private static Timer timer;
+    public static Timer timer = new Timer();
     private static TimerTask task;
 
     public static void getIsRunningForeground(final String tag, final Context context) {
-        if (tag.contains("Main") && tag.contains("New") && tag.contains("Note") && tag.contains("List")) {
-            timer = new Timer();
+        try {
             task = new TimerTask() {
 
                 @Override
                 public void run() {
-                    if (!checkOnBack(tag, context)) {
+                    if (checkOnBack(context)) {
+//                        LogUtils.i(tag, "APP后台运行...");
+                        ContansUtils.put(key, true); //写入后台运行的标记
+                    } else {
+//                        LogUtils.i(tag, "APP前台运行...");
                         if ((Boolean) ContansUtils.get(key, false)) {
+                            //如果是后台转前台运行需要验证密码
                             Intent intent = new Intent(context, OnStartActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra(key, true);
                             context.startActivity(intent);
-                            ContansUtils.put(key, false);
+                            ContansUtils.put(key, false); //写入非后台运行的标记
                         }
-                    } else {
-                        ContansUtils.put(key, true);
                     }
                 }
             };
-            timer.schedule(task, 0, 500);//每0.5秒执行一次
+            if (timer != null) timer.schedule(task, 0, 500);//每0.5秒执行一次
+        } catch (Exception e) {
+
         }
     }
 
-    private static boolean checkOnBack(String tag, Context context) {
+    /**
+     * 判断当前是否后台运行或屏幕熄灭
+     *
+     * @param context
+     * @return
+     */
+    private static boolean checkOnBack(Context context) {
         boolean flag = false;
 
         //判断是否为前台运行,true为后台运行，false为前台运行
@@ -145,9 +156,9 @@ public class SystemUtils {
         String currentPackageName = cn.getPackageName();
         if (!TextUtils.isEmpty(currentPackageName)
                 && currentPackageName.equals(context.getPackageName())) {
-//            LogUtils.i(tag, "APP is running foreground");
+            //前台运行
         } else {
-//            LogUtils.i(tag, "APP is running background");
+            //后台运行
             flag = true;
         }
 
@@ -166,14 +177,13 @@ public class SystemUtils {
         ContansUtils.put(key, true);
     }
 
+
     /**
-     * 停止判断APP前台运行的状态轮询
-     *
-     * @param tag
+     * 停止判断APP前后台运行的状态轮询
      */
-    public static void stopIsForeTimer(final String tag) {
+    public static void stopIsForeTimer() {
         if (timer != null && task != null) {
-            LogUtils.i(tag, "APP is stopIsForeTimer");
+            LogUtils.i(TAG, "APP停止前后台运行的状态轮询");
             timer.cancel();
             timer = null;
             task.cancel();
