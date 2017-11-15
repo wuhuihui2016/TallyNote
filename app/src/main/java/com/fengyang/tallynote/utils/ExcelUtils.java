@@ -37,7 +37,7 @@ public class ExcelUtils {
     //表单头部标题
     private static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
     private static String[] dayHistoryTitle = {"消费类型", "金额（元）", "消费明细", "消费时间", "消费时段"};
-    private static String[] monthTitle = {"上次结余（元）", "本次支出（元）", "本次工资（元）", "本次收益（元）", "家用补贴（元）", "本次结余（元）", "实际结余（元）",
+    private static String[] monthTitle = {"上次结余（元）", "本次支出（元）", "本次工资（元）", "本次收益（元）", "本次结余（元）", "实际结余（元）",
             "月结时段", "月结说明", "记录时间"};
     private static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时段", "拟日收益（元/万天）", "最终收益（元）",
             "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
@@ -368,7 +368,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes.get(i).getUseType() )));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserType(dayNotes.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes.get(i).getTime()));
@@ -384,12 +384,11 @@ public class ExcelUtils {
                             sheet.addCell(new Label(1, i + 1, monthNotes.get(i).getPay()));
                             sheet.addCell(new Label(2, i + 1, monthNotes.get(i).getSalary()));
                             sheet.addCell(new Label(3, i + 1, monthNotes.get(i).getIncome()));
-                            sheet.addCell(new Label(4, i + 1, monthNotes.get(i).getHomeuse()));
-                            sheet.addCell(new Label(5, i + 1, monthNotes.get(i).getBalance()));
-                            sheet.addCell(new Label(6, i + 1, monthNotes.get(i).getActual_balance()));
-                            sheet.addCell(new Label(7, i + 1, monthNotes.get(i).getDuration()));
-                            sheet.addCell(new Label(8, i + 1, monthNotes.get(i).getRemark()));
-                            sheet.addCell(new Label(9, i + 1, monthNotes.get(i).getTime()));
+                            sheet.addCell(new Label(4, i + 1, monthNotes.get(i).getBalance()));
+                            sheet.addCell(new Label(5, i + 1, monthNotes.get(i).getActual_balance()));
+                            sheet.addCell(new Label(6, i + 1, monthNotes.get(i).getDuration()));
+                            sheet.addCell(new Label(7, i + 1, monthNotes.get(i).getRemark()));
+                            sheet.addCell(new Label(8, i + 1, monthNotes.get(i).getTime()));
                         }
                     }
                     break;
@@ -419,7 +418,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
                     if (dayNotes_history.size() > 0) {
                         for (int i = 0; i < dayNotes_history.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes_history.get(i).getUseType())));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserType(dayNotes_history.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes_history.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes_history.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes_history.get(i).getTime()));
@@ -466,6 +465,7 @@ public class ExcelUtils {
 
     /**
      * 导入本地Excel文件到数据库
+     * 如果表单中没有数据不覆盖已有数据
      */
     public static void importExcel(String filePath, ICallBackImport callBackImport) {
         String tag = "importExcel";
@@ -490,6 +490,7 @@ public class ExcelUtils {
                             if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
                             if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
                             if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
+                            if (sheet.getCell(0, j).getContents().contains("家用")) type = 4;
                             dayNotes.add(new DayNote(
                                     type,
                                     sheet.getCell(1, j).getContents(),
@@ -515,8 +516,7 @@ public class ExcelUtils {
                                     sheet.getCell(5, j).getContents(),
                                     sheet.getCell(6, j).getContents(),
                                     sheet.getCell(7, j).getContents(),
-                                    sheet.getCell(8, j).getContents(),
-                                    sheet.getCell(9, j).getContents()));
+                                    sheet.getCell(8, j).getContents()));
                         }
                         LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                         if (monthNotes.size() > 0) if (MonthNoteDao.newMNotes(monthNotes)) {
@@ -551,12 +551,8 @@ public class ExcelUtils {
                         dayNotes_history = new ArrayList<>();
                         dayNotes_history.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            int type = 1;
-                            if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
-                            if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
-                            if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
                             dayNotes_history.add(new DayNote(
-                                    type,
+                                    DayNote.getUserType(sheet.getCell(0, j).getContents()),
                                     sheet.getCell(1, j).getContents(),
                                     sheet.getCell(2, j).getContents(),
                                     sheet.getCell(3, j).getContents(),

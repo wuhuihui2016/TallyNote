@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.NumAdapter;
+import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.SystemUtils;
@@ -149,10 +151,25 @@ public class OnStartActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!getIntent().hasExtra(SystemUtils.key)) {
-            super.onBackPressed();
+    /**
+     * 重回界面不输入密码
+     * 再按一次退出程序
+     */
+    private long mExitTime;//返回退出时间间隔标志
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //重回界面不输入密码退出APP
+            if (getIntent().hasExtra(SystemUtils.key)) {
+                if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                    ToastUtils.showToast(this, true, "再按一次退出程序");
+                    mExitTime = System.currentTimeMillis();
+                } else {
+                    AppManager.getAppManager().AppExit(this);
+                }
+                return true;
+            }
         }
+        return super.onKeyDown(keyCode, event);
     }
 }

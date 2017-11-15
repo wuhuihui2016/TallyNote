@@ -1,26 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:paddingBottom="10dp"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/info_layout"
+    <LinearLayout
+        android:id="@+id/type_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinner">
+        android:layout_below="@id/spinner"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
-            android:id="@+id/type_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -48,6 +49,26 @@
                 android:text="@string/consume" />
 
             <TextView
+                android:id="@+id/high_consume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog"
+                android:clickable="true"
+                android:gravity="center_horizontal|center"
+                android:onClick="onClick"
+                android:textColor="@color/month_record"
+                android:text="@string/high_consume" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
                 android:id="@+id/account_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,43 +91,38 @@
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
                 android:text="@string/account_in" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/type_layout">
 
             <TextView
-                android:id="@+id/info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/remark_bkg"
-                android:padding="5dp"
-                android:textColor="@color/red"
-                android:textSize="@dimen/smalltextSize" />
-
-            <TextView
-                android:id="@+id/high_consume"
+                android:id="@+id/homeuse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog"
                 android:clickable="true"
+                android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:padding="5dp"
-                android:text="@string/high_consume"
-                android:textColor="@color/red"
-                android:textSize="@dimen/smalltextSize" />
+                android:text="@string/homeuse" />
+        </LinearLayout>
 
-        </RelativeLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/type_layout"
+        android:background="@color/remark_bkg"
+        android:padding="5dp"
+        android:textColor="@color/red"
+        android:textSize="@dimen/smalltextSize" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/info_layout"
+        android:layout_below="@id/info"
+        android:layout_margin="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_day"
         android:divider="@color/transparent"
@@ -118,7 +134,7 @@
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/info_layout"
+        android:layout_below="@id/type_layout"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="@string/emptyInfo"

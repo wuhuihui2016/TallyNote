@@ -190,7 +190,7 @@ public class SearchActivity extends Activity {
 
                     if (searchNote.getType() == ContansUtils.DAY) {
                         DayNote dayNote = (DayNote) searchNote.getObject();
-                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserTypeStr(dayNote.getUseType()) + dayNote.getRemark() );
+                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserType(dayNote.getUseType()) + dayNote.getRemark() );
 
                     } else if (searchNote.getType() == ContansUtils.MEMO) {
                         MemoNote memoNote = (MemoNote) searchNote.getObject();

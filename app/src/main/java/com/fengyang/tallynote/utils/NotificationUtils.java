@@ -55,7 +55,6 @@ public class NotificationUtils {
 
                 //设置点击事件
                 Intent intent = new Intent(context, IncomeListActivity.class);
-                intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

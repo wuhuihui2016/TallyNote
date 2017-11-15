@@ -23,9 +23,9 @@ public class MonthNoteDao {
     public static synchronized boolean newMNote(MonthNote monthNote) {
         boolean isExit;
         SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
-        db.execSQL("insert into month_note(last_balance,pay,salary,income,homeuse,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?,?)",
+        db.execSQL("insert into month_note(last_balance,pay,salary,income,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?,?)",
                 new Object[]{monthNote.getLast_balance(), monthNote.getPay(), monthNote.getSalary(), monthNote.getIncome(),
-                        monthNote.getHomeuse(), monthNote.getBalance(), monthNote.getActual_balance(),
+                        monthNote.getBalance(), monthNote.getActual_balance(),
                         monthNote.getDuration(), monthNote.getRemark(), monthNote.getTime()});
         Cursor cursor = db.rawQuery("select * from month_note where actual_balance = ? and duration = ?",
                 new String[]{monthNote.getActual_balance(), monthNote.getDuration()});
@@ -45,13 +45,12 @@ public class MonthNoteDao {
         SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from month_note", null);
         while (cursor.moveToNext()) {
-            //String last_balance, String pay, String salary, String income, String homeuse,String balance,
+            //String last_balance, String pay, String salary, String income, String balance,
             //String actual_balance, String duration, String remark, String time
             MonthNote monthNote = new MonthNote(cursor.getString(cursor.getColumnIndex("last_balance")),
                     cursor.getString(cursor.getColumnIndex("pay")),
                     cursor.getString(cursor.getColumnIndex("salary")),
                     cursor.getString(cursor.getColumnIndex("income")),
-                    cursor.getString(cursor.getColumnIndex("homeuse")),
                     cursor.getString(cursor.getColumnIndex("balance")),
                     cursor.getString(cursor.getColumnIndex("actual_balance")),
                     cursor.getString(cursor.getColumnIndex("duration")),
@@ -88,9 +87,9 @@ public class MonthNoteDao {
         for (int i = 0; i < monthNotes.size(); i++) {
             if (isExit) {
                 MonthNote monthNote = monthNotes.get(i);
-                db.execSQL("insert into month_note(last_balance,pay,salary,income,homeuse,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?,?)",
+                db.execSQL("insert into month_note(last_balance,pay,salary,income,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?)",
                         new Object[]{monthNote.getLast_balance(), monthNote.getPay(), monthNote.getSalary(), monthNote.getIncome(),
-                                monthNote.getHomeuse(), monthNote.getBalance(), monthNote.getActual_balance(),
+                                monthNote.getBalance(), monthNote.getActual_balance(),
                                 monthNote.getDuration(), monthNote.getRemark(), monthNote.getTime()});
                 Cursor cursor = db.rawQuery("select * from month_note where actual_balance = ? and duration = ?",
                         new String[]{monthNote.getActual_balance(), monthNote.getDuration()});

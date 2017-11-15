@@ -69,7 +69,7 @@ public class SearchNoteAdapter extends BaseAdapter {
         if (searchNote.getType() == ContansUtils.DAY) {
             viewHolder.type.setImageResource(R.drawable.day_record);
             DayNote dayNote = (DayNote) searchNote.getObject();
-            viewHolder.info.setText(DayNote.getUserTypeStr(dayNote.getUseType()) + dayNote.getRemark() + "  " + StringUtils.showPrice(dayNote.getMoney()));
+            viewHolder.info.setText(DayNote.getUserType(dayNote.getUseType()) + dayNote.getRemark() + "  " + StringUtils.showPrice(dayNote.getMoney()));
             viewHolder.time.setText(DateUtils.showTime4Detail(dayNote.getTime()));
 
         } else if (searchNote.getType() == ContansUtils.MEMO) {

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.FragmentViewPagerAdapter;
@@ -314,7 +313,7 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, true, "再按一次退出程序");
                 mExitTime = System.currentTimeMillis();
             } else {
                 finish();

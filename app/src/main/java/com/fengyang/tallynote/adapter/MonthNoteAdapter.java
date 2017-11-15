@@ -53,7 +53,6 @@ public class MonthNoteAdapter extends BaseAdapter {
             viewHolder.month_last_balance = (TextView) convertView.findViewById(R.id.month_last_balance);
             viewHolder.month_balance = (TextView) convertView.findViewById(R.id.month_balance);
             viewHolder.month_income = (TextView) convertView.findViewById(R.id.month_income);
-            viewHolder.month_homeuse = (TextView) convertView.findViewById(R.id.month_homeuse);
             viewHolder.month_duration = (TextView) convertView.findViewById(R.id.month_duration);
             viewHolder.month_remark = (TextView) convertView.findViewById(R.id.month_remark);
             viewHolder.month_actual_balance = (TextView) convertView.findViewById(R.id.month_actual_balance);
@@ -70,7 +69,6 @@ public class MonthNoteAdapter extends BaseAdapter {
         viewHolder.month_last_balance.setText(StringUtils.showPrice(monthNote.getLast_balance()));
         viewHolder.month_balance.setText(StringUtils.showPrice(monthNote.getBalance()));
         viewHolder.month_income.setText(StringUtils.showPrice(monthNote.getIncome()));
-        viewHolder.month_homeuse.setText(StringUtils.showPrice(monthNote.getHomeuse()));
         if (monthNote.getRemark().length() > 0)
             viewHolder.month_remark.setText(monthNote.getRemark());
         else viewHolder.month_remark.setText("无");
@@ -83,6 +81,6 @@ public class MonthNoteAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView month_time, month_pay, month_salary, month_last_balance;
-        TextView month_balance, month_income, month_homeuse, month_duration, month_remark, month_actual_balance;
+        TextView month_balance, month_income, month_duration, month_remark, month_actual_balance;
     }
 }

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/** 月账model
+/**
+ * 月账model
  * Created by wuhuihui on 2017/6/23.
  */
 public class MonthNote implements Serializable {
@@ -18,7 +19,6 @@ public class MonthNote implements Serializable {
     String pay; //本次支出
     String salary; //本次工资
     String income; //本次收益
-    String homeuse; //家用补贴
     String balance; //本次结余
     String actual_balance; //实际结余
     String duration; //月结时段
@@ -26,14 +26,13 @@ public class MonthNote implements Serializable {
     String time; //记录时间
 
     public MonthNote(String last_balance, String pay,
-                     String salary, String income, String homeuse,
-                     String balance, String actual_balance, String duration,
+                     String salary, String income, String balance,
+                     String actual_balance, String duration,
                      String remark, String time) {
         this.last_balance = last_balance;
         this.pay = pay;
         this.salary = salary;
         this.income = income;
-        this.homeuse = homeuse;
         this.balance = balance;
         this.actual_balance = actual_balance;
         this.duration = duration;
@@ -71,14 +70,6 @@ public class MonthNote implements Serializable {
 
     public void setIncome(String income) {
         this.income = income;
-    }
-
-    public String getHomeuse() {
-        return homeuse;
-    }
-
-    public void setHomeuse(String homeuse) {
-        this.homeuse = homeuse;
     }
 
     public String getBalance() {
@@ -128,7 +119,6 @@ public class MonthNote implements Serializable {
                 ", pay='" + pay +
                 ", salary='" + salary +
                 ", income='" + income +
-                ", homeuse='" + homeuse +
                 ", balance='" + balance +
                 ", actual_balance='" + actual_balance +
                 ", duration='" + duration +
@@ -148,6 +138,7 @@ public class MonthNote implements Serializable {
 
     /**
      * 获取最后一次月结算的截止时间的后一天
+     *
      * @return
      */
     public static String getAfterEndDate() {

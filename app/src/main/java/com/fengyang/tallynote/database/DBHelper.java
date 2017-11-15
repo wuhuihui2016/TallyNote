@@ -34,9 +34,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table if not exists day_note_history(_id integer primary key," +
                 "useType integer,money varchar(20),remark varchar(100),time varchar(20),duration varchar(20))");
 
-        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,家用补贴homeuse,结余balance,实际结余actual_balance,时段duration,时间time,说明remark
+        //月消费记录：上次结余last_balance,支出金额money,工资salary,收益income,结余balance,实际结余actual_balance,时段duration,时间time,说明remark
         db.execSQL("create table if not exists month_note(_id integer primary key," +
-                "last_balance varchar(20),pay varchar(20),salary varchar(20),income varchar(20),homeuse varchar(20),balance varchar(20),actual_balance varchar(20)," +
+                "last_balance varchar(20),pay varchar(20),salary varchar(20),income varchar(20),balance varchar(20),actual_balance varchar(20)," +
                 "duration varchar(20),remark varchar(100),time varchar(20))");
 
         //理财记录：money投入金额（单位万）,incomeRatio预期年化（%）,days投资期限(天),durtion投资时段,dayIncome拟日收益（万/天）,finalIncome最终收益

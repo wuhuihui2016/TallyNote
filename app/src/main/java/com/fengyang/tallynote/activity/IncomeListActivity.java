@@ -20,7 +20,6 @@ import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
-import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
@@ -144,23 +143,6 @@ public class IncomeListActivity extends BaseActivity {
         incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes4index);
         listView.setAdapter(incomeNoteAdapter);
 
-        if (unSelected) {
-            if (getIntent().hasExtra("position")) {
-                new DelayTask(1000, new DelayTask.ICallBack() {
-                    @Override
-                    public void deal() {
-                        int position = getIntent().getIntExtra("position", 0);
-                        IncomeNote curIncomeNote = IncomeNoteDao.getIncomes().get(position);
-                        for (int i = 0; i < incomeNotes4index.size(); i++) {
-                            if (curIncomeNote.getId().equals(incomeNotes4index.get(i).getId())) {
-                                listView.setSelection(i);
-                                break;
-                            }
-                        }
-                    }
-                }).execute();
-            }
-        }
         unSelected = false;
     }
 
@@ -176,7 +158,7 @@ public class IncomeListActivity extends BaseActivity {
             View layout = inflater.inflate(R.layout.layout_sort_pop, null);
             popupWindow = new PopupWindow(layout, 300, 200);
             ViewUtils.setPopupWindow(context, popupWindow);
-            popupWindow.showAsDropDown(findViewById(R.id.sort_info), 80, -30);
+            popupWindow.showAsDropDown(findViewById(R.id.sort_info), 60, -30);
 
             final TextView start_time = (TextView) layout.findViewById(R.id.start_time);
             final TextView end_time = (TextView) layout.findViewById(R.id.end_time);

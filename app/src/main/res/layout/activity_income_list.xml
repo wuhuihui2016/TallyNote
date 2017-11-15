@@ -45,8 +45,10 @@
         android:id="@+id/info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tab_layout"
-        android:background="@color/remark_bkg">
+        android:background="@color/remark_bkg"
+        android:layout_below="@+id/tab_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/info"
@@ -61,14 +63,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:background="@color/app_color"
-            android:onClick="onClick"
             android:layout_margin="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_btn_bkg"
+            android:onClick="onClick"
             android:padding="5dp"
             android:text="按投资时间排序"
-            android:textColor="@color/white"
-            android:textSize="@dimen/bigtextSize" />
+            android:textColor="@color/red"
+            android:textSize="@dimen/smalltextSize" />
     </RelativeLayout>
 
     <View

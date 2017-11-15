@@ -136,7 +136,7 @@ public class TallyFragment extends Fragment {
             time.setText(DateUtils.diffTime(dayNote.getTime()));
             TextView usage = (TextView) content.findViewById(R.id.usage);
             time.setText(DateUtils.diffTime(dayNote.getTime()));
-            usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
+            usage.setText(DayNote.getUserType(dayNote.getUseType()));
             if (dayNote.getUseType() == DayNote.consume) {
                 spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
                 tag.setImageResource(R.drawable.consume);

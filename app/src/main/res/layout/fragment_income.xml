@@ -1,76 +1,69 @@
-<com.fengyang.tallynote.view.IOSScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/currIncomeSum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无投资"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/bigtextSize" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/currIncomeSum">
 
-            <TextView
-                android:id="@+id/currIncomeSum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="暂无投资"
-                android:textColor="@color/app_color"
-                android:textSize="@dimen/bigtextSize" />
+            <ImageButton
+                android:id="@+id/seenCheck"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_toLeftOf="@+id/reload"
+                android:background="@color/transparent"
+                android:onClick="onClick"
+                android:scaleType="centerInside"
+                android:src="@drawable/eye_close_pwd" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/currIncomeSum">
-
-                <ImageButton
-                    android:id="@+id/seenCheck"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_toLeftOf="@+id/reload"
-                    android:background="@color/transparent"
-                    android:onClick="onClick"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/eye_close_pwd" />
-
-                <ImageButton
-                    android:id="@+id/reload"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/transparent"
-                    android:onClick="onClick"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/reload" />
-            </RelativeLayout>
-
+            <ImageButton
+                android:id="@+id/reload"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="20dp"
+                android:background="@color/transparent"
+                android:onClick="onClick"
+                android:scaleType="centerInside"
+                android:src="@drawable/reload" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/income_layout"
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/income_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:text="最近一次收益投资" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="最近一次投资" />
-
-            <include
-                layout="@layout/income_simple_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-        </LinearLayout>
+        <include
+            layout="@layout/income_simple_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
-</com.fengyang.tallynote.view.IOSScrollView>
+</LinearLayout>

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.MyApp;
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -58,6 +59,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         TAG = getLocalClassName(); //初始化常量
 
         Log.i(TAG, TAG + " is onCreated!");
+
+        AppManager.getAppManager().addActivity(this);
 
     }
 
@@ -188,6 +191,9 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.i(TAG, TAG + " onResume---lifecycle");
+
         //判断APP是否在前台运行，否则重新进入APP时验证密码
         if (!TAG.contains("Import")) {
             if (SystemUtils.timer == null) SystemUtils.timer = new Timer();
@@ -244,6 +250,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, TAG + " onDestroy---lifecycle");
+
         try {
             MyApp.dbHelper.db.close();
         } catch (Exception e) {

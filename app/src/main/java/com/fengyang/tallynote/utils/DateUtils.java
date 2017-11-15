@@ -57,23 +57,23 @@ public class DateUtils {
         String date = show_date_sdf1.format(new Date());
         int i = calendar.get(Calendar.DAY_OF_WEEK);
         switch (i) {
-            case 1:
-                return date + " 星期日";
-            case 2:
-                return date + " 星期一";
-            case 3:
-                return date + " 星期二";
-            case 4:
-                return date + " 星期三";
-            case 5:
-                return date + " 星期四";
-            case 6:
-                return date + " 星期五";
-            case 7:
-                return date + " 星期六";
-            default:
-                return date + "";
+            case 1: date += " 星期日"; break;
+            case 2: date += " 星期一"; break;
+            case 3: date += " 星期二"; break;
+            case 4: date += " 星期三"; break;
+            case 5: date += " 星期四"; break;
+            case 6: date += " 星期五"; break;
+            case 7: date += " 星期六"; break;
+            default: date += ""; break;
         }
+
+        //获取农历
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        LogUtils.i("日期", year + "-" + month + "-" + day);
+
+        return date + "\n" + LunarCalendarUtils.getLunarYearMonthDay(year, month, day);
     }
 
 

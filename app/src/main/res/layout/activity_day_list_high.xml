@@ -1,14 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:padding="10dp"
         android:visibility="gone" />
 
     <TextView
@@ -26,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:background="@drawable/shape_day"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"
@@ -37,7 +36,7 @@
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/info_layout"
+        android:layout_below="@id/info"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"

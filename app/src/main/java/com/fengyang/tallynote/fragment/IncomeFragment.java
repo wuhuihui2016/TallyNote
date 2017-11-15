@@ -3,7 +3,6 @@ package com.fengyang.tallynote.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
@@ -14,17 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
-import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
-import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.List;
 
@@ -51,38 +47,7 @@ public class IncomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        initView();
-    }
-
-    /**
-     * 初始化View
-     */
-    private void initView() {
-
-        //当页面滑动到中间位置，导致看不到顶部时显示到达顶部的按钮
-        final IOSScrollView scrollView = (IOSScrollView) content.findViewById(R.id.scrollView);
-        final ImageButton top_btn = (ImageButton) content.findViewById(R.id.top_btn);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > 500) {
-                        top_btn.setVisibility(View.VISIBLE);
-                        top_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                scrollView.fullScroll(ScrollView.FOCUS_UP);
-                            }
-                        });
-                    } else {
-                        top_btn.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-
         showIncomeNote();
-
     }
 
     /**
@@ -136,9 +101,7 @@ public class IncomeFragment extends Fragment {
                 income_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(activity, IncomeListActivity.class);
-                        intent.putExtra("position", IncomeNoteDao.getIncomes().size() - Integer.parseInt(lastIncomeNote.getId()));
-                        startActivity(intent);
+                        startActivity(new Intent(activity, IncomeListActivity.class));
 
                     }
                 });

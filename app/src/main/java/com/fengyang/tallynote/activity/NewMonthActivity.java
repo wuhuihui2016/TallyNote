@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class NewMonthActivity extends BaseActivity {
 
-    private EditText last_balanceEt, payEt, salaryEt, incomeEt, homeuseEt, remarkEt;
+    private EditText last_balanceEt, payEt, salaryEt, incomeEt, remarkEt;
     private TextView durationEt, balanceEt, actual_balanceEt;
 
     @Override
@@ -79,7 +79,6 @@ public class NewMonthActivity extends BaseActivity {
                 }
             });
         }
-        homeuseEt = (EditText) findViewById(R.id.homeuseEt);
         balanceEt = (TextView) findViewById(R.id.balanceEt);
         durationEt = (TextView) findViewById(R.id.durationEt);
         durationEt.setText(MonthNote.getAfterEndDate());
@@ -100,7 +99,6 @@ public class NewMonthActivity extends BaseActivity {
             final String payStr = StringUtils.formatePrice(payEt.getText().toString());
             final String salaryStr = StringUtils.formatePrice(salaryEt.getText().toString());
             final String incomeStr = StringUtils.formatePrice(incomeEt.getText().toString());
-            final String homeuseStr = StringUtils.formatePrice(homeuseEt.getText().toString());
 
             if (!TextUtils.isEmpty(last_balanceStr) &&
                     !TextUtils.isEmpty(payStr) &&
@@ -118,13 +116,7 @@ public class NewMonthActivity extends BaseActivity {
                     meaasge += " + " + incomeStr;
                 }
 
-                Double homeuse = 0.00;
-                if (!TextUtils.isEmpty(homeuseStr)) {
-                    homeuse = Double.parseDouble(homeuseStr);
-                    meaasge += " - " + homeuseStr;
-                }
-
-                final String calculate = (last_balance - pay + salary + income - homeuse) + "";
+                final String calculate = (last_balance - pay + salary + income) + "";
 
                 DialogUtils.showMsgDialog(activity, "计算结余", meaasge,
                         new DialogUtils.DialogListener() {
@@ -149,7 +141,6 @@ public class NewMonthActivity extends BaseActivity {
             String pay = StringUtils.formatePrice(payEt.getText().toString());
             String salary = StringUtils.formatePrice(salaryEt.getText().toString());
             String income = StringUtils.formatePrice(incomeEt.getText().toString());
-            String homeuse = StringUtils.formatePrice(homeuseEt.getText().toString());
             String balance = StringUtils.formatePrice(balanceEt.getText().toString());
             String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
             String duration = durationEt.getText().toString();
@@ -158,7 +149,7 @@ public class NewMonthActivity extends BaseActivity {
             if (!TextUtils.isEmpty(last_balance) && !TextUtils.isEmpty(pay) &&
                     !TextUtils.isEmpty(salary) && !TextUtils.isEmpty(balance)
                     && !TextUtils.isEmpty(actual_balance) && !TextUtils.isEmpty(duration)) {
-                final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income, homeuse,
+                final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income,
                         balance, actual_balance, duration, remark, DateUtils.formatDateTime());
                 LogUtils.i("commit", monthNote.toString());
                 DialogUtils.showMsgDialog(activity, "新增月账单",
@@ -166,7 +157,6 @@ public class NewMonthActivity extends BaseActivity {
                                 "\n本次支出：" + StringUtils.showPrice(monthNote.getPay()) +
                                 "\n本次工资：" + StringUtils.showPrice(monthNote.getSalary()) +
                                 "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) +
-                                "\n家用补贴：" + StringUtils.showPrice(monthNote.getHomeuse()) +
                                 "\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) +
                                 "\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) +
                                 "\n月结说明：" + monthNote.getRemark(),

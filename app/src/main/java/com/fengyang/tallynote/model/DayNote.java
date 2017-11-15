@@ -6,14 +6,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 日账model
+/**
+ * 日账model
  * Created by wuhuihui on 2017/6/23.
  */
 public class DayNote implements Serializable {
 
-    public static final int consume = 1, account_out = 2, account_in = 3;
+    public static final int consume = 1, account_out = 2, account_in = 3, homeuse = 4;
 
-    int useType; //消费类型：1.支出，2.转账，3.转入
+    int useType; //消费类型：1.支出，2.转账，3.转入,4.家用
     String money; //消费金额
     String remark; //消费说明
     String time; //消费时间
@@ -88,6 +89,7 @@ public class DayNote implements Serializable {
 
     /**
      * 消费类型集合
+     *
      * @return
      */
     public static List<String> getUserTypes() {
@@ -95,15 +97,31 @@ public class DayNote implements Serializable {
         types.add("支出：");
         types.add("转账：");
         types.add("转入：");
+        types.add("家用：");
         return types;
     }
 
     /**
+     * 返回消费类型（数字）
+     *
+     * @param useTypeStr
+     * @return
+     */
+    public static int getUserType(String useTypeStr) {
+        if (useTypeStr.equals("支出：")) return 1;
+        if (useTypeStr.equals("转账：")) return 2;
+        if (useTypeStr.equals("转入：")) return 3;
+        if (useTypeStr.equals("家用：")) return 4;
+        return 1;
+    }
+
+    /**
      * 返回消费类型
+     *
      * @param useType
      * @return
      */
-    public static String getUserTypeStr(int useType) {
+    public static String getUserType(int useType) {
         return getUserTypes().get(useType - 1);
     }
 

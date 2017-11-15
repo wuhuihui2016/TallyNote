@@ -39,7 +39,7 @@ public class DayListActivity extends BaseActivity {
     private List<DayNote> list = new ArrayList<>();
     private DayNoteAdapter dayNoteAdapter;
 
-    private TextView info, all, consume, account_out, account_in;
+    private TextView info, all, consume, account_out, account_in, homeuse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class DayListActivity extends BaseActivity {
         consume = (TextView) findViewById(R.id.consume);
         account_out = (TextView) findViewById(R.id.account_out);
         account_in = (TextView) findViewById(R.id.account_in);
+        homeuse = (TextView) findViewById(R.id.homeuse);
 
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
@@ -131,11 +132,17 @@ public class DayListActivity extends BaseActivity {
             case R.id.consume:
                 getAll4UseType(DayNote.consume);
                 break;
+            case R.id.high_consume:
+                startActivity(new Intent(activity, HighConsumeDayListActivity.class));
+                break;
             case R.id.account_out:
                 getAll4UseType(DayNote.account_out);
                 break;
             case R.id.account_in:
                 getAll4UseType(DayNote.account_in);
+                break;
+            case R.id.homeuse:
+                getAll4UseType(DayNote.homeuse);
                 break;
         }
     }
@@ -144,15 +151,15 @@ public class DayListActivity extends BaseActivity {
      * 总账单记录
      */
     private void getAll() {
-        showHigh_Consume(false);
         all.setTextColor(Color.RED);
         consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
+        homeuse.setTextColor(Color.GRAY);
         dayNotes = DayNoteDao.getDayNotes();
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()
-                + "，支出 + 转账 - 转入：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
+                + "，支出 + 转账 - 转入 - 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
         listView.setAdapter(dayNoteAdapter);
     }
@@ -161,11 +168,11 @@ public class DayListActivity extends BaseActivity {
      * 依据类型显示
      */
     private void getAll4UseType(int type) {
-        showHigh_Consume(false);
         all.setTextColor(Color.GRAY);
-        consume.setTextColor(Color.RED);
+        consume.setTextColor(Color.GRAY);
         account_out.setTextColor(Color.GRAY);
         account_in.setTextColor(Color.GRAY);
+        homeuse.setTextColor(Color.GRAY);
         list.clear();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
@@ -175,46 +182,20 @@ public class DayListActivity extends BaseActivity {
             }
         }
         if (type == DayNote.consume) {
-            showHigh_Consume(true);
-            all.setTextColor(Color.GRAY);
             consume.setTextColor(Color.RED);
-            account_out.setTextColor(Color.GRAY);
-            account_in.setTextColor(Color.GRAY);
             info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
         } else if (type == DayNote.account_out) {
-            all.setTextColor(Color.GRAY);
-            consume.setTextColor(Color.GRAY);
             account_out.setTextColor(Color.RED);
-            account_in.setTextColor(Color.GRAY);
             info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
-        } else {
-            all.setTextColor(Color.GRAY);
-            consume.setTextColor(Color.GRAY);
-            account_out.setTextColor(Color.GRAY);
+        } else if (type == DayNote.account_in) {
             account_in.setTextColor(Color.RED);
             info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
+        } else {
+            homeuse.setTextColor(Color.RED);
+            info.setText("家用记录： " + list.size() + "，家用金额：" + StringUtils.showPrice(sum + ""));
         }
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);
         listView.setAdapter(dayNoteAdapter);
-    }
-
-    /**
-     * 高额消费显示
-     * @param show
-     */
-    private void showHigh_Consume(boolean show) {
-        if(show) {
-            findViewById(R.id.high_consume).setVisibility(View.VISIBLE);
-            findViewById(R.id.high_consume).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(activity, HighConsumeDayListActivity.class));
-                }
-            });
-
-        } else {
-            findViewById(R.id.high_consume).setVisibility(View.GONE);
-        }
     }
 
     @Override
