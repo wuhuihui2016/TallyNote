@@ -74,6 +74,8 @@ public class MonthNoteAdapter extends BaseAdapter {
         else viewHolder.month_remark.setText("无");
 
         viewHolder.month_duration.setText(monthNote.getDuration());
+        Double balance = Double.parseDouble(monthNote.getBalance());
+        Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
         viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()));
 
         return convertView;

@@ -105,11 +105,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本次结余："
+                android:text="本次收益："
                 android:textSize="@dimen/littletextSize" />
 
             <TextView
-                android:id="@+id/month_balance"
+                android:id="@+id/month_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -125,11 +125,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本次收益："
+                android:text="本次结余："
                 android:textSize="@dimen/littletextSize" />
 
             <TextView
-                android:id="@+id/month_income"
+                android:id="@+id/month_balance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -187,6 +187,6 @@
         android:paddingRight="10dp"
         android:text="实际结余："
         android:textColor="@color/app_color"
-        android:textSize="@dimen/smalltextSize" />
+        android:textSize="@dimen/bigtextSize" />
 
 </LinearLayout>

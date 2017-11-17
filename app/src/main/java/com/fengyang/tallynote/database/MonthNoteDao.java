@@ -23,7 +23,7 @@ public class MonthNoteDao {
     public static synchronized boolean newMNote(MonthNote monthNote) {
         boolean isExit;
         SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
-        db.execSQL("insert into month_note(last_balance,pay,salary,income,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?,?)",
+        db.execSQL("insert into month_note(last_balance,pay,salary,income,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?)",
                 new Object[]{monthNote.getLast_balance(), monthNote.getPay(), monthNote.getSalary(), monthNote.getIncome(),
                         monthNote.getBalance(), monthNote.getActual_balance(),
                         monthNote.getDuration(), monthNote.getRemark(), monthNote.getTime()});
