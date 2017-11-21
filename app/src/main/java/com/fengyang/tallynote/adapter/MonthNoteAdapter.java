@@ -57,6 +57,7 @@ public class MonthNoteAdapter extends BaseAdapter {
             viewHolder.month_duration = (TextView) convertView.findViewById(R.id.month_duration);
             viewHolder.month_remark = (TextView) convertView.findViewById(R.id.month_remark);
             viewHolder.month_actual_balance = (TextView) convertView.findViewById(R.id.month_actual_balance);
+            viewHolder.month_diff = (TextView) convertView.findViewById(R.id.month_diff);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -77,14 +78,23 @@ public class MonthNoteAdapter extends BaseAdapter {
         viewHolder.month_duration.setText(monthNote.getDuration());
         Double balance = Double.parseDouble(monthNote.getBalance());
         Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
-        LogUtils.i("balance_diff", (actual_balance - balance) + "");
-        viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()));
+        LogUtils.i("balance_diff", StringUtils.showPrice((actual_balance - balance) + ""));
+        viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance())
+                + "(差额" + StringUtils.showPrice((actual_balance - balance) + "") + ")");
 
+        if (position != monthNotes.size() - 1) {
+            viewHolder.month_diff.setVisibility(View.VISIBLE);
+            Double last_balance = Double.parseDouble(monthNote.getLast_balance());
+            LogUtils.i("month_diff", StringUtils.showPrice((actual_balance - last_balance) + ""));
+            viewHolder.month_diff.setText("与上月差额：" + StringUtils.showPrice((actual_balance - last_balance) + ""));
+        } else {
+            viewHolder.month_diff.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
     class ViewHolder {
         TextView month_time, month_pay, month_salary, month_last_balance;
-        TextView month_balance, month_income, month_duration, month_remark, month_actual_balance;
+        TextView month_balance, month_income, month_duration, month_remark, month_actual_balance, month_diff;
     }
 }

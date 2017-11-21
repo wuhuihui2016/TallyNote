@@ -125,17 +125,18 @@ public class IncomeListActivity extends BaseActivity {
      *
      * @param index
      */
-    private boolean unSelected = true;
-
     private void initData(int index) {
-
         income_earning.setBackgroundResource(R.color.transparent);
         income_finished.setBackgroundResource(R.color.transparent);
         this.index = index;
         if (index == 0) {
+            isStart = true;
+            sort_info.setText("按投资时间排序");
             income_earning.setBackgroundResource(R.drawable.shape_left_btn_bkg);
             incomeNotes4index = IncomeNote.getEarningInComes();
         } else {
+            isStart = false;
+            sort_info.setText("按到期时间排序");
             income_finished.setBackgroundResource(R.drawable.shape_right_btn_bkg);
             incomeNotes4index = IncomeNote.getFinishedInComes();
         }
@@ -143,7 +144,6 @@ public class IncomeListActivity extends BaseActivity {
         incomeNoteAdapter = new IncomeNoteAdapter(activity, incomeNotes4index);
         listView.setAdapter(incomeNoteAdapter);
 
-        unSelected = false;
     }
 
     /**

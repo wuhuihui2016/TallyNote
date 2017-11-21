@@ -183,10 +183,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:paddingBottom="10dp"
         android:paddingRight="10dp"
         android:text="实际结余："
         android:textColor="@color/app_color"
+        android:textSize="@dimen/bigtextSize" />
+
+    <TextView
+        android:id="@+id/month_diff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:text="与上月差额："
+        android:textColor="@color/month_record"
         android:textSize="@dimen/bigtextSize" />
 
 </LinearLayout>
