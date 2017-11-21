@@ -2,7 +2,9 @@ package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ public class NewMonthActivity extends BaseActivity {
 
     private EditText last_balanceEt, payEt, salaryEt, incomeEt, remarkEt;
     private TextView durationEt, balanceEt, actual_balanceEt;
+    private String salaryStr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,20 @@ public class NewMonthActivity extends BaseActivity {
             });
         }
         salaryEt = (EditText) findViewById(R.id.salaryEt);
+        salaryEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                salaryStr = StringUtils.formatePrice(salaryEt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         incomeEt = (EditText) findViewById(R.id.incomeEt);
         if (IncomeNote.getUnRecordSum() > 0) { //计算本次收益
             incomeEt.setText(StringUtils.formatePrice("" + IncomeNote.getUnRecordSum()));
@@ -97,7 +114,6 @@ public class NewMonthActivity extends BaseActivity {
         } else if (v.getId() == R.id.balanceEt) {//自动结算结余
             final String last_balanceStr = StringUtils.formatePrice(last_balanceEt.getText().toString());
             final String payStr = StringUtils.formatePrice(payEt.getText().toString());
-            final String salaryStr = StringUtils.formatePrice(salaryEt.getText().toString());
             final String incomeStr = StringUtils.formatePrice(incomeEt.getText().toString());
 
             if (!TextUtils.isEmpty(last_balanceStr) &&
@@ -212,6 +228,8 @@ public class NewMonthActivity extends BaseActivity {
             final EditText editText1 = (EditText) layout.findViewById(R.id.editText1);
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2);
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3);
+            if (!TextUtils.isEmpty(salaryStr))
+                editText3.setText(StringUtils.formatePrice(salaryStr));
             final EditText editText4 = (EditText) layout.findViewById(R.id.editText4);
             if (IncomeNote.getEarningInComes().size() > 0)
                 editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));

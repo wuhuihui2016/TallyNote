@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
@@ -76,6 +77,7 @@ public class MonthNoteAdapter extends BaseAdapter {
         viewHolder.month_duration.setText(monthNote.getDuration());
         Double balance = Double.parseDouble(monthNote.getBalance());
         Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
+        LogUtils.i("balance_diff", (actual_balance - balance) + "");
         viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()));
 
         return convertView;

@@ -105,6 +105,7 @@ public class AppManager {
      *  * 结束所有Activity
      */
     public void finishAllActivity() {
+        NotificationUtils.cancel();
         if (activityStack != null) {
             for (int i = 0, size = activityStack.size(); i < size; i++) {
                 if (null != activityStack.get(i)) {

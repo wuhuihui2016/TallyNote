@@ -317,6 +317,7 @@ public class MainActivity extends BaseActivity {
                 mExitTime = System.currentTimeMillis();
             } else {
                 finish();
+                NotificationUtils.cancel();
             }
             return true;
         }

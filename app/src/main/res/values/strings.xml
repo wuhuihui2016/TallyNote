@@ -9,7 +9,7 @@
     <string name="account_in">转入</string>
     <string name="homeuse">家用</string>
     <string name="high_consume">高额支出</string>
-    <string name="emptyInfo">暂无记录~~</string>
+    <string name="emptyInfo">无相关记录~~</string>
     <string name="commit">提交</string>
 
 </resources>
