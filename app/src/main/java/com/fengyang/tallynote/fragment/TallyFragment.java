@@ -2,7 +2,6 @@ package com.fengyang.tallynote.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,13 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.DayListActivity;
-import com.fengyang.tallynote.activity.MemoNoteDetailActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
@@ -34,7 +31,6 @@ import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
-import com.fengyang.tallynote.view.IOSScrollView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,29 +63,6 @@ public class TallyFragment extends Fragment {
      * 初始化View
      */
     private void initView() {
-
-        //当页面滑动到中间位置，导致看不到顶部时显示到达顶部的按钮
-        final IOSScrollView scrollView = (IOSScrollView) content.findViewById(R.id.scrollView);
-        final ImageButton top_btn = (ImageButton) content.findViewById(R.id.top_btn);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > 500) {
-                        top_btn.setVisibility(View.VISIBLE);
-                        top_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                scrollView.fullScroll(ScrollView.FOCUS_UP);
-                            }
-                        });
-                    } else {
-                        top_btn.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-
         //显示当前日期
         today = (TextView) content.findViewById(R.id.today);
         today.setText(DateUtils.getDate());
@@ -121,14 +94,14 @@ public class TallyFragment extends Fragment {
      */
     private void showDayNote() {
         List<DayNote> dayNotes = DayNoteDao.getDayNotes();
-        LinearLayout cur_layout = (LinearLayout) content.findViewById(R.id.cur_layout);
+        LinearLayout cur_day_layout = (LinearLayout) content.findViewById(R.id.cur_day_layout);
         if (dayNotes.size() > 0) {
             //显示本次月记录总支出
             current_pay = StringUtils.showPrice(DayNote.getAllSum() + "");
             current_payTv.setText("....");
 
             //显示最近一次日记录支出
-            cur_layout.setVisibility(View.VISIBLE);
+            cur_day_layout.setVisibility(View.VISIBLE);
             DayNote dayNote = dayNotes.get(dayNotes.size() - 1);
             View spot = content.findViewById(R.id.spot);
             ImageView tag = (ImageView) content.findViewById(R.id.tag);
@@ -161,7 +134,7 @@ public class TallyFragment extends Fragment {
                 }
             });
         } else {
-            cur_layout.setVisibility(View.GONE);
+            cur_day_layout.setVisibility(View.GONE);
             current_payTv.setText("当月还没有记录~~");
         }
 
@@ -182,15 +155,14 @@ public class TallyFragment extends Fragment {
         }
     }
 
+    /**
+     * 设置点击事件
+     */
     private void clickListener() {
         content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
-        content.findViewById(R.id.current_pay).setOnClickListener(clickListener);
-        content.findViewById(R.id.todayNotes).setOnClickListener(clickListener);
-        content.findViewById(R.id.last_balanceTv).setOnClickListener(clickListener);
-        content.findViewById(R.id.toMonthNotes).setOnClickListener(clickListener);
-        content.findViewById(R.id.more_memo).setOnClickListener(clickListener);
-
+        content.findViewById(R.id.last_layout).setOnClickListener(clickListener);
+        content.findViewById(R.id.cur_day_layout).setOnClickListener(clickListener);
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -219,18 +191,12 @@ public class TallyFragment extends Fragment {
                     showData();
                     break;
 
-                case R.id.current_pay:
-                case R.id.todayNotes:
-                    startActivity(new Intent(activity, DayListActivity.class));
-                    break;
-
-                case R.id.last_balanceTv:
-                case R.id.toMonthNotes:
+                case R.id.last_layout:
                     startActivity(new Intent(activity, MonthListActivity.class));
                     break;
 
-                case R.id.more_memo:
-                    startActivity(new Intent(activity, MemoNoteListActivity.class));
+                case R.id.cur_day_layout:
+                    startActivity(new Intent(activity, DayListActivity.class));
                     break;
             }
         }
@@ -242,7 +208,6 @@ public class TallyFragment extends Fragment {
      */
     private void showMemo() {
         try {
-            TextView more_memo = (TextView) content.findViewById(R.id.more_memo);
             final List<MemoNote> memoNoteList = MemoNote.getUnFinish();
             LogUtils.i("showMemo", memoNoteList.size() + "--" + memoNoteList.toString());
 
@@ -250,7 +215,6 @@ public class TallyFragment extends Fragment {
             memo_layout.removeAllViews();
 
             if (memoNoteList.size() > 0) {
-                more_memo.setVisibility(View.VISIBLE);
                 memo_layout.setVisibility(View.VISIBLE);
 
                 int size;
@@ -263,17 +227,6 @@ public class TallyFragment extends Fragment {
                     TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
                     MemoNote memoNote = memoNoteList.get(i);
                     memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
-                    final int finalI = i;
-                    memo_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("memoNote", memoNoteList.get(finalI));
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
-                    });
 
                     if (i == size - 1) {
                         memo_view.findViewById(R.id.line).setVisibility(View.GONE);
@@ -282,9 +235,15 @@ public class TallyFragment extends Fragment {
                     }
                     memo_layout.addView(memo_view);
                 }
+                memo_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.startActivity(new Intent(activity, MemoNoteListActivity.class));
+                    }
+                });
+
 
             } else {
-                more_memo.setVisibility(View.GONE);
                 memo_layout.setVisibility(View.GONE);
             }
         } catch (Exception e) {
@@ -318,7 +277,7 @@ public class TallyFragment extends Fragment {
                     TextView streamer_txt = (TextView) notepad_view.findViewById(R.id.streamer_txt);
                     streamer_txt.setText(notePads.get(finalI).getWords());
 
-                    notepad_view.setOnClickListener(new View.OnClickListener() {
+                    streamer_txt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(activity, NotePadListActivity.class));

@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/type_layout"
             android:textColor="@color/red"
+            android:layout_centerVertical="true"
+            android:text="我的记事本"
             android:textSize="@dimen/bigtextSize" />
 
         <ImageButton

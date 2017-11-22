@@ -1,85 +1,133 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
-    <com.fengyang.tallynote.view.IOSScrollView
+    <LinearLayout
+        android:id="@+id/tally_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/tally_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/bigtextSize" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/seenCheck"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_toLeftOf="@+id/reload"
+                    android:background="@color/transparent"
+                    android:onClick="onClick"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/eye_close_pwd" />
+
+                <ImageView
+                    android:id="@+id/reload"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/transparent"
+                    android:onClick="onClick"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/reload" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/last_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上次结余 "
+                android:textColor="@color/month_record"
+                android:textSize="@dimen/bigtextSize" />
+
+            <TextView
+                android:id="@+id/last_balanceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:inputType="textPassword"
+                android:textColor="@color/month_record"
+                android:textSize="@dimen/bigtextSize" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
+
+                <ImageButton
+                    android:id="@+id/toMonthNotes"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom"
+                    android:background="@color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/main_top_arrow" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:id="@+id/cur_day_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="onClick"
             android:orientation="vertical"
             android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/today"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/bigtextSize" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageButton
-                        android:id="@+id/seenCheck"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_toLeftOf="@+id/reload"
-                        android:background="@color/transparent"
-                        android:onClick="onClick"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/eye_close_pwd" />
-
-                    <ImageView
-                        android:id="@+id/reload"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="20dp"
-                        android:background="@color/transparent"
-                        android:onClick="onClick"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/reload" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/last_layout"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:clickable="true"
-                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="上次结余 "
-                    android:textColor="@color/month_record"
+                    android:text="本月支出 "
+                    android:textColor="@color/day_record"
                     android:textSize="@dimen/bigtextSize" />
 
                 <TextView
-                    android:id="@+id/last_balanceTv"
+                    android:id="@+id/current_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:inputType="textPassword"
-                    android:onClick="onClick"
-                    android:textColor="@color/month_record"
+                    android:textColor="@color/day_record"
                     android:textSize="@dimen/bigtextSize" />
 
                 <RelativeLayout
@@ -87,179 +135,97 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp">
 
-                    <ImageButton
-                        android:id="@+id/toMonthNotes"
+                    <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="bottom"
                         android:background="@color/transparent"
-                        android:onClick="onClick"
                         android:scaleType="centerInside"
                         android:src="@drawable/main_top_arrow" />
                 </RelativeLayout>
 
-
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/line" />
-
             <LinearLayout
-                android:id="@+id/cur_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:onClick="onClick"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最近一笔消费"
+                    android:textColor="@color/day_record"
+                    android:textSize="@dimen/bigtextSize" />
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_day"
+                    android:padding="5dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="本月支出 "
-                        android:textColor="@color/day_record"
-                        android:textSize="@dimen/bigtextSize" />
-
-                    <TextView
-                        android:id="@+id/current_pay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textPassword"
-                        android:onClick="onClick"
-                        android:textColor="@color/day_record"
-                        android:textSize="@dimen/bigtextSize" />
-
-                    <RelativeLayout
+                    <include
+                        layout="@layout/day_item_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp">
-
-                        <ImageButton
-                            android:id="@+id/todayNotes"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_gravity="bottom"
-                            android:background="@color/transparent"
-                            android:onClick="onClick"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/main_top_arrow" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="最近一笔消费"
-                        android:textColor="@color/day_record"
-                        android:textSize="@dimen/bigtextSize" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/shape_day"
-                        android:padding="5dp">
-
-                        <include
-                            layout="@layout/day_item_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
-
-                </LinearLayout>
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/line" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="备忘录"
-                android:textColor="@color/day_record"
-                android:textSize="@dimen/bigtextSize" />
-
-            <LinearLayout
-                android:id="@+id/memo_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_write"
-                android:orientation="vertical"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/more_memo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:onClick="onClick"
-                android:text="查看更多..."
-                android:textColor="@color/darker_gray"
-                android:textSize="@dimen/littletextSize" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/line" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="记事本"
-                android:textColor="@color/day_record"
-                android:textSize="@dimen/bigtextSize" />
-
-            <ViewAnimator
-                android:id="@+id/animator_notepad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_write"
-                android:visibility="gone" />
 
         </LinearLayout>
 
-    </com.fengyang.tallynote.view.IOSScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/line" />
 
-    <ImageButton
-        android:id="@+id/top_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside"
-        android:src="@drawable/totop"
-        android:visibility="gone" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="备忘录"
+            android:textColor="@color/day_record"
+            android:textSize="@dimen/bigtextSize" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/memo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_write"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="记事本"
+            android:textColor="@color/day_record"
+            android:textSize="@dimen/bigtextSize" />
+
+        <ViewAnimator
+            android:id="@+id/animator_notepad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_write"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -15,6 +15,7 @@ import com.fengyang.tallynote.utils.DateUtils;
 import java.util.List;
 
 /**
+ * 备忘录适配器
  * Created by wuhuihui on 2017/6/23.
  */
 public class MemoNoteAdapter extends BaseAdapter {

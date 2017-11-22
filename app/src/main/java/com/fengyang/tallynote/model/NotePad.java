@@ -55,7 +55,7 @@ public class NotePad implements Serializable {
 
 
     /**
-     * 标签集合 只能增，不能减
+     * 标签集合 只能增，不能减，且顺序不可变
      * @return
      */
     public static List<String> getTagList() {
@@ -65,6 +65,7 @@ public class NotePad implements Serializable {
         tagList.add("励志感言");
         tagList.add("心情树洞");
         tagList.add("收藏分享");
+        tagList.add("读书笔记");
         return tagList;
     }
 

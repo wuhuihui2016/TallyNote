@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
@@ -20,6 +21,7 @@ public class CalculateActivity extends BaseActivity {
 
     private EditText cal_money, cal_ratio, cal_day, cal_finalIncome;
     private TextView cal_result;
+    private ImageButton reset;
     private String resultStr;
 
     @Override
@@ -40,23 +42,22 @@ public class CalculateActivity extends BaseActivity {
 
         cal_result = (TextView) findViewById(R.id.cal_result);
 
-        setRightBtnListener("比较", new View.OnClickListener() {
+        reset = (ImageButton) findViewById(R.id.reset);
+
+        setRightBtnListener("计算", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cal_result.getText().length() > 0) {
-                    Intent intent = new Intent(activity, CompareActivity.class);
-                    intent.putExtra("cal_result", resultStr);
-                    startActivity(intent);
-                }
+                calculate();
             }
         });
 
     }
 
+
     /**
      * 计算结果
      */
-    public void calculate(View v) {
+    private void calculate() {
         SystemUtils.hideInput(activity);
 
         String moneyStr = cal_money.getText().toString();
@@ -64,7 +65,7 @@ public class CalculateActivity extends BaseActivity {
         String dayStr = cal_day.getText().toString();
         String finalIncomeStr = cal_finalIncome.getText().toString();
 
-        if (moneyStr.length()  == 0 || rationStr.length()  == 0 || dayStr.length()  == 0 || finalIncomeStr.length()  == 0) {
+        if (moneyStr.length() == 0 || rationStr.length() == 0 || dayStr.length() == 0 || finalIncomeStr.length() == 0) {
             ToastUtils.showToast(context, true, "请填入所有数值！");
             return;
         }
@@ -77,6 +78,38 @@ public class CalculateActivity extends BaseActivity {
         DecimalFormat df = new DecimalFormat("0.000");
         resultStr = df.format(result);
         cal_result.setText(resultStr);
+
+        reset.setVisibility(View.VISIBLE);
+
+        setRightBtnListener("比较", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, CompareActivity.class);
+                intent.putExtra("cal_result", resultStr);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    /**
+     * 重置按钮点击事件
+     *
+     * @param v
+     */
+    public void reset(View v) {
+        cal_money.setText("");
+        cal_ratio.setText("");
+        cal_day.setText("");
+        cal_finalIncome.setText("");
+        cal_result.setText("");
+        reset.setVisibility(View.GONE);
+        setRightBtnListener("计算", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate();
+            }
+        });
     }
 
 

@@ -6,52 +6,89 @@
 
     <TextView
         android:id="@+id/notesNum1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
+
+
     <TextView
         android:id="@+id/notesNum2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
 
     <TextView
         android:id="@+id/notesNum3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
 
     <TextView
         android:id="@+id/notesNum4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
 
     <TextView
         android:id="@+id/notesNum5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
+
     <TextView
         android:id="@+id/notesNum6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
         android:textSize="@dimen/bigtextSize" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,7 +101,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_margin="10dp"
         android:background="@drawable/shape_btn_bkg"
         android:gravity="center|center_horizontal"
         android:orientation="horizontal">
@@ -87,7 +124,6 @@
             android:id="@+id/import2file4Other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center_horizontal|center"
             android:onClick="onClick"
@@ -107,7 +143,7 @@
         android:id="@+id/exportAll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_margin="10dp"
         android:background="@drawable/shape_btn_bkg"
         android:gravity="center_horizontal|center"
         android:onClick="onClick"

@@ -71,7 +71,7 @@ public class FileExplorerAdapter extends BaseAdapter {
 
             final File file = fileList.get(position);
             viewHolder.name.setText(file.getName());
-            String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(file.lastModified()));
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(file.lastModified())); //HH:24小时制，hh:12小时制
             viewHolder.info.setText(FileUtils.FormatFileSize(FileUtils.getFileSize(file)) + " | " + time);
 
             if (isSelect) {
