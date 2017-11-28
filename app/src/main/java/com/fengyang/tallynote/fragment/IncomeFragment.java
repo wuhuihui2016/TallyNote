@@ -34,6 +34,7 @@ public class IncomeFragment extends Fragment {
     private View content;//内容布局
 
     private boolean isSeen = false;
+    private ImageButton seenCheck;
     private TextView currIncomeSum;
     private String sumStr; //投资总额
 
@@ -41,6 +42,7 @@ public class IncomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         content = inflater.inflate(R.layout.fragment_income, container, false);
         activity = getActivity();
+        seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
         return content;
     }
 
@@ -56,6 +58,8 @@ public class IncomeFragment extends Fragment {
     IncomeNote lastIncomeNote = null;
 
     private void showIncomeNote() {
+        isSeen = true;
+        seenCheck.setImageResource(R.drawable.eye_close_pwd);
 
         List<IncomeNote> earningInComes = IncomeNote.getEarningInComes(); //未完成的
         currIncomeSum = (TextView) content.findViewById(R.id.currIncomeSum);
@@ -112,33 +116,28 @@ public class IncomeFragment extends Fragment {
             income_layout.setVisibility(View.GONE);
         }
 
-        content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
-        content.findViewById(R.id.reload).setOnClickListener(clickListener);
+        seenCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //密文明文显示
+                if (isSeen) {
+                    isSeen = false;
+                    seenCheck.setImageResource(R.drawable.eye_open_pwd);
+                    currIncomeSum.setText(sumStr);
+                } else {
+                    isSeen = true;
+                    seenCheck.setImageResource(R.drawable.eye_close_pwd);
+                    currIncomeSum.setText("....");
+
+                }
+            }
+        });
+        content.findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showIncomeNote();
+            }
+        });
     }
 
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ImageButton seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
-            switch (v.getId()) {
-                case R.id.seenCheck:
-                    //密文明文显示
-                    if (isSeen) {
-                        isSeen = false;
-                        seenCheck.setImageResource(R.drawable.eye_open_pwd);
-                        currIncomeSum.setText(sumStr);
-                    } else {
-                        isSeen = true;
-                        seenCheck.setImageResource(R.drawable.eye_close_pwd);
-                        currIncomeSum.setText("....");
-
-                    }
-                    break;
-
-                case R.id.reload:
-                    showIncomeNote();
-                    break;
-            }
-        }
-    };
 }

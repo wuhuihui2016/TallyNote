@@ -124,7 +124,7 @@ public class DayListOfMonthActivity extends BaseActivity {
             dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, false);
             listView.setAdapter(dayNoteAdapter);
         } else {
-            ToastUtils.showWarningLong(context, duration + "时段内未找到日账单明细！\n可能是首次月账！");
+            ToastUtils.showWarningLong(activity, duration + "时段内未找到日账单明细！\n可能是首次月账！");
             finish();
         }
     }

@@ -1,7 +1,6 @@
 package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -148,8 +147,7 @@ public class ImportExportActivity extends BaseActivity {
                 case FILE_SELECT_CODE: //从其他目录导入
                     if (resultCode == RESULT_OK) {
                         try {
-                            Uri uri = data.getData();
-                            path = FileUtils.getPath(context, uri);
+                            path = FileUtils.getPath(context, data.getData());
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
@@ -158,29 +156,32 @@ public class ImportExportActivity extends BaseActivity {
             }
 
             if (!TextUtils.isEmpty(path)) {
-                LogUtils.i(TAG, "File Path: " + path);
-                ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
+                LogUtils.i(TAG, "importExcel File Path: " + path);
+                if ((path.endsWith(".xlsx") || path.endsWith(".xls"))) {
+                    ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
 
-                    @Override
-                    public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
-                        ToastUtils.showSucessLong(context, "导入成功！" +
-                                "\n日账记录：" + day_count +
-                                "\n月账记录：" + month_count +
-                                "\n理财记录：" + income_count +
-                                "\n历史日账记录：" + day_history_count +
-                                "\n备忘录记录：" + memo_count +
-                                "\n记事本记录：" + notepad_count);
-                        initDate();
-                    }
+                        @Override
+                        public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
+                            ToastUtils.showSucessLong(activity, "导入成功！" +
+                                    "\n日账记录：" + day_count +
+                                    "\n月账记录：" + month_count +
+                                    "\n理财记录：" + income_count +
+                                    "\n历史日账记录：" + day_history_count +
+                                    "\n备忘录记录：" + memo_count +
+                                    "\n记事本记录：" + notepad_count);
+                            initDate();
+                        }
 
-                    @Override
-                    public void callback(String errorMsg) {
-                        ToastUtils.showSucessLong(context, errorMsg);
-                    }
-                });
-
-
+                        @Override
+                        public void callback(String errorMsg) {
+                            ToastUtils.showErrorLong(activity, errorMsg);
+                        }
+                    });
+                } else {
+                    ToastUtils.showErrorLong(activity, "导入失败！\n仅支持xlsx或xls文件，请检查后重试！");
+                }
             }
+
         } catch (Exception e) {
             LogUtils.i(TAG + "onActivityResult", e.toString());
         }

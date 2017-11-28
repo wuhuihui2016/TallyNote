@@ -103,7 +103,7 @@ public class NewNotePadActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(words)) {
                     NotePad notePad = new NotePad(tag, wordsEt.getText().toString(), DateUtils.formatDateTime());
                     if (NotePadDao.newNotePad(notePad)) {
-                        ToastUtils.showSucessLong(context, "发表成功！");
+                        ToastUtils.showSucessLong(activity, "发表成功！");
                         ExcelUtils.exportNotePad(null);
                         if (getIntent().hasExtra("list")) {
                             sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
@@ -111,7 +111,7 @@ public class NewNotePadActivity extends BaseActivity {
                             startActivity(new Intent(activity, NotePadListActivity.class));
                         }
                         finish();
-                    } else ToastUtils.showErrorLong(context, "发表失败！");
+                    } else ToastUtils.showErrorLong(activity, "发表失败！");
                 } else ToastUtils.showToast(context, false, "请输入内容！");
             }
         });

@@ -21,6 +21,7 @@
         android:layout_below="@+id/image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="sucess"
-        android:textSize="@dimen/bigtextSize" />
+        android:textSize="@dimen/titletextSize" />
 </RelativeLayout>

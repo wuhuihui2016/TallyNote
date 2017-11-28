@@ -10,7 +10,6 @@ import android.os.Build;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -143,34 +142,6 @@ public class AppManager {
         } catch (Exception e) {
         }
 
-    }
-
-    public boolean hasNoActivity() {
-        if (activityStack == null) {
-            return true;
-        } else {
-            return activityStack.size() == 0;
-        }
-    }
-
-    /**
-     * @param context
-     * @return 判断程序是否在前台运行
-     */
-    public boolean isAppOnForeground(Context context) {
-        String packageName = context.getPackageName();
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-
-
-        List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
-        if (tasksInfo.size() > 0) {
-            LogUtils.i(packageName, tasksInfo.get(0).topActivity.getPackageName());
-            if (packageName.equals(tasksInfo.get(0).topActivity.getPackageName())) {
-                LogUtils.i("true", packageName + "===" + tasksInfo.get(0).topActivity.getPackageName());
-                return true;
-            }
-        }
-        return false;
     }
 
     //判断是否获取到了通知栏的权限   判断用户是否开启在通知栏显示通知

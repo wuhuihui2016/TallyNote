@@ -119,7 +119,7 @@ public class NewIncomeActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 if (IncomeNoteDao.newINote(incomeNote)) {
-                                    ToastUtils.showSucessLong(context, "新增理财成功！");
+                                    ToastUtils.showSucessLong(activity, "新增理财成功！");
                                     ExcelUtils.exportIncomeNote(null);
                                     if (getIntent().hasExtra("list")) {
                                         sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
@@ -127,7 +127,7 @@ public class NewIncomeActivity extends BaseActivity {
                                         startActivity(new Intent(activity, IncomeListActivity.class));
                                     }
                                     finish();
-                                } else ToastUtils.showErrorLong(context, "新增理财失败！");
+                                } else ToastUtils.showErrorLong(activity, "新增理财失败！");
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override

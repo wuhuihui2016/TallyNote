@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -31,17 +32,18 @@ public class ToastUtils {
     private static final int ERRORSHOW = 2;//失败
     private static final int WARNINGSHOW = 3;//警告
 
-    private static void toastShow(Context context, CharSequence text, boolean isShort, int tag) {
+    private static void toastShow(Activity activity, CharSequence text, boolean isShort, int tag) {
+
         if (mToast != null) {
             mToast.cancel();
             mToast = null;
         }
-        mToast = new Toast(context);
+        mToast = new Toast(activity);
         mToast.setGravity(Gravity.CENTER, 0, 0);
         if (isShort) mToast.setDuration(Toast.LENGTH_SHORT);
         else mToast.setDuration(Toast.LENGTH_LONG);
 
-        View view = View.inflate(context, R.layout.layout_toast, null);
+        View view = View.inflate(activity, R.layout.layout_toast, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView = (TextView) view.findViewById(R.id.text);
         if (tag == SUCESSSHOW) imageView.setImageResource(R.drawable.toast_sucess);
@@ -59,33 +61,33 @@ public class ToastUtils {
     }
 
     //成功的显示
-    public static void showSucessLong(Context context, CharSequence text) {
-        toastShow(context, text, true, SUCESSSHOW);
+    public static void showSucessLong(Activity activity, CharSequence text) {
+        toastShow(activity, text, true, SUCESSSHOW);
     }
 
     //成功的短显示
-    public static void showSucessShort(Context context, CharSequence text) {
-        toastShow(context, text, false, SUCESSSHOW);
+    public static void showSucessShort(Activity activity, CharSequence text) {
+        toastShow(activity, text, false, SUCESSSHOW);
     }
 
     //失败的长显示
-    public static void showErrorLong(Context context, CharSequence text) {
-        toastShow(context, text, true, ERRORSHOW);
+    public static void showErrorLong(Activity activity, CharSequence text) {
+        toastShow(activity, text, true, ERRORSHOW);
     }
 
     //失败的短显示
-    public static void showErrorShort(Context context, CharSequence text) {
-        toastShow(context, text, false, ERRORSHOW);
+    public static void showErrorShort(Activity activity, CharSequence text) {
+        toastShow(activity, text, false, ERRORSHOW);
     }
 
     //警告的长显示
-    public static void showWarningLong(Context context, CharSequence text) {
-        toastShow(context, text, true, WARNINGSHOW);
+    public static void showWarningLong(Activity activity, CharSequence text) {
+        toastShow(activity, text, true, WARNINGSHOW);
     }
 
     //警告的短显示
-    public static void showWarningShort(Context context, CharSequence text) {
-        toastShow(context, text, false, WARNINGSHOW);
+    public static void showWarningShort(Activity activity, CharSequence text) {
+        toastShow(activity, text, false, WARNINGSHOW);
     }
 }
 

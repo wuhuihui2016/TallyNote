@@ -76,10 +76,10 @@ public class FinishIncomeActivity extends BaseActivity {
                                 super.onClick(v);
                                 if (IncomeNoteDao.finishIncome(incomeNote)) {
                                     ExcelUtils.exportIncomeNote(null);
-                                    ToastUtils.showSucessLong(context, "完成理财成功！");
+                                    ToastUtils.showSucessLong(activity, "完成理财成功！");
                                     sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
                                     finish();
-                                } else ToastUtils.showErrorLong(context, "完成理财失败！");
+                                } else ToastUtils.showErrorLong(activity, "完成理财失败！");
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override

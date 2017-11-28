@@ -78,7 +78,7 @@ public class NewMemoActivity extends BaseActivity {
                     if (isAlter) {
                         isAlterMemo.setContent(words);
                         if (MemoNoteDao.alterMemoNote(isAlterMemo)) {
-                            ToastUtils.showSucessLong(context, "编辑成功！");
+                            ToastUtils.showSucessLong(activity, "编辑成功！");
                             ExcelUtils.exportMemoNote(null);
 
                             Intent intent = new Intent();
@@ -88,13 +88,13 @@ public class NewMemoActivity extends BaseActivity {
                             setResult(Activity.RESULT_OK, intent);
                             finish();
                         } else {
-                            ToastUtils.showErrorLong(context, "编辑失败！");
+                            ToastUtils.showErrorLong(activity, "编辑失败！");
                         }
 
                     } else {
                         MemoNote memoNote = new MemoNote(contentEt.getText().toString(), DateUtils.formatDateTime());
                         if (MemoNoteDao.newMemoNote(memoNote)) {
-                            ToastUtils.showSucessLong(context, "保存成功！");
+                            ToastUtils.showSucessLong(activity, "保存成功！");
                             ExcelUtils.exportMemoNote(null);
                             if (getIntent().hasExtra("list")) {
                                 sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
@@ -102,7 +102,7 @@ public class NewMemoActivity extends BaseActivity {
                                 startActivity(new Intent(activity, MemoNoteListActivity.class));
                             }
                             finish();
-                        } else ToastUtils.showErrorLong(context, "保存失败！");
+                        } else ToastUtils.showErrorLong(activity, "保存失败！");
                     }
                 } else ToastUtils.showToast(context, false, "请输入内容！");
             }

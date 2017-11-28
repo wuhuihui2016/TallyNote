@@ -42,6 +42,7 @@ public class TallyFragment extends Fragment {
     private Activity activity;
     private View content;//内容布局
 
+    private ImageButton seenCheck;
     private TextView today, last_balanceTv, current_payTv;
     private String last_balance, current_pay;
     private boolean isSeen = false;
@@ -72,6 +73,7 @@ public class TallyFragment extends Fragment {
         last_balanceTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         current_payTv = (TextView) content.findViewById(R.id.current_pay);
         current_payTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
 
         showData();
 
@@ -82,6 +84,8 @@ public class TallyFragment extends Fragment {
      */
     private void showData() {
         play(false);
+        isSeen = true;
+        seenCheck.setImageResource(R.drawable.eye_close_pwd);
         showDayNote(); //日账
         showMonthNote(); //月账
         clickListener(); //点击事件
@@ -159,7 +163,7 @@ public class TallyFragment extends Fragment {
      * 设置点击事件
      */
     private void clickListener() {
-        content.findViewById(R.id.seenCheck).setOnClickListener(clickListener);
+        seenCheck.setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
         content.findViewById(R.id.last_layout).setOnClickListener(clickListener);
         content.findViewById(R.id.cur_day_layout).setOnClickListener(clickListener);
@@ -168,7 +172,6 @@ public class TallyFragment extends Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ImageButton seenCheck = (ImageButton) content.findViewById(R.id.seenCheck);
             switch (v.getId()) {
                 case R.id.seenCheck:
                     //密文明文显示

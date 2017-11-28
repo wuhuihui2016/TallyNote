@@ -181,7 +181,7 @@ public class NewMonthActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 if (MonthNoteDao.newMNote(monthNote)) {
-                                    ToastUtils.showSucessLong(context, "新增月账单成功！");
+                                    ToastUtils.showSucessLong(activity, "新增月账单成功！");
                                     ExcelUtils.exportMonthNote(null);
                                     if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
                                         if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
@@ -195,7 +195,7 @@ public class NewMonthActivity extends BaseActivity {
                                         startActivity(new Intent(activity, MonthListActivity.class));
                                     }
                                     finish();
-                                } else ToastUtils.showErrorLong(context, "新增月账单失败！");
+                                } else ToastUtils.showErrorLong(activity, "新增月账单失败！");
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override

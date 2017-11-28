@@ -22,11 +22,8 @@ import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
-
-import java.util.Timer;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -184,23 +181,14 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                                 super.onClick(v);
                             }
                         });
-            } else ToastUtils.showErrorLong(context, "导出失败！");
+            } else ToastUtils.showErrorLong(activity, "导出失败！");
         }
     };
 
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.i(TAG, TAG + " onResume---lifecycle");
-
-        //判断APP是否在前台运行，否则重新进入APP时验证密码
-        if (!TAG.contains("Import")) {
-            if (SystemUtils.timer == null) SystemUtils.timer = new Timer();
-            SystemUtils.getIsRunningForeground(TAG, context);
-        } else {
-            SystemUtils.stopIsForeTimer();
-        }
     }
 
     @Override

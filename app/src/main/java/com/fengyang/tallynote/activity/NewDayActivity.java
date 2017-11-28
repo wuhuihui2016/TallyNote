@@ -78,7 +78,7 @@ public class NewDayActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 if (DayNoteDao.newDNote(dayNote)) {
-                                    ToastUtils.showSucessLong(context, "新增日账单成功！");
+                                    ToastUtils.showSucessLong(activity, "新增日账单成功！");
                                     ExcelUtils.exportDayNote(null);
                                     if (getIntent().hasExtra("list")) {
                                         sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
@@ -86,7 +86,7 @@ public class NewDayActivity extends BaseActivity {
                                         startActivity(new Intent(activity, DayListActivity.class));
                                     }
                                     finish();
-                                } else ToastUtils.showErrorLong(context, "新增日账单失败！");
+                                } else ToastUtils.showErrorLong(activity, "新增日账单失败！");
                             }
                         }, new DialogUtils.DialogListener() {
                             @Override

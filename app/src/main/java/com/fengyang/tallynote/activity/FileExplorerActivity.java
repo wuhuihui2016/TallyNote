@@ -139,7 +139,7 @@ public class FileExplorerActivity extends BaseActivity {
                             WPSUtils.openFile(getApplicationContext(), file.getPath());
                         } catch (Exception e) {
                             LogUtils.e(TAG + "openEXL", e.toString());
-                            ToastUtils.showWarningShort(context, "没有找到可打开" + file.getName() + "的应用！");
+                            ToastUtils.showWarningShort(activity, "没有找到可打开" + file.getName() + "的应用！");
                         }
                     }
                 }
@@ -213,7 +213,7 @@ public class FileExplorerActivity extends BaseActivity {
                                 super.onClick(v);
                             }
                         });
-                    } else ToastUtils.showWarningShort(context, "请至少选择1个文件！");
+                    } else ToastUtils.showWarningShort(activity, "请至少选择1个文件！");
 
                 }
             });

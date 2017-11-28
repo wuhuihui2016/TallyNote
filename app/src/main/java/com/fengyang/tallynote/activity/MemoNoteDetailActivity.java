@@ -85,11 +85,11 @@ public class MemoNoteDetailActivity extends BaseActivity {
                             super.onClick(v);
                             if (MemoNoteDao.finishMemoNote(memoNote)) {
                                 ExcelUtils.exportMemoNote(null);
-                                ToastUtils.showSucessLong(context, "完成备忘录成功！");
+                                ToastUtils.showSucessLong(activity, "完成备忘录成功！");
                                 showStatus(true);
                                 sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
                             } else {
-                                ToastUtils.showErrorLong(context, "完成备忘录失败！");
+                                ToastUtils.showErrorLong(activity, "完成备忘录失败！");
                             }
                         }
                     }, new DialogUtils.DialogListener() {
