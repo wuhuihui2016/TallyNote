@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/info_layout"
@@ -22,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog"
+                android:background="@drawable/shape_type"
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog"
+                android:background="@drawable/shape_type"
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
@@ -47,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog"
+                android:background="@drawable/shape_type"
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
@@ -72,6 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/info_layout"
+        android:layout_marginTop="10dp"
         android:divider="@color/line"
         android:dividerHeight="1dp" />
 

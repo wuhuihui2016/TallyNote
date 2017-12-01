@@ -3,6 +3,7 @@ package com.fengyang.tallynote.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -48,6 +49,19 @@ public class SystemUtils {
         return info.versionName;
     }
 
+    /**
+     * 获取当前运行的activity名字
+     *
+     * @param activity
+     * @return
+     */
+    public static String getRunningActivityName(Activity activity) {
+        ActivityManager am = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        return cn.getClassName();
+    }
+
+
     /*
       密码输入错误手机震动,界面晃动
      */
@@ -90,6 +104,7 @@ public class SystemUtils {
     /**
      * 前台运行时的操作
      * 如果从后台切换回来则需要验证密码，并设为前台运行
+     *
      * @param context
      */
     public static void setFore(Context context) {

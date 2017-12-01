@@ -15,6 +15,7 @@ import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class DayNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<DayNote> dayNotes;
-    private boolean isLast;//列表显示按所有排序，最后一个才可做删除操作
+    private boolean isLast;//列表显示按所有排序，true为最后一个才可做删除操作
 
     public DayNoteAdapter(Activity activity, List<DayNote> dayNotes, boolean isLast) {
         this.activity = activity;
@@ -100,6 +101,8 @@ public class DayNoteAdapter extends BaseAdapter {
                             notifyDataSetChanged();
 
                             activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
+
+                            ExcelUtils.exportDayNote(null);
 
                         }
                     }, new DialogUtils.DialogListener() {

@@ -64,18 +64,6 @@ public class MonthNoteDao {
     }
 
     /**
-     * 删除某个月记录账单（仅用于最后一次账单记录，删除后可重新记录）
-     *
-     * @param monthNote
-     */
-    public static synchronized void delMNote(MonthNote monthNote) {
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
-        db.execSQL("delete from month_note where actual_balance = ? or duration = ?",
-                new String[]{monthNote.getActual_balance(), monthNote.getDuration()});
-        db.close();
-    }
-
-    /**
      * 批量插入新月帐单
      *
      * @param monthNotes

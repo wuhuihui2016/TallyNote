@@ -114,6 +114,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                         public void onClick(View v) {
                             super.onClick(v);
                             MemoNoteDao.delMemoNote(memoNote);
+                            ExcelUtils.exportMemoNote(null);
                             sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
                             finish();
 

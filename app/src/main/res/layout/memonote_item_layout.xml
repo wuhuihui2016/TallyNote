@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:textColor="@color/bitblack"
-        android:textSize="@dimen/smalltextSize" />
+        android:textSize="@dimen/bigtextSize" />
 
 </LinearLayout>
 

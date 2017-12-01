@@ -8,6 +8,7 @@ import com.fengyang.tallynote.database.DBHelper;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.CrashHandler;
 import com.fengyang.tallynote.utils.FileUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 
 /**
@@ -33,6 +34,9 @@ public class MyApp extends Application {
 
         FileUtils.createDir(); //创建项目文件目录
 
+        /**
+         * 注册监听APP前后台运行判断
+         */
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
 
             @Override
@@ -45,6 +49,8 @@ public class MyApp extends Application {
 
             @Override
             public void onActivityStarted(Activity activity) {
+                String name = SystemUtils.getRunningActivityName(activity);
+                LogUtils.i(TAG + "-getRunningActivityName", name);
                 if (count == 0) {
                     SystemUtils.setFore(activity);
                 }
@@ -69,6 +75,7 @@ public class MyApp extends Application {
 
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
             }
         });
 

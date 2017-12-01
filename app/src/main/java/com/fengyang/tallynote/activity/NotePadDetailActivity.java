@@ -11,6 +11,7 @@ import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 
 /**
  * 记事本详情
@@ -51,6 +52,7 @@ public class NotePadDetailActivity extends BaseActivity {
                             public void onClick(View v) {
                                 super.onClick(v);
                                 NotePadDao.delNotePad(notePad);
+                                ExcelUtils.exportNotePad(null);
                                 sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
                                 finish();
 

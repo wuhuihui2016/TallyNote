@@ -53,17 +53,6 @@ public class IncomeNoteDao {
     }
 
     /**
-     * 删除某个理财记录（仅用于最后一次账单记录，删除后可重新记录）
-     *
-     * @param incomeNote
-     */
-    public static synchronized void delIncome(IncomeNote incomeNote) {
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
-        db.execSQL("delete from income_note where money = ? and finalIncome = ?", new String[]{incomeNote.getMoney(), incomeNote.getFinalIncome()});
-        db.close();
-    }
-
-    /**
      * 查看所有的理财
      *
      * @return

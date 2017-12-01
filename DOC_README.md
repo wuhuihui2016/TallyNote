@@ -1,5 +1,6 @@
 # TallyNote
 我的记账本
+https://github.com/wuhuihui2016/TallyNote.git
 
 生成jks证书命令行：keytool -genkey -alias tallyNote.jks -keyalg RSA -validity 40000 -keystore tallyNote.jks
 
