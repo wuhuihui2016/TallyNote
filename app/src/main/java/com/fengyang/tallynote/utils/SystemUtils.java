@@ -9,13 +9,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 
-import com.fengyang.tallynote.activity.OnStartActivity;
+import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
+import com.fengyang.tallynote.activity.SetGestureActivity;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -84,7 +86,6 @@ public class SystemUtils {
 
     /**
      * 后台运行时的操作
-     * 后台运行的操作，首页MainActivity被销毁的时候需要再次执行
      * 如果选择文件导入，打开系统的文件后不设为后台
      * 如果从APP内部发送文件或者打开文件时跳转第三方APP视为APP后台执行
      */
@@ -103,18 +104,25 @@ public class SystemUtils {
 
     /**
      * 前台运行时的操作
+     * TODO 为避免App启动是打开多个验证界面，首页MainActivity被销毁的时候需要手动修改前后台标志，标志改为前台
      * 如果从后台切换回来则需要验证密码，并设为前台运行
      *
-     * @param context
+     * @param activity
      */
-    public static void setFore(Context context) {
+    public static void setFore(Activity activity) {
         if ((Boolean) ContansUtils.get(key, false)) {
             LogUtils.i(TAG, "APP运行在>>>>前台");
-            Intent intent = new Intent(context, OnStartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(key, true);
-            context.startActivity(intent);
-            ContansUtils.put(key, false); //写入非后台运行的标记
+            ContansUtils.put(key, false); //写入非后台运行标记
+
+            if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+                Intent intent = new Intent(activity, SetGestureActivity.class);
+                intent.putExtra("activityNum", 0);
+                activity.startActivity(intent);
+            } else {
+                Intent intent = new Intent(activity, SetOrCheckPwdActivity.class);
+                intent.putExtra(key, true);
+                activity.startActivity(intent);
+            }
         }
     }
 

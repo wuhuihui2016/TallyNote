@@ -4,21 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
 import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.ImportExportActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
-import com.fengyang.tallynote.activity.ReSetPwdActivity;
+import com.fengyang.tallynote.activity.SetGestureActivity;
+import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
+import com.fengyang.tallynote.utils.ContansUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +69,7 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.notepad);
         settings.add("导入/导出");
         drawableRes.add(R.drawable.import_export);
-        settings.add("重置密保");
+        settings.add("安全设置");
         drawableRes.add(R.drawable.pwdkey);
         settings.add("计算日收益");
         drawableRes.add(R.drawable.calculate);
@@ -79,13 +82,13 @@ public class MineFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0: //备忘录
-                        MyApp.dbHelper.newTable("create table if not exists memo_note(_id integer primary key," +
+                        MyApplication.dbHelper.newTable("create table if not exists memo_note(_id integer primary key," +
                                 "content varchar(200),status integer,time varchar(20))");
                         startActivity(new Intent(activity, MemoNoteListActivity.class));
                         break;
 
                     case 1: //记事本
-                        MyApp.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
+                        MyApplication.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
                                 "tag integer,words varchar(200),time varchar(20))");
                         startActivity(new Intent(activity, NotePadListActivity.class));
                         break;
@@ -94,8 +97,16 @@ public class MineFragment extends Fragment {
                         startActivity(new Intent(activity, ImportExportActivity.class));
                         break;
 
-                    case 3: //重置密保
-                        startActivity(new Intent(activity, ReSetPwdActivity.class));
+                    case 3: //安全设置
+                        //判断验证方式：启动密码or手势密码
+                        Intent intent = new Intent();
+                        if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
+                            intent.setClass(activity, SetGestureActivity.class);
+                        } else {
+                            intent.setClass(activity, SetOrCheckPwdActivity.class);
+                        }
+                        intent.putExtra("secureSet", true);
+                        startActivity(intent);
                         break;
 
                     case 4: //计算日收益

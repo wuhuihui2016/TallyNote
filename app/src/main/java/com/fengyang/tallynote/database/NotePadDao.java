@@ -3,7 +3,7 @@ package com.fengyang.tallynote.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.model.NotePad;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class NotePadDao {
      */
     public static synchronized boolean newNotePad(NotePad notePad) {
         boolean isExit;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("insert into note_pad(tag,words,time) values(?,?,?)",
                 new Object[]{notePad.getTag(), notePad.getWords(), notePad.getTime()});
         Cursor cursor = db.rawQuery("select * from note_pad where words = ? and time = ?", new String[]{notePad.getWords(), notePad.getTime()});
@@ -38,7 +38,7 @@ public class NotePadDao {
      * @param notePad
      */
     public static synchronized void delNotePad(NotePad notePad) {
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from note_pad where words = ? and time = ?", new String[]{notePad.getWords(), notePad.getTime()});
         db.close();
     }
@@ -50,7 +50,7 @@ public class NotePadDao {
      */
     public static synchronized List<NotePad> getNotePads() {
         List<NotePad> notePads = new ArrayList<NotePad>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from note_pad", null);
         while (cursor.moveToNext()) {
             //int note_tag, String words, String time
@@ -72,7 +72,7 @@ public class NotePadDao {
      */
     public static synchronized boolean newNotePads(List<NotePad> notePads) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from note_pad"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < notePads.size(); i++) {
             if (isExit) {

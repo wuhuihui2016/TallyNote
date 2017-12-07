@@ -2,6 +2,7 @@ package com.fengyang.tallynote.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DecimalInputTextWatcher;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -38,6 +40,9 @@ public class NewDayActivity extends BaseActivity {
 
     private void initView() {
         moneyEt = (EditText) findViewById(R.id.moneyEt);
+        moneyEt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        moneyEt.addTextChangedListener(new DecimalInputTextWatcher(moneyEt));//小数最多2位
+
         remarkEt = (EditText) findViewById(R.id.remarkEt);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);

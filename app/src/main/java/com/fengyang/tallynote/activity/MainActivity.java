@@ -25,6 +25,7 @@ import com.fengyang.tallynote.adapter.FragmentViewPagerAdapter;
 import com.fengyang.tallynote.fragment.IncomeFragment;
 import com.fengyang.tallynote.fragment.MineFragment;
 import com.fengyang.tallynote.fragment.TallyFragment;
+import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.PermissionUtils;
@@ -303,6 +304,12 @@ public class MainActivity extends BaseActivity {
                     }
             );
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ContansUtils.put(SystemUtils.key, false); //写入非后台运行标记
     }
 
     /**

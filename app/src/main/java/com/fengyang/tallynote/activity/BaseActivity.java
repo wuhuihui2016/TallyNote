@@ -16,7 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.DialogUtils;
@@ -241,7 +241,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         Log.i(TAG, TAG + " onDestroy---lifecycle");
 
         try {
-            MyApp.dbHelper.db.close();
+            MyApplication.dbHelper.db.close();
         } catch (Exception e) {
             LogUtils.e(TAG + "-onDestroy", e.toString());
         }

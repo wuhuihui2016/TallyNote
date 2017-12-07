@@ -3,7 +3,7 @@ package com.fengyang.tallynote.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.model.DayNote;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class DayNoteDao {
      */
     public static synchronized boolean newDNote(DayNote dayNote) {
         boolean isExit;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("insert into day_note(useType,money,remark,time) values(?,?,?,?)",
                 new Object[]{dayNote.getUseType(), dayNote.getMoney(), dayNote.getRemark(), dayNote.getTime()});
         Cursor cursor = db.rawQuery("select * from day_note where money = ? and time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
@@ -38,7 +38,7 @@ public class DayNoteDao {
      * @param dayNote
      */
     public static synchronized void delDNote(DayNote dayNote) {
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from day_note where money = ? or time = ?", new String[]{dayNote.getMoney(), dayNote.getTime()});
         db.close();
     }
@@ -50,7 +50,7 @@ public class DayNoteDao {
      */
     public static synchronized List<DayNote> getDayNotes() {
         List<DayNote> dayNotes = new ArrayList<DayNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from day_note", null);
         while (cursor.moveToNext()) {
             //int useType, String money, String remark, String time
@@ -72,7 +72,7 @@ public class DayNoteDao {
      */
     public static synchronized boolean newDNotes(List<DayNote> dayNotes) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from day_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < dayNotes.size(); i++) {
             if (isExit) {
@@ -93,7 +93,7 @@ public class DayNoteDao {
      */
     public static synchronized boolean newDNotes4History(List<DayNote> dayNotes) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from day_note_history"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < dayNotes.size(); i++) {
             if (isExit) {
@@ -117,7 +117,7 @@ public class DayNoteDao {
     public static synchronized boolean newDNotes4History(String duration) {
         boolean isExit = true;
         List<DayNote> dayNotes = getDayNotes();
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         for (int i = 0; i < dayNotes.size(); i++) {
             if (isExit) {
                 DayNote dayNote = dayNotes.get(i);
@@ -142,7 +142,7 @@ public class DayNoteDao {
      */
     public static synchronized List<DayNote> getDayNotes4History() {
         List<DayNote> dayNotes = new ArrayList<DayNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from day_note_history", null);
         while (cursor.moveToNext()) {
             //int useType, String money, String remark, String time
@@ -166,7 +166,7 @@ public class DayNoteDao {
      */
     public static synchronized List<DayNote> getDayNotes4History(String duration) {
         List<DayNote> dayNotes = new ArrayList<DayNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from day_note_history", null);
         while (cursor.moveToNext()) {
             if (cursor.getString(cursor.getColumnIndex("duration")).equals(duration)) {

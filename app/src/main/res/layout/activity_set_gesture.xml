@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/user_icon"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/user" />
+
+    <TextView
+        android:id="@+id/gesture_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_icon"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="请绘制手势密码"
+        android:lines="2"
+        android:textColor="@color/app_color"
+        android:textSize="20dp"
+        android:visibility="visible" />
+
+    <com.fengyang.tallynote.view.GestureLockView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gesture_text"
+        android:layout_margin="20dp"
+        android:layout_marginTop="15dp" />
+</RelativeLayout>

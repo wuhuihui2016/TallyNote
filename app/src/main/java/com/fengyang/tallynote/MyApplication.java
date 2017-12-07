@@ -14,9 +14,9 @@ import com.fengyang.tallynote.utils.SystemUtils;
 /**
  * Created by wuhuihui on 2017/6/23.
  */
-public class MyApp extends Application {
+public class MyApplication extends Application {
 
-    private static String TAG = "MyApp";
+    private static String TAG = "MyApplication";
 
     public static DBHelper dbHelper;
 

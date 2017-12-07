@@ -8,7 +8,7 @@ import com.fengyang.tallynote.model.MemoNote;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fengyang.tallynote.MyApp.dbHelper;
+import static com.fengyang.tallynote.MyApplication.dbHelper;
 
 /**
  * Created by fengyangtech on 2017/8/4.

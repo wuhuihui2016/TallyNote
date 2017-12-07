@@ -3,7 +3,7 @@ package com.fengyang.tallynote.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class IncomeNoteDao {
     //理财记录：money 投入金额（单位万）,incomeRatio 预期年化（%）,days 投资期限(天),durtion 投资时段,dayIncome 拟日收益（万/天）,finalIncome 最终收益, time 记录时间
     public static synchronized boolean newINote(IncomeNote incomeNote) {
         boolean isExit;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("insert into income_note(money,incomeRatio,days,durtion,dayIncome,finalIncome,finalCash,finalCashGo,finished,remark,time) values(?,?,?,?,?,?,?,?,?,?,?)",
                 new Object[]{incomeNote.getMoney(), incomeNote.getIncomeRatio(), incomeNote.getDays(), incomeNote.getDurtion(),
                         incomeNote.getDayIncome(), incomeNote.getFinalIncome(), incomeNote.getFinalCash(), incomeNote.getFinalCashGo(), IncomeNote.ON, incomeNote.getRemark(), incomeNote.getTime()});
@@ -42,7 +42,7 @@ public class IncomeNoteDao {
      */
     public static synchronized boolean finishIncome(IncomeNote incomeNote) {
         boolean isFinished;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("update income_note set finished = 1,finalCash = ?,finalCashGo = ? where money = ? and finalIncome = ? ",
                 new String[]{incomeNote.getFinalCash(), incomeNote.getFinalCashGo(), incomeNote.getMoney(), incomeNote.getFinalIncome()});
         Cursor cursor = db.rawQuery("select * from income_note where money = ? and finalIncome = ? and finalCash= ?", new String[]{incomeNote.getMoney(), incomeNote.getFinalIncome(), incomeNote.getFinalCash()});
@@ -59,7 +59,7 @@ public class IncomeNoteDao {
      */
     public static synchronized List<IncomeNote> getIncomes() {
         List<IncomeNote> incomeNotes = new ArrayList<IncomeNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from income_note", null);
         while (cursor.moveToNext()) {
             /*String money; //投入金额（单位万）
@@ -102,7 +102,7 @@ public class IncomeNoteDao {
      */
     public static synchronized boolean newINotes(List<IncomeNote> incomeNotes) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from income_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (isExit) {

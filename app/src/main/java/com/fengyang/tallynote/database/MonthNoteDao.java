@@ -3,7 +3,7 @@ package com.fengyang.tallynote.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fengyang.tallynote.MyApp;
+import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.model.MonthNote;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MonthNoteDao {
      */
     public static synchronized boolean newMNote(MonthNote monthNote) {
         boolean isExit;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("insert into month_note(last_balance,pay,salary,income,balance,actual_balance,duration,remark,time) values(?,?,?,?,?,?,?,?,?)",
                 new Object[]{monthNote.getLast_balance(), monthNote.getPay(), monthNote.getSalary(), monthNote.getIncome(),
                         monthNote.getBalance(), monthNote.getActual_balance(),
@@ -42,7 +42,7 @@ public class MonthNoteDao {
      */
     public static synchronized List<MonthNote> getMonthNotes() {
         List<MonthNote> monthNotes = new ArrayList<MonthNote>();
-        SQLiteDatabase db = MyApp.dbHelper.getReadableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from month_note", null);
         while (cursor.moveToNext()) {
             //String last_balance, String pay, String salary, String income, String balance,
@@ -70,7 +70,7 @@ public class MonthNoteDao {
      */
     public static synchronized boolean newMNotes(List<MonthNote> monthNotes) {
         boolean isExit = true;
-        SQLiteDatabase db = MyApp.dbHelper.getWritableDatabase();
+        SQLiteDatabase db = MyApplication.dbHelper.getWritableDatabase();
         db.execSQL("delete from month_note"); //先清除本地数据,再一次添加新数据
         for (int i = 0; i < monthNotes.size(); i++) {
             if (isExit) {

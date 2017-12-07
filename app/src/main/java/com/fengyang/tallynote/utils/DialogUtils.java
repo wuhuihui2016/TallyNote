@@ -144,7 +144,6 @@ public class DialogUtils {
     }
 
     /**
-     *
      * @param activity
      * @param title
      * @param message
@@ -166,7 +165,7 @@ public class DialogUtils {
             comfireView.setText(comfireTxt);
             comfireView.setOnClickListener(comfireListener);
 
-            if (cancelListener == null)  cancel_layout.setVisibility(View.GONE);
+            if (cancelListener == null) cancel_layout.setVisibility(View.GONE);
             else {
                 cancelView.setText(cancelTxt);
                 cancelView.setOnClickListener(cancelListener);

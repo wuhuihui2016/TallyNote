@@ -16,21 +16,27 @@ import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fengyang.tallynote.utils.SystemUtils.key;
+
 /**
  * 验证密码
  * Created by wuhuihui on 2017/6/27.
  */
-public class OnStartActivity extends BaseActivity {
+public class SetOrCheckPwdActivity extends BaseActivity {
 
     private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
     private GridView numGridView; //输入密码的按键
     private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
+
+    private boolean isSetting = true; //设置密码还是验证密码,默认设置
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +44,42 @@ public class OnStartActivity extends BaseActivity {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_pwd);
+
+        //判断是否设置过，是否重置密码
+        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWD, ""))
+                || getIntent().hasExtra("reSetPwd")) {
+            //为设置密码操作
+            TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
+            edit_tips.setHint("请输入6位密码，为进入APP验证使用");
+            if (getIntent().hasExtra("reSetPwd")) edit_tips.setHint("请输入新的6位密码");
+        } else {
+            //为验证密码操作
+            isSetting = false;
+        }
+
+        LogUtils.i("isSetting", isSetting + "");
+        if (!isSetting) { //验证密码（仅适用于APP启动时）
+            //判断验方式：手势密码还是启动密码
+            if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
+                finish();
+                Intent intent = new Intent(activity, SetGestureActivity.class);
+                intent.putExtra("start", true);
+                intent.putExtra("activityNum", 0);
+                startActivity(intent);
+            }
+        }
 
         initView();
+
+    }
+
+    /**
+     * 设置密保后跳转页面
+     */
+    private void skip() {
+        finish();
+        startActivity(new Intent(activity, MainActivity.class));
     }
 
     /**
@@ -87,16 +126,13 @@ public class OnStartActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.num0:
-                onClickCallback("0"); // "0"按键的点击
+                onClickCallback("0");
                 break;
-            case R.id.clear: //清空已输入的密码数字
+            case R.id.clear:
                 pwds.clear();
                 for (int i = 0; i < textViews.size(); i++) {
                     textViews.get(i).setText("");
                 }
-                break;
-            case R.id.forgetPwd: //忘记验证密码
-                startActivity(new Intent(activity, ForgetPwdActivity.class));
                 break;
         }
     }
@@ -126,23 +162,50 @@ public class OnStartActivity extends BaseActivity {
                             password += pwds.get(i);
                         }
 
-                        //密码取已保存的密保
-                        String pwdKey = (String) ContansUtils.get("pwd", "");
-                        if (TextUtils.isEmpty(pwdKey)) {
-                            pwdKey = (String) ContansUtils.get("pwdKey", "");
-                            ContansUtils.put("pwd", pwdKey);
-                        }
-                        if (password.equals(pwdKey)) { //验证通过：进入APP
-                            finish();
-                            if (!getIntent().hasExtra(SystemUtils.key)) {
-                                startActivity(new Intent(context, MainActivity.class));
-                            }
-                        } else { //验证不通过：提示，震动，布局摇晃，密码清空
-                            SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
-                            ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
-                            pwds.clear();
-                            for (int i = 0; i < textViews.size(); i++) {
-                                textViews.get(i).setText("");
+                        if (isSetting) {
+                            final String finalPassword = password;
+                            DialogUtils.showMsgDialog(activity, "设置密码", "pwdKey：" + password, new DialogUtils.DialogListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    super.onClick(v);
+                                    ContansUtils.put(ContansUtils.PWD, finalPassword);
+                                    skip();
+                                }
+                            }, new DialogUtils.DialogListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    super.onClick(v);
+                                    pwds.clear();
+                                    for (int i = 0; i < textViews.size(); i++) {
+                                        textViews.get(i).setText("");
+                                    }
+
+                                }
+                            });
+                        } else {
+                            //密码取已保存的密保
+                            String pwdKey = (String) ContansUtils.get(ContansUtils.PWD, "");
+                            if (password.equals(pwdKey)) {  //验证通过
+                                if (getIntent().hasExtra("secureSet")) { //进入安全设置
+                                    finish();
+                                    startActivity(new Intent(activity, SecureSetActivity.class));
+                                } else { //进入APP
+                                    LogUtils.i("isSetting", "验证通过,进入APP");
+                                    if (!getIntent().hasExtra(key)) {
+                                        finish();
+                                        startActivity(new Intent(activity, MainActivity.class));
+                                    } else {
+                                        finish();
+                                    }
+                                    LogUtils.i("isSetting", "currentActivity:" + AppManager.getAppManager().currentActivity().getLocalClassName());
+                                }
+                            } else { //验证不通过：提示，震动，布局摇晃，密码清空
+                                SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
+                                ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
+                                pwds.clear();
+                                for (int i = 0; i < textViews.size(); i++) {
+                                    textViews.get(i).setText("");
+                                }
                             }
                         }
                     }
@@ -150,6 +213,7 @@ public class OnStartActivity extends BaseActivity {
             }
         }
     }
+
 
     /**
      * 重回界面不输入密码
@@ -172,4 +236,5 @@ public class OnStartActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

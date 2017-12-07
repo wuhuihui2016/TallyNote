@@ -5,10 +5,11 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/edit_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center|center_horizontal"
-        android:hint="请验证密码"
+        android:hint="请验证6位密码"
         android:padding="10dp" />
 
     <LinearLayout
@@ -105,16 +106,6 @@
             android:textSize="25sp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/forgetPwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal"
-        android:onClick="onClick"
-        android:padding="10dp"
-        android:text="@string/forgetPwd"
-        android:textColor="@android:color/holo_blue_light" />
 
     <GridView
         android:id="@+id/numGridView"
