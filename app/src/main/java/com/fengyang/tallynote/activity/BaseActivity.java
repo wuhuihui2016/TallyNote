@@ -188,7 +188,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, TAG + " onResume---lifecycle");
+        Log.i(TAG, "lifecycle---" + TAG + " onResume");
     }
 
     @Override
@@ -238,7 +238,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, TAG + " onDestroy---lifecycle");
+        Log.i(TAG, "lifecycle---" + TAG + " onDestroy");
 
         try {
             MyApplication.dbHelper.db.close();

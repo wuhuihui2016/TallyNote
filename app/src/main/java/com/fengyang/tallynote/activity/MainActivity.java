@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
     private TextView tally_title, income_title, mine_title;
     private RelativeLayout cur_tab; //向导游标View
     private boolean canShow = false; //tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
+    private boolean initViewed = false; //权限获取成功后初始界面标志
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +88,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         //检测权限后显示界面
         PermissionUtils.checkSDcardPermission(MainActivity.this, new PermissionUtils.OnCheckCallback() {
             @Override
             public void onCheck(boolean isSucess) {
                 if (isSucess) {
-                    if (!canShow) {
+                    if (!initViewed) {
                         fragments.add(new TallyFragment());
                         fragments.add(new IncomeFragment());
                         fragments.add(new MineFragment());
@@ -130,10 +130,14 @@ public class MainActivity extends BaseActivity {
                             }
                         });
 
-                        if (frag_index == 0) setCheked(frag_index);
+                        initViewed = true;
                     }
 
+                    viewPager.setCurrentItem(frag_index);
+                    setCheked(frag_index);
+
                     isShow(true);
+
 
                 } else {
                     PermissionUtils.notPermission(MainActivity.this, PermissionUtils.PERMISSIONS_STORAGE);

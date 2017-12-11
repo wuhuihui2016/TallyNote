@@ -16,8 +16,8 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 
-import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
 import com.fengyang.tallynote.activity.SetGestureActivity;
+import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -63,17 +63,23 @@ public class SystemUtils {
         return cn.getClassName();
     }
 
+    /*
+      密码输入手机震动
+     */
+    public static void vibrate(Context context, long milliseconds) {
+        Vibrator vib = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        vib.vibrate(milliseconds);
+    }
 
     /*
       密码输入错误手机震动,界面晃动
      */
-    public static void Vibrate(Activity activity, long milliseconds, View view) {
-        Vibrator vib = (Vibrator) activity.getSystemService(Service.VIBRATOR_SERVICE);
-        vib.vibrate(milliseconds);
+    public static void keyError(Context context, View view) {
+        vibrate(context, 200);
 
         TranslateAnimation animation = new TranslateAnimation(0, -5, 0, 0);
         animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(100);
+        animation.setDuration(200);
         animation.setRepeatCount(3);
         animation.setRepeatMode(Animation.REVERSE);
         view.startAnimation(animation);
@@ -97,7 +103,7 @@ public class SystemUtils {
         //com.android.internal.app.ChooserActivity 系统分享列表，可忽略
         //如果直接跳转第三方APP回来后还是需要验证密码
         if ((!className.contains("DocumentsActivity")) && (!className.contains("ChooserActivity"))) {
-            LogUtils.i(TAG, "APP运行在>>>>后台");
+            LogUtils.i(TAG, "lifecycle--APP运行在>>>>后台");
             ContansUtils.put(key, true);
         }
     }
@@ -111,11 +117,12 @@ public class SystemUtils {
      */
     public static void setFore(Activity activity) {
         if ((Boolean) ContansUtils.get(key, false)) {
-            LogUtils.i(TAG, "APP运行在>>>>前台");
+            LogUtils.i(TAG, "lifecycle--APP运行在>>>>前台");
             ContansUtils.put(key, false); //写入非后台运行标记
 
             if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
                 Intent intent = new Intent(activity, SetGestureActivity.class);
+                intent.putExtra(key, true);
                 intent.putExtra("activityNum", 0);
                 activity.startActivity(intent);
             } else {

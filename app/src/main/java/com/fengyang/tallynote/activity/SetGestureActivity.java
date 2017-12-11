@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.view.StatusChange;
@@ -28,12 +29,13 @@ public class SetGestureActivity extends BaseActivity {
     public static int activityNum;
     public static StatusChange statusChange = new StatusChange();
 
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_gesture);
-
-        final Intent intent = getIntent();
+        intent = getIntent();
         activityNum = intent.getIntExtra("activityNum", 0);
 
         final TextView gestureText = (TextView) findViewById(R.id.gesture_text);
@@ -65,10 +67,13 @@ public class SetGestureActivity extends BaseActivity {
                                 if (intent.hasExtra("secureSet")) { //安全设置弹出选择dialog
                                     finish();
                                     startActivity(new Intent(activity, SecureSetActivity.class));
+                                    intent.removeExtra("secureSet");
                                 } else { //关闭当前界面，进入APP
                                     finish();
                                     if (intent.hasExtra("start")) {
+                                        LogUtils.i("lifecycle", "getIntent start true");
                                         startActivity(new Intent(activity, MainActivity.class));
+                                        intent.removeExtra("start");
                                     }
                                 }
                             }
@@ -77,7 +82,6 @@ public class SetGestureActivity extends BaseActivity {
                 }
                 break;
         }
-
     }
 
     /**
@@ -89,7 +93,7 @@ public class SetGestureActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //重回界面不输入密码退出APP
-            if (getIntent().hasExtra(SystemUtils.key)) {
+            if (intent.hasExtra(SystemUtils.key)) {
                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
                     ToastUtils.showToast(this, true, "再按一次退出程序");
                     mExitTime = System.currentTimeMillis();

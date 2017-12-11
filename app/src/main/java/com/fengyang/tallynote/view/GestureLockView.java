@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 
 import com.fengyang.tallynote.activity.SetGestureActivity;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ public class GestureLockView extends View {
     private float offset;
     private float baseXPos;
     private float baseYPos = 200;
-    Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
     public GestureLockView(Context context) {
         super(context);
@@ -105,7 +104,7 @@ public class GestureLockView extends View {
                                 }
                             }
                             list.add(i);
-                            vibrator.vibrate(50);
+                            SystemUtils.vibrate(getContext(), 50);
                             initPaint.setColor(Color.parseColor("#4F7FE8"));
                             initPaint.setStyle(Paint.Style.FILL);
                             canvas.drawCircle(pointX, pointY, 30, initPaint);
@@ -209,7 +208,7 @@ public class GestureLockView extends View {
         } else {
             if (!list.equals(passList)) {
                 currentStatus = STATUS_PAS_WRONG;
-                vibrator.vibrate(200);
+                SystemUtils.vibrate(getContext(), 200);
                 invalidate();
             } else {
                 currentStatus = STATUS_PAS_RIGHT;

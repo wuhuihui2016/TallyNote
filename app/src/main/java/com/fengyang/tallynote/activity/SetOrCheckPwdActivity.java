@@ -62,11 +62,11 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         if (!isSetting) { //验证密码（仅适用于APP启动时）
             //判断验方式：手势密码还是启动密码
             if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
-                finish();
                 Intent intent = new Intent(activity, SetGestureActivity.class);
                 intent.putExtra("start", true);
                 intent.putExtra("activityNum", 0);
                 startActivity(intent);
+                finish();
             }
         }
 
@@ -143,6 +143,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
      * @param pwd
      */
     private void onClickCallback(String pwd) {
+        SystemUtils.vibrate(activity, 50);
         if (pwds.size() < 6) { //输入的数字加入密码集
             pwds.add(pwd);
             for (int i = 0; i < pwds.size(); i++) {
@@ -200,7 +201,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                                     LogUtils.i("isSetting", "currentActivity:" + AppManager.getAppManager().currentActivity().getLocalClassName());
                                 }
                             } else { //验证不通过：提示，震动，布局摇晃，密码清空
-                                SystemUtils.Vibrate(activity, 100, findViewById(R.id.pwd_layout));
+                                SystemUtils.keyError(activity, findViewById(R.id.pwd_layout));
                                 ToastUtils.showToast(context, true, "密码验证失败！请重新输入！");
                                 pwds.clear();
                                 for (int i = 0; i < textViews.size(); i++) {
