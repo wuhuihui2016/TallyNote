@@ -105,7 +105,9 @@ public class IncomeFragment extends Fragment {
                 income_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(activity, IncomeListActivity.class));
+                        Intent intent = new Intent(activity, IncomeListActivity.class);
+                        intent.putExtra("income", true);
+                        startActivity(intent);
 
                     }
                 });

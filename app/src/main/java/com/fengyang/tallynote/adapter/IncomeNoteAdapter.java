@@ -109,8 +109,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
                 viewHolder.income_finished.setText("今日到期！可完成 >");
             } else {
                 if (day > Integer.parseInt(incomeNote.getDays())) {
-                    viewHolder.income_finished.setText("理财还未开始！倒计时"
-                            + (day - Integer.parseInt(incomeNote.getDays()) + "天"));
+                    viewHolder.income_finished.setText((day - Integer.parseInt(incomeNote.getDays()) + " 天后开始收益"));
                 } else {
                     viewHolder.income_finished.setText("计息中,还剩 " + day + " 天");
                 }
@@ -133,8 +132,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         if (day > Integer.parseInt(incomeNote.getDays())) {
-                            ToastUtils.showToast(activity, true, "理财还未开始！倒计时"
-                                    + (day - Integer.parseInt(incomeNote.getDays()) + "天"));
+                            ToastUtils.showToast(activity, true, (day - Integer.parseInt(incomeNote.getDays()) + " 天后开始收益"));
                         } else {
                             ToastUtils.showToast(activity, true, "计息中,还剩 " + day + " 天");
                         }

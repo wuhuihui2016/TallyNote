@@ -18,9 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/spinner"
-        android:layout_toEndOf="@+id/spinner">
+        android:layout_below="@+id/spinner">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,11 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_type"
+                android:background="@drawable/shape_type_btn"
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:textColor="@color/month_record"
+                android:textColor="@color/white"
                 android:text="@string/high_consume" />
         </LinearLayout>
 
@@ -116,7 +114,7 @@
         android:layout_below="@id/type_layout"
         android:background="@color/remark_bkg"
         android:padding="5dp"
-        android:textColor="@color/red"
+        android:textColor="@color/day_record"
         android:textSize="@dimen/smalltextSize" />
 
     <ListView

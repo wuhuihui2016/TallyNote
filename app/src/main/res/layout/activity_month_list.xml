@@ -10,8 +10,8 @@
         android:background="@color/remark_bkg"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
-        android:textColor="@color/red"
-        android:textSize="@dimen/smalltextSize" />
+        android:textColor="@color/month_record"
+        android:textSize="@dimen/bigtextSize" />
 
     <TextView
         android:id="@+id/chartAnalyse"
@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/chartAnalyse"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:divider="@color/month_record"
         android:dividerHeight="2dp" />
 

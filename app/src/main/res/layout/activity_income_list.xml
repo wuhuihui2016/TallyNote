@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textColor="@color/red"
+            android:textColor="@color/income_record"
             android:textSize="@dimen/smalltextSize" />
 
         <TextView

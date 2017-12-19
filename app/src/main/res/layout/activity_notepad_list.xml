@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/type_layout"
-            android:textColor="@color/red"
+            android:textColor="@color/notepad_record"
             android:layout_centerVertical="true"
             android:text="我的记事本"
             android:textSize="@dimen/bigtextSize" />

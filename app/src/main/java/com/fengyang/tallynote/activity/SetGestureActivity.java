@@ -85,7 +85,7 @@ public class SetGestureActivity extends BaseActivity {
     }
 
     /**
-     * 重回界面不输入密码
+     * 重回界面不绘制手势密码
      * 再按一次退出程序
      */
     private long mExitTime;//返回退出时间间隔标志

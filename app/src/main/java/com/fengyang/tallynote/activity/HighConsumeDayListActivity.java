@@ -72,7 +72,7 @@ public class HighConsumeDayListActivity extends BaseActivity {
                     }
             );
 
-            String duration = getIntent().getStringExtra("duration");
+            duration = getIntent().getStringExtra("duration");
             dayNotes = DayNoteDao.getDayNotes4History(duration);
 
         } else {

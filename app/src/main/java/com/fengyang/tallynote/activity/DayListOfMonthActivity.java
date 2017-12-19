@@ -59,6 +59,7 @@ public class DayListOfMonthActivity extends BaseActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         duration = durations.get(position);
+                        setTitle(duration);
                         getAll();
                     }
 

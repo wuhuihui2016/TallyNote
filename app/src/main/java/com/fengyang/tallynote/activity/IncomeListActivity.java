@@ -134,6 +134,12 @@ public class IncomeListActivity extends BaseActivity {
             sort_info.setText("按投资时间排序");
             income_earning.setBackgroundResource(R.drawable.shape_left_btn_bkg);
             incomeNotes4index = IncomeNote.getEarningInComes();
+
+            //如果是首页理财条目点击进来按到期时间排序显示计息中的列表
+            if (getIntent().hasExtra("income")) {
+                sort4End();
+                return;
+            }
         } else {
             isStart = false;
             sort_info.setText("按到期时间排序");

@@ -79,14 +79,23 @@ public class MonthNoteAdapter extends BaseAdapter {
         Double balance = Double.parseDouble(monthNote.getBalance());
         Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
         LogUtils.i("balance_diff", StringUtils.showPrice((actual_balance - balance) + ""));
-        viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance())
-                + "(差额" + StringUtils.showPrice((actual_balance - balance) + "") + ")");
 
+        //实际结余和结余比较
+        String conStr;
+        if (actual_balance - balance > 0) conStr = "(差额：↑ ";
+        else conStr = "(差额：↓ ";
+        viewHolder.month_actual_balance.setText("实际结余：" + StringUtils.showPrice(monthNote.getActual_balance())
+                + conStr + StringUtils.showPrice((actual_balance - balance) + "") + ")");
+
+        //本月结余和上月结余比较
         if (position != monthNotes.size() - 1) {
+            String conStr2;
             viewHolder.month_diff.setVisibility(View.VISIBLE);
             Double last_balance = Double.parseDouble(monthNote.getLast_balance());
             LogUtils.i("month_diff", StringUtils.showPrice((actual_balance - last_balance) + ""));
-            viewHolder.month_diff.setText("与上月差额：" + StringUtils.showPrice((actual_balance - last_balance) + ""));
+            if (actual_balance - last_balance > 0) conStr2 = "与上月差额：↑ ";
+            else conStr2 = "与上月差额：↓ ";
+            viewHolder.month_diff.setText(conStr2 + StringUtils.showPrice(Math.abs((actual_balance - last_balance)) + ""));
         } else {
             viewHolder.month_diff.setVisibility(View.GONE);
         }
