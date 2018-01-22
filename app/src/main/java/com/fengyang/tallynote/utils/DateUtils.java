@@ -100,7 +100,7 @@ public class DateUtils {
 //			LogUtils.i("diffTime", "年"  + year1 + "-日" + day1 + "-月日" + Md);
 //			LogUtils.i("diffTime", "时分秒"  + hms + "-时分" + hm);
 
-            if (!year1.equals(year2)) return time.split(" ")[0]; //不同年 2016-08-30
+            if (!year1.equals(year2)) return Md + "\n" + year2; //不同年 08-30\n2016-
             else {//同年,判断是否同日
                 calendar.setTime(time_sdf.parse(now));
                 int day1 = calendar.get(Calendar.DAY_OF_YEAR);//在一年中第几天

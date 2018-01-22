@@ -119,9 +119,7 @@ public class NewMonthActivity extends BaseActivity {
             if (!TextUtils.isEmpty(last_balanceStr) &&
                     !TextUtils.isEmpty(payStr) &&
                     !TextUtils.isEmpty(salaryStr)) {
-                String meaasge = last_balanceStr + " - "
-                        + payStr + " + "
-                        + salaryStr;
+                String meaasge = last_balanceStr + " - " + payStr;
 
                 Double last_balance = Double.parseDouble(last_balanceStr);
                 Double pay = Double.parseDouble(payStr);
@@ -129,7 +127,10 @@ public class NewMonthActivity extends BaseActivity {
                 Double income = 0.00;
                 if (!TextUtils.isEmpty(incomeStr)) {
                     income = Double.parseDouble(incomeStr);
-                    meaasge += " + " + incomeStr;
+                    meaasge += " + " + incomeStr + " + "
+                            + salaryStr;
+                } else {
+                    meaasge += " + " + salaryStr;
                 }
 
                 final String calculate = (last_balance - pay + salary + income) + "";

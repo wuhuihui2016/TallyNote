@@ -229,7 +229,7 @@ public class TallyFragment extends Fragment {
                     View memo_view = View.inflate(activity, R.layout.view_streaner_memo, null);
                     TextView memoView = (TextView) memo_view.findViewById(R.id.streamer_txt);
                     MemoNote memoNote = memoNoteList.get(i);
-                    memoView.setText(DateUtils.diffTime(memoNote.getTime()) + "  " + memoNote.getContent());
+                    memoView.setText(memoNote.getContent());
 
                     if (i == size - 1) {
                         memo_view.findViewById(R.id.line).setVisibility(View.GONE);

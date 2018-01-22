@@ -159,7 +159,7 @@ public class DayListActivity extends BaseActivity {
         dayNotes = DayNoteDao.getDayNotes();
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()
-                + "，支出 + 转账 - 转入 - 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
+                + "，支出 + 转账 - 转入 + 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
         listView.setAdapter(dayNoteAdapter);
     }

@@ -1,12 +1,10 @@
 package com.fengyang.tallynote.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -20,7 +18,6 @@ import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.model.SearchNote;
 import com.fengyang.tallynote.utils.ContansUtils;
-import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.view.CustomSearchView;
@@ -36,7 +33,6 @@ public class SearchActivity extends Activity {
 
     private static final String TAG = "SearchActivity";
 
-    private Activity activity;
     private CustomSearchView searchView;
     private Button search_btn;
     private ListView listView;
@@ -46,8 +42,6 @@ public class SearchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        activity = this;
 
         initView();
     }
@@ -183,33 +177,36 @@ public class SearchActivity extends Activity {
         if (searchNotes.size() > 0) {
             listView.setAdapter(new SearchNoteAdapter(this, searchNotes));
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    SearchNote searchNote = searchNotes.get(position);
-
-                    if (searchNote.getType() == ContansUtils.DAY) {
-                        DayNote dayNote = (DayNote) searchNote.getObject();
-                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserType(dayNote.getUseType()) + dayNote.getRemark() );
-
-                    } else if (searchNote.getType() == ContansUtils.MEMO) {
-                        MemoNote memoNote = (MemoNote) searchNote.getObject();
-                        Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("memoNote", memoNote);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-
-                    } else {
-                        NotePad notePad = (NotePad) searchNote.getObject();
-                        Intent intent = new Intent(activity, NotePadDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("notepad", notePad);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-            });
+            //设置无点击效果
+//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                    LogUtils.i(TAG, "Search4Notes-setOnItemClickListener" + position);
+//                    SearchNote searchNote = searchNotes.get(position);
+//
+//                    if (searchNote.getType() == ContansUtils.DAY) {
+//                        DayNote dayNote = (DayNote) searchNote.getObject();
+//                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserType(dayNote.getUseType()) + dayNote.getRemark() );
+//
+//                    } else if (searchNote.getType() == ContansUtils.MEMO) {
+//                        MemoNote memoNote = (MemoNote) searchNote.getObject();
+//                        Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("memoNote", memoNote);
+//                        intent.putExtras(bundle);
+//                        startActivity(intent);
+//
+//                    } else {
+//                        NotePad notePad = (NotePad) searchNote.getObject();
+//                        Intent intent = new Intent(activity, NotePadDetailActivity.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("notepad", notePad);
+//                        intent.putExtras(bundle);
+//                        startActivity(intent);
+//                    }
+//                }
+//            });
         } else {
             listView.setEmptyView(findViewById(R.id.emptyView));
         }
