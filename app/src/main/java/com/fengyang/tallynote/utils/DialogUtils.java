@@ -192,7 +192,7 @@ public class DialogUtils {
         Window window = dialog.getWindow();
         Display display = manager.getDefaultDisplay();
         int width = display.getWidth();
-        window.setLayout(width / 3 * 2, WindowManager.LayoutParams.WRAP_CONTENT);//设置宽度为屏幕的2/3，高度自适应
+        window.setLayout(width / 5 * 4, WindowManager.LayoutParams.WRAP_CONTENT);//设置宽度为屏幕的2/3，高度自适应
 //        //弹出dialog后activity背景变暗设置
 //        WindowManager.LayoutParams lp = window.getAttributes();
 //        lp.dimAmount = 0f;

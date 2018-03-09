@@ -65,7 +65,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:text="预期年化"
+                android:text="预期年化(%)"
                 android:textColor="@color/title"
                 android:textSize="@dimen/bigtextSize" />
 

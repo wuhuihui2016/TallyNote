@@ -22,6 +22,7 @@ import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
+import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
@@ -159,6 +160,9 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if (SystemUtils.isFastDoubleClick()) {
+            return;
+        }
     }
 
     /**

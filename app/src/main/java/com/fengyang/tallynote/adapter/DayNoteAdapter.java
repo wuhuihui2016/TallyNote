@@ -83,6 +83,9 @@ public class DayNoteAdapter extends BaseAdapter {
         } else if (dayNote.getUseType() == DayNote.account_in) {
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_in_spot);
             viewHolder.tag.setImageResource(R.drawable.account_in);
+        } else {
+            viewHolder.spot.setBackgroundResource(R.drawable.shape_day_home_spot);
+            viewHolder.tag.setImageResource(R.drawable.account_home);
         }
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
         viewHolder.remask.setText(dayNote.getRemark());
