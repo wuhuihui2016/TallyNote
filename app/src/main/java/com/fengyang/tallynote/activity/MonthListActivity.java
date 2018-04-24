@@ -20,7 +20,9 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.Collections;
@@ -97,6 +99,19 @@ public class MonthListActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
                 initData();
+                DialogUtils.showMsgDialog3(activity, "新月账单已生成", "是否现在上传数据？",
+                        "上传", new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                                FileUtils.uploadFile(activity);
+                            }
+                        }, "暂不", new DialogUtils.DialogListener(){
+                            @Override
+                            public void onClick(View v) {
+                                super.onClick(v);
+                            }
+                        });
             }
         }
     };

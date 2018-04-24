@@ -152,10 +152,11 @@ public class DateUtils {
     /**
      * 计算某个日期距离当天的天数
      *
-     * @param date
+     * @param date 例如：20180422
      * @return
      */
     public static final int daysBetween(String date) {
+        LogUtils.i("daysBetween", date);
         int days = 0;
         try {
             calendar.setTime(date_sdf.parse(date));

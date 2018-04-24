@@ -2,7 +2,6 @@ package com.fengyang.tallynote.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -148,11 +147,17 @@ public class FileExplorerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                //http://blog.csdn.net/yuxiaohui78/article/details/8232402
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                share.setType("*/*");//此处可发送多种文件
-                startActivity(Intent.createChooser(share, "发送文件"));
+
+                FileUtils.shareFile(activity, file); //向其他APP分享文件
+
+            }
+        });
+        layout.findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+
+                FileUtils.uploadFile(activity); //上传到小米云盘
 
             }
         });

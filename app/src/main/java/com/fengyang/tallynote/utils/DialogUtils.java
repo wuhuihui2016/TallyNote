@@ -96,7 +96,6 @@ public class DialogUtils {
                                      String message, DialogListener comfireListener) {
         try {
             initDialog(activity);
-            dialog.setCanceledOnTouchOutside(false);
             if (TextUtils.isEmpty(title)) {
                 titleView.setText("温馨提示");
             } else {
@@ -125,7 +124,6 @@ public class DialogUtils {
                                      DialogListener comfireListener, DialogListener cancelListener) {
         try {
             initDialog(activity);
-            dialog.setCanceledOnTouchOutside(false);
             if (TextUtils.isEmpty(title)) {
                 titleView.setText("温馨提示");
             } else {
@@ -154,7 +152,6 @@ public class DialogUtils {
                                      String comfireTxt, DialogListener comfireListener, String cancelTxt, DialogListener cancelListener) {
         try {
             initDialog(activity);
-            dialog.setCanceledOnTouchOutside(false);
             if (TextUtils.isEmpty(title)) {
                 titleView.setText("温馨提示");
             } else {
@@ -178,6 +175,65 @@ public class DialogUtils {
     }
 
     /**
+     * 三个操作按钮的dialog
+     *
+     * @param activity
+     * @param title
+     * @param message
+     * @param btn1Txt
+     * @param btn1Listener
+     * @param btn2Txt
+     * @param btn2Listener
+     */
+    public static void showMsgDialog3(Activity activity, String title, String message,
+                                      String btn1Txt, DialogListener btn1Listener, String btn2Txt, DialogListener btn2Listener) {
+        try {
+            dialog = new Dialog(activity, R.style.mDialogStyle);//dilog style must add,else base default style
+            dialog.setContentView(R.layout.dialog_msg2);//设置布局
+            dialog.setCanceledOnTouchOutside(false); //点击外部关闭dialog
+
+            WindowManager manager = activity.getWindowManager();
+            Window window = dialog.getWindow();
+            Display display = manager.getDefaultDisplay();
+            int width = display.getWidth();
+            window.setLayout(width / 5 * 4, WindowManager.LayoutParams.WRAP_CONTENT);//设置宽度为屏幕的4/5，高度自适应
+//        //弹出dialog后activity背景变暗设置
+//        WindowManager.LayoutParams lp = window.getAttributes();
+//        lp.dimAmount = 0f;
+//        window.setAttributes(lp);
+
+            titleView = (TextView) dialog.findViewById(R.id.title);
+            msgView = (TextView) dialog.findViewById(R.id.msg);
+            TextView btn1 = (TextView) dialog.findViewById(R.id.btn1);
+            TextView btn2 = (TextView) dialog.findViewById(R.id.btn2);
+
+            if (TextUtils.isEmpty(title)) {
+                titleView.setText("温馨提示");
+            } else {
+                titleView.setText(title);
+            }
+            msgView.setText(message);
+
+            btn1.setText(btn1Txt);
+            btn1.setOnClickListener(btn1Listener);
+            btn2.setText(btn2Txt);
+            btn2.setOnClickListener(btn2Listener);
+
+            dialog.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        } catch (Exception e) {
+            LogUtils.e(TAG + "-showMsgDialog3", e.toString());
+        }
+    }
+
+    /**
      * 初始化dialog
      *
      * @param activity
@@ -186,13 +242,13 @@ public class DialogUtils {
     private static void initDialog(Activity activity) {
         dialog = new Dialog(activity, R.style.mDialogStyle);//dilog style must add,else base default style
         dialog.setContentView(R.layout.dialog_msg);//设置布局
-        dialog.setCanceledOnTouchOutside(true);//点击外部关闭dialog
+        dialog.setCanceledOnTouchOutside(false); //点击外部关闭dialog
 
         WindowManager manager = activity.getWindowManager();
         Window window = dialog.getWindow();
         Display display = manager.getDefaultDisplay();
         int width = display.getWidth();
-        window.setLayout(width / 5 * 4, WindowManager.LayoutParams.WRAP_CONTENT);//设置宽度为屏幕的2/3，高度自适应
+        window.setLayout(width / 5 * 4, WindowManager.LayoutParams.WRAP_CONTENT);//设置宽度为屏幕的三个操作按钮的dialog，高度自适应
 //        //弹出dialog后activity背景变暗设置
 //        WindowManager.LayoutParams lp = window.getAttributes();
 //        lp.dimAmount = 0f;

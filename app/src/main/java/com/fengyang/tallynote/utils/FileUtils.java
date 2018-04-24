@@ -1,6 +1,9 @@
 package com.fengyang.tallynote.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -109,6 +113,68 @@ public class FileUtils {
             Log.e("获取文件大小", "文件不存在!");
         }
         return size;
+    }
+
+    /**
+     * 向其他APP分享文件
+     * http://blog.csdn.net/yuxiaohui78/article/details/8232402
+     *
+     * @param activity
+     * @param file     需要分享的文件
+     */
+    public static void shareFile(Activity activity, File file) {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        share.setType("*/*"); //此处可发送多种文件
+        activity.startActivity(Intent.createChooser(share, "发送文件"));
+    }
+
+    /**
+     * 上传文件到小米云盘(仅将tally_note文件上传)
+     *
+     * @param activity
+     */
+    public static void uploadFile(Activity activity) {
+        try {
+            if (SystemUtils.getIsWIFI(activity)) {
+                File file = null;
+                Intent share = new Intent(Intent.ACTION_SEND);
+                boolean found = false;
+                String type = "com.android.midrive"; // com.android.midrive 小米网盘
+                List<ResolveInfo> resInfo = activity.getPackageManager().queryIntentActivities(share, 0);
+                if (!resInfo.isEmpty()) {
+                    for (ResolveInfo info : resInfo) {
+                        if (info.activityInfo.packageName.toLowerCase().contains(type) ||
+                                info.activityInfo.name.toLowerCase().contains(type)) {
+                            share.setPackage(info.activityInfo.packageName);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        File excelDir = FileUtils.getExcelDir();
+                        final File files[] = excelDir.listFiles();
+                        for (int i = 0; i < files.length; i++)
+                            if (files[i].getName().contains("tally_note_"))
+                                file = files[i];
+                        if (file == null) {
+                            DialogUtils.showMsgDialog(activity, "", "文件不存在~");
+                            return;
+                        }
+                    } else {
+                        DialogUtils.showMsgDialog(activity, "", "请在小米手机上上传~");
+                        return;
+                    }
+                }
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                share.setType("*/*"); //此处可发送多种文件
+                activity.startActivity(Intent.createChooser(share, "发送文件"));
+            } else {
+                DialogUtils.showMsgDialog(activity, "", "当前没有WIFI，不能上传~");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

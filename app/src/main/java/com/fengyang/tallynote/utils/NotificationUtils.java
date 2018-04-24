@@ -1,8 +1,10 @@
 package com.fengyang.tallynote.utils;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -10,12 +12,15 @@ import android.text.TextUtils;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.IncomeListActivity;
-import com.fengyang.tallynote.database.IncomeNoteDao;
+import com.fengyang.tallynote.activity.SetGestureActivity;
+import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
 import com.fengyang.tallynote.model.IncomeNote;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.fengyang.tallynote.utils.SystemUtils.isRunningForeground;
 
 /**
  * @author wuhuihui
@@ -56,6 +61,10 @@ public class NotificationUtils {
                 //设置点击事件
                 Intent intent = new Intent(context, IncomeListActivity.class);
                 intent.putExtra("income", true);
+                if (SystemUtils.isRunningForeground(context)) {
+                    //用于通知点击判断跳转，如果APP在后台运行，在点击通知时需要验证密码，设置标志
+                    intent.putExtra("notify", true);
+                }
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);//跳转到当前运行的界面
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -72,6 +81,8 @@ public class NotificationUtils {
 
         }
     }
+
+
 
     /**
      * 取消通知

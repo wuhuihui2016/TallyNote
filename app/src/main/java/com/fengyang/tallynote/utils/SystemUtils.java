@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
@@ -120,18 +122,62 @@ public class SystemUtils {
             LogUtils.i(TAG, "lifecycle--APP运行在>>>>前台");
             ContansUtils.put(key, false); //写入非后台运行标记
 
+            Intent intent = new Intent();
+            intent.putExtra(SystemUtils.key, true);
             if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
-                Intent intent = new Intent(activity, SetGestureActivity.class);
-                intent.putExtra(key, true);
+                intent.setClass(activity, SetGestureActivity.class);
                 intent.putExtra("activityNum", 0);
                 activity.startActivity(intent);
             } else {
-                Intent intent = new Intent(activity, SetOrCheckPwdActivity.class);
-                intent.putExtra(key, true);
+                intent.setClass(activity, SetOrCheckPwdActivity.class);
                 activity.startActivity(intent);
             }
         }
     }
+
+    /**
+     * 判断app是否处于前台
+     * (用于通知点击判断跳转，如果APP在后台运行，在点击通知时需要验证密码)
+     * @param context
+     * @return
+     */
+    public static boolean isRunningForeground(Context context) {
+        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        String currentPackageName = cn.getPackageName();
+        if(!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(context.getPackageName())) {
+            return true ;
+        }
+        return false ;
+    }
+
+    /**
+     * 判断网络是否为WIFI
+     *
+     * @param context
+     * @return
+     */
+    public static boolean getIsWIFI(Context context) {
+
+        boolean isWIFI = false;
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            String type = networkInfo.getTypeName();
+
+            if (type.equalsIgnoreCase("WIFI")) {
+                isWIFI = true;
+            } else {
+                isWIFI = false;
+            }
+        } else {
+            isWIFI = false;
+        }
+
+        return isWIFI;
+    }
+
 
 
     /**

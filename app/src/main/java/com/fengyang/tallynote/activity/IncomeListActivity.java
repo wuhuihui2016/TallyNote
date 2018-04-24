@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.StringUtils;
+import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.Collections;
@@ -138,6 +140,21 @@ public class IncomeListActivity extends BaseActivity {
             //如果是首页理财条目点击进来按到期时间排序显示计息中的列表
             if (getIntent().hasExtra("income")) {
                 sort4End();
+
+                //如果是从通知点击跳转的，需要验证密码
+                if (getIntent().hasExtra("notify")) {
+                    Intent intent = new Intent();
+                    intent.putExtra(SystemUtils.key, true);
+                    if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+                        intent.setClass(activity, SetGestureActivity.class);
+                        intent.putExtra("activityNum", 0);
+                        startActivity(intent);
+                    } else {
+                        intent.setClass(activity, SetOrCheckPwdActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
                 return;
             }
         } else {

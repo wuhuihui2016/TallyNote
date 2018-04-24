@@ -158,7 +158,7 @@ public class ImportExportActivity extends BaseActivity {
             if (!TextUtils.isEmpty(path)) {
                 LogUtils.i(TAG, "importExcel File Path: " + path);
                 if ((path.endsWith(".xlsx") || path.endsWith(".xls"))) {
-                    ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
+                    ExcelUtils.importExcel(activity, path, new ExcelUtils.ICallBackImport() {
 
                         @Override
                         public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {

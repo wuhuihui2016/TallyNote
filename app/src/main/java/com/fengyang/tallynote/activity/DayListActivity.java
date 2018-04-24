@@ -20,6 +20,7 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
 
@@ -157,6 +158,7 @@ public class DayListActivity extends BaseActivity {
         account_in.setTextColor(Color.GRAY);
         homeuse.setTextColor(Color.GRAY);
         dayNotes = DayNoteDao.getDayNotes();
+        LogUtils.i("dayNotes", dayNotes.toString());
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()
                 + "，支出 + 转账 - 转入 + 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));

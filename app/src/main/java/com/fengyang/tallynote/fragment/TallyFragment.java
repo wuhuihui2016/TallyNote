@@ -66,7 +66,22 @@ public class TallyFragment extends Fragment {
     private void initView() {
         //显示当前日期
         today = (TextView) content.findViewById(R.id.today);
-        today.setText(DateUtils.getDate());
+        String msg = DateUtils.getDate();
+        today.setText(msg);
+
+        //获取使用APP记账的时长
+        if (DayNoteDao.getDayNotes4History().size() > 0) {
+            String time = DayNoteDao.getDayNotes4History().get(0).getTime().split("\\s+")[0];
+            String date = time.replaceAll("-", "");
+            int daysBetween = -DateUtils.daysBetween(date) + 1;
+            today.setText(msg + "\n" + "始于" + time + "，已记账" + daysBetween + "天");
+
+        } else if (DayNoteDao.getDayNotes().size() > 0) {
+            String time = DayNoteDao.getDayNotes().get(0).getTime().split("\\s+")[0];
+            String date = time.replaceAll("-", "");
+            int daysBetween = -DateUtils.daysBetween(date) + 1;
+            today.setText(msg + "\n" + "始于" + time + "，已记账" + daysBetween + "天");
+        }
 
         //默认隐藏当前结余和当前支出
         last_balanceTv = (TextView) content.findViewById(R.id.last_balanceTv);
