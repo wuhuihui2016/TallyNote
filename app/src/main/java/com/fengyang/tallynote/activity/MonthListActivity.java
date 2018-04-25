@@ -20,15 +20,18 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
+import com.fengyang.tallynote.utils.WPSUtils;
 
 import java.util.Collections;
 import java.util.List;
 
-/**月账单明细
+/**
+ * 月账单明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class MonthListActivity extends BaseActivity {
@@ -56,11 +59,15 @@ public class MonthListActivity extends BaseActivity {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    initPopupWindow();
+                initPopupWindow();
             }
         });
 
         initData();
+
+        if (getIntent().hasExtra("flag")) {
+            showDialog();
+        }
 
     }
 
@@ -68,7 +75,7 @@ public class MonthListActivity extends BaseActivity {
         monthNotes = MonthNoteDao.getMonthNotes();
         info.setText("月账单记录有" + monthNotes.size() + "条");
 
-        if (monthNotes.size() > 1){
+        if (monthNotes.size() > 1) {
             findViewById(R.id.chartAnalyse).setVisibility(View.VISIBLE);
             findViewById(R.id.chartAnalyse).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,22 +106,36 @@ public class MonthListActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
                 initData();
+                showDialog();
+            }
+        }
+    };
+
+
+    /**
+     * 新建月账完成，提醒上传数据
+     */
+    private void showDialog() {
+        new DelayTask(500, new DelayTask.ICallBack() {
+            @Override
+            public void deal() {
                 DialogUtils.showMsgDialog3(activity, "新月账单已生成", "是否现在上传数据？",
-                        "上传", new DialogUtils.DialogListener(){
+                        "上传", new DialogUtils.DialogListener() {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
                                 FileUtils.uploadFile(activity);
                             }
-                        }, "暂不", new DialogUtils.DialogListener(){
+                        }, "查看", new DialogUtils.DialogListener() {
                             @Override
                             public void onClick(View v) {
                                 super.onClick(v);
+                                WPSUtils.openFile(context, FileUtils.getTallyNoteFile().getPath());
                             }
                         });
             }
-        }
-    };
+        }).execute();
+    }
 
     /**
      * 初始化popupWindow
@@ -146,6 +167,13 @@ public class MonthListActivity extends BaseActivity {
                 public void onClick(View v) {
                     popupWindow.dismiss();
                     ExcelUtils.exportMonthNote(callBackExport);
+                }
+            });
+            layout.findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                    FileUtils.uploadFile(activity);
                 }
             });
             layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {

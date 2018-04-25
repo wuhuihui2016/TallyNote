@@ -22,6 +22,7 @@ import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -241,6 +242,13 @@ public class IncomeListActivity extends BaseActivity {
             public void onClick(View v) {
                 popupWindow.dismiss();
                 ExcelUtils.exportIncomeNote(callBackExport);
+            }
+        });
+        layout.findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                FileUtils.uploadFile(activity);
             }
         });
         layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {

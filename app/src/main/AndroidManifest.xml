@@ -18,7 +18,8 @@
         <!-- 设置启动密码  -->
         <activity
             android:name=".activity.SetOrCheckPwdActivity"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

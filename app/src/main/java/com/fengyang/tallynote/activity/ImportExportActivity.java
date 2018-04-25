@@ -1,5 +1,6 @@
 package com.fengyang.tallynote.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -112,7 +113,7 @@ public class ImportExportActivity extends BaseActivity {
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                 intent.setType("*/*");
                                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+                                startActivityForResult(Intent.createChooser(intent, "导入文件"), FILE_SELECT_CODE);
                             } catch (android.content.ActivityNotFoundException ex) {
                                 ToastUtils.showToast(context, true, "Please install a File Manager.");
                             }
@@ -134,6 +135,9 @@ public class ImportExportActivity extends BaseActivity {
                 break;
         }
     }
+
+    //导入文件进度
+    ProgressDialog dialog = null;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -158,10 +162,14 @@ public class ImportExportActivity extends BaseActivity {
             if (!TextUtils.isEmpty(path)) {
                 LogUtils.i(TAG, "importExcel File Path: " + path);
                 if ((path.endsWith(".xlsx") || path.endsWith(".xls"))) {
-                    ExcelUtils.importExcel(activity, path, new ExcelUtils.ICallBackImport() {
+                    dialog = new ProgressDialog(activity);
+                    dialog.setMessage("正在导入...");
+                    dialog.show();
+                    ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
 
                         @Override
                         public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
+                            dialog.dismiss();
                             ToastUtils.showSucessLong(activity, "导入成功！" +
                                     "\n日账记录：" + day_count +
                                     "\n月账记录：" + month_count +
@@ -174,6 +182,7 @@ public class ImportExportActivity extends BaseActivity {
 
                         @Override
                         public void callback(String errorMsg) {
+                            dialog.dismiss();
                             ToastUtils.showErrorLong(activity, errorMsg);
                         }
                     });

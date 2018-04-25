@@ -52,6 +52,15 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/useTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记账时间"
+            android:padding="10dp"
+            android:textColor="@color/month_record"
+            android:textSize="@dimen/bigtextSize" />
+
         <LinearLayout
             android:id="@+id/last_layout"
             android:layout_width="match_parent"

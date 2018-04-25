@@ -1,8 +1,5 @@
 package com.fengyang.tallynote.utils;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-
 import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.database.MemoNoteDao;
@@ -470,10 +467,8 @@ public class ExcelUtils {
      * 导入本地Excel文件到数据库
      * 如果表单中没有数据不覆盖已有数据
      */
-    public static void importExcel(Activity activity, String filePath, ICallBackImport callBackImport) {
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setMessage("正在导入...");
-        dialog.show();
+    public static void importExcel(String filePath, ICallBackImport callBackImport) {
+
         String tag = "importExcel";
         int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0, memo_count = 0, notepad_count = 0;
         try {
@@ -601,7 +596,6 @@ public class ExcelUtils {
                                 exportNotePad(null);
                             }
                     } else {
-                        dialog.dismiss();
                         callBackImport.callback("导入失败！原因：非本APP导出的文件！");
                         return;
                     }
@@ -611,11 +605,9 @@ public class ExcelUtils {
 
             if (callBackImport != null) {
                 if (day_count > 0 || day_history_count > 0 || month_count > 0 || income_count > 0 || notepad_count > 0) {
-                    dialog.dismiss();
                     callBackImport.callback(day_count, month_count, income_count, day_history_count, memo_count, notepad_count);
                     exportAll(null);
                 } else {
-                    dialog.dismiss();
                     callBackImport.callback("导入失败, 原因：表单中没有可解析的数据！");
                 }
             }

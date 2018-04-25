@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
-import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
@@ -78,7 +77,7 @@ public class MonthNoteAdapter extends BaseAdapter {
         viewHolder.month_duration.setText(monthNote.getDuration());
         Double balance = Double.parseDouble(monthNote.getBalance());
         Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
-        LogUtils.i("balance_diff", StringUtils.showPrice((actual_balance - balance) + ""));
+//        LogUtils.i("balance_diff", StringUtils.showPrice((actual_balance - balance) + ""));
 
         //实际结余和结余比较
         String conStr;
@@ -92,7 +91,7 @@ public class MonthNoteAdapter extends BaseAdapter {
             String conStr2;
             viewHolder.month_diff.setVisibility(View.VISIBLE);
             Double last_balance = Double.parseDouble(monthNote.getLast_balance());
-            LogUtils.i("month_diff", StringUtils.showPrice((actual_balance - last_balance) + ""));
+//            LogUtils.i("month_diff", StringUtils.showPrice((actual_balance - last_balance) + ""));
             if (actual_balance - last_balance > 0) conStr2 = "与上月差额：↑ ";
             else conStr2 = "与上月差额：↓ ";
             viewHolder.month_diff.setText(conStr2 + StringUtils.showPrice(Math.abs((actual_balance - last_balance)) + ""));

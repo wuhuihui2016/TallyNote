@@ -193,7 +193,9 @@ public class NewMonthActivity extends BaseActivity {
                                     if (getIntent().hasExtra("list")) {
                                         sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
                                     } else {
-                                        startActivity(new Intent(activity, MonthListActivity.class));
+                                        Intent intent = new Intent(activity, MonthListActivity.class);
+                                        intent.putExtra("flag", true);
+                                        startActivity(intent);
                                     }
                                     finish();
                                 } else ToastUtils.showErrorLong(activity, "新增月账单失败！");

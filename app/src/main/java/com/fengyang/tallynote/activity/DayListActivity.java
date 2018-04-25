@@ -20,6 +20,7 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
+import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ViewUtils;
@@ -112,6 +113,13 @@ public class DayListActivity extends BaseActivity {
                 public void onClick(View v) {
                     popupWindow.dismiss();
                     ExcelUtils.exportDayNote(callBackExport);
+                }
+            });
+            layout.findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                    FileUtils.uploadFile(activity);
                 }
             });
             layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
