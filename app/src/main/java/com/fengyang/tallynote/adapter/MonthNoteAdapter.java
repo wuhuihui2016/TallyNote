@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.model.MonthNote;
+import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.StringUtils;
 
 import java.util.List;
@@ -74,7 +75,13 @@ public class MonthNoteAdapter extends BaseAdapter {
             viewHolder.month_remark.setText(monthNote.getRemark());
         else viewHolder.month_remark.setText("无");
 
-        viewHolder.month_duration.setText(monthNote.getDuration());
+        String duration = monthNote.getDuration();
+        if (duration.contains("-")) {
+            int days = DateUtils.getDaysBetween(duration.split("-")[0], duration.split("-")[1]);
+            viewHolder.month_duration.setText(monthNote.getDuration() + " (" + days + "天)");
+        } else {
+            viewHolder.month_duration.setText(monthNote.getDuration());
+        }
         Double balance = Double.parseDouble(monthNote.getBalance());
         Double actual_balance = Double.parseDouble(monthNote.getActual_balance());
 //        LogUtils.i("balance_diff", StringUtils.showPrice((actual_balance - balance) + ""));

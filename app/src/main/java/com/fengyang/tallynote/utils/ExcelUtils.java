@@ -614,7 +614,6 @@ public class ExcelUtils {
             book.close();
         } catch (Exception e) {
             LogUtils.e(TAG + "-importExcel", e.toString());
-            dialog.dismiss();
             callBackImport.callback("导入失败！");
         }
     }
