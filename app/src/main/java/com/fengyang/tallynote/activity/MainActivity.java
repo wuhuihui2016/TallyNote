@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity {
                         fragments.add(new IncomeFragment());
                         fragments.add(new MineFragment());
 
-                        viewPager = (ViewPager) findViewById(R.id.viewpager);
+                        viewPager = (ViewPager) findViewById(R.id.main_viewPager);
                         adapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), viewPager, fragments);
                         adapter.setOnExtraPageChangeListener(new FragmentViewPagerAdapter.OnExtraPageChangeListener() {
                             @Override
@@ -262,7 +262,7 @@ public class MainActivity extends BaseActivity {
             popupWindow.showAsDropDown(findViewById(R.id.addNote), 50, 20);
             popupWindow.setAnimationStyle(R.style.popwin_anim_style);
 
-            layout.findViewById(R.id.commitDNote).setOnClickListener(
+            layout.findViewById(R.id.newDNote).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -271,7 +271,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
             );
-            layout.findViewById(R.id.commitMNote).setOnClickListener(
+            layout.findViewById(R.id.newMNote).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -280,7 +280,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
             );
-            layout.findViewById(R.id.commitIncome).setOnClickListener(
+            layout.findViewById(R.id.newIncome).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -289,7 +289,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
             );
-            layout.findViewById(R.id.commitMemo).setOnClickListener(
+            layout.findViewById(R.id.newMemo).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -298,7 +298,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
             );
-            layout.findViewById(R.id.commitNotepad).setOnClickListener(
+            layout.findViewById(R.id.newNotepad).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

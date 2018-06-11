@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -294,14 +295,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/commitNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:background="@drawable/shape_month"
-            android:onClick="onClick"
-            android:text="提交月账单" />
     </LinearLayout>
 
 </ScrollView>

@@ -1,34 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:background="@color/gray">
 
-    <EditText
-        android:id="@+id/contentEt"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shape_write"
-        android:gravity="top|left"
-        android:hint="接下来我要做什么..."
-        android:lines="10"
-        android:textSize="@dimen/bigtextSize"
-        android:maxLength="200" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/words_numTv"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/contentEt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="0/200字"
-            android:textColor="@color/darker_gray" />
-    </RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_white"
+            android:gravity="top|left"
+            android:hint="接下来我要做什么..."
+            android:lines="10"
+            android:maxLength="200"
+            android:textSize="@dimen/bigtextSize" />
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/words_numTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0/200字"
+                android:textColor="@color/darker_gray" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

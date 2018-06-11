@@ -15,6 +15,7 @@ import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
@@ -104,10 +105,10 @@ public class ImportExportActivity extends BaseActivity {
             case R.id.import2file4Other:
                 if (FileUtils.isSDCardAvailable()) {
 
-                    DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
+                    DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，是否继续导入？",
+                            "导入", new DialogListener() {
                         @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
+                        public void onClick() {
                             try {
                                 //跳转系统文件目录
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -118,10 +119,9 @@ public class ImportExportActivity extends BaseActivity {
                                 ToastUtils.showToast(context, true, "Please install a File Manager.");
                             }
                         }
-                    }, new DialogUtils.DialogListener() {
+                    },"取消", new DialogListener() {
                         @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
+                        public void onClick() {
                         }
                     });
 

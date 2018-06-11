@@ -215,10 +215,12 @@ public class TallyFragment extends Fragment {
                     break;
 
                 case R.id.last_layout:
+                case R.id.toMonthNotes:
                     startActivity(new Intent(activity, MonthListActivity.class));
                     break;
 
                 case R.id.cur_day_layout:
+                case R.id.toDayNotes:
                     startActivity(new Intent(activity, DayListActivity.class));
                     break;
             }

@@ -99,7 +99,7 @@
                     android:layout_gravity="bottom"
                     android:background="@color/transparent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/main_top_arrow" />
+                    android:src="@drawable/more_icon" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -144,14 +144,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp">
 
-                    <ImageView
+                    <ImageButton
+                        android:id="@+id/toDayNotes"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="bottom"
                         android:background="@color/transparent"
                         android:scaleType="centerInside"
-                        android:src="@drawable/main_top_arrow" />
+                        android:src="@drawable/more_icon" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -207,7 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/shape_write"
+            android:background="@drawable/shape_white"
             android:orientation="vertical"
             android:visibility="gone" />
 
@@ -232,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/shape_write"
+            android:background="@drawable/shape_white"
             android:visibility="gone" />
 
     </LinearLayout>

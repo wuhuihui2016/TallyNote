@@ -18,10 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info"
+        android:layout_marginTop="10dp"
         android:divider="@color/income_record"
         android:dividerHeight="2dp"
-        android:layout_marginTop="10dp"
-        android:listSelector="@color/transparent" />
+        android:listSelector="@color/transparent"
+        android:padding="10dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/emptyView"

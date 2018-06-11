@@ -14,6 +14,7 @@ import com.fengyang.tallynote.database.DayNoteDao;
 import com.fengyang.tallynote.model.DayNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.StringUtils;
@@ -95,25 +96,25 @@ public class DayNoteAdapter extends BaseAdapter {
             viewHolder.day_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                            DayNoteDao.delDNote(dayNote);
-                            dayNotes = DayNoteDao.getDayNotes();
-                            notifyDataSetChanged();
+                    DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
+                            "删除", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    DayNoteDao.delDNote(dayNote);
+                                    dayNotes = DayNoteDao.getDayNotes();
+                                    notifyDataSetChanged();
 
-                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
+                                    activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
 
-                            ExcelUtils.exportDayNote(null);
+                                    ExcelUtils.exportDayNote(null);
 
-                        }
-                    }, new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                        }
-                    });
+                                }
+                            },
+                            "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
                 }
             });
         } else viewHolder.day_del.setVisibility(View.GONE);

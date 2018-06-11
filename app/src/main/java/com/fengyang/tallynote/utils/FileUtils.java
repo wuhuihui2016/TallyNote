@@ -160,7 +160,7 @@ public class FileUtils {
                 //获得需要上传的文件
                 File file = getTallyNoteFile();
                 if (file == null) {
-                    DialogUtils.showMsgDialog(activity, "", "文件不存在~");
+                    DialogUtils.showMsgDialog(activity, "文件不存在~");
                     return;
                 }
 
@@ -172,13 +172,13 @@ public class FileUtils {
                 if (isInstalledAPP(activity, name)) {
                     share.setPackage(name);
                 } else {
-                    DialogUtils.showMsgDialog(activity, "", "没有找到微信~");
+                    DialogUtils.showMsgDialog(activity, "没有找到微信~");
                     return;
                 }
 
                 activity.startActivity(Intent.createChooser(share, "上传文件"));
             } else {
-                DialogUtils.showMsgDialog(activity, "", "当前没有WIFI，不能上传~");
+                DialogUtils.showMsgDialog(activity, "当前没有WIFI，不能上传~");
             }
         } catch (Exception e) {
             e.printStackTrace();

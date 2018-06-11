@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.utils.AppManager;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -75,18 +76,17 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                 @Override
                 public void onClick(View v) {
                     if (TAG.contains("New")) {
-                        DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
-                                new DialogUtils.DialogListener() {
+                        DialogUtils.showMsgDialog(activity, "退出本次编辑",
+                                "退出", new DialogListener() {
                                     @Override
-                                    public void onClick(View v) {
-                                        super.onClick(v);
+                                    public void onClick() {
                                         finish();
-
                                     }
-                                }, new DialogUtils.DialogListener() {
+                                },
+                                "取消", new DialogListener() {
                                     @Override
-                                    public void onClick(View v) {
-                                        super.onClick(v);
+                                    public void onClick() {
+
                                     }
                                 });
                     } else {
@@ -172,17 +172,16 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void callback(boolean sucess, final String fileName) {
             if (sucess) {
-                DialogUtils.showMsgDialog(activity, "导出成功", fileName,
-                        "查看", new DialogUtils.DialogListener() {
+                DialogUtils.showMsgDialog(activity, "导出成功\n" + fileName,
+                        "查看", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                                 WPSUtils.openFile(context, fileName);
                             }
-                        }, "忽略", new DialogUtils.DialogListener() {
+                        },
+                        "忽略", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                             }
                         });
             } else ToastUtils.showErrorLong(activity, "导出失败！");
@@ -207,18 +206,17 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     public void onBackPressed() {
         if (isOtherActivity()) {
             if (TAG.contains("New")) {
-                DialogUtils.showMsgDialog(activity, "退出编辑提示", "退出本次编辑",
-                        new DialogUtils.DialogListener() {
+                DialogUtils.showMsgDialog(activity, "退出本次编辑",
+                        "退出", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                                 finish();
-
                             }
-                        }, new DialogUtils.DialogListener() {
+                        },
+                        "取消", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
+
                             }
                         });
             } else {

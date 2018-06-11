@@ -59,7 +59,7 @@ public class IncomeListActivity extends BaseActivity {
     }
 
     private void initView() {
-        //新增或完成后广播接收
+        //提交或完成后广播接收
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ContansUtils.ACTION_INCOME);
         registerReceiver(myReceiver, intentFilter);
@@ -110,7 +110,7 @@ public class IncomeListActivity extends BaseActivity {
         NotificationUtils.cancel();//关闭通知
     }
 
-    //新增或完成后刷新界面
+    //提交或完成后刷新界面
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

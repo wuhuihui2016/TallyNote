@@ -10,6 +10,7 @@ import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 
@@ -47,22 +48,21 @@ public class NotePadDetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
 
-                        DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                                NotePadDao.delNotePad(notePad);
-                                ExcelUtils.exportNotePad(null);
-                                sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
-                                finish();
+                    DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
+                            "删除", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    NotePadDao.delNotePad(notePad);
+                                    ExcelUtils.exportNotePad(null);
+                                    sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
+                                    finish();
 
-                            }
-                        }, new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                            }
-                        });
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
                 }
             });
 

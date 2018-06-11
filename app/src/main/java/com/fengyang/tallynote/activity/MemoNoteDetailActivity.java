@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
@@ -12,6 +11,7 @@ import com.fengyang.tallynote.database.MemoNoteDao;
 import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -24,7 +24,6 @@ import com.fengyang.tallynote.utils.ToastUtils;
 public class MemoNoteDetailActivity extends BaseActivity {
 
     private TextView time, content;
-    private Button finishNote;
     private MemoNote memoNote;
     public static final int REQUEST_TRANSFOR = 1;
 
@@ -35,7 +34,6 @@ public class MemoNoteDetailActivity extends BaseActivity {
 
         time = (TextView) findViewById(R.id.time);
         content = (TextView) findViewById(R.id.content);
-        finishNote = (Button) findViewById(R.id.finishNote);
 
         memoNote = (MemoNote) getIntent().getSerializableExtra("memoNote");
 
@@ -60,6 +58,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
 
     /**
      * 显示备忘录的状态
+     *
      * @param isFinished
      */
     private void showStatus(boolean isFinished) {
@@ -74,34 +73,32 @@ public class MemoNoteDetailActivity extends BaseActivity {
                     startActivityForResult(intent, REQUEST_TRANSFOR);
                 }
             });
-            finishNote.setVisibility(View.VISIBLE);
-            finishNote.setOnClickListener(new View.OnClickListener() {
+
+            setRightBtnListener("完成", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    DialogUtils.showMsgDialog(activity, "完成提示", "是否确定完成此条备忘录", new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                            if (MemoNoteDao.finishMemoNote(memoNote)) {
-                                ExcelUtils.exportMemoNote(null);
-                                ToastUtils.showSucessLong(activity, "完成备忘录成功！");
-                                showStatus(true);
-                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
-                            } else {
-                                ToastUtils.showErrorLong(activity, "完成备忘录失败！");
-                            }
-                        }
-                    }, new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                        }
-                    });
+                    DialogUtils.showMsgDialog(activity, "是否确定完成此条备忘录",
+                            "提交", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    if (MemoNoteDao.finishMemoNote(memoNote)) {
+                                        ExcelUtils.exportMemoNote(null);
+                                        ToastUtils.showSucessLong(activity, "完成备忘录成功！");
+                                        showStatus(true);
+                                        sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                    } else {
+                                        ToastUtils.showErrorLong(activity, "完成备忘录失败！");
+                                    }
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
                 }
             });
         } else {
-            finishNote.setVisibility(View.GONE);
             //增加删除线
             content.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
@@ -109,22 +106,21 @@ public class MemoNoteDetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
 
-                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                            MemoNoteDao.delMemoNote(memoNote);
-                            ExcelUtils.exportMemoNote(null);
-                            sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
-                            finish();
+                    DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
+                            "删除", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    MemoNoteDao.delMemoNote(memoNote);
+                                    ExcelUtils.exportMemoNote(null);
+                                    sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                    finish();
 
-                        }
-                    }, new DialogUtils.DialogListener() {
-                        @Override
-                        public void onClick(View v) {
-                            super.onClick(v);
-                        }
-                    });
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
                 }
             });
         }
@@ -132,6 +128,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
 
     /**
      * 参数回传，刷新数据
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -139,7 +136,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_TRANSFOR){
+        if (resultCode == RESULT_OK && requestCode == REQUEST_TRANSFOR) {
             memoNote = (MemoNote) data.getSerializableExtra("memoNote");
             LogUtils.i(TAG + "--onActivityResult", memoNote.toString());
             init();

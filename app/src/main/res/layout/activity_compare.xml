@@ -20,7 +20,8 @@
         android:layout_below="@id/info"
         android:divider="@color/transparent"
         android:dividerHeight="10dp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/emptyView"

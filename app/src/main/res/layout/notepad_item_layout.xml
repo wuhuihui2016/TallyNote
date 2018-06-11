@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="@drawable/shape_write"
+            android:background="@drawable/shape_white"
             android:text="标签"
             android:textColor="@color/blue"
             android:textSize="@dimen/littletextSize" />

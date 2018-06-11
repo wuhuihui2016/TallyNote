@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.FileExplorerAdapter;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.FileUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -94,27 +95,28 @@ public class FileExplorerActivity extends BaseActivity {
         listView.setEmptyView(findViewById(R.id.emptyView));
 
         if (getIntent().hasExtra("import")) {
-            DialogUtils.showMsgDialog(activity, "导入提示", "从文件中导入将覆盖已有数据，是否继续导入？", new DialogUtils.DialogListener() {
-                @Override
-                public void onClick(View v) {
-                    super.onClick(v);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，\n是否继续导入？",
+                    "导入", new DialogListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent();
-                            intent.putExtra("path", fileList.get(position).getPath());
-                            setResult(Activity.RESULT_OK, intent);
+                        public void onClick() {
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("path", fileList.get(position).getPath());
+                                    setResult(Activity.RESULT_OK, intent);
+                                    finish();
+                                }
+                            });
+
+                        }
+                    },
+                    "取消", new DialogListener() {
+                        @Override
+                        public void onClick() {
                             finish();
                         }
                     });
-                }
-            }, new DialogUtils.DialogListener() {
-                @Override
-                public void onClick(View v) {
-                    super.onClick(v);
-                    finish();
-                }
-            });
         }
     }
 
@@ -202,22 +204,21 @@ public class FileExplorerActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     if (adapter.selList.size() > 0) {
-                        DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除选定的" + adapter.selList.size() + "文件", new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                                for (int i = 0; i < adapter.selList.size(); i++)
-                                    adapter.selList.get(i).delete();
-                                adapter.selList.clear();
-                                choose_layout.setVisibility(View.GONE);
-                                init();
-                            }
-                        }, new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                            }
-                        });
+                        DialogUtils.showMsgDialog(activity, "是否确定删除选定的" + adapter.selList.size() + "文件",
+                                "删除", new DialogListener() {
+                                    @Override
+                                    public void onClick() {
+                                        for (int i = 0; i < adapter.selList.size(); i++)
+                                            adapter.selList.get(i).delete();
+                                        adapter.selList.clear();
+                                        choose_layout.setVisibility(View.GONE);
+                                        init();
+                                    }
+                                }, "取消", new DialogListener() {
+                                    @Override
+                                    public void onClick() {
+                                    }
+                                });
                     } else ToastUtils.showWarningShort(activity, "请至少选择1个文件！");
 
                 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 左侧屏幕外：-100%p   屏幕内：0   右侧屏幕外：100%p-->
+    <!-- 从左侧屏幕外进入屏幕 -->
+    <translate
+        android:duration="600"
+        android:fromXDelta="-100%p"
+        android:toXDelta="0" />
+</set>

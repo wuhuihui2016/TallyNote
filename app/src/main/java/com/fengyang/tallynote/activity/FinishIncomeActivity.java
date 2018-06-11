@@ -11,6 +11,7 @@ import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.database.IncomeNoteDao;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -49,8 +50,8 @@ public class FinishIncomeActivity extends BaseActivity {
                     incomeNote.setFinalCash(finalCash);
                     incomeNote.setFinalCashGo(finalCashGo);
                     LogUtils.i("commit", incomeNote.toString());
-                    DialogUtils.showMsgDialog(activity, "完成理财",
-                            "投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
+                    DialogUtils.showMsgDialog(activity, "完成理财\n" +
+                                    "投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
                                     "\n预期年化：" + incomeNote.getIncomeRatio() +
                                     " %\n投资期限：" + incomeNote.getDays() +
                                     " 天\n投资时段：" + incomeNote.getDurtion() +
@@ -59,10 +60,9 @@ public class FinishIncomeActivity extends BaseActivity {
                                     "\n投资说明：" + incomeNote.getRemark() +
                                     "\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash()) +
                                     "\n提现去处：" + incomeNote.getFinalCashGo(),
-                            new DialogUtils.DialogListener() {
+                            "提交", new DialogListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
+                                public void onClick() {
                                     if (IncomeNoteDao.finishIncome(incomeNote)) {
                                         ToastUtils.showSucessLong(activity, "完成理财成功！");
                                         ExcelUtils.exportIncomeNote(null);
@@ -70,10 +70,10 @@ public class FinishIncomeActivity extends BaseActivity {
                                         finish();
                                     } else ToastUtils.showErrorLong(activity, "完成理财失败！");
                                 }
-                            }, new DialogUtils.DialogListener() {
+                            },
+                            "返回查看", new DialogListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
+                                public void onClick() {
                                 }
                             });
                 } else {
@@ -84,7 +84,8 @@ public class FinishIncomeActivity extends BaseActivity {
 
         incomeNote = (IncomeNote) getIntent().getSerializableExtra("incomeNote");
         income_info = (TextView) findViewById(R.id.income_info);
-        income_info.setText("投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
+        income_info.setText("理财ID：" + StringUtils.showPrice(incomeNote.getId()) +
+                "投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
                 "\n预期年化：" + incomeNote.getIncomeRatio() +
                 " %\n投资期限：" + incomeNote.getDays() +
                 " 天\n投资时段：" + incomeNote.getDurtion() +

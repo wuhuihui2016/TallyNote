@@ -16,6 +16,7 @@ import com.fengyang.tallynote.adapter.NumAdapter;
 import com.fengyang.tallynote.utils.AppManager;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
@@ -165,17 +166,15 @@ public class SetOrCheckPwdActivity extends BaseActivity {
 
                         if (isSetting) {
                             final String finalPassword = password;
-                            DialogUtils.showMsgDialog(activity, "设置密码", "pwdKey：" + password, new DialogUtils.DialogListener() {
+                            DialogUtils.showMsgDialog(activity, "设置密码\n" + "pwdKey：" + password, "确定", new DialogListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
+                                public void onClick() {
                                     ContansUtils.put(ContansUtils.PWD, finalPassword);
                                     skip();
                                 }
-                            }, new DialogUtils.DialogListener() {
+                            }, "取消", new DialogListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    super.onClick(v);
+                                public void onClick() {
                                     pwds.clear();
                                     for (int i = 0; i < textViews.size(); i++) {
                                         textViews.get(i).setText("");

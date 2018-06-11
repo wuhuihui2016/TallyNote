@@ -16,9 +16,9 @@
         android:id="@+id/type_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_below="@+id/spinner">
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,8 +59,8 @@
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:textColor="@color/white"
-                android:text="@string/high_consume" />
+                android:text="@string/high_consume"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/type_layout"
         android:background="@color/remark_bkg"
-        android:padding="5dp"
+        android:padding="10dp"
         android:textColor="@color/day_record"
         android:textSize="@dimen/smalltextSize" />
 
@@ -122,13 +122,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info"
-        android:layout_margin="10dp"
-        android:layout_marginTop="10dp"
         android:background="@drawable/shape_day"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" />
+        android:padding="10dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/emptyView"

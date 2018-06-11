@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/commitDNote"
+            android:id="@+id/newDNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center"
@@ -38,7 +38,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/commitMNote"
+            android:id="@+id/newMNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -62,7 +62,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/commitIncome"
+            android:id="@+id/newIncome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -87,7 +87,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/commitMemo"
+            android:id="@+id/newMemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -113,7 +113,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/commitNotepad"
+            android:id="@+id/newNotepad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

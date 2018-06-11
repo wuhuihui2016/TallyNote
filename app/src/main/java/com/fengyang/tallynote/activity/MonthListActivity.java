@@ -21,6 +21,7 @@ import com.fengyang.tallynote.database.MonthNoteDao;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DelayTask;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.FileUtils;
@@ -100,7 +101,7 @@ public class MonthListActivity extends BaseActivity {
         });
     }
 
-    //新增月账监听
+    //提交月账监听
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,17 +120,15 @@ public class MonthListActivity extends BaseActivity {
         new DelayTask(500, new DelayTask.ICallBack() {
             @Override
             public void deal() {
-                DialogUtils.showMsgDialog3(activity, "新月账单已生成", "是否现在上传数据？",
-                        "上传", new DialogUtils.DialogListener() {
+                DialogUtils.showMsgDialog(activity, "新月账单已生成,是否现在上传数据？",
+                        "上传", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                                 FileUtils.uploadFile(activity);
                             }
-                        }, "查看", new DialogUtils.DialogListener() {
+                        },"查看", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                                 WPSUtils.openFile(context, FileUtils.getTallyNoteFile().getPath());
                             }
                         });

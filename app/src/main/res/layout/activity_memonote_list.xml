@@ -75,7 +75,9 @@
         android:layout_below="@id/info_layout"
         android:layout_marginTop="10dp"
         android:divider="@color/line"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:padding="10dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/emptyView"

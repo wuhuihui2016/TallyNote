@@ -14,7 +14,7 @@
         android:gravity="top|left"
         android:textIsSelectable="true"
         android:textSize="@dimen/bigtextSize"
-        android:background="@drawable/shape_write"/>
+        android:background="@drawable/shape_white"/>
 
     <TextView
         android:id="@+id/time"
@@ -26,15 +26,5 @@
         android:text="今天"
         android:textColor="@color/darker_gray"
         android:textSize="@dimen/smalltextSize" />
-
-    <Button
-        android:id="@+id/finishNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@android:color/holo_red_light"
-        android:onClick="onClick"
-        android:layout_alignParentBottom="true"
-        android:text="完成" />
 
 </RelativeLayout>

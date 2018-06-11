@@ -21,6 +21,7 @@ import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.model.MonthNote;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogListener;
 import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
@@ -103,6 +104,65 @@ public class NewMonthActivity extends BaseActivity {
         remarkEt = (EditText) findViewById(R.id.remarkEt);
         actual_balanceEt = (TextView) findViewById(R.id.actual_balanceEt);
 
+        setRightBtnListener("提交", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String last_balance = StringUtils.formatePrice(last_balanceEt.getText().toString());
+                String pay = StringUtils.formatePrice(payEt.getText().toString());
+                String salary = StringUtils.formatePrice(salaryEt.getText().toString());
+                String income = StringUtils.formatePrice(incomeEt.getText().toString());
+                String balance = StringUtils.formatePrice(balanceEt.getText().toString());
+                String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
+                String duration = durationEt.getText().toString();
+                String remark = remarkEt.getText().toString();
+
+                if (!TextUtils.isEmpty(last_balance) && !TextUtils.isEmpty(pay) &&
+                        !TextUtils.isEmpty(salary) && !TextUtils.isEmpty(balance)
+                        && !TextUtils.isEmpty(actual_balance) && !TextUtils.isEmpty(duration)) {
+                    final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income,
+                            balance, actual_balance, duration, remark, DateUtils.formatDateTime());
+                    LogUtils.i("commit", monthNote.toString());
+                    DialogUtils.showMsgDialog(activity, "提交月账单\n" +
+                                    "上次结余：" + StringUtils.showPrice(monthNote.getLast_balance()) +
+                                    "\n本次支出：" + StringUtils.showPrice(monthNote.getPay()) +
+                                    "\n本次工资：" + StringUtils.showPrice(monthNote.getSalary()) +
+                                    "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) +
+                                    "\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) +
+                                    "\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) +
+                                    "\n月结说明：" + monthNote.getRemark(),
+                            "提交", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    if (MonthNoteDao.newMNote(monthNote)) {
+                                        ToastUtils.showSucessLong(activity, "提交月账单成功！");
+                                        ExcelUtils.exportMonthNote(null);
+                                        if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
+                                            if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
+                                                LogUtils.i("newDNotes4History", DayNoteDao.getDayNotes4History(monthNote.getDuration()).toString());
+                                                ExcelUtils.exportDayNote4History(null);
+                                            }
+                                        }
+                                        if (getIntent().hasExtra("list")) {
+                                            sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
+                                        } else {
+                                            Intent intent = new Intent(activity, MonthListActivity.class);
+                                            intent.putExtra("flag", true);
+                                            startActivity(intent);
+                                        }
+                                        finish();
+                                    } else ToastUtils.showErrorLong(activity, "提交月账单失败！");
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
+                } else {
+                    ToastUtils.showToast(context, true, "请完善必填信息！");
+                }
+            }
+        });
+
     }
 
     @Override
@@ -135,17 +195,15 @@ public class NewMonthActivity extends BaseActivity {
 
                 final String calculate = (last_balance - pay + salary + income) + "";
 
-                DialogUtils.showMsgDialog(activity, "计算结余", meaasge,
-                        new DialogUtils.DialogListener() {
+                DialogUtils.showMsgDialog(activity, "计算结余：\n" + meaasge,
+                        "计算", new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                                 balanceEt.setText(StringUtils.formatePrice(calculate));
                             }
-                        }, new DialogUtils.DialogListener() {
+                        }, "取消",new DialogListener() {
                             @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
+                            public void onClick() {
                             }
                         });
             } else ToastUtils.showToast(context, true, "上次结余，支出，工资等信息不能为空！");
@@ -153,62 +211,6 @@ public class NewMonthActivity extends BaseActivity {
         } else if (v.getId() == R.id.actual_balanceEt) {
             initPopupWindow();//输入各类资产结算实际结余
 
-        } else if (v.getId() == R.id.commitNote) {
-            String last_balance = StringUtils.formatePrice(last_balanceEt.getText().toString());
-            String pay = StringUtils.formatePrice(payEt.getText().toString());
-            String salary = StringUtils.formatePrice(salaryEt.getText().toString());
-            String income = StringUtils.formatePrice(incomeEt.getText().toString());
-            String balance = StringUtils.formatePrice(balanceEt.getText().toString());
-            String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
-            String duration = durationEt.getText().toString();
-            String remark = remarkEt.getText().toString();
-
-            if (!TextUtils.isEmpty(last_balance) && !TextUtils.isEmpty(pay) &&
-                    !TextUtils.isEmpty(salary) && !TextUtils.isEmpty(balance)
-                    && !TextUtils.isEmpty(actual_balance) && !TextUtils.isEmpty(duration)) {
-                final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income,
-                        balance, actual_balance, duration, remark, DateUtils.formatDateTime());
-                LogUtils.i("commit", monthNote.toString());
-                DialogUtils.showMsgDialog(activity, "新增月账单",
-                        "上次结余：" + StringUtils.showPrice(monthNote.getLast_balance()) +
-                                "\n本次支出：" + StringUtils.showPrice(monthNote.getPay()) +
-                                "\n本次工资：" + StringUtils.showPrice(monthNote.getSalary()) +
-                                "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) +
-                                "\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) +
-                                "\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) +
-                                "\n月结说明：" + monthNote.getRemark(),
-                        new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                                if (MonthNoteDao.newMNote(monthNote)) {
-                                    ToastUtils.showSucessLong(activity, "新增月账单成功！");
-                                    ExcelUtils.exportMonthNote(null);
-                                    if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
-                                        if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
-                                            LogUtils.i("newDNotes4History", DayNoteDao.getDayNotes4History(monthNote.getDuration()).toString());
-                                            ExcelUtils.exportDayNote4History(null);
-                                        }
-                                    }
-                                    if (getIntent().hasExtra("list")) {
-                                        sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
-                                    } else {
-                                        Intent intent = new Intent(activity, MonthListActivity.class);
-                                        intent.putExtra("flag", true);
-                                        startActivity(intent);
-                                    }
-                                    finish();
-                                } else ToastUtils.showErrorLong(activity, "新增月账单失败！");
-                            }
-                        }, new DialogUtils.DialogListener() {
-                            @Override
-                            public void onClick(View v) {
-                                super.onClick(v);
-                            }
-                        });
-            } else {
-                ToastUtils.showToast(context, true, "请完善必填信息！");
-            }
         }
     }
 

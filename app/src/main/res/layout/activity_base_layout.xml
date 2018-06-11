@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:background="@color/app_color"
         android:paddingLeft="10dp"
-        android:paddingRight="20dp">
+        android:paddingRight="10dp">
 
         <ImageButton
             android:id="@+id/return_btn"
@@ -41,11 +41,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/transparent"
-            android:textColor="@color/white"
-            android:text="@string/commit"
             android:gravity="right|center_vertical"
+            android:text="@string/commit"
+            android:textColor="@color/white"
             android:textSize="@dimen/bigtextSize"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/right_imgbtn"
@@ -53,12 +53,12 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@color/transparent"
             android:clickable="true"
             android:onClick="onClick"
-            android:background="@color/transparent"
             android:scaleType="centerInside"
-            android:visibility="gone"
-            android:src="@drawable/icon_action_bar_more"/>
+            android:src="@drawable/icon_action_bar_more"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

@@ -16,16 +16,17 @@
     <TextView
         android:id="@+id/chartAnalyse"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:background="@color/month_record"
-        android:clickable="true"
         android:layout_marginTop="10dp"
+        android:background="@drawable/shape_month"
+        android:clickable="true"
         android:onClick="onClick"
         android:padding="5dp"
         android:text="月账分析"
-        android:textColor="@color/white"
+        android:gravity="center"
+        android:textColor="@color/month_record"
         android:textSize="@dimen/bigtextSize"
         android:visibility="gone"/>
 
@@ -34,10 +35,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/chartAnalyse"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:divider="@color/month_record"
-        android:dividerHeight="2dp" />
+        android:dividerHeight="2dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/emptyView"

@@ -1,49 +1,55 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:background="@color/gray">
 
-    <TextView
-        android:id="@+id/note_tagTv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_write"
-        android:hint="请选择你想表达的标签"
-        android:textColor="@color/app_color"
-        android:textSize="@dimen/titletextSize"/>
-
-    <com.fengyang.tallynote.view.FlowLayout
-        android:id="@+id/flowLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
-
-    <EditText
-        android:id="@+id/wordsEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/shape_write"
-        android:gravity="top|left"
-        android:hint="这一刻的想法..."
-        android:lines="10"
-        android:textSize="@dimen/bigtextSize"
-        android:maxLength="200" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/words_numTv"
-            android:layout_width="wrap_content"
+            android:id="@+id/note_tagTv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="0/200字"
-            android:textColor="@color/darker_gray" />
-    </RelativeLayout>
+            android:background="@drawable/shape_white"
+            android:hint="请选择你想表达的标签"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/titletextSize" />
 
-</LinearLayout>
+        <com.fengyang.tallynote.view.FlowLayout
+            android:id="@+id/flowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/wordsEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_white"
+            android:gravity="top|left"
+            android:hint="这一刻的想法..."
+            android:lines="10"
+            android:maxLength="200"
+            android:textSize="@dimen/bigtextSize" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/words_numTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0/200字"
+                android:textColor="@color/darker_gray" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>
