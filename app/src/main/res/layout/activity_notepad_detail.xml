@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:autoLink="all"
-        android:background="@drawable/shape_white"
+        android:background="@drawable/shape_write"
         android:gravity="top|left"
         android:hint="这一刻的想法..."
         android:textIsSelectable="true"

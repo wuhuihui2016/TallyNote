@@ -2,6 +2,7 @@ package com.fengyang.tallynote.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,7 @@ import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 import com.fengyang.tallynote.utils.WPSUtils;
 
 /**
@@ -61,6 +63,85 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         AppManager.getAppManager().addActivity(this);
 
+        ImageButton base_addNote = (ImageButton) findViewById(R.id.base_addNote);
+        if (TAG.contains("New")) {
+            base_addNote.setVisibility(View.VISIBLE);
+            base_addNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initPopupWindow();
+                }
+            });
+        } else base_addNote.setVisibility(View.GONE);
+
+    }
+
+    /**
+     * 初始化popupWindow
+     */
+    private void initPopupWindow() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = mLayoutInflater.inflate(R.layout.layout_add_note_pop, null);
+            popupWindow = new PopupWindow(layout, 400, 800);
+            ViewUtils.setPopupWindow(activity, popupWindow);
+            // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
+            popupWindow.showAsDropDown(findViewById(R.id.base_addNote), 50, 20);
+            popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+
+            layout.findViewById(R.id.newDNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            finish();
+                            startActivity(new Intent(activity, NewDayActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.newMNote).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            finish();
+                            startActivity(new Intent(activity, NewMonthActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.newIncome).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            finish();
+                            startActivity(new Intent(activity, NewIncomeActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.newMemo).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            finish();
+                            startActivity(new Intent(activity, NewMemoActivity.class));
+                        }
+                    }
+            );
+            layout.findViewById(R.id.newNotepad).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            finish();
+                            startActivity(new Intent(activity, NewNotePadActivity.class));
+                        }
+                    }
+            );
+        }
     }
 
     /**

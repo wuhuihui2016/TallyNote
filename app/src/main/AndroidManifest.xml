@@ -81,19 +81,28 @@
         <!-- 文件浏览 -->
         <activity android:name=".activity.FileExplorerActivity" />
 
+
         <!-- 备忘录列表 -->
         <activity android:name=".activity.MemoNoteListActivity" />
         <!-- 新建备忘录 -->
-        <activity android:name=".activity.NewMemoActivity" />
+        <activity
+            android:name=".activity.NewMemoActivity"
+            android:configChanges="orientation|keyboardHidden" />
         <!-- 备忘录详情 -->
         <activity android:name=".activity.MemoNoteDetailActivity" />
+
+
 
         <!-- 记事本列表 -->
         <activity android:name=".activity.NotePadListActivity" />
         <!-- 新建记事本 -->
-        <activity android:name=".activity.NewNotePadActivity" />
+        <activity
+            android:name=".activity.NewNotePadActivity"
+            android:configChanges="orientation|keyboardHidden" />
         <!-- 记事本详情 -->
         <activity android:name=".activity.NotePadDetailActivity" />
+
+
 
         <!-- 搜索 -->
         <activity android:name=".activity.SearchActivity" />

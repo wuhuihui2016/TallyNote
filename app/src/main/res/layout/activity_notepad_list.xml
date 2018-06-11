@@ -46,7 +46,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/info_layout"
         android:layout_marginTop="10dp"
-        android:background="@drawable/shape_white"
+        android:background="@drawable/shape_write"
         android:divider="@color/gray"
         android:dividerHeight="1dp"
         android:listSelector="@color/transparent"

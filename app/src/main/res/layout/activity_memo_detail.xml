@@ -14,7 +14,7 @@
         android:gravity="top|left"
         android:textIsSelectable="true"
         android:textSize="@dimen/bigtextSize"
-        android:background="@drawable/shape_white"/>
+        android:background="@drawable/shape_write"/>
 
     <TextView
         android:id="@+id/time"
