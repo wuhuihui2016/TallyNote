@@ -35,17 +35,20 @@
         <!-- 记日账 -->
         <activity
             android:name=".activity.NewDayActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
 
         <!-- 记月账 -->
         <activity
             android:name=".activity.NewMonthActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
 
         <!-- 记理财 -->
         <activity
             android:name=".activity.NewIncomeActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
 
         <!-- 完成理财 -->
         <activity
@@ -87,10 +90,10 @@
         <!-- 新建备忘录 -->
         <activity
             android:name=".activity.NewMemoActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
         <!-- 备忘录详情 -->
         <activity android:name=".activity.MemoNoteDetailActivity" />
-
 
 
         <!-- 记事本列表 -->
@@ -98,10 +101,10 @@
         <!-- 新建记事本 -->
         <activity
             android:name=".activity.NewNotePadActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
         <!-- 记事本详情 -->
         <activity android:name=".activity.NotePadDetailActivity" />
-
 
 
         <!-- 搜索 -->

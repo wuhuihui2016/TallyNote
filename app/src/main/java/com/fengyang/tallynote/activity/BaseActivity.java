@@ -63,16 +63,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         AppManager.getAppManager().addActivity(this);
 
-        ImageButton base_addNote = (ImageButton) findViewById(R.id.base_addNote);
-        if (TAG.contains("New")) {
-            base_addNote.setVisibility(View.VISIBLE);
-            base_addNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    initPopupWindow();
-                }
-            });
-        } else base_addNote.setVisibility(View.GONE);
+        findViewById(R.id.addNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initPopupWindow();
+            }
+        });
 
     }
 
@@ -88,7 +84,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             popupWindow = new PopupWindow(layout, 400, 800);
             ViewUtils.setPopupWindow(activity, popupWindow);
             // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
-            popupWindow.showAsDropDown(findViewById(R.id.base_addNote), 50, 20);
+            popupWindow.showAsDropDown(findViewById(R.id.addNote), 50, 20);
             popupWindow.setAnimationStyle(R.style.popwin_anim_style);
 
             layout.findViewById(R.id.newDNote).setOnClickListener(
@@ -96,7 +92,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            finish();
                             startActivity(new Intent(activity, NewDayActivity.class));
                         }
                     }
@@ -106,7 +101,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            finish();
                             startActivity(new Intent(activity, NewMonthActivity.class));
                         }
                     }
@@ -116,7 +110,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            finish();
                             startActivity(new Intent(activity, NewIncomeActivity.class));
                         }
                     }
@@ -126,7 +119,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            finish();
                             startActivity(new Intent(activity, NewMemoActivity.class));
                         }
                     }
@@ -136,7 +128,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            finish();
                             startActivity(new Intent(activity, NewNotePadActivity.class));
                         }
                     }

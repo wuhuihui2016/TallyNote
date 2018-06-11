@@ -5,19 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
@@ -26,12 +19,10 @@ import com.fengyang.tallynote.fragment.IncomeFragment;
 import com.fengyang.tallynote.fragment.MineFragment;
 import com.fengyang.tallynote.fragment.TallyFragment;
 import com.fengyang.tallynote.utils.ContansUtils;
-import com.fengyang.tallynote.utils.DelayTask;
 import com.fengyang.tallynote.utils.NotificationUtils;
 import com.fengyang.tallynote.utils.PermissionUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
-import com.fengyang.tallynote.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +38,6 @@ public class MainActivity extends BaseActivity {
     private int frag_index = 0; //当前加载fragment标志位
     private LinearLayout tally, income, mine;
     private TextView tally_title, income_title, mine_title;
-    private RelativeLayout cur_tab; //向导游标View
     private boolean canShow = false; //tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
     private boolean initViewed = false; //权限获取成功后初始界面标志
 
@@ -63,26 +53,7 @@ public class MainActivity extends BaseActivity {
         income_title = (TextView) findViewById(R.id.income_title);
         mine_title = (TextView) findViewById(R.id.mine_title);
 
-        cur_tab = (RelativeLayout) findViewById(R.id.cur_tab);
-        Display display = getWindow().getWindowManager().getDefaultDisplay();
-        // 得到显示屏宽度
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getMetrics(metrics);
-        // 1/3屏幕宽度
-        int tabLineLength = metrics.widthPixels / 3;
-        ViewGroup.LayoutParams lp = cur_tab.getLayoutParams();
-        lp.width = tabLineLength;
-        cur_tab.setLayoutParams(lp);
-
         NotificationUtils.notifyIncome(context); //理财到期提醒
-
-        findViewById(R.id.addNote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initPopupWindow();
-            }
-        });
-
     }
 
     @Override
@@ -108,25 +79,6 @@ public class MainActivity extends BaseActivity {
 
                             @Override
                             public void onExtraPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                                // 取得该控件的实例
-                                FrameLayout.LayoutParams ll = (FrameLayout.LayoutParams) cur_tab.getLayoutParams();
-
-                                cur_tab.setVisibility(View.VISIBLE);
-
-                                if (frag_index == position) {
-                                    ll.leftMargin = (int) (frag_index * cur_tab.getWidth() + positionOffset
-                                            * cur_tab.getWidth());
-                                } else if (frag_index > position) {
-                                    ll.leftMargin = (int) (frag_index * cur_tab.getWidth() - (1 - positionOffset) * cur_tab.getWidth());
-                                }
-                                cur_tab.setLayoutParams(ll);
-
-                                new DelayTask(200, new DelayTask.ICallBack() {
-                                    @Override
-                                    public void deal() {//游标消失
-                                        cur_tab.setVisibility(View.GONE);
-                                    }
-                                }).execute();
                             }
                         });
 
@@ -245,69 +197,6 @@ public class MainActivity extends BaseActivity {
             app_bottom.setLayoutAnimation(controller);// 设置动画
         }
 
-    }
-
-    /**
-     * 初始化popupWindow
-     */
-    private void initPopupWindow() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        } else {
-            LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View layout = mLayoutInflater.inflate(R.layout.layout_add_note_pop, null);
-            popupWindow = new PopupWindow(layout, 400, 800);
-            ViewUtils.setPopupWindow(activity, popupWindow);
-            // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
-            popupWindow.showAsDropDown(findViewById(R.id.addNote), 50, 20);
-            popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-
-            layout.findViewById(R.id.newDNote).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewDayActivity.class));
-                        }
-                    }
-            );
-            layout.findViewById(R.id.newMNote).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewMonthActivity.class));
-                        }
-                    }
-            );
-            layout.findViewById(R.id.newIncome).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewIncomeActivity.class));
-                        }
-                    }
-            );
-            layout.findViewById(R.id.newMemo).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewMemoActivity.class));
-                        }
-                    }
-            );
-            layout.findViewById(R.id.newNotepad).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewNotePadActivity.class));
-                        }
-                    }
-            );
-        }
     }
 
     @Override

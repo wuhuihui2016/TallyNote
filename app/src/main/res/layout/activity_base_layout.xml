@@ -73,7 +73,7 @@
             android:layout_height="match_parent" />
 
         <ImageButton
-            android:id="@+id/base_addNote"
+            android:id="@+id/addNote"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
