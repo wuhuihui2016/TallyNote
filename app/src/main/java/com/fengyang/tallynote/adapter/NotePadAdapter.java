@@ -8,8 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.database.NotePadDao;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.utils.DateUtils;
+import com.fengyang.tallynote.utils.DialogListener;
+import com.fengyang.tallynote.utils.DialogUtils;
+import com.fengyang.tallynote.utils.ExcelUtils;
 
 import java.util.List;
 
@@ -51,9 +55,10 @@ public class NotePadAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(activity).inflate(R.layout.notepad_item_layout, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.tag = (TextView) convertView.findViewById(R.id.tag);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.words = (TextView) convertView.findViewById(R.id.words);
+            viewHolder.del = (TextView) convertView.findViewById(R.id.del);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -62,18 +67,38 @@ public class NotePadAdapter extends BaseAdapter {
         //获取当前对象
         final NotePad notePad = notePads.get(position);
         viewHolder.time.setText(DateUtils.diffTime(notePad.getTime()));
+        String content;
         if (isShowTag) {
-            viewHolder.tag.setVisibility(View.VISIBLE);
-            viewHolder.tag.setText(NotePad.getTagList().get(notePad.getTag()));
+            content = "[" + NotePad.getTagList().get(notePad.getTag()) + "] " + notePad.getWords();
         } else {
-            viewHolder.tag.setVisibility(View.GONE);
+            content = notePad.getWords();
         }
-        viewHolder.words.setText(notePad.getWords());
+        viewHolder.words.setText(content);
+        viewHolder.del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
+                        "删除", new DialogListener() {
+                            @Override
+                            public void onClick() {
+                                NotePadDao.delNotePad(notePad);
+                                ExcelUtils.exportNotePad(null);
+                                notePads.remove(notePad);
+                                notifyDataSetChanged();
+                            }
+                        }, "取消", new DialogListener() {
+                            @Override
+                            public void onClick() {
+                            }
+                        });
+            }
+        });
 
         return convertView;
     }
 
     class ViewHolder {
-        TextView time, tag, words;
+        TextView time, words, del;
     }
 }

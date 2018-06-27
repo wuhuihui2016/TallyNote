@@ -101,6 +101,7 @@ public class NotePadListActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                position4Detail = position; //记录标志位
                 Intent intent = new Intent(context, NotePadDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("notepad", notePads.get(position));
@@ -110,13 +111,22 @@ public class NotePadListActivity extends BaseActivity {
         });
     }
 
+    private int position4Detail = -1; //列表点击item的标志位
+
     //删除后刷新界面
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ContansUtils.ACTION_NOTE)) {
-                isFirst = false;
-                getAll();
+                if (position4Detail != -1) {
+                    try {
+                        //标志位被删除，刷新列表
+                        notePads.remove(notePads.get(position4Detail));
+                        notePadAdapter.notifyDataSetChanged();
+                    } catch (Exception e){
+
+                    }
+                }
             }
         }
     };

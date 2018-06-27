@@ -77,7 +77,7 @@ public class NewIncomeActivity extends BaseActivity {
                                     " \n拟日收益：" + incomeNote.getDayIncome() +
                                     " 元/万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                                     "\n投资说明：" + incomeNote.getRemark(),
-                            "新建", new DialogListener() {
+                            "提交", new DialogListener() {
                                 @Override
                                 public void onClick() {
                                     if (IncomeNoteDao.newINote(incomeNote)) {
