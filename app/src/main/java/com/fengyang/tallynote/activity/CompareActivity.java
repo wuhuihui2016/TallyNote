@@ -57,14 +57,13 @@ public class CompareActivity extends BaseActivity {
                 }
             }
 
-            info.setText("与日收益 " + cal_result + "比较，共有 " + incomeNotes.size() + "条记录，日收益大于 "
-                    + cal_result + "的有 " + list.size() + "条记录!");
+            info.setText("日收益大于 " + cal_result + " 的有 " + list.size() + "条记录!");
             Collections.reverse(list);//倒序排列
-            listView.setAdapter(new IncomeNoteAdapter(activity, list));
+            listView.setAdapter(new IncomeNoteAdapter(activity, list, true));
 
         } else {
             Collections.reverse(incomeNotes);//倒序排列
-            listView.setAdapter(new IncomeNoteAdapter(activity, incomeNotes));
+            listView.setAdapter(new IncomeNoteAdapter(activity, incomeNotes, true));
         }
 
 

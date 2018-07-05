@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
+import com.fengyang.tallynote.activity.CompareActivity;
 import com.fengyang.tallynote.activity.FinishIncomeActivity;
 import com.fengyang.tallynote.model.IncomeNote;
 import com.fengyang.tallynote.utils.DateUtils;
@@ -22,6 +24,8 @@ import com.fengyang.tallynote.utils.StringUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.List;
+
+import static com.fengyang.tallynote.R.id.detail_layout;
 
 /**
  * Created by wuhuihui on 2017/6/23.
@@ -31,6 +35,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
     private Activity activity;
     private List<IncomeNote> incomeNotes;
 //    private boolean isLast;//列表显示按投资时间排序时，最后一个才可做删除操作
+    private boolean isCompare = false;//列表为比较收益列表
 
     public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes) {
         this.activity = activity;
@@ -42,6 +47,12 @@ public class IncomeNoteAdapter extends BaseAdapter {
 //        this.incomeNotes = incomeNotes;
 //        this.isLast = isLast;
 //    }
+
+    public IncomeNoteAdapter(Activity activity, List<IncomeNote> incomeNotes, boolean isCompare) {
+        this.activity = activity;
+        this.incomeNotes = incomeNotes;
+        this.isCompare = isCompare;
+    }
 
     @Override
     public int getCount() {
@@ -64,6 +75,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(activity).inflate(R.layout.income_item_layout, null);
             viewHolder = new ViewHolder();
+            viewHolder.detail_layout = (LinearLayout) convertView.findViewById(detail_layout);
             viewHolder.income_del = (ImageView) convertView.findViewById(R.id.income_delete);
             viewHolder.income_time = (TextView) convertView.findViewById(R.id.income_time);
             viewHolder.income_money = (TextView) convertView.findViewById(R.id.income_money);
@@ -146,6 +158,17 @@ public class IncomeNoteAdapter extends BaseAdapter {
                     "已提现，" + incomeNote.getFinalCashGo());
         }
 
+        if (!isCompare) {
+            viewHolder.detail_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(activity, CompareActivity.class);
+                    intent.putExtra("cal_result", incomeNote.getDayIncome());
+                    activity.startActivity(intent);
+                }
+            });
+        }
+
 //        if (position == 0 && isLast) {
 //            viewHolder.income_del.setVisibility(View.VISIBLE);
 //            viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +198,7 @@ public class IncomeNoteAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        LinearLayout detail_layout;
         ImageView income_del;
         TextView income_time, income_money, income_ratio, income_days, income_durtion;
         TextView income_dayIncome, income_finalIncome, income_remark, income_finished;

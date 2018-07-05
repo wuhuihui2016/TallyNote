@@ -101,7 +101,7 @@
 
         <EditText
             android:id="@+id/editText3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@null"
@@ -109,6 +109,22 @@
             android:inputType="numberDecimal"
             android:singleLine="true"
             android:textSize="@dimen/bigtextSize" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp">
+
+            <ImageButton
+                android:id="@+id/clear_salary"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/clear_button" />
+        </RelativeLayout>
 
     </LinearLayout>
 

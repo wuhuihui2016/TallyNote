@@ -14,8 +14,10 @@ import android.widget.GridView;
 import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.CalculateActivity;
+import com.fengyang.tallynote.activity.CounterActivity;
 import com.fengyang.tallynote.activity.FileExplorerActivity;
 import com.fengyang.tallynote.activity.ImportExportActivity;
+import com.fengyang.tallynote.activity.LogExplorerActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
 import com.fengyang.tallynote.activity.SetGestureActivity;
@@ -75,6 +77,12 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.calculate);
         settings.add("文件浏览");
         drawableRes.add(R.drawable.file_explorer);
+        settings.add("计数器");
+        drawableRes.add(R.drawable.counter);
+        settings.add("查看log");
+        drawableRes.add(R.drawable.log_review);
+        settings.add("敬请期待");
+        drawableRes.add(R.drawable.coming_soon);
 
         settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
         settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -115,6 +123,14 @@ public class MineFragment extends Fragment {
 
                     case 5: //文件浏览
                         startActivity(new Intent(activity, FileExplorerActivity.class));
+                        break;
+
+                    case 6: //计数器
+                        startActivity(new Intent(activity, CounterActivity.class));
+                        break;
+
+                    case 7: //计数器
+                        startActivity(new Intent(activity, LogExplorerActivity.class));
                         break;
                 }
             }

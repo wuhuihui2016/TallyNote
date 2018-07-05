@@ -106,7 +106,6 @@
         <!-- 记事本详情 -->
         <activity android:name=".activity.NotePadDetailActivity" />
 
-
         <!-- 搜索 -->
         <activity android:name=".activity.SearchActivity" />
 
@@ -118,6 +117,12 @@
 
         <!-- 本次月结的理财明细 -->
         <activity android:name=".activity.IncomeList4UnRecordActivity" />
+
+        <!-- 计数器 -->
+        <activity android:name=".activity.CounterActivity" />
+
+        <!-- log文件浏览 -->
+        <activity android:name=".activity.LogExplorerActivity" />
 
     </application>
 

@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -201,7 +202,7 @@ public class NewMonthActivity extends BaseActivity {
                             public void onClick() {
                                 balanceEt.setText(StringUtils.formatePrice(calculate));
                             }
-                        }, "取消",new DialogListener() {
+                        }, "取消", new DialogListener() {
                             @Override
                             public void onClick() {
                             }
@@ -224,7 +225,7 @@ public class NewMonthActivity extends BaseActivity {
             popupWindow.dismiss();
         } else {
             LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View layout = mLayoutInflater.inflate(R.layout.layout_asset_clearing_pop, null);
+            View layout = mLayoutInflater.inflate(R.layout.layout_month_pop, null);
             popupWindow = new PopupWindow(layout, 800, LinearLayout.LayoutParams.WRAP_CONTENT);
             ViewUtils.setPopupWindow(activity, popupWindow);
 //            相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
@@ -233,8 +234,34 @@ public class NewMonthActivity extends BaseActivity {
             final EditText editText1 = (EditText) layout.findViewById(R.id.editText1);
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2);
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3);
-            if (!TextUtils.isEmpty(salaryStr))
+            if (!TextUtils.isEmpty(salaryStr)) {
                 editText3.setText(StringUtils.formatePrice(salaryStr));
+                final ImageButton clear_salary = (ImageButton) layout.findViewById(R.id.clear_salary);
+                clear_salary.setVisibility(View.VISIBLE);
+                clear_salary.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editText3.setText("");
+                    }
+                });
+
+                editText3.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (s.length() > 0) clear_salary.setVisibility(View.VISIBLE);
+                        else clear_salary.setVisibility(View.GONE);
+
+                    }
+                });
+            }
             final EditText editText4 = (EditText) layout.findViewById(R.id.editText4);
             if (IncomeNote.getEarningInComes().size() > 0)
                 editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
@@ -259,6 +286,19 @@ public class NewMonthActivity extends BaseActivity {
                                     asset_clearing += Double.parseDouble(editText4.getText().toString());
                                 }
                                 actual_balanceEt.setText(StringUtils.formatePrice(asset_clearing + ""));
+
+                                String getBalance = balanceEt.getText().toString();
+                                if (!TextUtils.isEmpty(getBalance)) {
+                                    Double balance = Double.parseDouble(getBalance);
+                                    Double balanceDiff = asset_clearing - balance;
+                                    TextView balance_diff = (TextView) findViewById(R.id.balance_diff);
+                                    if (balanceDiff > 0) {
+                                        balance_diff.setText("(差额：↑ " + balanceDiff);
+                                    } else {
+                                        balance_diff.setText("(差额：↓ " + balanceDiff);
+                                    }
+                                }
+
                             } catch (Exception e) {
                             }
                         }

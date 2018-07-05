@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -138,17 +139,18 @@ public class SystemUtils {
     /**
      * 判断app是否处于前台
      * (用于通知点击判断跳转，如果APP在后台运行，在点击通知时需要验证密码)
+     *
      * @param context
      * @return
      */
     public static boolean isRunningForeground(Context context) {
-        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
         String currentPackageName = cn.getPackageName();
-        if(!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(context.getPackageName())) {
-            return true ;
+        if (!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(context.getPackageName())) {
+            return true;
         }
-        return false ;
+        return false;
     }
 
     /**
@@ -179,11 +181,11 @@ public class SystemUtils {
     }
 
 
-
     /**
      * 避免按钮短时间点击多次
      */
     private static long lastClickTime;
+
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
@@ -192,6 +194,28 @@ public class SystemUtils {
         }
         lastClickTime = time;
         return false;
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @param activity
+     * @return
+     */
+    public static int getWidth(Activity activity) {
+        WindowManager wm = activity.getWindowManager();
+        return wm.getDefaultDisplay().getWidth();
+    }
+
+    /**
+     * 获取屏幕高度
+     *
+     * @param activity
+     * @return
+     */
+    public static int getHeight(Activity activity) {
+        WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        return wm.getDefaultDisplay().getHeight();
     }
 
 }

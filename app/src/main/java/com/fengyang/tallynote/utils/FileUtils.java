@@ -26,6 +26,9 @@ public class FileUtils {
     public static final String dirPath = Environment.getExternalStorageDirectory() + "/TallyNote/";//项目根目录
     public static final String excelPath = dirPath + "/excel/";//excel根目录
 
+    public static final String logPath = dirPath + "/crash/";//log根目录
+
+
     /**
      * 获取APP文件夹
      *
@@ -45,6 +48,17 @@ public class FileUtils {
     public static File getExcelDir() {
         if (isSDCardAvailable()) {
             return new File(excelPath);
+        } else return null;
+    }
+
+    /**
+     * 获取log文件夹
+     *
+     * @return
+     */
+    public static File getLogDir() {
+        if (isSDCardAvailable()) {
+            return new File(logPath);
         } else return null;
     }
 
@@ -276,5 +290,30 @@ public class FileUtils {
             file.delete();
         }
     }
+
+
+    /**
+     * 读取本地文本文件
+     *
+     * @param fileName
+     * @return
+     */
+    public static String readTextFile(String fileName) {
+        String result = null;
+        try {
+            File file = new File(fileName);
+            int length = (int) file.length();
+            byte[] buff = new byte[length];
+            FileInputStream fin = new FileInputStream(file);
+            fin.read(buff);
+            fin.close();
+            result = new String(buff, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.e(TAG, "没有找到指定文件");
+        }
+        return result;
+    }
+
 
 }

@@ -156,7 +156,7 @@ public class DateUtils {
      * @return
      */
     public static final int daysBetween(String date) {
-        LogUtils.i("daysBetween", date);
+//        LogUtils.i("daysBetween", date);
         int days = 0;
         try {
             calendar.setTime(date_sdf.parse(date));

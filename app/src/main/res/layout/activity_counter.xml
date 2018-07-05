@@ -3,22 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/remark_bkg"
-        android:padding="10dp"
-        android:textColor="@color/income_record"
-        android:textSize="@dimen/bigtextSize"/>
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info"
-        android:divider="@color/transparent"
-        android:dividerHeight="10dp"
+        android:divider="@color/line"
+        android:dividerHeight="1dp"
         android:padding="10dp"
         android:scrollbars="none" />
 
