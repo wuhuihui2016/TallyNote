@@ -31,7 +31,7 @@ public class IncomeList4UnRecordActivity extends BaseActivity {
         //获取截至到某一天已完成而未结算的理财列表
         unRecordInComes = IncomeNote.getUnRecordInComes();
         info = (TextView) findViewById(R.id.info);
-        info.setText("投资账单记录有" + unRecordInComes.size() + "条,本次收益总金额：" + StringUtils.showPrice(IncomeNote.getUnRecordSum() + ""));
+        info.setText("投资账单记录有" + unRecordInComes.size() + "比,本次收益总金额：" + StringUtils.showPrice(IncomeNote.getUnRecordSum() + ""));
 
         Collections.reverse(unRecordInComes);
         listView = (ListView) findViewById(R.id.listView);

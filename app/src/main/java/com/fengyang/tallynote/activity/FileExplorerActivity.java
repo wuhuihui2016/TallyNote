@@ -52,71 +52,73 @@ public class FileExplorerActivity extends BaseActivity {
 
         File excelDir = FileUtils.getExcelDir();
         final File files[] = excelDir.listFiles();
-        fileList.clear();
-        for (int i = 0; i < files.length; i++) fileList.add(files[i]);
-        Collections.sort(fileList, new FileComparator());
-        if (fileList.size() > 0) {
-            adapter = new FileExplorerAdapter(context, fileList);
-            setSellect(false);
-            listView.setAdapter(adapter);
+        if (files.length > 0) {
+            fileList.clear();
+            for (int i = 0; i < files.length; i++) fileList.add(files[i]);
+            Collections.sort(fileList, new FileComparator());
+            if (fileList.size() > 0) {
+                adapter = new FileExplorerAdapter(context, fileList);
+                setSellect(false);
+                listView.setAdapter(adapter);
 
-            //长按进入选择模式
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (!isSellect) {
-                        setSellect(true);
+                //长按进入选择模式
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (!isSellect) {
+                            setSellect(true);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
 
-            //默认操作文件，选择状态下选择文件以删除
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File file = fileList.get(position);
-                    if (isSellect) {
-                        adapter.setSelected(file);
-                    } else {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
+                //默认操作文件，选择状态下选择文件以删除
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        File file = fileList.get(position);
+                        if (isSellect) {
+                            adapter.setSelected(file);
                         } else {
-                            initPopupWindow(file);
-                        }
+                            if (popupWindow != null && popupWindow.isShowing()) {
+                                popupWindow.dismiss();
+                            } else {
+                                initPopupWindow(file);
+                            }
 
+                        }
                     }
-                }
 
-            });
+                });
 
-        }
+            }
 
-        listView.setEmptyView(findViewById(R.id.emptyView));
+            listView.setEmptyView(findViewById(R.id.emptyView));
 
-        if (getIntent().hasExtra("import")) {
-            DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，\n是否继续导入？",
-                    "导入", new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent();
-                                    intent.putExtra("path", fileList.get(position).getPath());
-                                    setResult(Activity.RESULT_OK, intent);
-                                    finish();
-                                }
-                            });
+            if (getIntent().hasExtra("import")) {
+                DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，\n是否继续导入？",
+                        "导入", new DialogListener() {
+                            @Override
+                            public void onClick() {
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("path", fileList.get(position).getPath());
+                                        setResult(Activity.RESULT_OK, intent);
+                                        finish();
+                                    }
+                                });
 
-                        }
-                    },
-                    "取消", new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            finish();
-                        }
-                    });
+                            }
+                        },
+                        "取消", new DialogListener() {
+                            @Override
+                            public void onClick() {
+                                finish();
+                            }
+                        });
+            }
         }
     }
 

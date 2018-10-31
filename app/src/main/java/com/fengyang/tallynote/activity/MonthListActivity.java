@@ -74,7 +74,7 @@ public class MonthListActivity extends BaseActivity {
 
     private void initData() {
         monthNotes = MonthNoteDao.getMonthNotes();
-        info.setText("月账单记录有" + monthNotes.size() + "条");
+        info.setText("月账单记录有" + monthNotes.size() + "笔");
 
         if (monthNotes.size() > 1) {
             findViewById(R.id.chartAnalyse).setVisibility(View.VISIBLE);

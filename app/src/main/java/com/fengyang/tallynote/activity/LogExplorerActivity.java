@@ -47,50 +47,52 @@ public class LogExplorerActivity extends BaseActivity {
 
     private void init() {
         final ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setEmptyView(findViewById(R.id.emptyView));
 
         File logDir = FileUtils.getLogDir();
         final File files[] = logDir.listFiles();
-        fileList.clear();
-        for (int i = 0; i < files.length; i++) fileList.add(files[i]);
-        Collections.sort(fileList, new FileComparator());
-        if (fileList.size() > 0) {
-            adapter = new FileExplorerAdapter(context, fileList);
-            setSellect(false);
-            listView.setAdapter(adapter);
+        if (files.length > 0) {
+            fileList.clear();
+            for (int i = 0; i < files.length; i++) fileList.add(files[i]);
+            Collections.sort(fileList, new FileComparator());
+            if (fileList.size() > 0) {
+                adapter = new FileExplorerAdapter(context, fileList);
+                setSellect(false);
+                listView.setAdapter(adapter);
 
-            //长按进入选择模式
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (!isSellect) {
-                        setSellect(true);
-                    }
-                    return false;
-                }
-            });
-
-            //默认操作文件，选择状态下选择文件以删除
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File file = fileList.get(position);
-                    if (isSellect) {
-                        adapter.setSelected(file);
-                    } else {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        } else {
-                            initPopupWindow(file);
+                //长按进入选择模式
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (!isSellect) {
+                            setSellect(true);
                         }
-
+                        return false;
                     }
-                }
+                });
 
-            });
+                //默认操作文件，选择状态下选择文件以删除
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        File file = fileList.get(position);
+                        if (isSellect) {
+                            adapter.setSelected(file);
+                        } else {
+                            if (popupWindow != null && popupWindow.isShowing()) {
+                                popupWindow.dismiss();
+                            } else {
+                                initPopupWindow(file);
+                            }
 
+                        }
+                    }
+
+                });
+
+            }
         }
 
-        listView.setEmptyView(findViewById(R.id.emptyView));
 
     }
 
@@ -141,7 +143,7 @@ public class LogExplorerActivity extends BaseActivity {
         LayoutInflater inflater = (LayoutInflater) getApplication()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_readtxt_pop, null);
-        popupWindow = new PopupWindow(layout, SystemUtils.getWidth(activity) / 5 * 4, SystemUtils.getHeight(activity) / 5 * 4);
+        popupWindow = new PopupWindow(layout, SystemUtils.getWidth(activity) / 6 * 5, SystemUtils.getHeight(activity) / 6 * 5);
         ViewUtils.setPopupWindow(context, popupWindow);
         popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.CENTER, 0, 0);
 
