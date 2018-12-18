@@ -14,7 +14,7 @@ public class DayNote implements Serializable {
 
     public static final int consume = 1, account_out = 2, account_in = 3, homeuse = 4;
 
-    int useType; //消费类型：1.支出，2.转账，3.转入,4.家用
+    int useType; //消费类型：1.支出,2.转账,3.入账,4.家用
     String money; //消费金额
     String remark; //消费说明
     String time; //消费时间
@@ -96,7 +96,7 @@ public class DayNote implements Serializable {
         List<String> types = new ArrayList<>();
         types.add("支出：");
         types.add("转账：");
-        types.add("转入：");
+        types.add("入账：");
         types.add("家用：");
         return types;
     }
@@ -110,7 +110,7 @@ public class DayNote implements Serializable {
     public static int getUserType(String useTypeStr) {
         if (useTypeStr.equals("支出：")) return 1;
         if (useTypeStr.equals("转账：")) return 2;
-        if (useTypeStr.equals("转入：")) return 3;
+        if (useTypeStr.equals("入账：")) return 3;
         if (useTypeStr.equals("家用：")) return 4;
         return 1;
     }

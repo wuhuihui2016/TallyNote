@@ -3,7 +3,9 @@ package com.fengyang.tallynote.activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fengyang.tallynote.R;
@@ -16,6 +18,7 @@ import com.fengyang.tallynote.utils.DialogUtils;
 import com.fengyang.tallynote.utils.ExcelUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.ToastUtils;
+import com.fengyang.tallynote.utils.ViewUtils;
 
 /**
  * 备忘录详情
@@ -63,39 +66,11 @@ public class MemoNoteDetailActivity extends BaseActivity {
      */
     private void showStatus(boolean isFinished) {
         if (!isFinished) {
-            setRightImgBtnListener(R.drawable.note_edit, new View.OnClickListener() {
+            setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, NewMemoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("memoNote", memoNote);
-                    intent.putExtras(bundle);
-                    startActivityForResult(intent, REQUEST_TRANSFOR);
-                }
-            });
-
-            setRightBtnListener("完成", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    DialogUtils.showMsgDialog(activity, "是否确定完成此条备忘录",
-                            "提交", new DialogListener() {
-                                @Override
-                                public void onClick() {
-                                    if (MemoNoteDao.finishMemoNote(memoNote)) {
-                                        ExcelUtils.exportMemoNote(null);
-                                        ToastUtils.showSucessLong(activity, "完成备忘录成功！");
-                                        showStatus(true);
-                                        sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
-                                    } else {
-                                        ToastUtils.showErrorLong(activity, "完成备忘录失败！");
-                                    }
-                                }
-                            }, "取消", new DialogListener() {
-                                @Override
-                                public void onClick() {
-                                }
-                            });
+                    initToolPopup();
                 }
             });
         } else {
@@ -125,6 +100,67 @@ public class MemoNoteDetailActivity extends BaseActivity {
             });
         }
     }
+
+
+    /**
+     * 初始化popupWindow
+     */
+    private void initToolPopup() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = mLayoutInflater.inflate(R.layout.layout_memo_tool_pop, null);
+            popupWindow = new PopupWindow(layout, 200, 400);
+            ViewUtils.setPopupWindow(activity, popupWindow);
+            // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
+            popupWindow.showAsDropDown(findViewById(R.id.right_imgbtn), 50, 20);
+            popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+
+            layout.findViewById(R.id.editMemo).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            Intent intent = new Intent(activity, NewMemoActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("memoNote", memoNote);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent, REQUEST_TRANSFOR);
+                        }
+                    }
+            );
+
+            layout.findViewById(R.id.finishMemo).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            DialogUtils.showMsgDialog(activity, "是否确定完成此条备忘录",
+                                    "提交", new DialogListener() {
+                                        @Override
+                                        public void onClick() {
+                                            if (MemoNoteDao.finishMemoNote(memoNote)) {
+                                                ExcelUtils.exportMemoNote(null);
+                                                ToastUtils.showSucessLong(activity, "完成备忘录成功！");
+                                                showStatus(true);
+                                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                            } else {
+                                                ToastUtils.showErrorLong(activity, "完成备忘录失败！");
+                                            }
+                                        }
+                                    }, "取消", new DialogListener() {
+                                        @Override
+                                        public void onClick() {
+                                        }
+                                    });
+                        }
+                    }
+            );
+
+        }
+    }
+
 
     /**
      * 参数回传，刷新数据

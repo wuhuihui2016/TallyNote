@@ -1,6 +1,5 @@
 package com.fengyang.tallynote.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -85,7 +84,7 @@ public class NewMemoActivity extends BaseActivity {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("memoNote", isAlterMemo);
                             intent.putExtras(bundle);
-                            setResult(Activity.RESULT_OK, intent);
+                            startActivityForResult(intent, 1);
                             finish();
                         } else {
                             ToastUtils.showErrorLong(activity, "编辑失败！");
