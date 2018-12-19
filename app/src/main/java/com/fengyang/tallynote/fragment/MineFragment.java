@@ -24,6 +24,7 @@ import com.fengyang.tallynote.activity.SetGestureActivity;
 import com.fengyang.tallynote.activity.SetOrCheckPwdActivity;
 import com.fengyang.tallynote.adapter.Setting4GridAdapter;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +82,10 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.counter);
         settings.add("查看log");
         drawableRes.add(R.drawable.log_review);
-        settings.add("敬请期待");
-        drawableRes.add(R.drawable.coming_soon);
+        settings.add("读文档");
+        drawableRes.add(R.drawable.doc_review);
+//        settings.add("敬请期待");
+//        drawableRes.add(R.drawable.coming_soon);
 
         settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
         settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,8 +132,12 @@ public class MineFragment extends Fragment {
                         startActivity(new Intent(activity, CounterActivity.class));
                         break;
 
-                    case 7: //计数器
+                    case 7: //查看log
                         startActivity(new Intent(activity, LogExplorerActivity.class));
+                        break;
+
+                    case 8: //读文档
+                        ToastUtils.showToast(activity, false, "读文档，敬请期待...");
                         break;
                 }
             }

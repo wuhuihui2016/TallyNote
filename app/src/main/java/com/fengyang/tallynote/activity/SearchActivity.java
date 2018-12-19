@@ -18,6 +18,7 @@ import com.fengyang.tallynote.model.MemoNote;
 import com.fengyang.tallynote.model.NotePad;
 import com.fengyang.tallynote.model.SearchNote;
 import com.fengyang.tallynote.utils.ContansUtils;
+import com.fengyang.tallynote.utils.DateUtils;
 import com.fengyang.tallynote.utils.LogUtils;
 import com.fengyang.tallynote.utils.SystemUtils;
 import com.fengyang.tallynote.view.CustomSearchView;
@@ -36,6 +37,8 @@ public class SearchActivity extends Activity {
     private CustomSearchView searchView;
     private Button search_btn;
     private ListView listView;
+
+    private List<SearchNote> searchNotes = new ArrayList<>();
 
 
     @Override
@@ -130,7 +133,7 @@ public class SearchActivity extends Activity {
         String key = searchView.getText().replaceAll(" ", "");
         LogUtils.i(TAG + "-Search4Notes", "key--" + key);
 
-        final List<SearchNote> searchNotes = new ArrayList<>();
+        searchNotes.clear(); //清空数据
 
         //日账检索
         List<DayNote> dayNotes = DayNoteDao.getDayNotes();
@@ -175,6 +178,9 @@ public class SearchActivity extends Activity {
         //显示结果
         LogUtils.i(TAG, searchNotes.size() + "--" + searchNotes.toString());
         if (searchNotes.size() > 0) {
+
+            //按时间排序，最新的在列表上面
+            searchNotes = DateUtils.sortData(searchNotes);
             listView.setAdapter(new SearchNoteAdapter(this, searchNotes));
 
             //设置无点击效果

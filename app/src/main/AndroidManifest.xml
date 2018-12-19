@@ -17,7 +17,9 @@
         android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
         <!-- 适配全面屏 -->
-        <meta-data android:name="android.max_aspect"  android:value="2.1"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
 
         <!-- 设置启动密码  -->
         <activity
@@ -60,10 +62,18 @@
             android:configChanges="orientation|keyboardHidden" />
 
         <!-- 记录列表 -->
-        <activity android:name=".activity.DayListActivity" />
-        <activity android:name=".activity.MonthListActivity" />
-        <activity android:name=".activity.DayListOfMonthActivity" />
-        <activity android:name=".activity.IncomeListActivity" />
+        <activity
+            android:name=".activity.DayListActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.MonthListActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.DayListOfMonthActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.IncomeListActivity"
+            android:launchMode="singleTop" />
 
         <!-- 导入导出 -->
         <activity android:name=".activity.ImportExportActivity" />

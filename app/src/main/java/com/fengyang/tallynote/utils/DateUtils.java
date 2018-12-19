@@ -1,9 +1,14 @@
 package com.fengyang.tallynote.utils;
 
+import com.fengyang.tallynote.model.SearchNote;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuhuihui
@@ -57,14 +62,30 @@ public class DateUtils {
         String date = show_date_sdf1.format(new Date());
         int i = calendar.get(Calendar.DAY_OF_WEEK);
         switch (i) {
-            case 1: date += " 星期日"; break;
-            case 2: date += " 星期一"; break;
-            case 3: date += " 星期二"; break;
-            case 4: date += " 星期三"; break;
-            case 5: date += " 星期四"; break;
-            case 6: date += " 星期五"; break;
-            case 7: date += " 星期六"; break;
-            default: date += ""; break;
+            case 1:
+                date += " 星期日";
+                break;
+            case 2:
+                date += " 星期一";
+                break;
+            case 3:
+                date += " 星期二";
+                break;
+            case 4:
+                date += " 星期三";
+                break;
+            case 5:
+                date += " 星期四";
+                break;
+            case 6:
+                date += " 星期五";
+                break;
+            case 7:
+                date += " 星期六";
+                break;
+            default:
+                date += "";
+                break;
         }
 
         //获取农历
@@ -228,5 +249,34 @@ public class DateUtils {
 
         return flag;
     }
+
+    /**
+     * 搜索的数据按时间排序返回列表
+     *
+     * @param searchNotes
+     */
+    public static List<SearchNote> sortData(final List<SearchNote> searchNotes) {
+        LogUtils.i("sortData-before", searchNotes.size() + "," + searchNotes.toString());
+        Collections.sort(searchNotes, new Comparator<SearchNote>() {
+            @Override
+            public int compare(SearchNote sn1, SearchNote sn2) {
+                Date date1 = null, date2 = null;
+                try {
+                    date1 = time_sdf.parse(sn1.getTime());
+                    date2 = time_sdf.parse(sn2.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                // 对日期字段进行升序，如果欲降序可采用after方法
+                if (date1.before(date2)) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        LogUtils.i("sortData-after", searchNotes.size() + "," + searchNotes.toString());
+        return searchNotes;
+    }
+
 
 }

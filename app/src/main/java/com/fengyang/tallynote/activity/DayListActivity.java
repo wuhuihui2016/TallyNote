@@ -169,7 +169,7 @@ public class DayListActivity extends BaseActivity {
         LogUtils.i("dayNotes", dayNotes.toString());
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()
-                + "，支出 + 转账 - 转入 + 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
+                + "，支出 + 转账 - 入账 + 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
         dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, true);
         listView.setAdapter(dayNoteAdapter);
     }
@@ -199,7 +199,7 @@ public class DayListActivity extends BaseActivity {
             info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
         } else if (type == DayNote.account_in) {
             account_in.setTextColor(Color.RED);
-            info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
+            info.setText("入账记录： " + list.size() + "，入账金额：" + StringUtils.showPrice(sum + ""));
         } else {
             homeuse.setTextColor(Color.RED);
             info.setText("家用记录： " + list.size() + "，家用金额：" + StringUtils.showPrice(sum + ""));
