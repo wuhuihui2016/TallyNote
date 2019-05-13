@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 
 import com.fengyang.tallynote.database.DBHelper;
+import com.fengyang.tallynote.greendao.DaoSession;
+import com.fengyang.tallynote.greendao.GreenDaoUtils;
 import com.fengyang.tallynote.utils.ContansUtils;
 import com.fengyang.tallynote.utils.CrashHandler;
 import com.fengyang.tallynote.utils.FileUtils;
@@ -20,6 +22,8 @@ public class MyApplication extends Application {
 
     public static DBHelper dbHelper;
 
+    public static DaoSession daoSession;
+
     public int count = 0;
 
     @Override
@@ -31,6 +35,9 @@ public class MyApplication extends Application {
         ContansUtils.setPres(this);//设置存储空间，获取编辑器
 
         dbHelper = new DBHelper(this); //开辟用户数据库
+
+        GreenDaoUtils.initDao(this); //创建GreenDao数据库
+        daoSession = GreenDaoUtils.getDaoSession();
 
         FileUtils.createDir(); //创建项目文件目录
 

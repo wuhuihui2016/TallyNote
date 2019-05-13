@@ -12,6 +12,9 @@ import java.util.List;
  * 备忘录
  */
 public class MemoNote implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
     String content;
     int status;
     String time;

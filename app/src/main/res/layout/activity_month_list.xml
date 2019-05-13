@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/age"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/remark_bkg"

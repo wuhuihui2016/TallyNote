@@ -15,6 +15,15 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
+            <Button
+                android:id="@+id/userManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:padding="10dp"
+                android:text="账户管理"
+                android:visibility="gone"/>
+
             <TextView
                 android:id="@+id/today"
                 android:layout_width="wrap_content"

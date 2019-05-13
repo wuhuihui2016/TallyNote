@@ -108,7 +108,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/type_layout"
@@ -121,7 +121,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/info"
+        android:layout_below="@id/age"
         android:background="@drawable/shape_day"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"

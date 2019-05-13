@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class NotePad implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int tag; //标签
     private String words; //内容
     private String time; //时间

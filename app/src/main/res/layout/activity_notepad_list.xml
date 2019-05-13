@@ -19,7 +19,7 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/info"
+            android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/type_layout"

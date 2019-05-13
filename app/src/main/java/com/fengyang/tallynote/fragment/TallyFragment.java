@@ -18,6 +18,7 @@ import android.widget.ViewAnimator;
 
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.activity.DayListActivity;
+import com.fengyang.tallynote.activity.GreenDaoTestActivity;
 import com.fengyang.tallynote.activity.MemoNoteListActivity;
 import com.fengyang.tallynote.activity.MonthListActivity;
 import com.fengyang.tallynote.activity.NotePadListActivity;
@@ -183,6 +184,7 @@ public class TallyFragment extends Fragment {
      * 设置点击事件
      */
     private void clickListener() {
+        content.findViewById(R.id.userManager).setOnClickListener(clickListener);
         seenCheck.setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
         content.findViewById(R.id.last_layout).setOnClickListener(clickListener);
@@ -193,6 +195,9 @@ public class TallyFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.userManager:
+                    startActivity(new Intent(activity, GreenDaoTestActivity.class));
+                    break;
                 case R.id.seenCheck:
                     //密文明文显示
                     if (isSeen) {

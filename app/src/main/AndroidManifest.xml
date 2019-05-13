@@ -38,6 +38,12 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
 
+        <!-- GreenDao增删改查操作 -->
+        <activity
+            android:name=".activity.GreenDaoTestActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" />
+
         <!-- 记日账 -->
         <activity
             android:name=".activity.NewDayActivity"

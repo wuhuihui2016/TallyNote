@@ -51,7 +51,7 @@
         android:background="@color/remark_bkg">
 
         <TextView
-            android:id="@+id/info"
+            android:id="@+id/age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"

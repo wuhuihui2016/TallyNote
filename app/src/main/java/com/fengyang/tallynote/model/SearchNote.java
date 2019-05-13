@@ -6,7 +6,6 @@ import com.fengyang.tallynote.utils.ContansUtils;
  * 搜索(1.日账检索,2.历史日账检索,3.备忘录检索,4.记事本检索)
  * Created by wuhuihui on 2017/8/11.
  */
-
 public class SearchNote {
     int type;
     Object object;

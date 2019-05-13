@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class DayNote implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     public static final int consume = 1, account_out = 2, account_in = 3, homeuse = 4;
 
     int useType; //消费类型：1.支出,2.转账,3.入账,4.家用

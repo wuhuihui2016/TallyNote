@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class MonthNote implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     String last_balance; //上次结余
     String pay; //本次支出
     String salary; //本次工资

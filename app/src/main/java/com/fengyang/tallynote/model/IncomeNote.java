@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class IncomeNote implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     String id;
     String money; //投入金额（单位万）
     String incomeRatio; //预期年化（%）
