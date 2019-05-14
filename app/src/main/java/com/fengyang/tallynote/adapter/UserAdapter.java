@@ -49,7 +49,7 @@ public class UserAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.info = (TextView) convertView.findViewById(R.id.info);
+            viewHolder.age = (TextView) convertView.findViewById(R.id.age);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -58,12 +58,12 @@ public class UserAdapter extends BaseAdapter {
         //获取当前对象
         final User user = users.get(position);
         viewHolder.name.setText(user.getId() + ": " + user.getName());
-        viewHolder.info.setText(user.getAge());
+        viewHolder.age.setText(user.getAge());
 
         return convertView;
     }
 
     class ViewHolder {
-        TextView name, info;
+        TextView name, age;
     }
 }

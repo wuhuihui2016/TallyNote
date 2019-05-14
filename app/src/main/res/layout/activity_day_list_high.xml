@@ -11,7 +11,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/age"
+        android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinner"
@@ -24,7 +24,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/age"
+        android:layout_below="@id/info"
         android:background="@drawable/shape_day"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"
@@ -35,7 +35,7 @@
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/age"
+        android:layout_below="@id/info"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center"
         android:text="暂无记录~~"
