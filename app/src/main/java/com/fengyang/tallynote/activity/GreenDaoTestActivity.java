@@ -1,6 +1,7 @@
 package com.fengyang.tallynote.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -8,10 +9,13 @@ import android.widget.Toast;
 import com.fengyang.tallynote.MyApplication;
 import com.fengyang.tallynote.R;
 import com.fengyang.tallynote.adapter.UserAdapter;
+import com.fengyang.tallynote.greendao.Admin;
+import com.fengyang.tallynote.greendao.AdminDao;
 import com.fengyang.tallynote.greendao.User;
 import com.fengyang.tallynote.greendao.UserDao;
 import com.fengyang.tallynote.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,9 +28,12 @@ public class GreenDaoTestActivity extends BaseActivity implements View.OnClickLi
 
     private ListView listView;
 
+    private List<Admin> admins = new ArrayList<>();
     private List<User> users;
     private UserAdapter userAdapter;
 
+
+    private AdminDao adminDao;
     private UserDao userDao;
 
 
@@ -38,6 +45,19 @@ public class GreenDaoTestActivity extends BaseActivity implements View.OnClickLi
 
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
+
+        adminDao = MyApplication.daoSession.getAdminDao();
+        //清空admin数据，重新加入
+//        adminDao.detachAll(); //清除adminDao的数据
+        adminDao.deleteAll();
+        LogUtils.i(TAG, "loadAdmins size=" + adminDao.loadAll().size());
+        admins.add(new Admin(null, "admin1", "1"));
+        admins.add(new Admin(null, "admin2", "2"));
+        admins.add(new Admin(null, "admin3", "3"));
+        admins.add(new Admin(null, "admin4", "4"));
+        admins.add(new Admin(null, "admin5", "5"));
+        adminDao.insertInTx(admins); //批量插入admin
+        LogUtils.i(TAG, "loadAdmins size=" + adminDao.loadAll().size());
 
         userDao = MyApplication.daoSession.getUserDao();
 
@@ -51,13 +71,14 @@ public class GreenDaoTestActivity extends BaseActivity implements View.OnClickLi
         LogUtils.i(TAG, v.getId() + "");
         switch (v.getId()) {
             case R.id.add:
-                userDao.insert(new User(null, "whh0", "whh00"));  //增
-                userDao.insertInTx();
+                userDao.insert(new User(null, admins.get(0).getAdminId(), "whh00", "whh00"));  //增
+//                userDao.insertInTx(); //用于插入多条数据
+
                 break;
             case R.id.delete:
                 users = userDao.loadAll();
                 if (users.size() > 0) {
-                    userDao.deleteByKey(users.get(0).getId()); //删
+                    userDao.deleteByKey(users.get(0).getUserId()); //删
 
                     //删除名字为whh的数据
 //                    userDao.queryBuilder().where(UserDao.Properties.Name.eq("whh"))
@@ -66,7 +87,7 @@ public class GreenDaoTestActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.alter:
                 if (users.size() > 0) {
-                    userDao.update(new User(users.get(0).getId(), "whh update", "whh11")); //改
+                    userDao.update(new User(users.get(0).getUserId(), admins.get(0).getAdminId(), "whh update", "whh11")); //改
 
                     //把名为whh修改成名为wuhh的数据
 //                    User user = userDao.queryBuilder().where(UserDao.Properties.Name.eq("whh")).build().unique();
@@ -108,5 +129,10 @@ public class GreenDaoTestActivity extends BaseActivity implements View.OnClickLi
         LogUtils.i(TAG, users.toString());
         userAdapter = new UserAdapter(activity, users);
         listView.setAdapter(userAdapter);
+
+        //查看所有admin
+        Log.i(TAG, "loadAdmins==>" + adminDao.loadAll());
+
+
     }
 }

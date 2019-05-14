@@ -35,12 +35,13 @@ dependencies {
     compile files('libs/jxl.jar')
     compile(name:'chartlib190418', ext:'aar')
     compile 'org.greenrobot:greendao:3.2.2'
+    //compile 'net.zetetic:android-database-sqlcipher:3.5.7' //加密数据库
 
 }
 
 greendao {
     //数据库版本号
-    schemaVersion 1
+    schemaVersion 2
 
     //设置要放置DaoMaster、DaoSession、Dao这些类的包的全路径
     daoPackage 'com.fengyang.tallynote.greendao'

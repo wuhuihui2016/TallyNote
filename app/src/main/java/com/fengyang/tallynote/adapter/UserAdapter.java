@@ -57,7 +57,7 @@ public class UserAdapter extends BaseAdapter {
 
         //获取当前对象
         final User user = users.get(position);
-        viewHolder.name.setText(user.getId() + ": " + user.getName());
+        viewHolder.name.setText(user.getUserId() + ": " + user.getName() + "  管理员ID：" + user.getAdminId());
         viewHolder.age.setText(user.getAge());
 
         return convertView;

@@ -22,7 +22,7 @@
                 android:background="@color/transparent"
                 android:padding="10dp"
                 android:text="账户管理"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/today"
