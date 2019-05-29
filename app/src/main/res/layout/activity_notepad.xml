@@ -14,7 +14,7 @@
         android:textColor="@color/app_color"
         android:textSize="@dimen/titletextSize" />
 
-    <com.fengyang.tallynote.view.FlowLayout
+    <com.whh.tallynote.view.FlowLayout
         android:id="@+id/flowLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

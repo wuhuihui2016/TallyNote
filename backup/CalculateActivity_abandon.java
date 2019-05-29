@@ -1,4 +1,4 @@
-package com.fengyang.tallynote.activity;
+package com.whh.tallynote.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.utils.ToastUtils;
+import com.whh.tallynote.R;
+import com.whh.tallynote.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 

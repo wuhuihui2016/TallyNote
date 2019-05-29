@@ -1,4 +1,4 @@
-package com.fengyang.tallynote.adapter;
+package com.whh.tallynote.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.fengyang.tallynote.R;
+import com.whh.tallynote.R;
 
 import java.util.ArrayList;
 import java.util.List;

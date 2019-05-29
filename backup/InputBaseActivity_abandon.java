@@ -1,4 +1,4 @@
-package com.fengyang.tallynote.activity;
+package com.whh.tallynote.activity;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,10 +11,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
-import com.fengyang.tallynote.R;
-import com.fengyang.tallynote.adapter.KeyboardAdapter;
-import com.fengyang.tallynote.utils.LogUtils;
-import com.fengyang.tallynote.utils.SystemUtils;
+import com.whh.tallynote.R;
+import com.whh.tallynote.adapter.KeyboardAdapter;
+import com.whh.tallynote.utils.LogUtils;
+import com.whh.tallynote.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;

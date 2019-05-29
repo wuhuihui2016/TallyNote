@@ -2,22 +2,51 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
+
     compileSdkVersion 25
     buildToolsVersion '25.0.0'
-
     defaultConfig {
         applicationId "com.fengyang.tallynote"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 200
-        versionName "2.0"
+        versionCode 220
+        versionName "2.1"
+
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'tallynote'
+            keyPassword 'tallynote170628'
+            storeFile file('E:/Android_workspace/TallyNote/tallyNote.jks')
+            storePassword 'tallynote170628'
+        }
+    }
+
     buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.config
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.config
+            zipAlignEnabled true
         }
     }
+
+    // 自定义输出配置
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "tallyNote_v${variant.versionName}.apk".toLowerCase())
+        }
+    }
+
 }
 
 repositories {
@@ -33,10 +62,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile files('libs/jxl.jar')
-    compile(name:'chartlib190418', ext:'aar')
+    compile(name: 'chartlib190418', ext: 'aar')
+    //greendao
     compile 'org.greenrobot:greendao:3.2.2'
-    //compile 'net.zetetic:android-database-sqlcipher:3.5.7' //加密数据库
-
+    //compile 'net.zetetic:android-database-sqlcipher:3.5.7' //greendao加密数据库
+    //leakcanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }
 
 greendao {
@@ -44,7 +76,7 @@ greendao {
     schemaVersion 2
 
     //设置要放置DaoMaster、DaoSession、Dao这些类的包的全路径
-    daoPackage 'com.fengyang.tallynote.greendao'
+    daoPackage 'com.whh.tallynote.greendao'
 
     //设置DaoMaster、DaoSession、Dao目录
     targetGenDir 'src/main/java'
