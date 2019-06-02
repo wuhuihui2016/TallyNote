@@ -141,7 +141,7 @@ public class FileExplorerActivity extends BaseActivity {
                         try {
                             WPSUtils.openFile(getApplicationContext(), file.getPath());
                         } catch (Exception e) {
-                            LogUtils.e(TAG + "openEXL", e.toString());
+                            LogUtils.e("openEXL：", e.toString());
                             ToastUtils.showWarningShort(activity, "没有找到可打开" + file.getName() + "的应用！");
                         }
                     }
@@ -161,7 +161,7 @@ public class FileExplorerActivity extends BaseActivity {
             public void onClick(View v) {
                 popupWindow.dismiss();
 
-                FileUtils.uploadFile(activity); //上传到小米云盘
+                FileUtils.uploadFile(activity); //上传到微信收藏
 
             }
         });

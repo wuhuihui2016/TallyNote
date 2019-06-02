@@ -16,6 +16,18 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
+        <!-- APP间读取共享文件需要配置provider -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.whh.tallynote.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!--元数据-->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <!-- 适配全面屏 -->
         <meta-data
             android:name="android.max_aspect"

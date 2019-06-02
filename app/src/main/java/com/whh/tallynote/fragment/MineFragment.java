@@ -82,7 +82,7 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.counter);
         settings.add("查看log");
         drawableRes.add(R.drawable.log_review);
-        settings.add("读文档");
+        settings.add("敬请期待");
         drawableRes.add(R.drawable.doc_review);
 //        settings.add("敬请期待");
 //        drawableRes.add(R.drawable.coming_soon);
@@ -136,7 +136,7 @@ public class MineFragment extends Fragment {
                         startActivity(new Intent(activity, LogExplorerActivity.class));
                         break;
 
-                    case 8: //读文档
+                    case 8: //敬请期待
                         ToastUtils.showToast(activity, false, "读文档，敬请期待...");
                         break;
                 }

@@ -1,6 +1,5 @@
 package com.whh.tallynote.utils;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -61,30 +60,31 @@ public class WPSUtils {
 
 
     public static boolean openFile(Context context, String path) {
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString(OPEN_MODE, OpenMode.READ_ONLY); // 打开模式
-        bundle.putBoolean(SEND_CLOSE_BROAD, true); // 关闭时是否发送广播  
-        bundle.putString(THIRD_PACKAGE, context.getPackageName()); // 第三方应用的包名，用于对改应用合法性的验证
-        bundle.putBoolean(CLEAR_TRACE, true);// 清除打开记录  
-        // bundle.putBoolean(CLEAR_FILE, true); //关闭后删除打开文件  
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setClassName(PackageName.NORMAL, ClassName.NORMAL);
-
-        File file = new File(path);
-        if (file == null || !file.exists()) {
-            System.out.println("文件为空或者不存在");
-            return false;
-        }
-
-        Uri uri = Uri.fromFile(file);
-        intent.setData(uri);
-        intent.putExtras(bundle);
         try {
+            File file = new File(path);
+            if (file == null || !file.exists()) {
+                System.out.println("文件为空或者不存在");
+                return false;
+            }
+
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString(OPEN_MODE, OpenMode.READ_ONLY); // 打开模式
+            bundle.putBoolean(SEND_CLOSE_BROAD, true); // 关闭时是否发送广播
+            bundle.putString(THIRD_PACKAGE, context.getPackageName()); // 第三方应用的包名，用于对改应用合法性的验证
+            bundle.putBoolean(CLEAR_TRACE, true);// 清除打开记录
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+            intent.setClassName(PackageName.NORMAL, ClassName.NORMAL);
+
+            //判读版本是否在7.0以上,7.0以上需要增加fileprovider
+            Uri uri = FileUtils.setFileProvider(context, intent, file);
+            intent.setDataAndType(uri, "application/vnd.ms-excel");
+
             context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            System.out.println("打开wps异常：" + e.toString());
+        } catch (Exception e) {
+            LogUtils.e("openEXL：", e.toString());
             e.printStackTrace();
             return false;
         }

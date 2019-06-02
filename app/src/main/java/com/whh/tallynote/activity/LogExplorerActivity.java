@@ -143,11 +143,12 @@ public class LogExplorerActivity extends BaseActivity {
         LayoutInflater inflater = (LayoutInflater) getApplication()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_readtxt_pop, null);
-        popupWindow = new PopupWindow(layout, SystemUtils.getWidth(activity) / 6 * 5, SystemUtils.getHeight(activity) / 6 * 5);
+        popupWindow = new PopupWindow(layout, SystemUtils.getWidth(activity), SystemUtils.getHeight(activity) / 12 * 11);
         ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.CENTER_VERTICAL, 0, 0);
 
-        ((TextView) layout.findViewById(R.id.text)).setText(FileUtils.readTextFile(fileName));
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(FileUtils.readTextFile(fileName));
         layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

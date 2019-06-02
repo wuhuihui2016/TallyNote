@@ -123,7 +123,7 @@ public class TallyFragment extends Fragment {
         if (dayNotes.size() > 0) {
             //显示本次月记录总支出
             current_pay = StringUtils.showPrice(DayNote.getAllSum() + "");
-            current_payTv.setText("....");
+            current_payTv.setText("******");
 
             //显示最近一次日记录支出
             cur_day_layout.setVisibility(View.VISIBLE);
@@ -174,7 +174,7 @@ public class TallyFragment extends Fragment {
         if (monthNotes.size() > 0) {
             last_layout.setVisibility(View.VISIBLE);
             last_balance = StringUtils.showPrice(monthNotes.get(monthNotes.size() - 1).getActual_balance());
-            last_balanceTv.setText("....");
+            last_balanceTv.setText("******");
         } else {
             last_layout.setVisibility(View.GONE);
         }
@@ -210,8 +210,8 @@ public class TallyFragment extends Fragment {
                         isSeen = true;
                         seenCheck.setImageResource(R.drawable.eye_close_pwd);
                         //设置EditText文本为可见的
-                        last_balanceTv.setText("....");
-                        current_payTv.setText("....");
+                        last_balanceTv.setText("******");
+                        current_payTv.setText("******");
                     }
                     break;
 

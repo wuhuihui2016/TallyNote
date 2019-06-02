@@ -29,7 +29,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/user_icon"
-            android:text="狒狒\n每天进步一点点"
+            android:text="慧慧\n每天进步一点点"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

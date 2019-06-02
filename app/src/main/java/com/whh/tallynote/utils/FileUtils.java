@@ -7,7 +7,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
@@ -156,13 +158,32 @@ public class FileUtils {
      */
     public static void shareFile(Activity activity, File file) {
         Intent share = new Intent(Intent.ACTION_SEND);
-        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        Uri uri = FileUtils.setFileProvider(activity, share, file);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType("*/*"); //此处可发送多种文件
         activity.startActivity(Intent.createChooser(share, "发送文件"));
     }
 
     /**
-     * 上传文件到小米云盘(仅将tally_note文件上传)
+     * 判读版本是否在7.0以上,7.0以上需要增加fileprovider
+     *
+     * @param intent
+     */
+    public static Uri setFileProvider(Context context, Intent intent, File file) {
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //判读版本是否在7.0以上,7.0以上需要增加fileprovider
+//            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//            StrictMode.setVmPolicy(builder.build());
+            uri = FileProvider.getUriForFile(context, "com.whh.tallynote.fileprovider", file);
+            intent.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        return uri;
+    }
+
+    /**
+     * 上传文件到上传到微信收藏(仅将tally_note文件上传)
      *
      * @param activity
      */
@@ -178,10 +199,11 @@ public class FileUtils {
                     return;
                 }
 
-                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                Uri uri = FileUtils.setFileProvider(activity, share, file);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
                 share.setType("*/*"); //此处可发送多种文件
 
-                //查找手机中是否已安装APP
+                //查找手机中是否已安装微信APP
                 String name = "com.tencent.mm";
                 if (isInstalledAPP(activity, name)) {
                     share.setPackage(name);
