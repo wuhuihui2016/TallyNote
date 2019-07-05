@@ -171,13 +171,12 @@ public class MonthNote implements Serializable {
     }
 
     /**
-     * 获取所有月账的时段
+     * 获取所需月账的时段
      *
      * @return
      */
-    public static List<String> formateDurations() {
+    public static List<String> formateDurations(List<MonthNote> monthNotes) {
         List<String> durations = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             durations.add(monthNotes.get(i).getDuration().split("-")[0].substring(4, 6));
         }
