@@ -8,28 +8,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_color"
-        android:padding="10dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="30dp">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/user_icon"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginTop="10dp"
-            android:padding="2dp"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_centerVertical="true"
             android:scaleType="centerInside"
             android:src="@drawable/user" />
 
+
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/versionInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/user_icon"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/user_icon"
-            android:text="慧慧\n每天进步一点点"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:text="V2.0\n慧慧，每天进步一点点"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -42,9 +40,9 @@
         android:layout_below="@id/user_info"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@color/gridline"
-        android:gravity="center_horizontal|center"
+        android:gravity="center"
         android:horizontalSpacing="1dp"
         android:numColumns="3"
         android:padding="1dp"

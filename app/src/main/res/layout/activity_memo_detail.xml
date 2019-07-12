@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:autoLink="all"
+        android:background="@drawable/shape_write"
         android:gravity="top|left"
         android:textIsSelectable="true"
-        android:textSize="@dimen/bigtextSize"
-        android:background="@drawable/shape_write"/>
+        android:textSize="@dimen/bigtextSize" />
 
     <TextView
         android:id="@+id/time"
