@@ -15,6 +15,10 @@ import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.SystemUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -115,7 +119,18 @@ public class MyApplication extends Application {
             Log.i("whhhh", "end=" + content.substring(content.length() - 21, content.length()));
             Log.i("whhhh", content);
 
+            JSONObject object = new JSONObject(content);
+            Log.i("whhhh_Json", "version=" + object.optString("version"));
+            JSONArray array = object.optJSONArray("RECORDS");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.optJSONObject(i);
+                Log.i("whhhh_Json", i + "-->xm=" + obj.optString("xm"));
+            }
+
+
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
