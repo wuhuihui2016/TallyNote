@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.whh.tallynote.MyApplication;
 import com.whh.tallynote.R;
@@ -24,6 +25,7 @@ import com.whh.tallynote.activity.SetGestureActivity;
 import com.whh.tallynote.activity.SetOrCheckPwdActivity;
 import com.whh.tallynote.adapter.Setting4GridAdapter;
 import com.whh.tallynote.utils.ContansUtils;
+import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -60,6 +62,10 @@ public class MineFragment extends Fragment {
      * 初始化View
      */
     private void initView() {
+
+        //显示版本信息
+        TextView versionInfo = (TextView) content.findViewById(R.id.versionInfo);
+        versionInfo.setText("V " + SystemUtils.getVersion(activity) + "\n慧慧，每天进步一点点");
 
         //3的倍数
         settingGrid = (GridView) content.findViewById(R.id.settingGrid);
@@ -142,7 +148,6 @@ public class MineFragment extends Fragment {
                 }
             }
         });
-
     }
 
 }

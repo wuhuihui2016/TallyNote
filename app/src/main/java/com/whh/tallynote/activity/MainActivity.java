@@ -127,24 +127,18 @@ public class MainActivity extends BaseActivity {
                         startActivity(new Intent(activity, SearchActivity.class));
                     }
                 });
-
                 break;
 
             case 1:
                 setTitle("理财");
                 income.setBackgroundResource(R.color.income_record);
                 income_title.setTextColor(Color.WHITE);
-
-                setRightBtnListener("V " + SystemUtils.getVersion(activity), null);
-
                 break;
+
             case 2:
                 setTitle("我的");
                 mine.setBackgroundResource(R.color.red);
                 mine_title.setTextColor(Color.WHITE);
-
-                setRightBtnListener("V " + SystemUtils.getVersion(activity), null);
-
                 break;
         }
     }

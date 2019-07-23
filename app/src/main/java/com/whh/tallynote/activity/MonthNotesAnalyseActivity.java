@@ -2,15 +2,16 @@ package com.whh.tallynote.activity;
 
 import android.os.Bundle;
 
-import com.whh.tallynote.R;
-import com.whh.tallynote.database.MonthNoteDao;
-import com.whh.tallynote.model.MonthNote;
 import com.jn.chart.charts.BarChart;
 import com.jn.chart.charts.LineChart;
 import com.jn.chart.data.BarEntry;
 import com.jn.chart.data.Entry;
 import com.jn.chart.manager.BarChartManager;
 import com.jn.chart.manager.LineChartManager;
+import com.whh.tallynote.R;
+import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.model.MonthNote;
+import com.whh.tallynote.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,8 @@ import java.util.List;
  */
 public class MonthNotesAnalyseActivity extends BaseActivity {
 
-    private List<MonthNote> monthNotes;
-    private int size; //月账大小
+    private List<MonthNote> monthNotes = new ArrayList<>();
+    private int size; //所需月账大小
     private ArrayList<String> xValues; //x轴的数据
 
     @Override
@@ -31,10 +32,24 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
 
         setContentView("月账分析", R.layout.activity_month_analyse);
 
-        monthNotes = MonthNoteDao.getMonthNotes();
-        size = monthNotes.size();
+        List<MonthNote> allList = MonthNoteDao.getMonthNotes();
+        int allSize = allList.size();
+        //为避免数据太多，导致图标显示拥挤，仅取得其中最多12条数据，12条数据按时间间断来获取。
+        int index = allSize / 11;
+        LogUtils.i("division", allSize + "/11=" + index);
+        for (int i = 0; i < allSize; i++) {
+            if (i % index == 0) {
+                LogUtils.i("division", i + "%" + index + "=0");
+                monthNotes.add(allList.get(i));
+            } else if (i == allSize - 1 && i % index != 0) {
+                monthNotes.add(allList.get(i));
+            }
+        }
 
-        xValues = (ArrayList<String>) MonthNote.formateDurations();
+        size = monthNotes.size();
+        LogUtils.i("division", "size=" + size);
+
+        xValues = (ArrayList<String>) MonthNote.formateDurations(monthNotes);
         BarChartManager.setUnit("单位：元");
 
         initBarchartData(); //柱状图分析
