@@ -12,7 +12,7 @@
         android:background="@drawable/shape_write"
         android:hint="请选择你想表达的标签"
         android:textColor="@color/app_color"
-        android:textSize="@dimen/titletextSize" />
+        android:textSize="@dimen/bigtextSize" />
 
     <com.whh.tallynote.view.FlowLayout
         android:id="@+id/flowLayout"

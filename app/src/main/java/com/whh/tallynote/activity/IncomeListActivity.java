@@ -29,6 +29,9 @@ import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -59,10 +62,6 @@ public class IncomeListActivity extends BaseActivity {
     }
 
     private void initView() {
-        //提交或完成后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_INCOME);
-        registerReceiver(myReceiver, intentFilter);
 
         income_earning = (TextView) findViewById(R.id.income_earning);
         income_earning.setOnClickListener(new View.OnClickListener() {
@@ -111,17 +110,15 @@ public class IncomeListActivity extends BaseActivity {
     }
 
     //提交或完成后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_INCOME)) {
-                info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "笔" +
-                        "\n计息中" + IncomeNote.getEarningInComes().size() + "笔" +
-                        "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
-                initData(0);
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
+        if (msg.equals(ContansUtils.ACTION_INCOME)) {
+            info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "笔" +
+                    "\n计息中" + IncomeNote.getEarningInComes().size() + "笔" +
+                    "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
+            initData(0);
         }
-    };
+    }
 
     /**
      * 依据计息中还是已完成来显示理财记录
@@ -298,9 +295,4 @@ public class IncomeListActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
-    }
 }

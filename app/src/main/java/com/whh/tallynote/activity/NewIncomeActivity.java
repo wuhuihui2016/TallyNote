@@ -20,6 +20,8 @@ import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 
 /**
@@ -81,15 +83,15 @@ public class NewIncomeActivity extends BaseActivity {
                                 @Override
                                 public void onClick() {
                                     if (IncomeNoteDao.newINote(incomeNote)) {
-                                        ToastUtils.showSucessLong(activity, "提交理财成功！");
+                                        ToastUtils.showSucessLong(activity, "理财提交成功！");
                                         ExcelUtils.exportIncomeNote(null);
                                         if (getIntent().hasExtra("list")) {
-                                            sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
+                                            EventBus.getDefault().post(ContansUtils.ACTION_INCOME);
                                         } else {
                                             startActivity(new Intent(activity, IncomeListActivity.class));
                                         }
                                         finish();
-                                    } else ToastUtils.showErrorLong(activity, "提交理财失败！");
+                                    } else ToastUtils.showErrorLong(activity, "理财提交失败！");
                                 }
                             }, "取消", new DialogListener() {
                                 @Override

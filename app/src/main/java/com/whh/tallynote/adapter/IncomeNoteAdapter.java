@@ -169,31 +169,6 @@ public class IncomeNoteAdapter extends BaseAdapter {
             });
         }
 
-//        if (position == 0 && isLast) {
-//            viewHolder.income_del.setVisibility(View.VISIBLE);
-//            viewHolder.income_del.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    DialogUtils.showMsgDialog(activity, "删除提示", "是否确定删除此条记录", new DialogUtils.DialogListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            super.onClick(v);
-//                            IncomeNoteDao.delIncome(incomeNotes.get(0));
-//                            incomeNotes = IncomeNoteDao.getIncomes();
-//                            notifyDataSetChanged();
-//
-//                            activity.sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
-//                        }
-//                    }, new DialogUtils.DialogListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            super.onClick(v);
-//                        }
-//                    });
-//                }
-//            });
-//        } else viewHolder.income_del.setVisibility(View.GONE);
-
         return convertView;
     }
 

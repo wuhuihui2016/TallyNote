@@ -17,6 +17,8 @@ import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * 新建备忘录
  * Created by wuhuihui on 2017/8/02.
@@ -96,7 +98,7 @@ public class NewMemoActivity extends BaseActivity {
                             ToastUtils.showSucessLong(activity, "保存成功！");
                             ExcelUtils.exportMemoNote(null);
                             if (getIntent().hasExtra("list")) {
-                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                             } else {
                                 startActivity(new Intent(activity, MemoNoteListActivity.class));
                             }

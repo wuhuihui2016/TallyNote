@@ -28,6 +28,9 @@ import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.ViewUtils;
 import com.whh.tallynote.utils.WPSUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -48,10 +51,6 @@ public class MonthListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("月账单明细", R.layout.activity_month_list);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_MONTH);
-        registerReceiver(myReceiver, intentFilter);
 
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
@@ -102,15 +101,14 @@ public class MonthListActivity extends BaseActivity {
     }
 
     //提交月账监听
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_MONTH)) {
-                initData();
-                showDialog();
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
+        if (msg.equals(ContansUtils.ACTION_MONTH)) {
+            initData();
+            showDialog();
         }
-    };
+    }
+
 
 
     /**
@@ -182,11 +180,5 @@ public class MonthListActivity extends BaseActivity {
                 }
             });
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
     }
 }

@@ -20,6 +20,8 @@ import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.view.FlowLayout;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -106,7 +108,7 @@ public class NewNotePadActivity extends BaseActivity {
                         ToastUtils.showSucessLong(activity, "发表成功！");
                         ExcelUtils.exportNotePad(null);
                         if (getIntent().hasExtra("list")) {
-                            sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
+                            EventBus.getDefault().post(ContansUtils.ACTION_NOTE);
                         } else {
                             startActivity(new Intent(activity, NotePadListActivity.class));
                         }

@@ -20,6 +20,8 @@ import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * 备忘录详情
  * Created by wuhuihui on 2017/8/02.
@@ -87,7 +89,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                                 public void onClick() {
                                     MemoNoteDao.delMemoNote(memoNote);
                                     ExcelUtils.exportMemoNote(null);
-                                    sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                    EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                                     finish();
 
                                 }
@@ -144,7 +146,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                                                 ExcelUtils.exportMemoNote(null);
                                                 ToastUtils.showSucessLong(activity, "完成备忘录成功！");
                                                 showStatus(true);
-                                                sendBroadcast(new Intent(ContansUtils.ACTION_MEMO));
+                                                EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                                             } else {
                                                 ToastUtils.showErrorLong(activity, "完成备忘录失败！");
                                             }

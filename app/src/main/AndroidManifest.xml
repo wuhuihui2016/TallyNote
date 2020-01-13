@@ -82,16 +82,16 @@
         <!-- 记录列表 -->
         <activity
             android:name="com.whh.tallynote.activity.DayListActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleInstance" />
         <activity
             android:name="com.whh.tallynote.activity.MonthListActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleInstance" />
         <activity
             android:name="com.whh.tallynote.activity.DayListOfMonthActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleInstance" />
         <activity
             android:name="com.whh.tallynote.activity.IncomeListActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleInstance" />
 
         <!-- 导入导出 -->
         <activity android:name="com.whh.tallynote.activity.ImportExportActivity" />
@@ -118,7 +118,10 @@
 
 
         <!-- 备忘录列表 -->
-        <activity android:name="com.whh.tallynote.activity.MemoNoteListActivity" />
+        <activity
+            android:name="com.whh.tallynote.activity.MemoNoteListActivity"
+            android:launchMode="singleInstance" />
+
         <!-- 新建备忘录 -->
         <activity
             android:name="com.whh.tallynote.activity.NewMemoActivity"
@@ -129,7 +132,9 @@
 
 
         <!-- 记事本列表 -->
-        <activity android:name="com.whh.tallynote.activity.NotePadListActivity" />
+        <activity
+            android:name="com.whh.tallynote.activity.NotePadListActivity"
+            android:launchMode="singleInstance" />
         <!-- 新建记事本 -->
         <activity
             android:name="com.whh.tallynote.activity.NewNotePadActivity"

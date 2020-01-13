@@ -25,6 +25,9 @@ import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,10 +51,6 @@ public class DayListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("日账单明细", R.layout.activity_day_list);
-        //删除后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_DAY);
-        registerReceiver(myReceiver, intentFilter);
 
         info = (TextView) findViewById(R.id.info);
         all = (TextView) findViewById(R.id.all);
@@ -69,19 +68,21 @@ public class DayListActivity extends BaseActivity {
                 initPopupWindow();
             }
         });
-
-        getAll();
     }
 
     //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_DAY)) {
-                getAll();
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
+        if (msg.equals(ContansUtils.ACTION_DAY)) {
+            getAll();
         }
-    };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAll();
+    }
 
     /**
      * 初始化popupWindow
@@ -208,9 +209,4 @@ public class DayListActivity extends BaseActivity {
         listView.setAdapter(dayNoteAdapter);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
-    }
 }

@@ -15,7 +15,7 @@
             android:gravity="center"
             android:text="安全设置"
             android:textColor="@color/app_color"
-            android:textSize="@dimen/titletextSize" />
+            android:textSize="@dimen/bigtextSize" />
 
         <View
             android:layout_width="match_parent"

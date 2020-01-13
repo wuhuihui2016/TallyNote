@@ -19,6 +19,8 @@ import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.StringUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -104,7 +106,7 @@ public class DayNoteAdapter extends BaseAdapter {
                                     dayNotes = DayNoteDao.getDayNotes();
                                     notifyDataSetChanged();
 
-                                    activity.sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
+                                    EventBus.getDefault().post(ContansUtils.ACTION_DAY);
 
                                     ExcelUtils.exportDayNote(null);
 

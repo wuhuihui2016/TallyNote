@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 220
-        versionName "2.2_2019.07.10"
+        versionName "2.2_2020.01.13"
 
     }
 
@@ -18,7 +18,7 @@ android {
         config {
             keyAlias 'tallynote'
             keyPassword 'tallynote170628'
-            storeFile file('E:/private/Workspace4Studio2.3/TallyNote/tallyNote.jks')
+            storeFile file('tallyNote.jks')
             storePassword 'tallynote170628'
         }
     }
@@ -52,7 +52,7 @@ android {
 repositories {
 
     flatDir {
-        dirs'libs'
+        dirs 'libs'
     }
 
 }
@@ -61,19 +61,17 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.0'
-
     //excel表格相关
     compile files('libs/jxl.jar')
     compile(name: 'chartlib190418', ext: 'aar')
-
     //greendao
     compile 'org.greenrobot:greendao:3.2.2'
     //compile 'net.zetetic:android-database-sqlcipher:3.5.7' //greendao加密数据库
     //leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-
-
+    compile files('libs/bcprov-jdk16-1.46.jar')
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
 
 greendao {

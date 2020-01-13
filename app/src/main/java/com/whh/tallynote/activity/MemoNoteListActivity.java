@@ -25,6 +25,9 @@ import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -45,10 +48,6 @@ public class MemoNoteListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("我的备忘录", R.layout.activity_memonote_list);
-        //完成后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_MEMO);
-        registerReceiver(myReceiver, intentFilter);
 
         info = (TextView) findViewById(R.id.info);
         all = (TextView) findViewById(R.id.all);
@@ -79,15 +78,14 @@ public class MemoNoteListActivity extends BaseActivity {
     }
 
     //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_MEMO)) {
-                isFirst = false;
-                getAll();
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
+        if (msg.equals(ContansUtils.ACTION_MEMO)) {
+            isFirst = false;
+            getAll();
         }
-    };
+    }
+
 
     /**
      * 初始化popupWindow
@@ -201,10 +199,4 @@ public class MemoNoteListActivity extends BaseActivity {
 
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
-    }
 }

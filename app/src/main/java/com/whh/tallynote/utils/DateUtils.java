@@ -53,7 +53,7 @@ public class DateUtils {
      * @return
      */
     public static String formatDate4fileName() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         return sdf.format(new Date());
     }
 

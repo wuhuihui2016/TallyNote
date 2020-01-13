@@ -26,6 +26,9 @@ import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.ViewUtils;
 import com.whh.tallynote.view.FlowLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,10 +52,6 @@ public class NotePadListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView("我的记事本", R.layout.activity_notepad_list);
-        //删除后广播接收
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ContansUtils.ACTION_NOTE);
-        registerReceiver(myReceiver, intentFilter);
 
         info = (TextView) findViewById(R.id.info);
         listView = (ListView) findViewById(R.id.listView);
@@ -114,22 +113,20 @@ public class NotePadListActivity extends BaseActivity {
     private int position4Detail = -1; //列表点击item的标志位
 
     //删除后刷新界面
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ContansUtils.ACTION_NOTE)) {
-                if (position4Detail != -1) {
-                    try {
-                        //标志位被删除，刷新列表
-                        notePads.remove(notePads.get(position4Detail));
-                        notePadAdapter.notifyDataSetChanged();
-                    } catch (Exception e){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
+        if (msg.equals(ContansUtils.ACTION_NOTE)) {
+            if (position4Detail != -1) {
+                try {
+                    //标志位被删除，刷新列表
+                    notePads.remove(notePads.get(position4Detail));
+                    notePadAdapter.notifyDataSetChanged();
+                } catch (Exception e){
 
-                    }
                 }
             }
         }
-    };
+    }
 
     /**
      * 初始化popupWindow
@@ -232,12 +229,5 @@ public class NotePadListActivity extends BaseActivity {
         notePadAdapter = new NotePadAdapter(activity, list, false);
         listView.setAdapter(notePadAdapter);
 
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myReceiver != null) unregisterReceiver(myReceiver);
     }
 }

@@ -4,6 +4,15 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/pwdVisible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/transparent"
+        android:scaleType="centerInside"
+        android:onClick="onClick"
+        android:src="@drawable/eye_close_pwd" />
+
     <TextView
         android:id="@+id/edit_tips"
         android:layout_width="match_parent"
@@ -28,6 +37,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <View
@@ -43,6 +53,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <View
@@ -58,6 +69,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <View
@@ -73,6 +85,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <View
@@ -88,6 +101,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <View
@@ -103,6 +117,7 @@
             android:gravity="center_horizontal|center"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:textColor="@color/red"
             android:textSize="25sp" />
 
     </LinearLayout>

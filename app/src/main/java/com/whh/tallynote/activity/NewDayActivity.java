@@ -23,6 +23,8 @@ import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * 记日账
  */
@@ -75,20 +77,20 @@ public class NewDayActivity extends BaseActivity {
                     LogUtils.i("commit", dayNote.toString());
                     String message;
                     message = dayNote.getRemark() + DayNote.getUserType(dayNote.getUseType()) + StringUtils.showPrice(dayNote.getMoney());
-                    DialogUtils.showMsgDialog(activity, "提交日账单\n" + message,
+                    DialogUtils.showMsgDialog(activity, "提交日账\n" + message,
                             "提交", new DialogListener() {
                                 @Override
                                 public void onClick() {
                                     if (DayNoteDao.newDNote(dayNote)) {
-                                        ToastUtils.showSucessLong(activity, "提交日账单成功！");
+                                        ToastUtils.showSucessLong(activity, "日账提交成功！");
                                         ExcelUtils.exportDayNote(null);
                                         if (getIntent().hasExtra("list")) {
-                                            sendBroadcast(new Intent(ContansUtils.ACTION_DAY));
+                                            EventBus.getDefault().post(ContansUtils.ACTION_DAY);
                                         } else {
                                             startActivity(new Intent(activity, DayListActivity.class));
                                         }
                                         finish();
-                                    } else ToastUtils.showErrorLong(activity, "提交日账单失败！");
+                                    } else ToastUtils.showErrorLong(activity, "日账提交失败！");
                                 }
                             },  "取消", new DialogListener() {
                                 @Override

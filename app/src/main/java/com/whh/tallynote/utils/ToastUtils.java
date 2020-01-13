@@ -5,10 +5,13 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whh.tallynote.R;
+
 
 /**
  * 用于在屏幕中间显示toast，并带有图片
@@ -38,12 +41,11 @@ public class ToastUtils {
             mToast.cancel();
             mToast = null;
         }
-        mToast = new Toast(activity);
-        mToast.setGravity(Gravity.CENTER, 0, 0);
-        if (isShort) mToast.setDuration(Toast.LENGTH_SHORT);
-        else mToast.setDuration(Toast.LENGTH_LONG);
 
         View view = View.inflate(activity, R.layout.layout_toast, null);
+        LinearLayout toast_layout = (LinearLayout) view.findViewById(R.id.toast_layout);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(400, 400);
+        toast_layout.setLayoutParams(layoutParams);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView = (TextView) view.findViewById(R.id.text);
         if (tag == SUCESSSHOW) imageView.setImageResource(R.drawable.toast_sucess);
@@ -51,11 +53,12 @@ public class ToastUtils {
         else imageView.setImageResource(R.drawable.toast_warning);
 
         textView.setText(text);
-        if (text.length() > 13) {
-            textView.setTextSize(13);
-        } else {
-            textView.setTextSize(15);
-        }
+
+        mToast = new Toast(activity);
+        mToast.setGravity(Gravity.CENTER, 0, 0);
+        if (isShort) mToast.setDuration(Toast.LENGTH_SHORT);
+        else mToast.setDuration(Toast.LENGTH_LONG);
+
         mToast.setView(view);
         mToast.show();
     }

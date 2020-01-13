@@ -3,12 +3,14 @@ package com.whh.tallynote.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
@@ -16,6 +18,7 @@ import com.whh.tallynote.adapter.NumAdapter;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
+import com.whh.tallynote.utils.DesEncryptUtils;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -33,6 +36,8 @@ import static com.whh.tallynote.utils.SystemUtils.key;
  */
 public class SetOrCheckPwdActivity extends BaseActivity {
 
+    private ImageButton pwdVisible;
+
     private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
     private GridView numGridView; //输入密码的按键
     private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
@@ -46,6 +51,8 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_pwd);
+
+        pwdVisible = (ImageButton) findViewById(R.id.pwdVisible);
 
         //判断是否设置过，是否重置密码
         if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWD, ""))
@@ -78,7 +85,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
     /**
      * 设置密保后跳转页面
      */
-    private void skip() {
+    private void skipMainActivity() {
         finish();
         startActivity(new Intent(activity, MainActivity.class));
     }
@@ -122,10 +129,29 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         });
     }
 
+    boolean isPwdVisible = false;
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.pwdVisible:
+                isPwdVisible = !isPwdVisible;
+                if (isPwdVisible) {
+                    pwdVisible.setImageResource(R.drawable.eye_open_pwd);
+                } else {
+                    pwdVisible.setImageResource(R.drawable.eye_close_pwd);
+                }
+
+                for (int i = 0; i < textViews.size(); i++) {
+                    if (isPwdVisible) {
+                        textViews.get(i).setInputType(InputType.TYPE_CLASS_TEXT);
+                    } else {
+                        textViews.get(i).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+                }
+
+                break;
             case R.id.num0:
                 onClickCallback("0");
                 break;
@@ -166,11 +192,15 @@ public class SetOrCheckPwdActivity extends BaseActivity {
 
                         if (isSetting) {
                             final String finalPassword = password;
-                            DialogUtils.showMsgDialog(activity, "设置密码\n" + "pwdKey：" + password, "确定", new DialogListener() {
+                            DialogUtils.showMsgDialog(activity, "设置当前密码？", "确定", new DialogListener() {
                                 @Override
                                 public void onClick() {
-                                    ContansUtils.put(ContansUtils.PWD, finalPassword);
-                                    skip();
+                                    try {
+                                        ContansUtils.put(ContansUtils.PWD, DesEncryptUtils.encode(finalPassword));
+                                    } catch (DesEncryptUtils.CodecException e) {
+                                        e.printStackTrace();
+                                    }
+                                    skipMainActivity();
                                 }
                             }, "取消", new DialogListener() {
                                 @Override
@@ -185,6 +215,11 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                         } else {
                             //密码取已保存的密保
                             String pwdKey = (String) ContansUtils.get(ContansUtils.PWD, "");
+                            try {
+                                password = DesEncryptUtils.encode(password);
+                            } catch (DesEncryptUtils.CodecException e) {
+                                e.printStackTrace();
+                            }
                             if (password.equals(pwdKey)) {  //验证通过
                                 if (getIntent().hasExtra("secureSet")) { //进入安全设置
                                     finish();

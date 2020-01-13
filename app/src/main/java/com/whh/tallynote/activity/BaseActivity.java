@@ -29,6 +29,8 @@ import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
 import com.whh.tallynote.utils.WPSUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by wuhuihui on 2017/3/24.
  */
@@ -77,6 +79,11 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                     initPopupWindow();
                 }
             });
+        }
+
+        if (TAG.contains("List")) {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().register(this); //注册事件,不可重复注册
         }
 
     }
@@ -327,6 +334,11 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             MyApplication.dbHelper.db.close();
         } catch (Exception e) {
             LogUtils.e(TAG + "-onDestroy", e.toString());
+        }
+
+        if (TAG.contains("List")) {
+            if (EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this); //注销事件
         }
     }
 }

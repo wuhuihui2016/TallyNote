@@ -30,6 +30,8 @@ import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -144,7 +146,7 @@ public class NewMonthActivity extends BaseActivity {
                                             }
                                         }
                                         if (getIntent().hasExtra("list")) {
-                                            sendBroadcast(new Intent(ContansUtils.ACTION_MONTH));
+                                            EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
                                         } else {
                                             Intent intent = new Intent(activity, MonthListActivity.class);
                                             intent.putExtra("flag", true);

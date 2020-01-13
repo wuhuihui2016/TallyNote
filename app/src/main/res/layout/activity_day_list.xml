@@ -122,7 +122,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info"
-        android:background="@drawable/shape_day"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"
         android:padding="10dp"
@@ -137,6 +136,6 @@
         android:gravity="center_vertical|center"
         android:text="@string/emptyInfo"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:visibility="gone" />
 </RelativeLayout>

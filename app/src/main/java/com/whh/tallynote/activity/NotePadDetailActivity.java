@@ -14,6 +14,8 @@ import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * 记事本详情
  * Created by wuhuihui on 2017/8/02.
@@ -54,7 +56,7 @@ public class NotePadDetailActivity extends BaseActivity {
                                 public void onClick() {
                                     NotePadDao.delNotePad(notePad);
                                     ExcelUtils.exportNotePad(null);
-                                    sendBroadcast(new Intent(ContansUtils.ACTION_NOTE));
+                                    EventBus.getDefault().post(ContansUtils.ACTION_NOTE);
                                     finish();
 
                                 }

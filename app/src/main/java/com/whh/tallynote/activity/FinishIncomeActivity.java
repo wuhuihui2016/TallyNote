@@ -18,6 +18,8 @@ import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * 完成理财
  */
@@ -66,7 +68,7 @@ public class FinishIncomeActivity extends BaseActivity {
                                     if (IncomeNoteDao.finishIncome(incomeNote)) {
                                         ToastUtils.showSucessLong(activity, "完成理财成功！");
                                         ExcelUtils.exportIncomeNote(null);
-                                        sendBroadcast(new Intent(ContansUtils.ACTION_INCOME));
+                                        EventBus.getDefault().post(ContansUtils.ACTION_INCOME);
                                         finish();
                                     } else ToastUtils.showErrorLong(activity, "完成理财失败！");
                                 }
