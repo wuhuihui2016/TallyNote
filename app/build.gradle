@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
 
 android {
 
@@ -9,8 +8,8 @@ android {
         applicationId "com.fengyang.tallynote"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 220
-        versionName "2.2_2020.01.13"
+        versionCode 230
+        versionName "2.3.2020.0226"
 
     }
 
@@ -64,26 +63,14 @@ dependencies {
     //excel表格相关
     compile files('libs/jxl.jar')
     compile(name: 'chartlib190418', ext: 'aar')
-    //greendao
-    compile 'org.greenrobot:greendao:3.2.2'
-    //compile 'net.zetetic:android-database-sqlcipher:3.5.7' //greendao加密数据库
     //leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
+    //加密
     compile files('libs/bcprov-jdk16-1.46.jar')
+
+    //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
 }
 
-greendao {
-    //数据库版本号
-    schemaVersion 2
-
-    //设置要放置DaoMaster、DaoSession、Dao这些类的包的全路径
-    daoPackage 'com.whh.tallynote.greendao'
-
-    //设置DaoMaster、DaoSession、Dao目录
-    targetGenDir 'src/main/java'
-
-    //设置为true以自动生成单元测试。
-    // generateTests false
-}

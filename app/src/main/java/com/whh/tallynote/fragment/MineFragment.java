@@ -74,20 +74,20 @@ public class MineFragment extends Fragment {
 
         settings.add("备忘录");
         drawableRes.add(R.drawable.memo);
-        settings.add("记事本");
-        drawableRes.add(R.drawable.notepad);
-        settings.add("导入/导出");
-        drawableRes.add(R.drawable.import_export);
         settings.add("安全设置");
         drawableRes.add(R.drawable.pwdkey);
+        settings.add("记事本");
+        drawableRes.add(R.drawable.notepad);
         settings.add("计算日收益");
         drawableRes.add(R.drawable.calculate);
         settings.add("文件浏览");
         drawableRes.add(R.drawable.file_explorer);
-        settings.add("计数器");
-        drawableRes.add(R.drawable.counter);
+        settings.add("导入/导出");
+        drawableRes.add(R.drawable.import_export);
         settings.add("查看log");
         drawableRes.add(R.drawable.log_review);
+        settings.add("计数器");
+        drawableRes.add(R.drawable.counter);
         settings.add("敬请期待");
         drawableRes.add(R.drawable.doc_review);
 //        settings.add("敬请期待");
@@ -104,17 +104,7 @@ public class MineFragment extends Fragment {
                         startActivity(new Intent(activity, MemoNoteListActivity.class));
                         break;
 
-                    case 1: //记事本
-                        MyApplication.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
-                                "tag integer,words varchar(200),time varchar(20))");
-                        startActivity(new Intent(activity, NotePadListActivity.class));
-                        break;
-
-                    case 2: //导入/导出
-                        startActivity(new Intent(activity, ImportExportActivity.class));
-                        break;
-
-                    case 3: //安全设置
+                    case 1: //安全设置
                         //判断验证方式：启动密码or手势密码
                         Intent intent = new Intent();
                         if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
@@ -126,20 +116,30 @@ public class MineFragment extends Fragment {
                         startActivity(intent);
                         break;
 
-                    case 4: //计算日收益
+                    case 2: //记事本
+                        MyApplication.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
+                                "tag integer,words varchar(200),time varchar(20))");
+                        startActivity(new Intent(activity, NotePadListActivity.class));
+                        break;
+
+                    case 3: //计算日收益
                         startActivity(new Intent(activity, CalculateActivity.class));
                         break;
 
-                    case 5: //文件浏览
+                    case 4: //文件浏览
                         startActivity(new Intent(activity, FileExplorerActivity.class));
                         break;
 
-                    case 6: //计数器
-                        startActivity(new Intent(activity, CounterActivity.class));
+                    case 5: //导入/导出
+                        startActivity(new Intent(activity, ImportExportActivity.class));
                         break;
 
-                    case 7: //查看log
+                    case 6: //查看log
                         startActivity(new Intent(activity, LogExplorerActivity.class));
+                        break;
+
+                    case 7: //计数器
+                        startActivity(new Intent(activity, CounterActivity.class));
                         break;
 
                     case 8: //敬请期待

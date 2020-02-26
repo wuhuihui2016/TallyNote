@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 运行任务 -->
 
     <application
-        android:name="com.whh.tallynote.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         <!-- APP间读取共享文件需要配置provider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.whh.tallynote.fileprovider"
+            android:authorities=".fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <!--元数据-->
@@ -35,7 +35,7 @@
 
         <!-- 设置启动密码  -->
         <activity
-            android:name="com.whh.tallynote.activity.SetOrCheckPwdActivity"
+            android:name=".activity.SetOrCheckPwdActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask">
             <intent-filter>
@@ -47,119 +47,113 @@
 
         <!-- 主页 -->
         <activity
-            android:name="com.whh.tallynote.activity.MainActivity"
-            android:launchMode="singleTask" />
-
-        <!-- GreenDao增删改查操作 -->
-        <activity
-            android:name="com.whh.tallynote.activity.GreenDaoTestActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
 
         <!-- 记日账 -->
         <activity
-            android:name="com.whh.tallynote.activity.NewDayActivity"
+            android:name=".activity.NewDayActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
 
         <!-- 记月账 -->
         <activity
-            android:name="com.whh.tallynote.activity.NewMonthActivity"
+            android:name=".activity.NewMonthActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
 
         <!-- 记理财 -->
         <activity
-            android:name="com.whh.tallynote.activity.NewIncomeActivity"
+            android:name=".activity.NewIncomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
 
         <!-- 完成理财 -->
         <activity
-            android:name="com.whh.tallynote.activity.FinishIncomeActivity"
+            android:name=".activity.FinishIncomeActivity"
             android:configChanges="orientation|keyboardHidden" />
 
         <!-- 记录列表 -->
         <activity
-            android:name="com.whh.tallynote.activity.DayListActivity"
+            android:name=".activity.DayListActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="com.whh.tallynote.activity.MonthListActivity"
+            android:name=".activity.MonthListActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="com.whh.tallynote.activity.DayListOfMonthActivity"
+            android:name=".activity.DayListOfMonthActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="com.whh.tallynote.activity.IncomeListActivity"
+            android:name=".activity.IncomeListActivity"
             android:launchMode="singleInstance" />
 
         <!-- 导入导出 -->
-        <activity android:name="com.whh.tallynote.activity.ImportExportActivity" />
+        <activity android:name=".activity.ImportExportActivity" />
 
         <!-- 设置手势密码 -->
-        <activity android:name="com.whh.tallynote.activity.SetGestureActivity" />
+        <activity android:name=".activity.SetGestureActivity" />
 
         <!-- 安全设置 -->
         <activity
-            android:name="com.whh.tallynote.activity.SecureSetActivity"
+            android:name=".activity.SecureSetActivity"
             android:theme="@style/mDialogStyle" />
 
         <!-- 计算日收益 -->
         <activity
-            android:name="com.whh.tallynote.activity.CalculateActivity"
+            android:name=".activity.CalculateActivity"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!-- 日收益比较 -->
-        <activity android:name="com.whh.tallynote.activity.CompareActivity" />
+        <activity android:name=".activity.CompareActivity" />
 
         <!-- 文件浏览 -->
-        <activity android:name="com.whh.tallynote.activity.FileExplorerActivity" />
+        <activity android:name=".activity.FileExplorerActivity" />
 
 
         <!-- 备忘录列表 -->
         <activity
-            android:name="com.whh.tallynote.activity.MemoNoteListActivity"
+            android:name=".activity.MemoNoteListActivity"
             android:launchMode="singleInstance" />
 
         <!-- 新建备忘录 -->
         <activity
-            android:name="com.whh.tallynote.activity.NewMemoActivity"
+            android:name=".activity.NewMemoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
         <!-- 备忘录详情 -->
-        <activity android:name="com.whh.tallynote.activity.MemoNoteDetailActivity" />
+        <activity android:name=".activity.MemoNoteDetailActivity" />
 
 
         <!-- 记事本列表 -->
         <activity
-            android:name="com.whh.tallynote.activity.NotePadListActivity"
+            android:name=".activity.NotePadListActivity"
             android:launchMode="singleInstance" />
         <!-- 新建记事本 -->
         <activity
-            android:name="com.whh.tallynote.activity.NewNotePadActivity"
+            android:name=".activity.NewNotePadActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
         <!-- 记事本详情 -->
-        <activity android:name="com.whh.tallynote.activity.NotePadDetailActivity" />
+        <activity android:name=".activity.NotePadDetailActivity" />
 
         <!-- 搜索 -->
-        <activity android:name="com.whh.tallynote.activity.SearchActivity" />
+        <activity android:name=".activity.SearchActivity" />
 
         <!-- 筛选高额消费 -->
-        <activity android:name="com.whh.tallynote.activity.HighConsumeDayListActivity" />
+        <activity android:name=".activity.HighConsumeDayListActivity" />
 
         <!-- 月账单记录分析统计 -->
-        <activity android:name="com.whh.tallynote.activity.MonthNotesAnalyseActivity" />
+        <activity android:name=".activity.MonthNotesAnalyseActivity" />
 
         <!-- 本次月结的理财明细 -->
-        <activity android:name="com.whh.tallynote.activity.IncomeList4UnRecordActivity" />
+        <activity android:name=".activity.IncomeList4UnRecordActivity" />
 
         <!-- 计数器 -->
-        <activity android:name="com.whh.tallynote.activity.CounterActivity" />
+        <activity android:name=".activity.CounterActivity" />
 
         <!-- log文件浏览 -->
-        <activity android:name="com.whh.tallynote.activity.LogExplorerActivity" />
+        <activity android:name=".activity.LogExplorerActivity" />
 
     </application>
 

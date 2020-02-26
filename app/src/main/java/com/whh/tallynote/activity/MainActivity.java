@@ -104,19 +104,20 @@ public class MainActivity extends BaseActivity {
      * 设置当前tab颜色
      */
     private void setCheked(int index) {
+        viewPager.setCurrentItem(index);
 
         frag_index = index;
 
-        tally.setBackgroundColor(Color.WHITE);
-        income.setBackgroundColor(Color.WHITE);
-        mine.setBackgroundColor(Color.WHITE);
+        tally.setBackgroundColor(Color.parseColor("#CDCDC1"));
+        income.setBackgroundColor(Color.parseColor("#CDCDC1"));
+        mine.setBackgroundColor(Color.parseColor("#CDCDC1"));
         tally_title.setTextColor(Color.BLACK);
         income_title.setTextColor(Color.BLACK);
         mine_title.setTextColor(Color.BLACK);
 
         switch (frag_index) {
             case 0:
-                setTitle("账本");
+                setTitle("记账本");
                 tally.setBackgroundResource(R.color.day_record);
                 tally_title.setTextColor(Color.WHITE);
 
@@ -158,16 +159,13 @@ public class MainActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tally:
-                viewPager.setCurrentItem(0);
-                setCheked(0);
+                setCheked(0); //记账本
                 break;
             case R.id.income:
-                viewPager.setCurrentItem(1);
-                setCheked(1);
+                setCheked(1); //理财
                 break;
             case R.id.mine:
-                viewPager.setCurrentItem(2);
-                setCheked(2);
+                setCheked(2); //我的
                 break;
         }
 

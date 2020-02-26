@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="@color/main_bkg"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -14,8 +14,8 @@
         android:gravity="top|left"
         android:hint="接下来我要做什么..."
         android:lines="10"
-        android:padding="10dp"
         android:maxLength="200"
+        android:padding="10dp"
         android:textSize="@dimen/bigtextSize" />
 
     <RelativeLayout

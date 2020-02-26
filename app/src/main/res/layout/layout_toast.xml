@@ -10,7 +10,8 @@
         android:layout_height="200dp"
         android:background="@drawable/shape_toast"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/image"

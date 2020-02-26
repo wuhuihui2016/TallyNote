@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/main_bkg">
 
     <RelativeLayout
         android:id="@+id/user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_color"
+        android:background="@color/index_tally"
         android:padding="10dp">
 
         <ImageView
@@ -28,7 +29,7 @@
             android:lineSpacingExtra="5dp"
             android:padding="10dp"
             android:text="V2.0\n慧慧，每天进步一点点"
-            android:textColor="@color/white"
+            android:textColor="@color/app_color"
             android:textSize="16sp" />
 
     </RelativeLayout>
@@ -38,16 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_info"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/gridline"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:horizontalSpacing="1dp"
+        android:horizontalSpacing="10dp"
         android:numColumns="3"
         android:padding="1dp"
         android:scrollbars="none"
-        android:verticalSpacing="1dp" />
+        android:verticalSpacing="10dp" />
 
 </RelativeLayout>
 

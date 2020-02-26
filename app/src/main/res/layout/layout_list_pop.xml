@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray"
+    android:background="@color/main_bkg"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -94,8 +94,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="@color/gray" />
+        android:layout_height="8dp" />
 
     <Button
         android:id="@+id/close"

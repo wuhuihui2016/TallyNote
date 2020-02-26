@@ -1,14 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="10dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/streamer_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:ellipsize="end"
+        android:ellipsize="middle"
+        android:lines="2"
         android:onClick="onClick"
         android:textColor="@color/black" />
 

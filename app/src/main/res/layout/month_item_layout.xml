@@ -3,12 +3,12 @@
     android:id="@+id/item_month_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/main_bkg"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 

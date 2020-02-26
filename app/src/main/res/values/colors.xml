@@ -11,7 +11,7 @@
 
 
     <color name="title">#333333</color>
-    <color name="line">#d0d0d0</color>
+    <color name="line">#EEEEE0</color>
     <color name="bitblack">#4F4F4F</color>
     <color name="gridline">#8E8E8E</color>
 
@@ -23,5 +23,13 @@
 
     <color name="search_info">#7D7DFF</color>
 
+    <!--首页4个模块的背景色-->
+    <color name="index_tally">#FAEBD7</color>
+
+    <!--背景主颜色-->
+    <color name="main_bkg">@android:color/transparent</color>
+
+    <!--文字标题等字体颜色-->
+    <color name="text_clolor">#8B8B00</color>
 
 </resources>

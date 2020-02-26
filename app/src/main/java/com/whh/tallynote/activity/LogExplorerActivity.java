@@ -51,7 +51,7 @@ public class LogExplorerActivity extends BaseActivity {
 
         File logDir = FileUtils.getLogDir();
         final File files[] = logDir.listFiles();
-        if (files.length > 0) {
+        if (files != null && files.length > 0) {
             fileList.clear();
             for (int i = 0; i < files.length; i++) fileList.add(files[i]);
             Collections.sort(fileList, new FileComparator());

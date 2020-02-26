@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bkg"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -95,14 +96,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="从本地文件中导入"
-        android:textColor="@color/darker_gray"
+        android:textColor="@color/text_clolor"
         android:textSize="@dimen/bigtextSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_btn_bkg"
+        android:background="@drawable/shape_index"
         android:gravity="center|center_horizontal"
         android:orientation="horizontal">
 
@@ -136,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="导出已有的所有记录"
-        android:textColor="@color/darker_gray"
+        android:textColor="@color/text_clolor"
         android:textSize="@dimen/bigtextSize" />
 
     <TextView
@@ -144,7 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_btn_bkg"
+        android:background="@drawable/shape_index"
         android:gravity="center_horizontal|center"
         android:onClick="onClick"
         android:padding="10dp"

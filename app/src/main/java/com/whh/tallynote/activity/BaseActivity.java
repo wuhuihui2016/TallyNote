@@ -30,6 +30,9 @@ import com.whh.tallynote.utils.ViewUtils;
 import com.whh.tallynote.utils.WPSUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -86,6 +89,10 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                 EventBus.getDefault().register(this); //注册事件,不可重复注册
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventBusMsg(String msg) {
     }
 
     /**

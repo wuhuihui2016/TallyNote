@@ -18,7 +18,6 @@ import android.widget.ViewAnimator;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.activity.DayListActivity;
-import com.whh.tallynote.activity.GreenDaoTestActivity;
 import com.whh.tallynote.activity.MemoNoteListActivity;
 import com.whh.tallynote.activity.MonthListActivity;
 import com.whh.tallynote.activity.NotePadListActivity;
@@ -71,7 +70,7 @@ public class TallyFragment extends Fragment {
         today.setText(msg);
 
         //获取使用APP记账的时长
-        TextView useTime= (TextView) content.findViewById(R.id.useTime);
+        TextView useTime = (TextView) content.findViewById(R.id.useTime);
         useTime.setVisibility(View.VISIBLE);
         if (DayNoteDao.getDayNotes4History().size() > 0) {
             String time = DayNoteDao.getDayNotes4History().get(0).getTime().split("\\s+")[0];
@@ -184,7 +183,6 @@ public class TallyFragment extends Fragment {
      * 设置点击事件
      */
     private void clickListener() {
-        content.findViewById(R.id.userManager).setOnClickListener(clickListener);
         seenCheck.setOnClickListener(clickListener);
         content.findViewById(R.id.reload).setOnClickListener(clickListener);
         content.findViewById(R.id.last_layout).setOnClickListener(clickListener);
@@ -195,9 +193,6 @@ public class TallyFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.userManager:
-                    startActivity(new Intent(activity, GreenDaoTestActivity.class));
-                    break;
                 case R.id.seenCheck:
                     //密文明文显示
                     if (isSeen) {
@@ -242,7 +237,8 @@ public class TallyFragment extends Fragment {
             LogUtils.i("showMemo", memoNoteList.size() + "--" + memoNoteList.toString());
 
             LinearLayout memo_layout = (LinearLayout) content.findViewById(R.id.memo_layout);
-            memo_layout.removeAllViews();
+            LinearLayout memo_list_layout = (LinearLayout) content.findViewById(R.id.memo_list_layout);
+            memo_list_layout.removeAllViews();
 
             if (memoNoteList.size() > 0) {
                 memo_layout.setVisibility(View.VISIBLE);
@@ -263,9 +259,9 @@ public class TallyFragment extends Fragment {
                     } else {
                         memo_view.findViewById(R.id.line).setVisibility(View.VISIBLE);
                     }
-                    memo_layout.addView(memo_view);
+                    memo_list_layout.addView(memo_view);
                 }
-                memo_layout.setOnClickListener(new View.OnClickListener() {
+                memo_list_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         activity.startActivity(new Intent(activity, MemoNoteListActivity.class));
@@ -291,9 +287,11 @@ public class TallyFragment extends Fragment {
 
     private void showNotepad() {
         try {
+            LinearLayout notepad_layout = (LinearLayout) content.findViewById(R.id.notepad_layout);
             notePads = NotePadDao.getNotePads();
-            Collections.reverse(notePads);
             if (notePads.size() > 0) {
+                notepad_layout.setVisibility(View.VISIBLE);
+                Collections.reverse(notePads);
                 int size;
                 if (notePads.size() > 3) {
                     size = 3;
@@ -319,6 +317,8 @@ public class TallyFragment extends Fragment {
                 }
 
                 play(true);
+            } else {
+                notepad_layout.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             LogUtils.e(TAG + "-showNotepad", e.toString());

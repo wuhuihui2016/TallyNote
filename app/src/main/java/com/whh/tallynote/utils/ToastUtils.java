@@ -44,7 +44,7 @@ public class ToastUtils {
 
         View view = View.inflate(activity, R.layout.layout_toast, null);
         LinearLayout toast_layout = (LinearLayout) view.findViewById(R.id.toast_layout);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(400, 400);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(400, RelativeLayout.LayoutParams.WRAP_CONTENT);
         toast_layout.setLayoutParams(layoutParams);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView = (TextView) view.findViewById(R.id.text);

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="@color/main_bkg">
 
     <TextView
         android:id="@+id/time"
@@ -13,11 +14,10 @@
         android:textColor="@color/blue"
         android:textSize="@dimen/titletextSize" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:orientation="vertical">
+        android:layout_marginLeft="5dp">
 
         <TextView
             android:id="@+id/words"
@@ -36,15 +36,17 @@
             android:id="@+id/del"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:background="@drawable/shape_write"
             android:clickable="true"
             android:text="删除"
+            android:layout_below="@id/words"
             android:textColor="@color/blue"
             android:textSize="@dimen/littletextSize" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

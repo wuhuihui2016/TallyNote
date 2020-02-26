@@ -1,124 +1,119 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@color/main_bkg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="30dp">
 
     <ImageButton
         android:id="@+id/pwdVisible"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:background="@color/transparent"
-        android:scaleType="centerInside"
         android:onClick="onClick"
+        android:scaleType="centerInside"
         android:src="@drawable/eye_close_pwd" />
 
     <TextView
         android:id="@+id/edit_tips"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal"
+        android:layout_below="@id/pwdVisible"
+        android:layout_centerHorizontal="true"
         android:hint="请验证6位密码"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:textColor="@color/text_clolor" />
 
     <LinearLayout
         android:id="@+id/pwd_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/shape_pwd"
+        android:layout_below="@id/edit_tips"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/main_bkg"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/pwd1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/gridline" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pwd2"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/gridline" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pwd3"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/gridline" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pwd4"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/gridline" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pwd5"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/gridline" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pwd6"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal|center"
+            android:background="@drawable/shape_pwd_stroke"
+            android:gravity="center"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/red"
-            android:textSize="25sp" />
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -126,7 +121,7 @@
         android:id="@+id/numGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:gravity="center_horizontal|center"
         android:numColumns="3"
         android:padding="10dp"
