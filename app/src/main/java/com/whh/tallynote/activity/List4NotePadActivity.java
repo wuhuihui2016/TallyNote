@@ -34,7 +34,7 @@ import java.util.List;
  * 记事本列表
  * Created by wuhuihui on 2017/6/27.
  */
-public class NotePadListActivity extends BaseActivity {
+public class List4NotePadActivity extends BaseActivity {
 
     private FlowLayout flowLayout;
     private TextView info;

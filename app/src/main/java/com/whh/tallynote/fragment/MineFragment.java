@@ -19,8 +19,8 @@ import com.whh.tallynote.activity.CounterActivity;
 import com.whh.tallynote.activity.FileExplorerActivity;
 import com.whh.tallynote.activity.ImportExportActivity;
 import com.whh.tallynote.activity.LogExplorerActivity;
-import com.whh.tallynote.activity.MemoNoteListActivity;
-import com.whh.tallynote.activity.NotePadListActivity;
+import com.whh.tallynote.activity.List4MemoNoteActivity;
+import com.whh.tallynote.activity.List4NotePadActivity;
 import com.whh.tallynote.activity.SetGestureActivity;
 import com.whh.tallynote.activity.SetOrCheckPwdActivity;
 import com.whh.tallynote.adapter.Setting4GridAdapter;
@@ -101,7 +101,7 @@ public class MineFragment extends Fragment {
                     case 0: //备忘录
                         MyApplication.dbHelper.newTable("create table if not exists memo_note(_id integer primary key," +
                                 "content varchar(200),status integer,time varchar(20))");
-                        startActivity(new Intent(activity, MemoNoteListActivity.class));
+                        startActivity(new Intent(activity, List4MemoNoteActivity.class));
                         break;
 
                     case 1: //安全设置
@@ -119,7 +119,7 @@ public class MineFragment extends Fragment {
                     case 2: //记事本
                         MyApplication.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
                                 "tag integer,words varchar(200),time varchar(20))");
-                        startActivity(new Intent(activity, NotePadListActivity.class));
+                        startActivity(new Intent(activity, List4NotePadActivity.class));
                         break;
 
                     case 3: //计算日收益

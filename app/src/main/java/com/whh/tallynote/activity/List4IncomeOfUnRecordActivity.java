@@ -16,7 +16,7 @@ import java.util.List;
  * 本次月结的理财明细
  * Created by wuhuihui on 2017/6/27.
  */
-public class IncomeList4UnRecordActivity extends BaseActivity {
+public class List4IncomeOfUnRecordActivity extends BaseActivity {
 
     private TextView info;
     private ListView listView;

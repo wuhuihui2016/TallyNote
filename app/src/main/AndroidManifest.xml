@@ -75,17 +75,17 @@
 
         <!-- 记录列表 -->
         <activity
-            android:name=".activity.DayListActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4DayActivity"
+            android:launchMode="singleTask" />
         <activity
-            android:name=".activity.MonthListActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4MonthActivity"
+            android:launchMode="singleTask" />
         <activity
-            android:name=".activity.DayListOfMonthActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4DayOfMonthActivity"
+            android:launchMode="singleTask" />
         <activity
-            android:name=".activity.IncomeListActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4IncomeActivity"
+            android:launchMode="singleTask" />
 
         <!-- 导入导出 -->
         <activity android:name=".activity.ImportExportActivity" />
@@ -113,8 +113,8 @@
 
         <!-- 备忘录列表 -->
         <activity
-            android:name=".activity.MemoNoteListActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4MemoNoteActivity"
+            android:launchMode="singleTask" />
 
         <!-- 新建备忘录 -->
         <activity
@@ -127,8 +127,8 @@
 
         <!-- 记事本列表 -->
         <activity
-            android:name=".activity.NotePadListActivity"
-            android:launchMode="singleInstance" />
+            android:name=".activity.List4NotePadActivity"
+            android:launchMode="singleTask" />
         <!-- 新建记事本 -->
         <activity
             android:name=".activity.NewNotePadActivity"
@@ -141,13 +141,13 @@
         <activity android:name=".activity.SearchActivity" />
 
         <!-- 筛选高额消费 -->
-        <activity android:name=".activity.HighConsumeDayListActivity" />
+        <activity android:name=".activity.List4DayOfHighConsumeActivity" />
 
         <!-- 月账单记录分析统计 -->
         <activity android:name=".activity.MonthNotesAnalyseActivity" />
 
         <!-- 本次月结的理财明细 -->
-        <activity android:name=".activity.IncomeList4UnRecordActivity" />
+        <activity android:name=".activity.List4IncomeOfUnRecordActivity" />
 
         <!-- 计数器 -->
         <activity android:name=".activity.CounterActivity" />

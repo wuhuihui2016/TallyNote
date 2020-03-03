@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,18 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
-import com.whh.tallynote.adapter.MonthNoteAdapter;
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
-import com.whh.tallynote.model.MonthNote;
+import com.whh.tallynote.adapter.MemoNoteAdapter;
+import com.whh.tallynote.database.MemoNoteDao;
+import com.whh.tallynote.model.MemoNote;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
-import com.whh.tallynote.utils.DialogListener;
-import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.ViewUtils;
-import com.whh.tallynote.utils.WPSUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -34,105 +31,61 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * 月账单明细
+/**我的备忘录
  * Created by wuhuihui on 2017/6/27.
  */
-public class MonthListActivity extends BaseActivity {
+public class List4MemoNoteActivity extends BaseActivity {
 
-    private TextView info;
+    private TextView info, all, ongoing, completed;
     private ListView listView;
 
-    private List<MonthNote> monthNotes;
-    private MonthNoteAdapter monthNoteAdapter;
+    private List<MemoNote> memoNotes;
+    private MemoNoteAdapter memoNoteAdapter;
+    private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView("月账单明细", R.layout.activity_month_list);
+        setContentView("我的备忘录", R.layout.activity_memonote_list);
 
+        info = (TextView) findViewById(R.id.info);
+        all = (TextView) findViewById(R.id.all);
+        ongoing = (TextView) findViewById(R.id.ongoing);
+        completed = (TextView) findViewById(R.id.completed);
         listView = (ListView) findViewById(R.id.listView);
         listView.setEmptyView(findViewById(R.id.emptyView));
 
-        info = (TextView) findViewById(R.id.info);
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initPopupWindow();
+                    initPopupWindow();
             }
         });
 
-        initData();
+        getAll();
 
-        if (getIntent().hasExtra("flag")) {
-            showDialog();
-        }
-
-    }
-
-    private void initData() {
-        monthNotes = MonthNoteDao.getMonthNotes();
-        info.setText("月账单记录有" + monthNotes.size() + "笔");
-
-        if (monthNotes.size() > 1) {
-            findViewById(R.id.chartAnalyse).setVisibility(View.VISIBLE);
-            findViewById(R.id.chartAnalyse).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(activity, MonthNotesAnalyseActivity.class));
-                }
-            });
-        }
-
-        Collections.reverse(monthNotes);//倒序排列
-        monthNoteAdapter = new MonthNoteAdapter(activity, monthNotes);
-        listView.setAdapter(monthNoteAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (DayNoteDao.getDayNotes4History().size() > 0) {
-                    Intent intent = new Intent(activity, DayListOfMonthActivity.class);
-                    intent.putExtra("duration", monthNotes.get(position).getDuration());
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(context, MemoNoteDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("memoNote", memoNotes.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }
 
-    //提交月账监听
+    //删除后刷新界面
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventBusMsg(String msg) {
-        if (msg.equals(ContansUtils.ACTION_MONTH)) {
-            initData();
-            showDialog();
+        if (msg.equals(ContansUtils.ACTION_MEMO)) {
+            isFirst = false;
+            getAll();
         }
     }
 
-
-
-    /**
-     * 新建月账完成，提醒上传数据
-     */
-    private void showDialog() {
-        new DelayTask(500, new DelayTask.ICallBack() {
-            @Override
-            public void deal() {
-                DialogUtils.showMsgDialog(activity, "新月账单已生成,是否现在上传数据？",
-                        "上传", new DialogListener() {
-                            @Override
-                            public void onClick() {
-                                FileUtils.uploadFile(activity);
-                            }
-                        },"查看", new DialogListener() {
-                            @Override
-                            public void onClick() {
-                                WPSUtils.openFile(context, FileUtils.getTallyNoteFile().getPath());
-                            }
-                        });
-            }
-        }).execute();
-    }
 
     /**
      * 初始化popupWindow
@@ -153,7 +106,7 @@ public class MonthListActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewMonthActivity.class);
+                            Intent intent = new Intent(activity, NewMemoActivity.class);
                             intent.putExtra("list", true);
                             startActivity(intent);
                         }
@@ -163,7 +116,7 @@ public class MonthListActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     popupWindow.dismiss();
-                    ExcelUtils.exportMonthNote(callBackExport);
+                    ExcelUtils.exportMemoNote(callBackExport);
                 }
             });
             layout.findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
@@ -181,4 +134,69 @@ public class MonthListActivity extends BaseActivity {
             });
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.all:
+                getAll();
+                break;
+            case R.id.ongoing:
+                getAll4Status(MemoNote.ON);
+                break;
+            case R.id.completed:
+                getAll4Status(MemoNote.OFF);
+                break;
+        }
+    }
+
+    /**
+     * 总备忘录记录
+     */
+    private void getAll() {
+        all.setTextColor(Color.RED);
+        ongoing.setTextColor(Color.GRAY);
+        completed.setTextColor(Color.GRAY);
+        memoNotes = MemoNoteDao.getMemoNotes();
+        Collections.reverse(memoNotes);
+        info.setText("我的备忘录：" + memoNotes.size());
+        memoNoteAdapter = new MemoNoteAdapter(activity, memoNotes);
+        listView.setAdapter(memoNoteAdapter);
+
+        //如果当前无记录，则跳转写记录页面
+        if (isFirst && memoNotes.size() == 0) new DelayTask(500, new DelayTask.ICallBack() {
+            @Override
+            public void deal() {
+                isFirst = false;
+                Intent intent = new Intent(activity, NewMemoActivity.class);
+                intent.putExtra("list", true);
+                startActivity(intent);
+            }
+        }).execute();
+    }
+
+    /*
+     * 依据状态过滤显示
+     */
+    private void getAll4Status(int status) {
+        List<MemoNote> list;
+        if (status == MemoNote.ON) {
+            all.setTextColor(Color.GRAY);
+            ongoing.setTextColor(Color.RED);
+            completed.setTextColor(Color.GRAY);
+            list = MemoNote.getUnFinish();
+            info.setText("进行中：" + list.size());
+        } else {
+            all.setTextColor(Color.GRAY);
+            ongoing.setTextColor(Color.GRAY);
+            completed.setTextColor(Color.RED);
+            list = MemoNote.getFinished();
+            info.setText("已完成：" + list.size());
+        }
+        memoNoteAdapter = new MemoNoteAdapter(activity, list);
+        listView.setAdapter(memoNoteAdapter);
+
+    }
+
 }

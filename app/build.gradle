@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 230
-        versionName "2.3.2020.0226"
+        versionName "2.3.2020.0303"
 
     }
 

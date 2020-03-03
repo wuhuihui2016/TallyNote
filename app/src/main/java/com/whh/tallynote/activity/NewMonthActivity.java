@@ -69,7 +69,7 @@ public class NewMonthActivity extends BaseActivity {
             payEt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, DayListActivity.class));
+                    startActivity(new Intent(activity, List4DayActivity.class));
                 }
             });
         }
@@ -96,7 +96,7 @@ public class NewMonthActivity extends BaseActivity {
             incomeEt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, IncomeList4UnRecordActivity.class));
+                    startActivity(new Intent(activity, List4IncomeOfUnRecordActivity.class));
                 }
             });
         }
@@ -148,7 +148,7 @@ public class NewMonthActivity extends BaseActivity {
                                         if (getIntent().hasExtra("list")) {
                                             EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
                                         } else {
-                                            Intent intent = new Intent(activity, MonthListActivity.class);
+                                            Intent intent = new Intent(activity, List4MonthActivity.class);
                                             intent.putExtra("flag", true);
                                             startActivity(intent);
                                         }

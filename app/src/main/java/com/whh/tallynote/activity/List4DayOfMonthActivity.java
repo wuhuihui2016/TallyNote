@@ -19,13 +19,14 @@ import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * 依据月账显示该月的日账明细
  * Created by wuhuihui on 2017/6/27.
  */
-public class DayListOfMonthActivity extends BaseActivity {
+public class List4DayOfMonthActivity extends BaseActivity {
 
     private String duration;
     private Spinner spinner;
@@ -93,7 +94,7 @@ public class DayListOfMonthActivity extends BaseActivity {
                 getAll4UseType(DayNote.consume);
                 break;
             case R.id.high_consume:
-                Intent intent = new Intent(activity, HighConsumeDayListActivity.class);
+                Intent intent = new Intent(activity, List4DayOfHighConsumeActivity.class);
                 intent.putExtra("duration", duration);
                 startActivity(intent);
                 break;
@@ -113,15 +114,21 @@ public class DayListOfMonthActivity extends BaseActivity {
      * 总账单记录
      */
     private void getAll() {
-        all.setTextColor(Color.RED);
+        all.setTextColor(Color.parseColor("#007500"));
+        all.setBackgroundResource(R.drawable.shape_type_btn);
         consume.setTextColor(Color.GRAY);
+        consume.setBackgroundResource(R.drawable.shape_type);
         account_out.setTextColor(Color.GRAY);
+        account_out.setBackgroundResource(R.drawable.shape_type);
         account_in.setTextColor(Color.GRAY);
+        account_in.setBackgroundResource(R.drawable.shape_type);
         homeuse.setTextColor(Color.GRAY);
+        homeuse.setBackgroundResource(R.drawable.shape_type);
         dayNotes = DayNoteDao.getDayNotes4History(duration);
+        Collections.reverse(dayNotes);
         if (dayNotes.size() > 0) {
             info.setText("账单记录：" + dayNotes.size()
-                    + "，支出 + 转账 - 转入 - 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
+                    + "，支出 + 转账 - 入账 + 家用：" + StringUtils.showPrice(DayNote.getAllSum() + ""));
             dayNoteAdapter = new DayNoteAdapter(activity, dayNotes, false);
             listView.setAdapter(dayNoteAdapter);
         } else {
@@ -135,10 +142,15 @@ public class DayListOfMonthActivity extends BaseActivity {
      */
     private void getAll4UseType(int type) {
         all.setTextColor(Color.GRAY);
+        all.setBackgroundResource(R.drawable.shape_type);
         consume.setTextColor(Color.GRAY);
+        consume.setBackgroundResource(R.drawable.shape_type);
         account_out.setTextColor(Color.GRAY);
+        account_out.setBackgroundResource(R.drawable.shape_type);
         account_in.setTextColor(Color.GRAY);
+        account_in.setBackgroundResource(R.drawable.shape_type);
         homeuse.setTextColor(Color.GRAY);
+        homeuse.setBackgroundResource(R.drawable.shape_type);
         list.clear();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
@@ -148,16 +160,20 @@ public class DayListOfMonthActivity extends BaseActivity {
             }
         }
         if (type == DayNote.consume) {
-            consume.setTextColor(Color.RED);
+            consume.setTextColor(Color.parseColor("#007500"));
+            consume.setBackgroundResource(R.drawable.shape_type_btn);
             info.setText("支出记录：" + list.size() + "，支出金额：" + StringUtils.showPrice(sum + ""));
         } else if (type == DayNote.account_out) {
-            account_out.setTextColor(Color.RED);
+            account_out.setTextColor(Color.parseColor("#007500"));
+            account_out.setBackgroundResource(R.drawable.shape_type_btn);
             info.setText("转账记录：" + list.size() + "，转账金额：" + StringUtils.showPrice(sum + ""));
         } else if (type == DayNote.account_in) {
-            account_in.setTextColor(Color.RED);
-            info.setText("转入记录： " + list.size() + "，转入金额：" + StringUtils.showPrice(sum + ""));
+            account_in.setTextColor(Color.parseColor("#007500"));
+            account_in.setBackgroundResource(R.drawable.shape_type_btn);
+            info.setText("入账记录： " + list.size() + "，入账金额：" + StringUtils.showPrice(sum + ""));
         } else {
-            homeuse.setTextColor(Color.RED);
+            homeuse.setTextColor(Color.parseColor("#007500"));
+            homeuse.setBackgroundResource(R.drawable.shape_type_btn);
             info.setText("家用记录： " + list.size() + "，家用金额：" + StringUtils.showPrice(sum + ""));
         }
         dayNoteAdapter = new DayNoteAdapter(activity, list, false);

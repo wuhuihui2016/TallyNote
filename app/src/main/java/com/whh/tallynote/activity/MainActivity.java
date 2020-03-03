@@ -108,9 +108,9 @@ public class MainActivity extends BaseActivity {
 
         frag_index = index;
 
-        tally.setBackgroundColor(Color.parseColor("#CDCDC1"));
-        income.setBackgroundColor(Color.parseColor("#CDCDC1"));
-        mine.setBackgroundColor(Color.parseColor("#CDCDC1"));
+        tally.setBackgroundColor(getResources().getColor(R.color.index_tally));
+        income.setBackgroundColor(getResources().getColor(R.color.index_tally));
+        mine.setBackgroundColor(getResources().getColor(R.color.index_tally));
         tally_title.setTextColor(Color.BLACK);
         income_title.setTextColor(Color.BLACK);
         mine_title.setTextColor(Color.BLACK);

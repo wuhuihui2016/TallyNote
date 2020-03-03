@@ -88,7 +88,7 @@ public class NewIncomeActivity extends BaseActivity {
                                         if (getIntent().hasExtra("list")) {
                                             EventBus.getDefault().post(ContansUtils.ACTION_INCOME);
                                         } else {
-                                            startActivity(new Intent(activity, IncomeListActivity.class));
+                                            startActivity(new Intent(activity, List4IncomeActivity.class));
                                         }
                                         finish();
                                     } else ToastUtils.showErrorLong(activity, "理财提交失败！");

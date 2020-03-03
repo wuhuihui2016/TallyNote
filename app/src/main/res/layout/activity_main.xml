@@ -58,7 +58,7 @@
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/line" />
+                android:background="@color/white" />
 
             <LinearLayout
                 android:id="@+id/income"
@@ -89,7 +89,7 @@
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/line" />
+                android:background="@color/white" />
 
             <LinearLayout
                 android:id="@+id/mine"

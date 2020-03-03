@@ -87,7 +87,7 @@ public class NewDayActivity extends BaseActivity {
                                         if (getIntent().hasExtra("list")) {
                                             EventBus.getDefault().post(ContansUtils.ACTION_DAY);
                                         } else {
-                                            startActivity(new Intent(activity, DayListActivity.class));
+                                            startActivity(new Intent(activity, List4DayActivity.class));
                                         }
                                         finish();
                                     } else ToastUtils.showErrorLong(activity, "日账提交失败！");

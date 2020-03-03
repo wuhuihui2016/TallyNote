@@ -17,10 +17,10 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.whh.tallynote.R;
-import com.whh.tallynote.activity.DayListActivity;
-import com.whh.tallynote.activity.MemoNoteListActivity;
-import com.whh.tallynote.activity.MonthListActivity;
-import com.whh.tallynote.activity.NotePadListActivity;
+import com.whh.tallynote.activity.List4DayActivity;
+import com.whh.tallynote.activity.List4MemoNoteActivity;
+import com.whh.tallynote.activity.List4MonthActivity;
+import com.whh.tallynote.activity.List4NotePadActivity;
 import com.whh.tallynote.database.DayNoteDao;
 import com.whh.tallynote.database.MonthNoteDao;
 import com.whh.tallynote.database.NotePadDao;
@@ -154,7 +154,7 @@ public class TallyFragment extends Fragment {
             content.findViewById(R.id.item_day_layout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, DayListActivity.class));
+                    startActivity(new Intent(activity, List4DayActivity.class));
                 }
             });
         } else {
@@ -216,12 +216,12 @@ public class TallyFragment extends Fragment {
 
                 case R.id.last_layout:
                 case R.id.toMonthNotes:
-                    startActivity(new Intent(activity, MonthListActivity.class));
+                    startActivity(new Intent(activity, List4MonthActivity.class));
                     break;
 
                 case R.id.cur_day_layout:
                 case R.id.toDayNotes:
-                    startActivity(new Intent(activity, DayListActivity.class));
+                    startActivity(new Intent(activity, List4DayActivity.class));
                     break;
             }
         }
@@ -264,7 +264,7 @@ public class TallyFragment extends Fragment {
                 memo_list_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.startActivity(new Intent(activity, MemoNoteListActivity.class));
+                        activity.startActivity(new Intent(activity, List4MemoNoteActivity.class));
                     }
                 });
 
@@ -308,7 +308,7 @@ public class TallyFragment extends Fragment {
                     streamer_txt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(activity, NotePadListActivity.class));
+                            startActivity(new Intent(activity, List4NotePadActivity.class));
                         }
                     });
 

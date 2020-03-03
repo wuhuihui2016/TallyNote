@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.whh.tallynote.R;
-import com.whh.tallynote.activity.IncomeListActivity;
+import com.whh.tallynote.activity.List4IncomeActivity;
 import com.whh.tallynote.model.IncomeNote;
 
 import java.lang.reflect.Field;
@@ -53,7 +53,7 @@ public class NotificationUtils {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
                 //设置点击事件
-                Intent intent = new Intent(context, IncomeListActivity.class);
+                Intent intent = new Intent(context, List4IncomeActivity.class);
                 intent.putExtra("income", true);
                 if (SystemUtils.isRunningForeground(context)) {
                     //用于通知点击判断跳转，如果APP在后台运行，在点击通知时需要验证密码，设置标志

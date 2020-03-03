@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
-import com.whh.tallynote.activity.IncomeListActivity;
+import com.whh.tallynote.activity.List4IncomeActivity;
 import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -105,7 +105,7 @@ public class IncomeFragment extends Fragment {
                 income_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(activity, IncomeListActivity.class);
+                        Intent intent = new Intent(activity, List4IncomeActivity.class);
                         intent.putExtra("income", true);
                         startActivity(intent);
 

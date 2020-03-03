@@ -55,12 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_type_btn"
+                android:background="@drawable/shape_type"
                 android:clickable="true"
                 android:gravity="center_horizontal|center"
                 android:onClick="onClick"
-                android:text="@string/high_consume"
-                android:textColor="@color/month_record" />
+                android:text="@string/high_consume" />
         </LinearLayout>
 
         <LinearLayout

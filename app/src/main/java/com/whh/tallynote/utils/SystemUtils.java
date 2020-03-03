@@ -22,6 +22,12 @@ import android.view.inputmethod.InputMethodManager;
 import com.whh.tallynote.activity.SetGestureActivity;
 import com.whh.tallynote.activity.SetOrCheckPwdActivity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by wuhuihui on 2017/3/24.
  */
@@ -64,6 +70,35 @@ public class SystemUtils {
         ActivityManager am = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
         return cn.getClassName();
+    }
+
+    /**
+     * 获取栈里的Activity
+     * @return
+     */
+    public static List<Activity> getAllActivitys(){
+        List<Activity> list=new ArrayList<>();
+        try {
+            Class<?> activityThread=Class.forName("android.app.ActivityThread");
+            Method currentActivityThread=activityThread.getDeclaredMethod("currentActivityThread");
+            currentActivityThread.setAccessible(true);
+            //获取主线程对象
+            Object activityThreadObject=currentActivityThread.invoke(null);
+            Field mActivitiesField = activityThread.getDeclaredField("mActivities");
+            mActivitiesField.setAccessible(true);
+            Map<Object,Object> mActivities = (Map<Object,Object>) mActivitiesField.get(activityThreadObject);
+            for (Map.Entry<Object,Object> entry:mActivities.entrySet()){
+                Object value = entry.getValue();
+                Class<?> activityClientRecordClass = value.getClass();
+                Field activityField = activityClientRecordClass.getDeclaredField("activity");
+                activityField.setAccessible(true);
+                Object o = activityField.get(value);
+                list.add((Activity) o);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     /*

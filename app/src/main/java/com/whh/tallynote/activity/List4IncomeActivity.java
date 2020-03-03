@@ -36,7 +36,7 @@ import java.util.List;
  * 理财明细
  * Created by wuhuihui on 2017/6/27.
  */
-public class IncomeListActivity extends BaseActivity {
+public class List4IncomeActivity extends BaseActivity {
 
     private TextView info;
     private ListView listView;

@@ -100,7 +100,7 @@ public class NewMemoActivity extends BaseActivity {
                             if (getIntent().hasExtra("list")) {
                                 EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                             } else {
-                                startActivity(new Intent(activity, MemoNoteListActivity.class));
+                                startActivity(new Intent(activity, List4MemoNoteActivity.class));
                             }
                             finish();
                         } else ToastUtils.showErrorLong(activity, "保存失败！");

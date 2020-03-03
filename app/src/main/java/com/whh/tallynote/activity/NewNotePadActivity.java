@@ -110,7 +110,7 @@ public class NewNotePadActivity extends BaseActivity {
                         if (getIntent().hasExtra("list")) {
                             EventBus.getDefault().post(ContansUtils.ACTION_NOTE);
                         } else {
-                            startActivity(new Intent(activity, NotePadListActivity.class));
+                            startActivity(new Intent(activity, List4NotePadActivity.class));
                         }
                         finish();
                     } else ToastUtils.showErrorLong(activity, "发表失败！");

@@ -84,7 +84,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             });
         }
 
-        if (TAG.contains("List")) {
+        if (TAG.contains("List4") && !TAG.contains("Of")) { //仅一级列表页注册EventBus
             if (!EventBus.getDefault().isRegistered(this))
                 EventBus.getDefault().register(this); //注册事件,不可重复注册
         }
@@ -336,14 +336,22 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "lifecycle---" + TAG + " onDestroy");
+        //获取栈里所有的Activity
+//        List<Activity> allActivitys = SystemUtils.getAllActivitys();
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("栈里的Activity==>");
+//        for (int i = 0; i < allActivitys.size(); i++) {
+//            sb.append(allActivitys.get(i).getLocalClassName().replace("com.whh.tallynote.activity.", "") + "---");
+//        }
+//        LogUtils.d(TAG, "lifecycle---" + sb.toString());
+//
+//        try {
+//            MyApplication.dbHelper.db.close();
+//        } catch (Exception e) {
+//            LogUtils.e(TAG + "-onDestroy", e.toString());
+//        }
 
-        try {
-            MyApplication.dbHelper.db.close();
-        } catch (Exception e) {
-            LogUtils.e(TAG + "-onDestroy", e.toString());
-        }
-
-        if (TAG.contains("List")) {
+        if (TAG.contains("List4") && !TAG.contains("Of")) {
             if (EventBus.getDefault().isRegistered(this))
                 EventBus.getDefault().unregister(this); //注销事件
         }

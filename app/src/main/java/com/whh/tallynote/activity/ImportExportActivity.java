@@ -74,22 +74,22 @@ public class ImportExportActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             if (index == ContansUtils.DAY && DayNoteDao.getDayNotes().size() > 0)
-                startActivity(new Intent(activity, DayListActivity.class));
+                startActivity(new Intent(activity, List4DayActivity.class));
             if (index == ContansUtils.MONTH && MonthNoteDao.getMonthNotes().size() > 0)
-                startActivity(new Intent(activity, MonthListActivity.class));
+                startActivity(new Intent(activity, List4MonthActivity.class));
             if (index == ContansUtils.INCOME && IncomeNoteDao.getIncomes().size() > 0)
-                startActivity(new Intent(activity, IncomeListActivity.class));
+                startActivity(new Intent(activity, List4IncomeActivity.class));
             if (index == ContansUtils.DAY_HISTORY && DayNoteDao.getDayNotes4History().size() > 0) {
                 List<DayNote> dayNotes4History = DayNoteDao.getDayNotes4History();
                 Collections.reverse(dayNotes4History);
-                Intent intent = new Intent(activity, DayListOfMonthActivity.class);
+                Intent intent = new Intent(activity, List4DayOfMonthActivity.class);
                 intent.putExtra("duration", dayNotes4History.get(0).getDuration());
                 startActivity(intent);
             }
             if (index == ContansUtils.MEMO && MemoNoteDao.getMemoNotes().size() > 0)
-                startActivity(new Intent(activity, MemoNoteListActivity.class));
+                startActivity(new Intent(activity, List4MemoNoteActivity.class));
             if (index == ContansUtils.NOTEPAD && NotePadDao.getNotePads().size() > 0)
-                startActivity(new Intent(activity, NotePadListActivity.class));
+                startActivity(new Intent(activity, List4NotePadActivity.class));
         }
     }
 

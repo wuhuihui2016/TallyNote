@@ -16,13 +16,14 @@ import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * 日账单明细(高额消费)
  * Created by wuhuihui on 2017/8/11.
  */
-public class HighConsumeDayListActivity extends BaseActivity {
+public class List4DayOfHighConsumeActivity extends BaseActivity {
 
     private boolean isDuration;
     private String duration;
@@ -95,6 +96,7 @@ public class HighConsumeDayListActivity extends BaseActivity {
             info.setText("高额消费账单记录：" + list.size() + "\n消费金额：" + StringUtils.showPrice(sum + ""));
         }
 
+        Collections.reverse(list);
         listView.setAdapter(new DayNoteAdapter(activity, list, false));
     }
 
