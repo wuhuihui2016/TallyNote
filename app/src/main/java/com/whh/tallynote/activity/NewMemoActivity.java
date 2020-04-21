@@ -82,11 +82,7 @@ public class NewMemoActivity extends BaseActivity {
                             ToastUtils.showSucessLong(activity, "编辑成功！");
                             ExcelUtils.exportMemoNote(null);
 
-                            Intent intent = new Intent();
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("memoNote", isAlterMemo);
-                            intent.putExtras(bundle);
-                            startActivityForResult(intent, 1);
+                            EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                             finish();
                         } else {
                             ToastUtils.showErrorLong(activity, "编辑失败！");

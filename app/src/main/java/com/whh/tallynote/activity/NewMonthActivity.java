@@ -32,6 +32,7 @@ import com.whh.tallynote.utils.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,8 +41,9 @@ import java.util.List;
 public class NewMonthActivity extends BaseActivity {
 
     private EditText last_balanceEt, payEt, salaryEt, incomeEt, remarkEt;
-    private TextView durationEt, balanceEt, actual_balanceEt;
+    private TextView durationEt, balanceEt, balance_diff, actual_balanceEt;
     private String salaryStr = null;
+    private StringBuffer currAssetsInfo; //现有资产清单
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class NewMonthActivity extends BaseActivity {
             });
         }
         balanceEt = (TextView) findViewById(R.id.balanceEt);
+        balance_diff = (TextView) findViewById(R.id.balance_diff);
         durationEt = (TextView) findViewById(R.id.durationEt);
         durationEt.setText(MonthNote.getAfterEndDate());
 
@@ -123,7 +126,7 @@ public class NewMonthActivity extends BaseActivity {
                         !TextUtils.isEmpty(salary) && !TextUtils.isEmpty(balance)
                         && !TextUtils.isEmpty(actual_balance) && !TextUtils.isEmpty(duration)) {
                     final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income,
-                            balance, actual_balance, duration, remark, DateUtils.formatDateTime());
+                            balance, actual_balance, duration, currAssetsInfo.toString() + "\n其他说明：" + remark, DateUtils.formatDateTime());
                     LogUtils.i("commit", monthNote.toString());
                     DialogUtils.showMsgDialog(activity, "提交月账单\n" +
                                     "上次结余：" + StringUtils.showPrice(monthNote.getLast_balance()) +
@@ -174,7 +177,10 @@ public class NewMonthActivity extends BaseActivity {
         if (v.getId() == R.id.durationEt) {
             ViewUtils.showDatePickerDialog(activity, durationEt, 0);
 
-        } else if (v.getId() == R.id.balanceEt) {//自动结算结余
+        } else if (v.getId() == R.id.balanceEt) {//自动结算本次结余
+            actual_balanceEt.setText("");
+            balance_diff.setText("");
+
             final String last_balanceStr = StringUtils.formatePrice(last_balanceEt.getText().toString());
             final String payStr = StringUtils.formatePrice(payEt.getText().toString());
             final String incomeStr = StringUtils.formatePrice(incomeEt.getText().toString());
@@ -182,7 +188,10 @@ public class NewMonthActivity extends BaseActivity {
             if (!TextUtils.isEmpty(last_balanceStr) &&
                     !TextUtils.isEmpty(payStr) &&
                     !TextUtils.isEmpty(salaryStr)) {
-                String meaasge = last_balanceStr + " - " + payStr;
+                String meaasge = "";
+                if (payStr.startsWith("-"))
+                meaasge = last_balanceStr + " - (" + payStr + ")";
+                else meaasge = last_balanceStr + " - " + payStr;
 
                 Double last_balance = Double.parseDouble(last_balanceStr);
                 Double pay = Double.parseDouble(payStr);
@@ -190,8 +199,7 @@ public class NewMonthActivity extends BaseActivity {
                 Double income = 0.00;
                 if (!TextUtils.isEmpty(incomeStr)) {
                     income = Double.parseDouble(incomeStr);
-                    meaasge += " + " + incomeStr + " + "
-                            + salaryStr;
+                    meaasge += " + " + incomeStr + " + " + salaryStr;
                 } else {
                     meaasge += " + " + salaryStr;
                 }
@@ -226,6 +234,9 @@ public class NewMonthActivity extends BaseActivity {
         if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         } else {
+            actual_balanceEt.setText("");
+            balance_diff.setText("");
+
             LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layout = mLayoutInflater.inflate(R.layout.layout_month_pop, null);
             popupWindow = new PopupWindow(layout, 800, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -233,11 +244,16 @@ public class NewMonthActivity extends BaseActivity {
 //            相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
             popupWindow.showAtLocation(findViewById(R.id.month_layout), Gravity.CENTER, 0, -300);
 
-            final EditText editText1 = (EditText) layout.findViewById(R.id.editText1);
-            final EditText editText2 = (EditText) layout.findViewById(R.id.editText2);
-            final EditText editText3 = (EditText) layout.findViewById(R.id.editText3);
-            if (!TextUtils.isEmpty(salaryStr)) {
-                editText3.setText(StringUtils.formatePrice(salaryStr));
+            TextView info = (TextView) layout.findViewById(R.id.info);
+            info.setText("如工资还在工资卡中，工资项自动填充，请待月结算完成转入理财;" +
+                    "否则请手动清除工资项金额，避免重复累加，导致实有资产结算错误！！" +
+                    "京东金融中包含2W+回款银行理财，该平台的总金额不能作为累计，应取【小金库】的金额！！");
+            final EditText editText1 = (EditText) layout.findViewById(R.id.editText1); //微信
+            final EditText editText2 = (EditText) layout.findViewById(R.id.editText2); //支付宝
+            final EditText editText3 = (EditText) layout.findViewById(R.id.editText3); //京东金融
+            final EditText editText4 = (EditText) layout.findViewById(R.id.editText4); //工资
+            if (!TextUtils.isEmpty(salaryStr)) { //自动填充工资金额
+                editText4.setText(StringUtils.formatePrice(salaryStr));
                 final ImageButton clear_salary = (ImageButton) layout.findViewById(R.id.clear_salary);
                 clear_salary.setVisibility(View.VISIBLE);
                 clear_salary.setOnClickListener(new View.OnClickListener() {
@@ -264,9 +280,10 @@ public class NewMonthActivity extends BaseActivity {
                     }
                 });
             }
-            final EditText editText4 = (EditText) layout.findViewById(R.id.editText4);
+            final EditText editText5 = (EditText) layout.findViewById(R.id.editText5); //理财
+            //自动填写理财总金额
             if (IncomeNote.getEarningInComes().size() > 0)
-                editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
+                editText5.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
 
             layout.findViewById(R.id.comfire).setOnClickListener(
                     new View.OnClickListener() {
@@ -275,29 +292,39 @@ public class NewMonthActivity extends BaseActivity {
                             try {
                                 asset_clearing = 0.00;
                                 popupWindow.dismiss();
-                                if (editText1.getText().toString().length() > 0) {
-                                    asset_clearing += Double.parseDouble(editText1.getText().toString());
+
+                                //统计已输入资产总额
+                                List<String> je = new ArrayList<>();
+                                je.add(editText1.getText().toString());
+                                je.add(editText2.getText().toString());
+                                je.add(editText3.getText().toString());
+                                je.add(editText4.getText().toString());
+                                je.add(editText5.getText().toString());
+
+                                currAssetsInfo =  new StringBuffer();
+                                currAssetsInfo.append("现有资产：");
+                                for (int i = 0; i < je.size(); i++) {
+                                    if (!TextUtils.isEmpty(je.get(i))) {
+                                        double money = Double.parseDouble(je.get(i));
+                                        asset_clearing += money;
+                                        if (i == 0) currAssetsInfo.append("微信：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                        if (i == 1) currAssetsInfo.append("  支付宝："+ StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                        if (i == 2) currAssetsInfo.append("  京东金融："+ StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                    }
                                 }
-                                if (editText2.getText().toString().length() > 0) {
-                                    asset_clearing += Double.parseDouble(editText2.getText().toString());
-                                }
-                                if (editText3.getText().toString().length() > 0) {
-                                    asset_clearing += Double.parseDouble(editText3.getText().toString());
-                                }
-                                if (editText4.getText().toString().length() > 0) {
-                                    asset_clearing += Double.parseDouble(editText4.getText().toString());
-                                }
+
                                 actual_balanceEt.setText(StringUtils.formatePrice(asset_clearing + ""));
 
                                 String getBalance = balanceEt.getText().toString();
                                 if (!TextUtils.isEmpty(getBalance)) {
                                     Double balance = Double.parseDouble(getBalance);
                                     Double balanceDiff = asset_clearing - balance;
-                                    TextView balance_diff = (TextView) findViewById(R.id.balance_diff);
+
+                                    String diff = StringUtils.showPrice(StringUtils.formatePrice(balanceDiff + ""));
                                     if (balanceDiff > 0) {
-                                        balance_diff.setText("(差额：↑ " + balanceDiff);
+                                        balance_diff.setText("(差额：↑ " + diff);
                                     } else {
-                                        balance_diff.setText("(差额：↓ " + balanceDiff);
+                                        balance_diff.setText("(差额：↓ " + diff);
                                     }
                                 }
 

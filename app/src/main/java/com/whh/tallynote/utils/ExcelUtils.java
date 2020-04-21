@@ -1,5 +1,7 @@
 package com.whh.tallynote.utils;
 
+import android.text.TextUtils;
+
 import com.whh.tallynote.database.DayNoteDao;
 import com.whh.tallynote.database.IncomeNoteDao;
 import com.whh.tallynote.database.MemoNoteDao;
@@ -493,11 +495,13 @@ public class ExcelUtils {
                             if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
                             if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
                             if (sheet.getCell(0, j).getContents().contains("家用")) type = 4;
-                            dayNotes.add(new DayNote(
-                                    type,
-                                    sheet.getCell(1, j).getContents(),
-                                    sheet.getCell(2, j).getContents(),
-                                    sheet.getCell(3, j).getContents()));
+                            if (!TextUtils.isEmpty(sheet.getCell(1, j).getContents())) {
+                                dayNotes.add(new DayNote(
+                                        type,
+                                        sheet.getCell(1, j).getContents(),
+                                        sheet.getCell(2, j).getContents(),
+                                        sheet.getCell(3, j).getContents()));
+                            }
                         }
                         LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                         if (dayNotes.size() > 0) if (DayNoteDao.newDNotes(dayNotes)) {
@@ -509,16 +513,18 @@ public class ExcelUtils {
                         monthNotes = new ArrayList<>();
                         monthNotes.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            monthNotes.add(new MonthNote(
-                                    sheet.getCell(0, j).getContents(),
-                                    sheet.getCell(1, j).getContents(),
-                                    sheet.getCell(2, j).getContents(),
-                                    sheet.getCell(3, j).getContents(),
-                                    sheet.getCell(4, j).getContents(),
-                                    sheet.getCell(5, j).getContents(),
-                                    sheet.getCell(6, j).getContents(),
-                                    sheet.getCell(7, j).getContents(),
-                                    sheet.getCell(8, j).getContents()));
+                            if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
+                                monthNotes.add(new MonthNote(
+                                        sheet.getCell(0, j).getContents(),
+                                        sheet.getCell(1, j).getContents(),
+                                        sheet.getCell(2, j).getContents(),
+                                        sheet.getCell(3, j).getContents(),
+                                        sheet.getCell(4, j).getContents(),
+                                        sheet.getCell(5, j).getContents(),
+                                        sheet.getCell(6, j).getContents(),
+                                        sheet.getCell(7, j).getContents(),
+                                        sheet.getCell(8, j).getContents()));
+                            }
                         }
                         LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                         if (monthNotes.size() > 0) if (MonthNoteDao.newMNotes(monthNotes)) {
@@ -530,18 +536,20 @@ public class ExcelUtils {
                         incomeNotes = new ArrayList<>();
                         incomeNotes.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            incomeNotes.add(new IncomeNote(
-                                    sheet.getCell(0, j).getContents(),
-                                    sheet.getCell(1, j).getContents(),
-                                    sheet.getCell(2, j).getContents(),
-                                    sheet.getCell(3, j).getContents(),
-                                    sheet.getCell(4, j).getContents(),
-                                    sheet.getCell(5, j).getContents(),
-                                    sheet.getCell(6, j).getContents(),
-                                    sheet.getCell(7, j).getContents(),
-                                    (sheet.getCell(8, j).getContents().contains("已")) ? 1 : 0,
-                                    sheet.getCell(9, j).getContents(),
-                                    sheet.getCell(10, j).getContents()));
+                            if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
+                                incomeNotes.add(new IncomeNote(
+                                        sheet.getCell(0, j).getContents(),
+                                        sheet.getCell(1, j).getContents(),
+                                        sheet.getCell(2, j).getContents(),
+                                        sheet.getCell(3, j).getContents(),
+                                        sheet.getCell(4, j).getContents(),
+                                        sheet.getCell(5, j).getContents(),
+                                        sheet.getCell(6, j).getContents(),
+                                        sheet.getCell(7, j).getContents(),
+                                        (sheet.getCell(8, j).getContents().contains("已")) ? 1 : 0,
+                                        sheet.getCell(9, j).getContents(),
+                                        sheet.getCell(10, j).getContents()));
+                            }
                         }
                         LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                         if (incomeNotes.size() > 0) if (IncomeNoteDao.newINotes(incomeNotes)) {
@@ -553,13 +561,15 @@ public class ExcelUtils {
                         dayNotes_history = new ArrayList<>();
                         dayNotes_history.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            dayNotes_history.add(new DayNote(
-                                    DayNote.getUserType(sheet.getCell(0, j).getContents()),
-                                    sheet.getCell(1, j).getContents(),
-                                    sheet.getCell(2, j).getContents(),
-                                    sheet.getCell(3, j).getContents(),
-                                    sheet.getCell(4, j).getContents())
-                            );
+                            if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
+                                dayNotes_history.add(new DayNote(
+                                        DayNote.getUserType(sheet.getCell(0, j).getContents()),
+                                        sheet.getCell(1, j).getContents(),
+                                        sheet.getCell(2, j).getContents(),
+                                        sheet.getCell(3, j).getContents(),
+                                        sheet.getCell(4, j).getContents())
+                                );
+                            }
                         }
                         LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
                         if (dayNotes_history.size() > 0)
@@ -571,9 +581,11 @@ public class ExcelUtils {
                         memoNotes = new ArrayList<>();
                         memoNotes.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            int status = sheet.getCell(1, j).getContents().equals("进行中") ? 0 : 1;
-                            memoNotes.add(new MemoNote(sheet.getCell(0, j).getContents(),
-                                    status, sheet.getCell(2, j).getContents()));
+                            if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
+                                int status = sheet.getCell(1, j).getContents().equals("进行中") ? 0 : 1;
+                                memoNotes.add(new MemoNote(sheet.getCell(0, j).getContents(),
+                                        status, sheet.getCell(2, j).getContents()));
+                            }
                         }
                         LogUtils.i(tag, memoNotes.size() + "---" + memoNotes.toString());
                         if (memoNotes.size() > 0)
@@ -585,10 +597,12 @@ public class ExcelUtils {
                         notePads = new ArrayList<>();
                         notePads.clear();
                         for (int j = 1; j < rows; j++) {//行
-                            String tagStr = sheet.getCell(0, j).getContents();
-                            notePads.add(new NotePad(NotePad.getTag(tagStr),
-                                    sheet.getCell(1, j).getContents(), sheet.getCell(2, j).getContents())
-                            );
+                            if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
+                                String tagStr = sheet.getCell(0, j).getContents();
+                                notePads.add(new NotePad(NotePad.getTag(tagStr),
+                                        sheet.getCell(1, j).getContents(), sheet.getCell(2, j).getContents())
+                                );
+                            }
                         }
                         LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
                         if (notePads.size() > 0)

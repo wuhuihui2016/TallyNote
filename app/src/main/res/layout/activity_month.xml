@@ -77,41 +77,7 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
-                android:text="本次收益"
-                android:textColor="@color/title"
-                android:textSize="@dimen/bigtextSize" />
-
-            <EditText
-                android:id="@+id/incomeEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
-                android:hint="选填"
-                android:inputType="numberDecimal"
-                android:singleLine="true"
-                android:textSize="@dimen/bigtextSize" />
-
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -270,6 +236,42 @@
                 android:clickable="true"
                 android:hint="必填"
                 android:onClick="onClick"
+                android:singleLine="true"
+                android:textSize="@dimen/bigtextSize" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:text="本次收益"
+                android:textColor="@color/title"
+                android:textSize="@dimen/bigtextSize" />
+
+            <EditText
+                android:id="@+id/incomeEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:hint="选填"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textSize="@dimen/bigtextSize" />
 

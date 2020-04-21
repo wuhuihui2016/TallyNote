@@ -65,14 +65,15 @@ public class List4MemoNoteActivity extends BaseActivity {
 
         getAll();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, MemoNoteDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("memoNote", memoNotes.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
+                return false;
             }
         });
     }
