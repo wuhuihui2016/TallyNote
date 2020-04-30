@@ -8,8 +8,8 @@ android {
         applicationId "com.whh.tallynote"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 231
-        versionName "2020.04.21"
+        versionCode 232
+        versionName "2020.04.30"
 
     }
 
