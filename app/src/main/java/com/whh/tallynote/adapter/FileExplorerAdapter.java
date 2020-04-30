@@ -1,14 +1,17 @@
 package com.whh.tallynote.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.LogUtils;
 
@@ -61,6 +64,7 @@ public class FileExplorerAdapter extends BaseAdapter {
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.file_explorer_item_layout, null);
                 viewHolder = new ViewHolder();
+                viewHolder.sort_layout = (LinearLayout) convertView.findViewById(R.id.sort_layout);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.name);
                 viewHolder.info = (TextView) convertView.findViewById(R.id.info);
                 viewHolder.select = (ImageView) convertView.findViewById(R.id.select);
@@ -68,6 +72,10 @@ public class FileExplorerAdapter extends BaseAdapter {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
+            if (position == 0 && fileList.get(0).getName().startsWith(ContansUtils.tallynote_file)) {
+                viewHolder.sort_layout.setBackgroundColor(Color.parseColor("#FFF7E9"));
+            } else viewHolder.sort_layout.setBackgroundColor(Color.parseColor("#00000000"));
 
             final File file = fileList.get(position);
             viewHolder.name.setText(file.getName());
@@ -121,6 +129,7 @@ public class FileExplorerAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        LinearLayout sort_layout;
         TextView name, info;
         ImageView select;
     }

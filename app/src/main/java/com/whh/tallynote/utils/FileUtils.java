@@ -14,8 +14,15 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,9 +128,8 @@ public class FileUtils {
      */
     public static long getFileSize(File file) throws Exception {
         long size = 0;
-        if (file.exists()) {
-            FileInputStream fis = null;
-            fis = new FileInputStream(file);
+        if (file.exists() && file.isFile()) {
+            FileInputStream fis = new FileInputStream(file);
             size = fis.available();
         } else {
             file.createNewFile();
@@ -140,12 +146,15 @@ public class FileUtils {
     public static File getTallyNoteFile() {
         File file = null;
         File excelDir = FileUtils.getExcelDir();
+        if (!excelDir.exists()) return null;
         final File files[] = excelDir.listFiles();
-        for (int i = 0; i < files.length; i++)
-            if (files[i].getName().contains("tally_note_")) {
+        if (files.length == 0) return null;
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].getName().startsWith(ContansUtils.tallynote_file)) {
                 file = files[i];
             }
-
+            break;
+        }
         return file;
     }
 
@@ -335,6 +344,64 @@ public class FileUtils {
             LogUtils.e(TAG, "没有找到指定文件");
         }
         return result;
+    }
+
+    /**
+     * 文件导出时清除旧文件
+     *
+     * @param type
+     */
+    public static void clearOldExcelFile(int type) {
+        backupTallyNoteFile();
+        File excelDir = FileUtils.getExcelDir();
+        if (!excelDir.exists()) return;
+        final File files[] = excelDir.listFiles();
+        if (files.length == 0) return;
+        for (int i = 0; i < files.length; i++) {
+            if (type == ContansUtils.DAY) {
+                if (files[i].getName().contains(ContansUtils.day_file)) files[i].delete();
+            } else if (type == ContansUtils.DAY_HISTORY) {
+                if (files[i].getName().contains(ContansUtils.day_history_file)) files[i].delete();
+            } else if (type == ContansUtils.MONTH) {
+                if (files[i].getName().contains(ContansUtils.month_file)) files[i].delete();
+            } else if (type == ContansUtils.INCOME) {
+                if (files[i].getName().contains(ContansUtils.income_file)) files[i].delete();
+            } else if (type == ContansUtils.MEMO) {
+                if (files[i].getName().contains(ContansUtils.memo_file)) files[i].delete();
+            } else if (type == ContansUtils.NOTEPAD) {
+                if (files[i].getName().contains(ContansUtils.notepad_file)) files[i].delete();
+            } else {
+                if (files[i].getName().contains(ContansUtils.tallynote_file)) files[i].delete();
+            }
+        }
+    }
+
+    /**
+     * 备份总帐本文件
+     */
+    public static void backupTallyNoteFile() {
+        try {
+            if(getTallyNoteFile() == null) return;
+            String tallyNoteFileName = getTallyNoteFile().getName();
+
+            String dirPath = excelPath + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
+            File dir = new File(dirPath);
+            if (!dir.exists()) dir.mkdirs();
+
+            File source = new File(excelPath + tallyNoteFileName);
+            File dest = new File(dirPath + tallyNoteFileName);
+            InputStream input = new FileInputStream(source);
+            OutputStream output = new FileOutputStream(dest);
+            byte[] buf = new byte[1024 * 5];
+            int bytesRead;
+            while ((bytesRead = input.read(buf)) > 0) {
+                output.write(buf, 0, bytesRead);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

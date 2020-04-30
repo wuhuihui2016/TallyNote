@@ -107,23 +107,23 @@ public class ImportExportActivity extends BaseActivity {
 
                     DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，是否继续导入？",
                             "导入", new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            try {
-                                //跳转系统文件目录
-                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                intent.setType("*/*");
-                                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                startActivityForResult(Intent.createChooser(intent, "导入文件"), FILE_SELECT_CODE);
-                            } catch (android.content.ActivityNotFoundException ex) {
-                                ToastUtils.showToast(context, true, "Please install a File Manager.");
-                            }
-                        }
-                    },"取消", new DialogListener() {
-                        @Override
-                        public void onClick() {
-                        }
-                    });
+                                @Override
+                                public void onClick() {
+                                    try {
+                                        //跳转系统文件目录
+                                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                        intent.setType("*/*");
+                                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                                        startActivityForResult(Intent.createChooser(intent, "导入文件"), FILE_SELECT_CODE);
+                                    } catch (android.content.ActivityNotFoundException ex) {
+                                        ToastUtils.showToast(context, true, "Please install a File Manager.");
+                                    }
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
 
                 } else {
                     ToastUtils.showToast(context, true, "SDCard is not available");
@@ -168,16 +168,22 @@ public class ImportExportActivity extends BaseActivity {
                     ExcelUtils.importExcel(path, new ExcelUtils.ICallBackImport() {
 
                         @Override
-                        public void callback(int day_count, int month_count, int income_count, int day_history_count, int memo_count, int notepad_count) {
-                            dialog.dismiss();
-                            ToastUtils.showSucessLong(activity, "导入成功！" +
-                                    "\n日账记录：" + day_count +
-                                    "\n月账记录：" + month_count +
-                                    "\n理财记录：" + income_count +
-                                    "\n历史日账记录：" + day_history_count +
-                                    "\n备忘录记录：" + memo_count +
-                                    "\n记事本记录：" + notepad_count);
-                            initDate();
+                        public void callback(final int day_count, final int month_count, final int income_count,
+                                             final int day_history_count, final int memo_count, final int notepad_count) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog.dismiss();
+                                    ToastUtils.showSucessLong(activity, "导入成功！" +
+                                            "\n日账记录：" + day_count +
+                                            "\n月账记录：" + month_count +
+                                            "\n理财记录：" + income_count +
+                                            "\n历史日账记录：" + day_history_count +
+                                            "\n备忘录记录：" + memo_count +
+                                            "\n记事本记录：" + notepad_count);
+                                    initDate();
+                                }
+                            });
                         }
 
                         @Override

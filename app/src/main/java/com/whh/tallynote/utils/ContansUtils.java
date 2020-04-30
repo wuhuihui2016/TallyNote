@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class ContansUtils {
 
-    private static final String TAG = "ContansUtils";
-    private static SharedPreferences preferences;
-    private static SharedPreferences.Editor editor;
+    public static final String TAG = "ContansUtils";
+    public static SharedPreferences preferences;
+    public static SharedPreferences.Editor editor;
 
     public static final int DAY = 0, MONTH = 1, INCOME = 2, DAY_HISTORY = 3, MEMO = 4, NOTEPAD = 5, ALL = 6;
     public static final String ACTION_DAY = "day";
@@ -37,6 +37,25 @@ public class ContansUtils {
     public static final String ISBACK = "isBack"; //是否在后台运行的标志
     public static final String INCOMEREMINDER = "incomeReminder"; //记录当天日期，用于理财到期通知，当天仅显示一次通知
     public static final String COUNTER = "counter"; //计数器功能
+
+    //文件名
+    public static final String day_file = "day_note_", month_file = "month_note_",
+            income_file = "income_note_", tallynote_file = "tally_note_",
+            day_history_file = "day_note_history_", memo_file = "memo_note_", notepad_file = "notepad_";
+
+    //表单名
+    public static final String day_sheetName = "日账单", month_sheetName = "月账单", income_sheetName = "理财记录",
+            day_history_sheetName = "历史日账单", memo_sheetName = "备忘录", notepad_sheetName = "记事本";
+
+    //表单头部标题
+    public static String[] dayTitle = {"消费类型", "金额（元）", "消费明细", "消费时间"};
+    public static String[] dayHistoryTitle = {"消费类型", "金额（元）", "消费明细", "消费时间", "消费时段"};
+    public static String[] monthTitle = {"上次结余（元）", "本次支出（元）", "本次工资（元）", "本次收益（元）", "本次结余（元）", "实际结余（元）",
+            "月结时段", "月结说明", "记录时间"};
+    public static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时段", "拟日收益（元/万天）", "最终收益（元）",
+            "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
+    public static String[] memoTitle = {"内容", "状态", "记录时间"};
+    public static String[] notepadTitle = {"标签", "内容", "记录时间"};
 
     /**
      * 是否为手势验证方式

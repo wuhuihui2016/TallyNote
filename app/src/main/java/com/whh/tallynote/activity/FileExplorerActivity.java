@@ -3,6 +3,7 @@ package com.whh.tallynote.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.FileExplorerAdapter;
+import com.whh.tallynote.utils.ContansUtils;
+import com.whh.tallynote.utils.DelayTask;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -55,9 +58,18 @@ public class FileExplorerActivity extends BaseActivity {
         final File files[] = excelDir.listFiles();
         if (files.length > 0) {
             fileList.clear();
-            for (int i = 0; i < files.length; i++) fileList.add(files[i]);
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile())
+                    fileList.add(files[i]);
+            }
             Collections.sort(fileList, new FileComparator());
             if (fileList.size() > 0) {
+                for (int i = 0; i < fileList.size(); i++) {
+                    if (fileList.get(i).getName().startsWith(ContansUtils.tallynote_file)) {
+                        fileList.set(0, fileList.get(i)); //设置总账单置顶并高亮显示
+                        break;
+                    }
+                }
                 adapter = new FileExplorerAdapter(context, fileList);
                 setSellect(false);
                 listView.setAdapter(adapter);
@@ -97,28 +109,37 @@ public class FileExplorerActivity extends BaseActivity {
             listView.setEmptyView(findViewById(R.id.emptyView));
 
             if (getIntent().hasExtra("import")) {
-                DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，\n是否继续导入？",
-                        "导入", new DialogListener() {
-                            @Override
-                            public void onClick() {
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                new DelayTask(200, new DelayTask.ICallBack() {
+                    @Override
+                    public void deal() {
+                        DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，\n是否继续导入？",
+                                "导入", new DialogListener() {
                                     @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    public void onClick() {
                                         Intent intent = new Intent();
-                                        intent.putExtra("path", fileList.get(position).getPath());
+                                        intent.putExtra("path", fileList.get(0).getPath());
                                         setResult(Activity.RESULT_OK, intent);
+                                        finish();
+//                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                            @Override
+//                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                                Intent intent = new Intent();
+//                                                intent.putExtra("path", fileList.get(position).getPath());
+//                                                setResult(Activity.RESULT_OK, intent);
+//                                                finish();
+//                                            }
+//                                        });
+
+                                    }
+                                },
+                                "取消", new DialogListener() {
+                                    @Override
+                                    public void onClick() {
                                         finish();
                                     }
                                 });
-
-                            }
-                        },
-                        "取消", new DialogListener() {
-                            @Override
-                            public void onClick() {
-                                finish();
-                            }
-                        });
+                    }
+                }).execute();
             }
         }
     }
