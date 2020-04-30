@@ -124,11 +124,6 @@ public class SystemUtils {
     }
 
     /**
-     * 后台标志key
-     */
-    public static String key = "isBack";
-
-    /**
      * 后台运行时的操作
      * 如果选择文件导入，打开系统的文件后不设为后台
      * 如果从APP内部发送文件或者打开文件时跳转第三方APP视为APP后台执行
@@ -142,7 +137,7 @@ public class SystemUtils {
         //如果直接跳转第三方APP回来后还是需要验证密码
         if ((!className.contains("DocumentsActivity")) && (!className.contains("ChooserActivity"))) {
             LogUtils.i(TAG, "lifecycle--APP运行在>>>>后台");
-            ContansUtils.put(key, true);
+            ContansUtils.put(ContansUtils.ISBACK, true);
         }
     }
 
@@ -154,13 +149,13 @@ public class SystemUtils {
      * @param activity
      */
     public static void setFore(Activity activity) {
-        if ((Boolean) ContansUtils.get(key, false)) {
+        if ((Boolean) ContansUtils.get(ContansUtils.ISBACK, false)) {
             LogUtils.i(TAG, "lifecycle--APP运行在>>>>前台");
-            ContansUtils.put(key, false); //写入非后台运行标记
+            ContansUtils.put(ContansUtils.ISBACK, false); //写入非后台运行标记
 
             Intent intent = new Intent();
-            intent.putExtra(SystemUtils.key, true);
-            if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+            intent.putExtra(ContansUtils.ISBACK, true);
+            if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
                 intent.setClass(activity, SetGestureActivity.class);
                 intent.putExtra("activityNum", 0);
                 activity.startActivity(intent);

@@ -3,6 +3,7 @@ package com.whh.tallynote.utils;
 import android.text.TextUtils;
 
 import java.text.DecimalFormat;
+import java.util.regex.Pattern;
 
 /**
  * Created by wuhuihui on 2017/3/24.
@@ -29,6 +30,16 @@ public class StringUtils {
         } else {
             return "无";
         }
+    }
+
+    /**
+     * 验证手机号（简单）
+     *
+     * @param input 待验证文本
+     * @return {@code true}: 匹配<br>{@code false}: 不匹配
+     */
+    public static boolean isPhone(final CharSequence input) {
+        return input != null && input.length() > 0 && Pattern.matches("^[1]\\d{10}$", input);
     }
 
 

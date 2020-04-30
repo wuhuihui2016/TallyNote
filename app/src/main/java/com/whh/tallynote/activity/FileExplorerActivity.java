@@ -51,6 +51,7 @@ public class FileExplorerActivity extends BaseActivity {
         final ListView listView = (ListView) findViewById(R.id.listView);
 
         File excelDir = FileUtils.getExcelDir();
+        if (excelDir == null || !excelDir.exists()) return;
         final File files[] = excelDir.listFiles();
         if (files.length > 0) {
             fileList.clear();

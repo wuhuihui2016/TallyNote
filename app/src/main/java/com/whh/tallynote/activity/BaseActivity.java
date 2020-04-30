@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.whh.tallynote.MyApplication;
@@ -71,7 +72,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         addNote = (ImageButton) findViewById(R.id.addNote);
 
-        if (TAG.contains("New")) {
+        if (TAG.contains("New") || TAG.contains("ForgetPwdActivity")
+                || TAG.contains("LoginUserActivity")) {
             addNote.setVisibility(View.GONE);
 
         } else {
@@ -201,6 +203,13 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         } else {
             RelativeLayout top_layout = (RelativeLayout) findViewById(R.id.top_layout);
             top_layout.setVisibility(View.GONE);
+        }
+    }
+
+    protected void setReturnBtnClickLitener(View.OnClickListener listener) {
+        if (listener != null) {
+            ImageButton return_btn = (ImageButton) findViewById(R.id.return_btn);
+            return_btn.setOnClickListener(listener);
         }
     }
 

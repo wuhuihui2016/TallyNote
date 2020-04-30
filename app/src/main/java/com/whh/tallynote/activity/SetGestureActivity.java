@@ -1,10 +1,12 @@
 package com.whh.tallynote.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +14,6 @@ import com.whh.tallynote.R;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.LogUtils;
-import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.view.StatusChange;
 
@@ -56,7 +57,19 @@ public class SetGestureActivity extends BaseActivity {
                 });
                 break;
             case launcherAct:
-                if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+                //忘记密码
+                Button forgetPwd_btn = (Button) findViewById(R.id.forgetPwd_btn);
+                forgetPwd_btn.setVisibility(View.VISIBLE);
+                forgetPwd_btn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //增加下划线
+                forgetPwd_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(activity, ForgetPwdActivity.class));
+                        AppManager.getAppManager().finishActivity(); //清除所有Acitivity
+                    }
+                });
+
+                if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
                     gestureText.setText("验证手势密码");
                     user_icon.setVisibility(View.VISIBLE);
                     user_icon.setImageResource(R.drawable.user);
@@ -93,7 +106,7 @@ public class SetGestureActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //重回界面不输入密码退出APP
-            if (intent.hasExtra(SystemUtils.key)) {
+            if (intent.hasExtra(ContansUtils.ISBACK)) {
                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
                     ToastUtils.showToast(this, true, "再按一次退出程序");
                     mExitTime = System.currentTimeMillis();

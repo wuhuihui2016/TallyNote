@@ -45,6 +45,16 @@
             </intent-filter>
         </activity>
 
+        <!-- 登录界面 -->
+        <activity
+            android:name=".activity.LoginUserActivity"
+            android:launchMode="singleTask" />
+
+        <!-- 忘记密码 -->
+        <activity
+            android:name=".activity.ForgetPwdActivity"
+            android:launchMode="singleTask" />
+
         <!-- 主页 -->
         <activity
             android:name=".activity.MainActivity"

@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ContansUtils.put(SystemUtils.key, false); //写入非后台运行标记
+        ContansUtils.put(ContansUtils.ISBACK, false); //写入非后台运行标记
     }
 
     /**

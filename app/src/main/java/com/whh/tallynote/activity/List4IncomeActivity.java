@@ -139,8 +139,8 @@ public class List4IncomeActivity extends BaseActivity {
                 //如果是从通知点击跳转的，需要验证密码
                 if (getIntent().hasExtra("notify")) {
                     Intent intent = new Intent();
-                    intent.putExtra(SystemUtils.key, true);
-                    if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+                    intent.putExtra(ContansUtils.ISBACK, true);
+                    if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
                         intent.setClass(activity, SetGestureActivity.class);
                         intent.putExtra("activityNum", 0);
                         startActivity(intent);

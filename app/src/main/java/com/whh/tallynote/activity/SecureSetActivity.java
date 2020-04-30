@@ -33,14 +33,14 @@ public class SecureSetActivity extends BaseActivity {
             public void onClick(View v) {
                 finish();
                 Intent intent = new Intent(activity, SetOrCheckPwdActivity.class);
-                intent.putExtra("reSetPwd", true);
+                intent.putExtra(ContansUtils.RESETPWD, true);
                 activity.startActivity(intent);
             }
         });
 
         //手势密码的设置
         Switch lock_switch = (Switch) findViewById(R.id.lock_switch);
-        if (TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
+        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
             lock_switch.setChecked(false);
         } else {
             lock_switch.setChecked(true);
@@ -54,7 +54,7 @@ public class SecureSetActivity extends BaseActivity {
                     intent.putExtra("activityNum", 1);
                     startActivity(intent);
                 } else {
-                    ContansUtils.remove("gesture");
+                    ContansUtils.remove(ContansUtils.GESTURE);
                 }
             }
         });

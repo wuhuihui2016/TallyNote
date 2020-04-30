@@ -36,7 +36,6 @@ import java.util.List;
  */
 public class MineFragment extends Fragment {
 
-
     private static final String TAG = "TallyFragment";
     private Activity activity;
     private View content;//内容布局
@@ -63,9 +62,13 @@ public class MineFragment extends Fragment {
      */
     private void initView() {
 
+        String phoneNum = (String) ContansUtils.get(ContansUtils.PHONENUM, "");
+
         //显示版本信息
         TextView versionInfo = (TextView) content.findViewById(R.id.versionInfo);
-        versionInfo.setText("V " + SystemUtils.getVersion(activity) + "\n慧慧，每天进步一点点");
+        versionInfo.setText(ContansUtils.get(ContansUtils.NICKNAME, "") + "  每天进步一点点\n"
+                + phoneNum.substring(0, 3) + "****" + phoneNum.substring(phoneNum.length() - 4)
+                + "\nV " + SystemUtils.getVersion(activity));
 
         //3的倍数
         settingGrid = (GridView) content.findViewById(R.id.settingGrid);
@@ -90,8 +93,6 @@ public class MineFragment extends Fragment {
         drawableRes.add(R.drawable.counter);
         settings.add("敬请期待");
         drawableRes.add(R.drawable.doc_review);
-//        settings.add("敬请期待");
-//        drawableRes.add(R.drawable.coming_soon);
 
         settingGrid.setAdapter(new Setting4GridAdapter(activity, drawableRes, settings));
         settingGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,7 +108,7 @@ public class MineFragment extends Fragment {
                     case 1: //安全设置
                         //判断验证方式：启动密码or手势密码
                         Intent intent = new Intent();
-                        if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
+                        if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) { //手势密码不为空，关闭当前界面，验证手势密码
                             intent.setClass(activity, SetGestureActivity.class);
                         } else {
                             intent.setClass(activity, SetOrCheckPwdActivity.class);

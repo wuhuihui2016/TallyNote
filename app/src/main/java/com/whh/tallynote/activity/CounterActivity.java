@@ -32,8 +32,6 @@ import java.util.List;
  */
 public class CounterActivity extends BaseActivity {
 
-    private String COUNT = "counter";
-
     private ListView listView;
     private TextView emptyView;
     private String counts;
@@ -74,7 +72,7 @@ public class CounterActivity extends BaseActivity {
                         DialogUtils.showMsgDialog(activity, "确认清除数据？", "清除", new DialogListener() {
                             @Override
                             public void onClick() {
-                                ContansUtils.remove(COUNT);
+                                ContansUtils.remove(ContansUtils.COUNTER);
                                 refreshView();
                             }
                         }, "取消", new DialogListener() {
@@ -96,7 +94,7 @@ public class CounterActivity extends BaseActivity {
      * 刷新并显示数据
      */
     private void refreshView() {
-        counts = (String) ContansUtils.get(COUNT, "");
+        counts = (String) ContansUtils.get(ContansUtils.COUNTER, "");
 
         if (TextUtils.isEmpty(counts)) {
             countList.clear();
@@ -204,14 +202,14 @@ public class CounterActivity extends BaseActivity {
                                 if (!TextUtils.isEmpty(count)) {
 
                                     LogUtils.i(TAG, counts);
-                                    counts = (String) ContansUtils.get(COUNT, "");
+                                    counts = (String) ContansUtils.get(ContansUtils.COUNTER, "");
                                     if (!TextUtils.isEmpty(counts)) {
                                         counts += "," + DateUtils.formatDate() + ":" + count;
                                     } else {
                                         counts = DateUtils.formatDate() + ":" + count;
                                     }
 
-                                    ContansUtils.put(COUNT, counts);
+                                    ContansUtils.put(ContansUtils.COUNTER, counts);
 
                                     refreshView();
 

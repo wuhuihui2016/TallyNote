@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bkg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ImageView
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/user" />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置你的个性昵称，将显示主页"
+        android:layout_marginTop="30dp"
+        android:lineSpacingExtra="5dp"
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:textColor="@color/bitblack"/>
+
+    <EditText
+        android:id="@+id/et_nickName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入你的个性昵称"
+        android:layout_marginTop="10dp"
+        android:lines="1"
+        android:maxLength="20"
+        android:background="@drawable/shape_pwd_stroke"
+        android:padding="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置你的电话号码，将显示主页"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="5dp"
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:textColor="@color/bitblack"/>
+
+    <EditText
+        android:id="@+id/et_phoneNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入你的手机号"
+        android:lines="1"
+        android:maxLength="11"
+        android:inputType="number"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_pwd_stroke"
+        android:padding="10dp"/>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置密钥，密钥是找回密码的关键钥匙，请牢记 ！！\n身份证号？纪念日？学号？其他？更青睐哪个？\n放心，你的密钥将加密，安全可靠！"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="5dp"
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:textColor="@color/bitblack"/>
+    
+    <EditText
+        android:id="@+id/et_secretKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入你的密钥"
+        android:layout_marginTop="20dp"
+        android:lines="1"
+        android:maxLength="25"
+        android:background="@drawable/shape_pwd_stroke"
+        android:padding="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="登录并设置启动密码"
+            android:textColor="@color/app_color"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_btn_thick_bkg"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

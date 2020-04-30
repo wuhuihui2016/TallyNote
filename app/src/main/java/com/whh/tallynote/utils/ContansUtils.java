@@ -18,14 +18,37 @@ public class ContansUtils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
 
-    public static final String PWD = "pwdKey";
-
     public static final int DAY = 0, MONTH = 1, INCOME = 2, DAY_HISTORY = 3, MEMO = 4, NOTEPAD = 5, ALL = 6;
     public static final String ACTION_DAY = "day";
     public static final String ACTION_MONTH = "month";
     public static final String ACTION_INCOME = "income";
     public static final String ACTION_NOTE = "notepad";
     public static final String ACTION_MEMO = "memo";
+
+    public static final String NICKNAME = "nickName"; //登录时设置的昵称，用于显示在个人主页
+    public static final String PHONENUM = "phoneNum"; //登录时设置的手机号码，用于显示在个人主页
+    public static final String SECRETKEY = "secretKey"; //登录时设置的密钥，作为找回密码的钥匙，需要加密存储
+
+    public static final String CHECKWAY = "checkWay"; //验证方式
+    public static final String PWDKEY = "pwdKey"; //验证密码
+    public static final String GESTURE = "gesture"; //手势密码
+    public static final String RESETPWD = "resetPwd"; //重置密码
+
+    public static final String ISBACK = "isBack"; //是否在后台运行的标志
+    public static final String INCOMEREMINDER = "incomeReminder"; //记录当天日期，用于理财到期通知，当天仅显示一次通知
+    public static final String COUNTER = "counter"; //计数器功能
+
+    /**
+     * 是否为手势验证方式
+     * @return
+     */
+    public static boolean getCheckWayIsGesture() {
+        if (contains(CHECKWAY)) {
+            if (get(CHECKWAY, "").equals(GESTURE))
+                return true;
+        }
+        return false;
+    }
 
     /**
      * 设置存储空间，获取编辑器

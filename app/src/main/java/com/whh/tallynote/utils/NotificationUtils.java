@@ -116,11 +116,11 @@ public class NotificationUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
 
         //获取上次提醒时间
-        String lastTime = (String) ContansUtils.get("incomeReminder", "");
+        String lastTime = (String) ContansUtils.get(ContansUtils.INCOMEREMINDER, "");
 
         //写入当前日期
         String nowTime = sdf.format(new Date());
-        ContansUtils.put("incomeReminder", nowTime);
+        ContansUtils.put(ContansUtils.INCOMEREMINDER, nowTime);
 
         if (!TextUtils.isEmpty(lastTime)) {
             if (nowTime.equals(lastTime)) return false;

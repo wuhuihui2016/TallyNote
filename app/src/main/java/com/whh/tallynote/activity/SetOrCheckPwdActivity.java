@@ -1,6 +1,7 @@
 package com.whh.tallynote.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,8 +29,6 @@ import com.whh.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.whh.tallynote.utils.SystemUtils.key;
 
 /**
  * 验证密码
@@ -53,23 +53,40 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         setContentView(R.layout.activity_pwd);
 
         pwdVisible = (ImageButton) findViewById(R.id.pwdVisible);
+        initView();
 
         //判断是否设置过，是否重置密码
-        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWD, ""))
-                || getIntent().hasExtra("reSetPwd")) {
+        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWDKEY, ""))
+                || getIntent().hasExtra(ContansUtils.RESETPWD)) {
             //为设置密码操作
             TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
-            edit_tips.setHint("请输入6位密码，为进入APP验证使用");
-            if (getIntent().hasExtra("reSetPwd")) edit_tips.setHint("请输入新的6位密码");
+
+            if (getIntent().hasExtra(ContansUtils.RESETPWD)) {
+                edit_tips.setHint("请输入新的6位密码");
+            } else {
+                edit_tips.setHint("请输入6位密码，为进入APP验证使用");
+                if (!ContansUtils.contains(ContansUtils.NICKNAME)) //如果本地没有昵称，则去登录
+                    startActivity(new Intent(activity, LoginUserActivity.class));
+            }
+
         } else {
             //为验证密码操作
             isSetting = false;
-        }
 
-        LogUtils.i("isSetting", isSetting + "");
-        if (!isSetting) { //验证密码（仅适用于APP启动时）
+            //忘记密码
+            Button forgetPwd_btn = (Button) findViewById(R.id.forgetPwd_btn);
+            forgetPwd_btn.setVisibility(View.VISIBLE);
+            forgetPwd_btn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //增加下划线
+            forgetPwd_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(activity, ForgetPwdActivity.class));
+                    AppManager.getAppManager().finishActivity(); //清除所有Acitivity
+                }
+            });
+
             //判断验方式：手势密码还是启动密码
-            if (!TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) { //手势密码不为空，关闭当前界面，验证手势密码
+            if (ContansUtils.getCheckWayIsGesture()) { //关闭当前界面，验证手势密码
                 Intent intent = new Intent(activity, SetGestureActivity.class);
                 intent.putExtra("start", true);
                 intent.putExtra("activityNum", 0);
@@ -77,8 +94,6 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                 finish();
             }
         }
-
-        initView();
 
     }
 
@@ -196,7 +211,8 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                                 @Override
                                 public void onClick() {
                                     try {
-                                        ContansUtils.put(ContansUtils.PWD, DesEncryptUtils.encode(finalPassword));
+                                        ContansUtils.put(ContansUtils.CHECKWAY, ContansUtils.PWDKEY);
+                                        ContansUtils.put(ContansUtils.PWDKEY, DesEncryptUtils.encode(finalPassword));
                                     } catch (DesEncryptUtils.CodecException e) {
                                         e.printStackTrace();
                                     }
@@ -213,8 +229,8 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                                 }
                             });
                         } else {
-                            //密码取已保存的密保
-                            String pwdKey = (String) ContansUtils.get(ContansUtils.PWD, "");
+                            //密码取已保存的启动密码
+                            String pwdKey = (String) ContansUtils.get(ContansUtils.PWDKEY, "");
                             try {
                                 password = DesEncryptUtils.encode(password);
                             } catch (DesEncryptUtils.CodecException e) {
@@ -226,7 +242,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                                     startActivity(new Intent(activity, SecureSetActivity.class));
                                 } else { //进入APP
                                     LogUtils.i("isSetting", "验证通过,进入APP");
-                                    if (!getIntent().hasExtra(key)) {
+                                    if (!getIntent().hasExtra(ContansUtils.ISBACK)) {
                                         finish();
                                         startActivity(new Intent(activity, MainActivity.class));
                                     } else {
@@ -249,7 +265,6 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 重回界面不输入密码
      * 再按一次退出程序
@@ -259,7 +274,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //重回界面不输入密码退出APP
-            if (getIntent().hasExtra(SystemUtils.key)) {
+            if (getIntent().hasExtra(ContansUtils.ISBACK)) {
                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
                     ToastUtils.showToast(this, true, "再按一次退出程序");
                     mExitTime = System.currentTimeMillis();

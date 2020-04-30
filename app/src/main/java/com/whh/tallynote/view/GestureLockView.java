@@ -51,7 +51,7 @@ public class GestureLockView extends View {
 
         SetGestureActivity.statusChange.setStatus(currentStatus);
 
-        passList = stringToList((String) ContansUtils.get("gesture", ""));
+        passList = stringToList((String) ContansUtils.get(ContansUtils.GESTURE, ""));
 
         initPaint = new Paint();
         initPaint.setStyle(Paint.Style.STROKE);
@@ -212,8 +212,9 @@ public class GestureLockView extends View {
                 invalidate();
             } else {
                 currentStatus = STATUS_PAS_RIGHT;
-                if (TextUtils.isEmpty((String) ContansUtils.get("gesture", ""))) {
-                    ContansUtils.put("gesture", listToString(passList));
+                if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
+                    ContansUtils.put(ContansUtils.CHECKWAY, ContansUtils.GESTURE);
+                    ContansUtils.put(ContansUtils.GESTURE, listToString(passList));
                 }
                 SetGestureActivity.statusChange.setStatus(currentStatus);
                 currentStatus = STATUS_DEFAULT;
