@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -171,6 +173,33 @@ public class AppManager {
         } else {
             return true;
         }
+    }
+
+    /**
+     * 跳转Activity
+     */
+    public static void transfer(Activity activity, Class<?> clazz) {
+        Intent intent = new Intent(activity, clazz);
+        activity.startActivity(intent);
+    }
+
+    public static void transfer(Activity activity, Class<?> clazz, String params, Serializable obj) {
+        Intent intent = new Intent(activity, clazz);
+        intent.putExtra(params, obj);
+        activity.startActivity(intent);
+    }
+
+    public static void transfer(Activity activity, Class<?> clazz, String params, Serializable obj, String params1, Serializable obj1) {
+        Intent intent = new Intent(activity, clazz);
+        intent.putExtra(params, obj);
+        intent.putExtra(params1, obj1);
+        activity.startActivity(intent);
+    }
+
+    public static void transfer(Activity activity, Class<?> clazz, String params, Serializable obj, int code) {
+        Intent intent = new Intent(activity, clazz);
+        intent.putExtra(params, obj);
+        activity.startActivityForResult(intent, code);
     }
 
 }

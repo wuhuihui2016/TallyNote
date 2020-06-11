@@ -1,6 +1,7 @@
 package com.whh.tallynote.model;
 
-import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.MyApp;
+import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 
 import java.io.Serializable;
@@ -133,8 +134,8 @@ public class MonthNote implements Serializable {
      * 获取最后一次月结算的截止时间
      */
     public static String getEndDate() {
-        if (MonthNoteDao.getMonthNotes().size() > 0)
-            return MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getDuration().split("-")[1];
+        if (MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) > 0)
+            return MyApp.monthNoteDBHandle.getLastMonthNote().getDuration().split("-")[1];
         else return "";
     }
 
@@ -163,7 +164,7 @@ public class MonthNote implements Serializable {
      */
     public static List<String> getDurations() {
         List<String> durations = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        List<MonthNote> monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             if (i != 0) durations.add(monthNotes.get(i).getDuration());
         }
@@ -190,7 +191,7 @@ public class MonthNote implements Serializable {
      */
     public static List<Double> getPays() {
         List<Double> pays = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        List<MonthNote> monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             pays.add(Double.parseDouble(monthNotes.get(i).getPay()));
         }
@@ -204,7 +205,7 @@ public class MonthNote implements Serializable {
      */
     public static List<Double> getSalarys() {
         List<Double> salarys = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        List<MonthNote> monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             salarys.add(Double.parseDouble(monthNotes.get(i).getSalary()));
         }
@@ -218,7 +219,7 @@ public class MonthNote implements Serializable {
      */
     public static List<Double> getIncomes() {
         List<Double> incomes = new ArrayList<>();
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        List<MonthNote> monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         for (int i = 0; i < monthNotes.size(); i++) {
             incomes.add(Double.parseDouble(monthNotes.get(i).getIncome()));
         }

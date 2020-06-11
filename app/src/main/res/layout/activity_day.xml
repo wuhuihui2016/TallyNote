@@ -1,12 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:background="@color/main_bkg">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/main_bkg"
         android:orientation="vertical">
 
         <LinearLayout
@@ -74,6 +71,22 @@
             android:layout_height="1dp"
             android:background="@color/line" />
 
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp">
 
-</ScrollView>
+            <Button
+                android:id="@+id/btn_del_daynote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:textColor="@color/day_record"
+                android:text="删除日账"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/shape_day"/>
+        </RelativeLayout>
+
+    </LinearLayout>

@@ -1,7 +1,7 @@
 package com.whh.tallynote.model;
 
-import com.whh.tallynote.database.IncomeNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.MyApp;
+import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 
 import java.io.Serializable;
@@ -166,7 +166,7 @@ public class IncomeNote implements Serializable {
      */
     public static List<IncomeNote> getEarningInComes() {
         List<IncomeNote> earningInComes = new ArrayList<>();
-        List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
+        List<IncomeNote> incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (incomeNotes.get(i).getFinished() == IncomeNote.ON) {
                 earningInComes.add(incomeNotes.get(i));
@@ -195,7 +195,7 @@ public class IncomeNote implements Serializable {
 
     //显示最近一次收益的理财记录
     public static IncomeNote getLastIncomeNote() {
-        if (IncomeNoteDao.getIncomes().size() > 0) {
+        if (MyApp.dbHandle.getCount4Record(ContansUtils.INCOME) > 0) {
             IncomeNote incomeNote = getEarningInComes().get(0);
             for (int i = 0; i < getEarningInComes().size(); i++) {
                 String date = getEarningInComes().get(i).getDurtion().split("-")[1];
@@ -215,7 +215,7 @@ public class IncomeNote implements Serializable {
      */
     public static List<IncomeNote> getFinishedInComes() {
         List<IncomeNote> finishedIncomes = new ArrayList<>();
-        List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
+        List<IncomeNote> incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
         for (int i = 0; i < incomeNotes.size(); i++) {
             if (incomeNotes.get(i).getFinished() == 1) {
                 finishedIncomes.add(incomeNotes.get(i));
@@ -231,7 +231,7 @@ public class IncomeNote implements Serializable {
      */
     public static List<IncomeNote> getUnRecordInComes() {
         List<IncomeNote> unRecordInComes = new ArrayList<>();
-        if (IncomeNote.getFinishedInComes().size() > 0 && MonthNoteDao.getMonthNotes().size() > 0) {
+        if (IncomeNote.getFinishedInComes().size() > 0 && MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) > 0) {
             String dateStr = MonthNote.getEndDate();
             List<IncomeNote> finishedInComes = IncomeNote.getFinishedInComes();
             for (int i = 0; i < finishedInComes.size(); i++) {
@@ -265,14 +265,12 @@ public class IncomeNote implements Serializable {
      */
     public static String getNewIncomeID() {
         String newIncomeID;
-        if (IncomeNoteDao.getIncomes().size() > 0) {
-            List<IncomeNote> incomeNotes = IncomeNoteDao.getIncomes();
-            String id = incomeNotes.get(incomeNotes.size() - 1).getId();
+        if (MyApp.dbHandle.getCount4Record(ContansUtils.INCOME) > 0) {
+            String id = MyApp.incomeNoteDBHandle.getLastIncomeNote().getId();
             newIncomeID = "新的理财ID：" + (Integer.parseInt(id) + 1);
         } else newIncomeID = "新的理财ID：1";
 
         return newIncomeID;
     }
-
 
 }

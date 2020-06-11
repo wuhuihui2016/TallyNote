@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,12 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.model.MonthNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DialogListener;
@@ -35,35 +35,51 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 记月账
  */
 public class NewMonthActivity extends BaseActivity {
 
-    private EditText last_balanceEt, payEt, salaryEt, incomeEt, remarkEt;
-    private TextView durationEt, balanceEt, balance_diff, actual_balanceEt;
+    @BindView(R.id.last_balanceEt)
+    public EditText last_balanceEt;
+    @BindView(R.id.payEt)
+    public EditText payEt;
+    @BindView(R.id.salaryEt)
+    public EditText salaryEt;
+    @BindView(R.id.incomeEt)
+    public EditText incomeEt;
+    @BindView(R.id.remarkEt)
+    public EditText remarkEt;
+
+    @BindView(R.id.durationEt)
+    public TextView durationEt;
+    @BindView(R.id.balanceEt)
+    public TextView balanceEt;
+    @BindView(R.id.balance_diff)
+    public TextView balance_diff;
+    @BindView(R.id.actual_balanceEt)
+    public TextView actual_balanceEt;
+
     private String salaryStr = null;
     private StringBuffer currAssetsInfo; //现有资产清单
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("记月账", R.layout.activity_month);
-
-        initView();
     }
 
-    private void initView() {
-        last_balanceEt = (EditText) findViewById(R.id.last_balanceEt);
-        if (MonthNoteDao.getMonthNotes().size() > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
-            String actual_balance = MonthNoteDao.getMonthNotes().get(MonthNoteDao.getMonthNotes().size() - 1).getActual_balance();
+    @Override
+    protected void initView() {
+        if (MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
+            String actual_balance = MyApp.monthNoteDBHandle.getLastMonthNote().getActual_balance();
             last_balanceEt.setText(StringUtils.formatePrice(actual_balance));
             last_balanceEt.setFocusable(false);
             last_balanceEt.setFocusableInTouchMode(false);//设置不可编辑状态；
         }
 
-        payEt = (EditText) findViewById(R.id.payEt);
-        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
+        List<DayNote> dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         if (dayNotes != null && dayNotes.size() > 0) { //如果已有日账记录自动填充本次支出，不得手动输入
             payEt.setText(StringUtils.formatePrice(DayNote.getAllSum() + ""));
             payEt.setFocusable(false);
@@ -71,11 +87,10 @@ public class NewMonthActivity extends BaseActivity {
             payEt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, List4DayActivity.class));
+                    AppManager.transfer(activity, List4DayActivity.class);
                 }
             });
         }
-        salaryEt = (EditText) findViewById(R.id.salaryEt);
         salaryEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,7 +105,6 @@ public class NewMonthActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        incomeEt = (EditText) findViewById(R.id.incomeEt);
         if (IncomeNote.getUnRecordSum() > 0) { //计算本次收益
             incomeEt.setText(StringUtils.formatePrice("" + IncomeNote.getUnRecordSum()));
             incomeEt.setFocusable(false);
@@ -98,17 +112,10 @@ public class NewMonthActivity extends BaseActivity {
             incomeEt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, List4IncomeOfUnRecordActivity.class));
+                    AppManager.transfer(activity, List4IncomeOfUnRecordActivity.class);
                 }
             });
         }
-        balanceEt = (TextView) findViewById(R.id.balanceEt);
-        balance_diff = (TextView) findViewById(R.id.balance_diff);
-        durationEt = (TextView) findViewById(R.id.durationEt);
-        durationEt.setText(MonthNote.getAfterEndDate());
-
-        remarkEt = (EditText) findViewById(R.id.remarkEt);
-        actual_balanceEt = (TextView) findViewById(R.id.actual_balanceEt);
 
         setRightBtnListener("提交", new View.OnClickListener() {
             @Override
@@ -139,24 +146,22 @@ public class NewMonthActivity extends BaseActivity {
                             "提交", new DialogListener() {
                                 @Override
                                 public void onClick() {
-                                    if (MonthNoteDao.newMNote(monthNote)) {
-                                        ToastUtils.showSucessLong(activity, "提交月账单成功！");
-                                        ExcelUtils.exportMonthNote(null);
-                                        if (MonthNoteDao.getMonthNotes().size() > 1) { //移植日账单到历史日账单
-                                            if (DayNoteDao.newDNotes4History(monthNote.getDuration())) {
-                                                LogUtils.i("newDNotes4History", DayNoteDao.getDayNotes4History(monthNote.getDuration()).toString());
-                                                ExcelUtils.exportDayNote4History(null);
-                                            }
+                                    MyApp.monthNoteDBHandle.saveMonthNote(monthNote);
+                                    ToastUtils.showSucessLong(activity, "提交月账单成功！");
+                                    ExcelUtils.exportMonthNote(null);
+                                    if (MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) > 0) { //移植日账单到历史日账单
+                                        if (MyApp.dayNoteDBHandle.saveDayNotes4History(monthNote.getDuration())) {
+                                            //移植完成后，清除临时日账单数据
+                                            MyApp.dbHandle.clearTableData(ContansUtils.DAY);
+                                            ExcelUtils.exportDayNote4History(null);
                                         }
-                                        if (getIntent().hasExtra("list")) {
-                                            EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
-                                        } else {
-                                            Intent intent = new Intent(activity, List4MonthActivity.class);
-                                            intent.putExtra("flag", true);
-                                            startActivity(intent);
-                                        }
-                                        finish();
-                                    } else ToastUtils.showErrorLong(activity, "提交月账单失败！");
+                                    }
+                                    if (getIntent().hasExtra("list")) {
+                                        EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
+                                    } else {
+                                        AppManager.transfer(activity, List4MonthActivity.class, "flag", true);
+                                    }
+                                    finish();
                                 }
                             }, "取消", new DialogListener() {
                                 @Override
@@ -168,6 +173,11 @@ public class NewMonthActivity extends BaseActivity {
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void initEvent() {
 
     }
 
@@ -190,7 +200,7 @@ public class NewMonthActivity extends BaseActivity {
                     !TextUtils.isEmpty(salaryStr)) {
                 String meaasge = "";
                 if (payStr.startsWith("-"))
-                meaasge = last_balanceStr + " - (" + payStr + ")";
+                    meaasge = last_balanceStr + " - (" + payStr + ")";
                 else meaasge = last_balanceStr + " - " + payStr;
 
                 Double last_balance = Double.parseDouble(last_balanceStr);
@@ -301,15 +311,18 @@ public class NewMonthActivity extends BaseActivity {
                                 je.add(editText4.getText().toString());
                                 je.add(editText5.getText().toString());
 
-                                currAssetsInfo =  new StringBuffer();
+                                currAssetsInfo = new StringBuffer();
                                 currAssetsInfo.append("现有资产：");
                                 for (int i = 0; i < je.size(); i++) {
                                     if (!TextUtils.isEmpty(je.get(i))) {
                                         double money = Double.parseDouble(je.get(i));
                                         asset_clearing += money;
-                                        if (i == 0) currAssetsInfo.append("微信：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
-                                        if (i == 1) currAssetsInfo.append("  支付宝："+ StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
-                                        if (i == 2) currAssetsInfo.append("  京东金融："+ StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                        if (i == 0)
+                                            currAssetsInfo.append("微信：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                        if (i == 1)
+                                            currAssetsInfo.append("  支付宝：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                        if (i == 2)
+                                            currAssetsInfo.append("  京东金融：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
                                     }
                                 }
 

@@ -1,9 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,10 +11,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.MemoNoteAdapter;
-import com.whh.tallynote.database.MemoNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.MemoNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
 import com.whh.tallynote.utils.ExcelUtils;
@@ -31,51 +29,60 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 
-/**我的备忘录
+import butterknife.BindView;
+
+/**
+ * 我的备忘录
  * Created by wuhuihui on 2017/6/27.
  */
 public class List4MemoNoteActivity extends BaseActivity {
 
-    private TextView info, all, ongoing, completed;
-    private ListView listView;
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.all)
+    public TextView all;
+    @BindView(R.id.ongoing)
+    public TextView ongoing;
+    @BindView(R.id.completed)
+    public TextView completed;
+
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
 
     private List<MemoNote> memoNotes;
     private MemoNoteAdapter memoNoteAdapter;
     private boolean isFirst = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initBundleData(Bundle bundle) {
         setContentView("我的备忘录", R.layout.activity_memonote_list);
+    }
 
-        info = (TextView) findViewById(R.id.info);
-        all = (TextView) findViewById(R.id.all);
-        ongoing = (TextView) findViewById(R.id.ongoing);
-        completed = (TextView) findViewById(R.id.completed);
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
+    @Override
+    protected void initView() {
+        listView.setEmptyView(emptyView);
 
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    initPopupWindow();
+                initPopupWindow();
             }
         });
-
-        getAll();
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, MemoNoteDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("memoNote", memoNotes.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
+                AppManager.transfer(activity, MemoNoteDetailActivity.class,"memoNote", memoNotes.get(position));
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void initEvent() {
+        getAll();
     }
 
     //删除后刷新界面
@@ -107,9 +114,7 @@ public class List4MemoNoteActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewMemoActivity.class);
-                            intent.putExtra("list", true);
-                            startActivity(intent);
+                            AppManager.transfer(activity, NewMemoActivity.class, "list", true);
                         }
                     }
             );
@@ -159,7 +164,7 @@ public class List4MemoNoteActivity extends BaseActivity {
         all.setTextColor(Color.RED);
         ongoing.setTextColor(Color.GRAY);
         completed.setTextColor(Color.GRAY);
-        memoNotes = MemoNoteDao.getMemoNotes();
+        memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
         Collections.reverse(memoNotes);
         info.setText("我的备忘录：" + memoNotes.size());
         memoNoteAdapter = new MemoNoteAdapter(activity, memoNotes);
@@ -170,9 +175,7 @@ public class List4MemoNoteActivity extends BaseActivity {
             @Override
             public void deal() {
                 isFirst = false;
-                Intent intent = new Intent(activity, NewMemoActivity.class);
-                intent.putExtra("list", true);
-                startActivity(intent);
+                AppManager.transfer(activity, NewMemoActivity.class,"list", true);
             }
         }).execute();
     }

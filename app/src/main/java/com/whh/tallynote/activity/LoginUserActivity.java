@@ -5,13 +5,17 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DesEncryptUtils;
 import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
+
+import butterknife.BindView;
 
 /**
  * 登录页面
@@ -19,18 +23,24 @@ import com.whh.tallynote.utils.ToastUtils;
  */
 public class LoginUserActivity extends BaseActivity {
 
-    private EditText et_nickName, et_phoneNum, et_secretKey;
+    @BindView(R.id.et_nickName)
+    public TextView et_nickName;
+    @BindView(R.id.et_phoneNum)
+    public TextView et_phoneNum;
+    @BindView(R.id.et_secretKey)
+    public EditText et_secretKey;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initBundleData(Bundle bundle) {
         setContentView("登录", R.layout.activity_login_user);
+    }
 
-        et_nickName = (EditText) findViewById(R.id.et_nickName);
-        et_phoneNum = (EditText) findViewById(R.id.et_phoneNum);
-        et_secretKey = (EditText) findViewById(R.id.et_secretKey);
+    @Override
+    protected void initView() {
+    }
 
+    @Override
+    protected void initEvent() {
     }
 
     @Override

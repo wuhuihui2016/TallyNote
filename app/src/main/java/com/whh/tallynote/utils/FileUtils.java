@@ -34,9 +34,7 @@ public class FileUtils {
 
     public static final String dirPath = Environment.getExternalStorageDirectory() + "/ATallyNote/";//项目根目录
     public static final String excelPath = dirPath + "/excel/";//excel根目录
-
     public static final String logPath = dirPath + "/crash/";//log根目录
-
 
     /**
      * 获取APP文件夹
@@ -76,9 +74,9 @@ public class FileUtils {
      */
     public static void createDir() {
         if (isSDCardAvailable()) {
-            getAppDir().mkdirs();
             getExcelDir().mkdirs();
-        }
+            getLogDir().mkdirs();
+        } else LogUtils.e("whh0610", "createDir exception: not isSDCardAvailable");
     }
 
     /**
@@ -144,18 +142,16 @@ public class FileUtils {
      * @return
      */
     public static File getTallyNoteFile() {
-        File file = null;
         File excelDir = FileUtils.getExcelDir();
-        if (!excelDir.exists()) return null;
+        if (!excelDir.exists())  return null;
         final File files[] = excelDir.listFiles();
         if (files.length == 0) return null;
         for (int i = 0; i < files.length; i++) {
             if (files[i].getName().startsWith(ContansUtils.tallynote_file)) {
-                file = files[i];
+                return files[i];
             }
-            break;
         }
-        return file;
+        return null;
     }
 
     /**
@@ -223,7 +219,7 @@ public class FileUtils {
 
                 activity.startActivity(Intent.createChooser(share, "上传文件"));
             } else {
-                DialogUtils.showMsgDialog(activity, "当前没有WIFI，不能上传~");
+                DialogUtils.showMsgDialog(activity, "当前没有连接网络，不能上传~");
             }
         } catch (Exception e) {
             e.printStackTrace();

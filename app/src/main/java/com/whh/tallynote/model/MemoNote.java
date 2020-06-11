@@ -1,6 +1,6 @@
 package com.whh.tallynote.model;
 
-import com.whh.tallynote.database.MemoNoteDao;
+import com.whh.tallynote.MyApp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class MemoNote implements Serializable{
      */
     public static List<MemoNote> getUnFinish(){
         List<MemoNote> unFinishMemoNotes = new ArrayList<>();
-        List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
+        List<MemoNote> memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
         for (int i = 0; i < memoNotes.size(); i++) {
             if (memoNotes.get(i).getStatus() == ON) {
                 unFinishMemoNotes.add(memoNotes.get(i));
@@ -87,7 +87,7 @@ public class MemoNote implements Serializable{
      */
     public static List<MemoNote> getFinished(){
         List<MemoNote> unFinishMemoNotes = new ArrayList<>();
-        List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
+        List<MemoNote> memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
         for (int i = 0; i < memoNotes.size(); i++) {
             if (memoNotes.get(i).getStatus() == OFF) {
                 unFinishMemoNotes.add(memoNotes.get(i));

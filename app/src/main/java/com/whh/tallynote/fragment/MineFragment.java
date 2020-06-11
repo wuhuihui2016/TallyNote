@@ -1,9 +1,6 @@
 package com.whh.tallynote.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.whh.tallynote.MyApplication;
 import com.whh.tallynote.R;
 import com.whh.tallynote.activity.CalculateActivity;
 import com.whh.tallynote.activity.CounterActivity;
@@ -24,6 +20,8 @@ import com.whh.tallynote.activity.List4NotePadActivity;
 import com.whh.tallynote.activity.SetGestureActivity;
 import com.whh.tallynote.activity.SetOrCheckPwdActivity;
 import com.whh.tallynote.adapter.Setting4GridAdapter;
+import com.whh.tallynote.base.BaseFragment;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
@@ -34,12 +32,9 @@ import java.util.List;
 /**
  * 我的
  */
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment {
 
     private static final String TAG = "TallyFragment";
-    private Activity activity;
-    private View content;//内容布局
-
     private GridView settingGrid;
     private List<String> settings = new ArrayList<>();
     private List<Integer> drawableRes = new ArrayList<>();
@@ -100,47 +95,40 @@ public class MineFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0: //备忘录
-                        MyApplication.dbHelper.newTable("create table if not exists memo_note(_id integer primary key," +
-                                "content varchar(200),status integer,time varchar(20))");
-                        startActivity(new Intent(activity, List4MemoNoteActivity.class));
+                        AppManager.transfer(activity, List4MemoNoteActivity.class);
                         break;
 
                     case 1: //安全设置
                         //判断验证方式：启动密码or手势密码
-                        Intent intent = new Intent();
                         if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) { //手势密码不为空，关闭当前界面，验证手势密码
-                            intent.setClass(activity, SetGestureActivity.class);
+                            AppManager.transfer(activity, SetGestureActivity.class, "secureSet", true);
                         } else {
-                            intent.setClass(activity, SetOrCheckPwdActivity.class);
+                            AppManager.transfer(activity, SetOrCheckPwdActivity.class, "secureSet", true);
                         }
-                        intent.putExtra("secureSet", true);
-                        startActivity(intent);
                         break;
 
                     case 2: //记事本
-                        MyApplication.dbHelper.newTable("create table if not exists note_pad(_id integer primary key," +
-                                "tag integer,words varchar(200),time varchar(20))");
-                        startActivity(new Intent(activity, List4NotePadActivity.class));
+                        AppManager.transfer(activity, List4NotePadActivity.class);
                         break;
 
                     case 3: //计算日收益
-                        startActivity(new Intent(activity, CalculateActivity.class));
+                        AppManager.transfer(activity, CalculateActivity.class);
                         break;
 
                     case 4: //文件浏览
-                        startActivity(new Intent(activity, FileExplorerActivity.class));
+                        AppManager.transfer(activity, FileExplorerActivity.class);
                         break;
 
                     case 5: //导入/导出
-                        startActivity(new Intent(activity, ImportExportActivity.class));
+                        AppManager.transfer(activity, ImportExportActivity.class);
                         break;
 
                     case 6: //查看log
-                        startActivity(new Intent(activity, LogExplorerActivity.class));
+                        AppManager.transfer(activity, LogExplorerActivity.class);
                         break;
 
                     case 7: //计数器
-                        startActivity(new Intent(activity, CounterActivity.class));
+                        AppManager.transfer(activity, CounterActivity.class);
                         break;
 
                     case 8: //敬请期待

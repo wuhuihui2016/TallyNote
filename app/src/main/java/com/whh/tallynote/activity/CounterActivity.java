@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DelayTask;
@@ -26,34 +27,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 计数器
  * Created by wuhuihui on 2018/07/05.
  */
 public class CounterActivity extends BaseActivity {
 
-    private ListView listView;
-    private TextView emptyView;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+
     private String counts;
     private List<String> countList = new ArrayList<>();
     private CounterAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("计数器", R.layout.activity_counter);
-
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        initView();
-    }
-
-    private void initView() {
-        listView = (ListView) findViewById(R.id.listView);
-        emptyView = (TextView) findViewById(R.id.emptyView);
+    protected void initView() {
         listView.setEmptyView(emptyView);
 
         adapter = new CounterAdapter(countList);
@@ -89,6 +86,19 @@ public class CounterActivity extends BaseActivity {
         refreshView();
 
     }
+
+    @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
+
+
 
     /**
      * 刷新并显示数据

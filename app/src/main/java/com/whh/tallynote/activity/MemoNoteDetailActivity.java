@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.MemoNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.MemoNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DialogListener;
@@ -22,30 +24,30 @@ import com.whh.tallynote.utils.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.BindView;
+
 /**
  * 备忘录详情
  * Created by wuhuihui on 2017/8/02.
  */
 public class MemoNoteDetailActivity extends BaseActivity {
 
-    private TextView time, content;
+    @BindView(R.id.time)
+    public TextView time;
+    @BindView(R.id.content)
+    public TextView content;
+
     private MemoNote memoNote;
     public static final int REQUEST_TRANSFOR = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("备忘录", R.layout.activity_memo_detail);
-
-        time = (TextView) findViewById(R.id.time);
-        content = (TextView) findViewById(R.id.content);
-
         memoNote = (MemoNote) getIntent().getSerializableExtra("memoNote");
-
-        init();
     }
 
-    private void init() {
+    @Override
+    protected void initView() {
 
         if (memoNote != null) {
             time.setText(DateUtils.showTime4Detail(memoNote.getTime()));
@@ -58,6 +60,11 @@ public class MemoNoteDetailActivity extends BaseActivity {
             }
 
         } else finish();
+
+    }
+
+    @Override
+    protected void initEvent() {
 
     }
 
@@ -87,7 +94,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                             "删除", new DialogListener() {
                                 @Override
                                 public void onClick() {
-                                    MemoNoteDao.delMemoNote(memoNote);
+                                    MyApp.memoNoteDBHandle.delMemoNote(memoNote);
                                     ExcelUtils.exportMemoNote(null);
                                     EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                                     finish();
@@ -124,11 +131,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewMemoActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("memoNote", memoNote);
-                            intent.putExtras(bundle);
-                            startActivityForResult(intent, REQUEST_TRANSFOR);
+                            AppManager.transfer(activity, NewMemoActivity.class, "memoNote", memoNote, REQUEST_TRANSFOR);
                         }
                     }
             );
@@ -142,14 +145,11 @@ public class MemoNoteDetailActivity extends BaseActivity {
                                     "提交", new DialogListener() {
                                         @Override
                                         public void onClick() {
-                                            if (MemoNoteDao.finishMemoNote(memoNote)) {
-                                                ExcelUtils.exportMemoNote(null);
-                                                ToastUtils.showSucessLong(activity, "完成备忘录成功！");
-                                                showStatus(true);
-                                                EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
-                                            } else {
-                                                ToastUtils.showErrorLong(activity, "完成备忘录失败！");
-                                            }
+                                            MyApp.memoNoteDBHandle.finishMemoNote(memoNote);
+                                            ExcelUtils.exportMemoNote(null);
+                                            ToastUtils.showSucessLong(activity, "完成备忘录成功！");
+                                            showStatus(true);
+                                            EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                                         }
                                     }, "取消", new DialogListener() {
                                         @Override
@@ -177,7 +177,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_TRANSFOR) {
             memoNote = (MemoNote) data.getSerializableExtra("memoNote");
             LogUtils.i(TAG + "--onActivityResult", memoNote.toString());
-            init();
+            initView();
         }
     }
 }

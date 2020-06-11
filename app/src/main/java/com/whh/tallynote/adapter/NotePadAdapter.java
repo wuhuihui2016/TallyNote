@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.NotePadDao;
 import com.whh.tallynote.model.NotePad;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DialogListener;
@@ -82,7 +82,7 @@ public class NotePadAdapter extends BaseAdapter {
                         "删除", new DialogListener() {
                             @Override
                             public void onClick() {
-                                NotePadDao.delNotePad(notePad);
+                                MyApp.notePadDBHandle.delNotePad(notePad);
                                 ExcelUtils.exportNotePad(null);
                                 notePads.remove(notePad);
                                 notifyDataSetChanged();

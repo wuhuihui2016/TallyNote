@@ -35,7 +35,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/chartAnalyse"
+        android:layout_below="@id/info"
         android:layout_marginTop="10dp"
         android:divider="@color/month_record"
         android:dividerHeight="2dp"

@@ -1,21 +1,23 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.NotePadAdapter;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.NotePad;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
 import com.whh.tallynote.utils.ExcelUtils;
@@ -30,30 +32,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 记事本列表
  * Created by wuhuihui on 2017/6/27.
  */
 public class List4NotePadActivity extends BaseActivity {
 
-    private FlowLayout flowLayout;
-    private TextView info;
-    private ListView listView;
+    @BindView(R.id.flowLayout)
+    public FlowLayout flowLayout;
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+
+    @BindView(R.id.reload)
+    public ImageButton reload;
 
     private List<NotePad> notePads;
     private NotePadAdapter notePadAdapter;
     private boolean isFirst = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initBundleData(Bundle bundle) {
         setContentView("我的记事本", R.layout.activity_notepad_list);
+    }
 
-        info = (TextView) findViewById(R.id.info);
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
-
+    @Override
+    protected void initView() {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +70,6 @@ public class List4NotePadActivity extends BaseActivity {
             }
         });
 
-        flowLayout = (FlowLayout) findViewById(R.id.flowLayout);
         flowLayout.removeAllViews();//避免多次执行后出现重复多余View
         final List<String> tagList = NotePad.getTagList();
         for (int i = 0; i < tagList.size(); i++) {
@@ -85,7 +93,7 @@ public class List4NotePadActivity extends BaseActivity {
             flowLayout.addView(view);
         }
 
-        findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
+        reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getAll();
@@ -98,13 +106,14 @@ public class List4NotePadActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 position4Detail = position; //记录标志位
-                Intent intent = new Intent(context, NotePadDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("notepad", notePads.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
+                AppManager.transfer(activity, NotePadDetailActivity.class, "notepad", notePads.get(position));
             }
         });
+    }
+
+    @Override
+    protected void initEvent() {
+
     }
 
     private int position4Detail = -1; //列表点击item的标志位
@@ -118,7 +127,7 @@ public class List4NotePadActivity extends BaseActivity {
                     //标志位被删除，刷新列表
                     notePads.remove(notePads.get(position4Detail));
                     notePadAdapter.notifyDataSetChanged();
-                } catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -145,9 +154,7 @@ public class List4NotePadActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewNotePadActivity.class);
-                            intent.putExtra("list", true);
-                            startActivity(intent);
+                            AppManager.transfer(activity, NewNotePadActivity.class, "list", true);
                         }
                     }
             );
@@ -183,7 +190,7 @@ public class List4NotePadActivity extends BaseActivity {
             textView.setTextColor(Color.BLACK);
         }
 
-        notePads = NotePadDao.getNotePads();
+        notePads = MyApp.notePadDBHandle.getNotePads();
         Collections.reverse(notePads);
         info.setText("我的记事本：" + notePads.size());
         notePadAdapter = new NotePadAdapter(activity, notePads, true);
@@ -194,9 +201,7 @@ public class List4NotePadActivity extends BaseActivity {
             @Override
             public void deal() {
                 isFirst = false;
-                Intent intent = new Intent(activity, NewNotePadActivity.class);
-                intent.putExtra("list", true);
-                startActivity(intent);
+                AppManager.transfer(activity, NewNotePadActivity.class, "list", true);
             }
         }).execute();
     }
@@ -213,7 +218,7 @@ public class List4NotePadActivity extends BaseActivity {
         TextView textView = (TextView) flowLayout.getChildAt(tag);
         textView.setTextColor(Color.RED);
 
-        notePads = NotePadDao.getNotePads();
+        notePads = MyApp.notePadDBHandle.getNotePads();
         Collections.reverse(notePads);
 
         List<NotePad> list = new ArrayList<>();

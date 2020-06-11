@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.IncomeNoteAdapter;
-import com.whh.tallynote.database.IncomeNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.IncomeNote;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * 往期理财记录日收益比较 比较显示收益大的理财列表
@@ -19,32 +22,23 @@ import java.util.List;
  */
 public class CompareActivity extends BaseActivity {
 
-    private ListView listView;
-    private TextView emptyView;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+    @BindView(R.id.info)
+    public TextView info;
 
     private List<IncomeNote> incomeNotes;
-    private TextView info;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("往期理财记录日收益比较", R.layout.activity_compare);
-
     }
-
     @Override
-    protected void onResume() {
-        super.onResume();
-        initView();
-    }
-
-    private void initView() {
-        info = (TextView) findViewById(R.id.info);
-        listView = (ListView) findViewById(R.id.listView);
-        emptyView = (TextView) findViewById(R.id.emptyView);
+    protected void initView() {
         listView.setEmptyView(emptyView);
-
-        incomeNotes = IncomeNoteDao.getIncomes();
+        incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
 
         if (getIntent().hasExtra("cal_result")) {
             String cal_result = getIntent().getStringExtra("cal_result");
@@ -67,6 +61,17 @@ public class CompareActivity extends BaseActivity {
         }
 
 
+    }
+
+    @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
     }
 
 

@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,10 +7,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.base.BaseActivity;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import java.text.DecimalFormat;
+
+import butterknife.BindView;
 
 /**
  * 计算日收益
@@ -19,40 +22,45 @@ import java.text.DecimalFormat;
  */
 public class CalculateActivity extends BaseActivity {
 
-    private EditText cal_money, cal_ratio, cal_day, cal_finalIncome;
-    private TextView cal_result;
-    private ImageButton reset;
+    @BindView(R.id.cal_money)
+    public EditText cal_money;
+
+    @BindView(R.id.cal_ratio)
+    public EditText cal_ratio;
+
+    @BindView(R.id.cal_day)
+    public EditText cal_day;
+
+    @BindView(R.id.cal_finalIncome)
+    public EditText cal_finalIncome;
+
+    @BindView(R.id.cal_result)
+    public TextView cal_result;
+
+    @BindView(R.id.reset)
+    public ImageButton reset;
+
     private String resultStr;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("计算日收益", R.layout.activity_calculate);
+    }
 
-        initView();
+    @Override
+    protected void initView() {
 
     }
 
-    private void initView() {
-
-        cal_money = (EditText) findViewById(R.id.cal_money);
-        cal_ratio = (EditText) findViewById(R.id.cal_ratio);
-        cal_day = (EditText) findViewById(R.id.cal_day);
-        cal_finalIncome = (EditText) findViewById(R.id.cal_finalIncome);
-
-        cal_result = (TextView) findViewById(R.id.cal_result);
-
-        reset = (ImageButton) findViewById(R.id.reset);
-
+    @Override
+    protected void initEvent() {
         setRightBtnListener("计算", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculate();
             }
         });
-
     }
-
 
     /**
      * 计算结果
@@ -84,9 +92,7 @@ public class CalculateActivity extends BaseActivity {
         setRightBtnListener("比较", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, CompareActivity.class);
-                intent.putExtra("cal_result", resultStr);
-                startActivity(intent);
+                AppManager.transfer(activity, CompareActivity.class, "cal_result", resultStr);
             }
         });
 
@@ -111,6 +117,4 @@ public class CalculateActivity extends BaseActivity {
             }
         });
     }
-
-
 }

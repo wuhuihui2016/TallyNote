@@ -1,10 +1,7 @@
 package com.whh.tallynote.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.view.LayoutInflater;
@@ -16,18 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.activity.List4DayActivity;
 import com.whh.tallynote.activity.List4MemoNoteActivity;
 import com.whh.tallynote.activity.List4MonthActivity;
 import com.whh.tallynote.activity.List4NotePadActivity;
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.base.BaseFragment;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.MemoNote;
 import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.model.NotePad;
+import com.whh.tallynote.utils.AppManager;
+import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.StringUtils;
@@ -36,11 +34,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TallyFragment extends Fragment {
+public class TallyFragment extends BaseFragment {
 
     private static final String TAG = "TallyFragment";
-    private Activity activity;
-    private View content;//内容布局
 
     private ImageButton seenCheck;
     private TextView today, last_balanceTv, current_payTv;
@@ -72,14 +68,14 @@ public class TallyFragment extends Fragment {
         //获取使用APP记账的时长
         TextView useTime = (TextView) content.findViewById(R.id.useTime);
         useTime.setVisibility(View.VISIBLE);
-        if (DayNoteDao.getDayNotes4History().size() > 0) {
-            String time = DayNoteDao.getDayNotes4History().get(0).getTime().split("\\s+")[0];
+        if (MyApp.dbHandle.getCount4Record(ContansUtils.DAY_HISTORY) > 0) {
+            String time = MyApp.dayNoteDBHandle.getDayNotes4History().get(0).getTime().split("\\s+")[0];
             String date = time.replaceAll("-", "");
             int daysBetween = -DateUtils.daysBetween(date) + 1;
             useTime.setText("第一笔账记于" + time + "，记账" + daysBetween + "天");
 
-        } else if (DayNoteDao.getDayNotes().size() > 0) {
-            String time = DayNoteDao.getDayNotes().get(0).getTime().split("\\s+")[0];
+        } else if (MyApp.dbHandle.getCount4Record(ContansUtils.DAY) > 0) {
+            String time = MyApp.dayNoteDBHandle.getDayNotes().get(0).getTime().split("\\s+")[0];
             String date = time.replaceAll("-", "");
             int daysBetween = -DateUtils.daysBetween(date) + 1;
             useTime.setText("第一笔账记于" + time + "，记账" + daysBetween + "天");
@@ -117,7 +113,7 @@ public class TallyFragment extends Fragment {
      * 显示最近一次日账单记录
      */
     private void showDayNote() {
-        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
+        List<DayNote> dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         LinearLayout cur_day_layout = (LinearLayout) content.findViewById(R.id.cur_day_layout);
         if (dayNotes.size() > 0) {
             //显示本次月记录总支出
@@ -133,7 +129,7 @@ public class TallyFragment extends Fragment {
             time.setText(DateUtils.diffTime(dayNote.getTime()));
             TextView usage = (TextView) content.findViewById(R.id.usage);
             time.setText(DateUtils.diffTime(dayNote.getTime()));
-            usage.setText(DayNote.getUserType(dayNote.getUseType()));
+            usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
             if (dayNote.getUseType() == DayNote.consume) {
                 spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
                 tag.setImageResource(R.drawable.consume);
@@ -151,10 +147,12 @@ public class TallyFragment extends Fragment {
                 remask.setText(dayNote.getRemark());
             }
 
-            content.findViewById(R.id.item_day_layout).setOnClickListener(new View.OnClickListener() {
+            LinearLayout item_day_layout = content.findViewById(R.id.item_day_layout);
+            item_day_layout.setClickable(true);
+            item_day_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, List4DayActivity.class));
+                    AppManager.transfer(activity, List4DayActivity.class);
                 }
             });
         } else {
@@ -168,7 +166,7 @@ public class TallyFragment extends Fragment {
      * 显示最近一次月结算记录
      */
     private void showMonthNote() {
-        List<MonthNote> monthNotes = MonthNoteDao.getMonthNotes();
+        List<MonthNote> monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         LinearLayout last_layout = (LinearLayout) content.findViewById(R.id.last_layout);
         if (monthNotes.size() > 0) {
             last_layout.setVisibility(View.VISIBLE);
@@ -216,12 +214,12 @@ public class TallyFragment extends Fragment {
 
                 case R.id.last_layout:
                 case R.id.toMonthNotes:
-                    startActivity(new Intent(activity, List4MonthActivity.class));
+                    AppManager.transfer(activity, List4MonthActivity.class);
                     break;
 
                 case R.id.cur_day_layout:
                 case R.id.toDayNotes:
-                    startActivity(new Intent(activity, List4DayActivity.class));
+                    AppManager.transfer(activity, List4DayActivity.class);
                     break;
             }
         }
@@ -264,7 +262,7 @@ public class TallyFragment extends Fragment {
                 memo_list_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.startActivity(new Intent(activity, List4MemoNoteActivity.class));
+                        AppManager.transfer(activity, List4MemoNoteActivity.class);
                     }
                 });
 
@@ -288,7 +286,7 @@ public class TallyFragment extends Fragment {
     private void showNotepad() {
         try {
             LinearLayout notepad_layout = (LinearLayout) content.findViewById(R.id.notepad_layout);
-            notePads = NotePadDao.getNotePads();
+            notePads = MyApp.notePadDBHandle.getNotePads();
             if (notePads.size() > 0) {
                 notepad_layout.setVisibility(View.VISIBLE);
                 Collections.reverse(notePads);
@@ -308,7 +306,7 @@ public class TallyFragment extends Fragment {
                     streamer_txt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(activity, List4NotePadActivity.class));
+                            AppManager.transfer(activity, List4NotePadActivity.class);
                         }
                     });
 

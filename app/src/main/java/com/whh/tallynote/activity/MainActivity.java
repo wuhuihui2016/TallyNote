@@ -15,44 +15,63 @@ import android.widget.TextView;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.FragmentViewPagerAdapter;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.fragment.IncomeFragment;
 import com.whh.tallynote.fragment.MineFragment;
 import com.whh.tallynote.fragment.TallyFragment;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.NotificationUtils;
 import com.whh.tallynote.utils.PermissionUtils;
-import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * 我的账本
  */
 public class MainActivity extends BaseActivity {
 
-    private ViewPager viewPager;
+    @BindView(R.id.main_viewPager)
+    public ViewPager viewPager;
+    @BindView(R.id.tally_title)
+    public TextView tally_title;
+    @BindView(R.id.income_title)
+    public TextView income_title;
+    @BindView(R.id.mine_title)
+    public TextView mine_title;
+
+    @BindView(R.id.tally)
+    public LinearLayout tally;
+    @BindView(R.id.income)
+    public LinearLayout income;
+    @BindView(R.id.mine)
+    public LinearLayout mine;
+
+    @BindView(R.id.app_bottom)
+    public LinearLayout app_bottom;
+
     private List<Fragment> fragments = new ArrayList<>();
     private FragmentViewPagerAdapter adapter;
     private int frag_index = 0; //当前加载fragment标志位
-    private LinearLayout tally, income, mine;
-    private TextView tally_title, income_title, mine_title;
     private boolean canShow = false; //tabBar动画显示标志(仅在界面重新激活时为true,动画效果才实现)
     private boolean initViewed = false; //权限获取成功后初始界面标志
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("我的账本", R.layout.activity_main);
+    }
 
-        tally = (LinearLayout) findViewById(R.id.tally);
-        income = (LinearLayout) findViewById(R.id.income);
-        mine = (LinearLayout) findViewById(R.id.mine);
-        tally_title = (TextView) findViewById(R.id.tally_title);
-        income_title = (TextView) findViewById(R.id.income_title);
-        mine_title = (TextView) findViewById(R.id.mine_title);
+    @Override
+    protected void initView() {
 
+    }
+
+    @Override
+    protected void initEvent() {
         NotificationUtils.notifyIncome(context); //理财到期提醒
     }
 
@@ -69,7 +88,6 @@ public class MainActivity extends BaseActivity {
                         fragments.add(new IncomeFragment());
                         fragments.add(new MineFragment());
 
-                        viewPager = (ViewPager) findViewById(R.id.main_viewPager);
                         adapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), viewPager, fragments);
                         adapter.setOnExtraPageChangeListener(new FragmentViewPagerAdapter.OnExtraPageChangeListener() {
                             @Override
@@ -125,7 +143,7 @@ public class MainActivity extends BaseActivity {
                 setRightImgBtnListener(R.drawable.ic_search, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(activity, SearchActivity.class));
+                        AppManager.transfer(activity, SearchActivity.class);
                     }
                 });
                 break;
@@ -178,8 +196,6 @@ public class MainActivity extends BaseActivity {
      */
     private void isShow(boolean isShow) {
         if (canShow) {
-            LinearLayout app_bottom = (LinearLayout) findViewById(R.id.app_bottom);
-
             Animation animation;
             LayoutAnimationController controller;
             if (isShow) animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_show);

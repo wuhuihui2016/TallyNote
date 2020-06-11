@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,12 +7,15 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.NotePad;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.ExcelUtils;
@@ -24,33 +26,36 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 新建记事本
  * Created by wuhuihui on 2017/8/02.
  */
 public class NewNotePadActivity extends BaseActivity {
 
-    private TextView note_tagTv, words_numTv;
-    private FlowLayout flowLayout;
-    private EditText wordsEt;
+    @BindView(R.id.note_tagTv)
+    public TextView note_tagTv;
+    @BindView(R.id.words_numTv)
+    public TextView words_numTv;
+    @BindView(R.id.flowLayout)
+    public FlowLayout flowLayout;
+    @BindView(R.id.wordsEt)
+    public EditText wordsEt;
+    @BindView(R.id.right_btn)
+    public Button right_btn;
 
     private int tag;
     private String tagStr;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("想写点什么...", R.layout.activity_notepad);
-
-        init();
     }
 
-    private void init() {
+    @Override
+    protected void initView() {
 
-        note_tagTv = (TextView) findViewById(R.id.note_tagTv);
-        words_numTv = (TextView) findViewById(R.id.words_numTv);
-        flowLayout = (FlowLayout) findViewById(R.id.flowLayout);
-        wordsEt = (EditText) findViewById(R.id.wordsEt);
 
         flowLayout.removeAllViews();//避免多次执行后出现重复多余View
 
@@ -93,8 +98,8 @@ public class NewNotePadActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 words_numTv.setText(s.length() + "/100字");
-                if (s.length() > 0) findViewById(R.id.right_btn).setEnabled(true);
-                else findViewById(R.id.right_btn).setEnabled(false);
+                if (s.length() > 0) right_btn.setEnabled(true);
+                else right_btn.setEnabled(false);
             }
         });
 
@@ -104,19 +109,23 @@ public class NewNotePadActivity extends BaseActivity {
                 String words = wordsEt.getText().toString();
                 if (!TextUtils.isEmpty(words)) {
                     NotePad notePad = new NotePad(tag, wordsEt.getText().toString(), DateUtils.formatDateTime());
-                    if (NotePadDao.newNotePad(notePad)) {
+                    MyApp.notePadDBHandle.saveNotePad(notePad);
                         ToastUtils.showSucessLong(activity, "发表成功！");
                         ExcelUtils.exportNotePad(null);
                         if (getIntent().hasExtra("list")) {
                             EventBus.getDefault().post(ContansUtils.ACTION_NOTE);
                         } else {
-                            startActivity(new Intent(activity, List4NotePadActivity.class));
+                            AppManager.transfer(activity, List4NotePadActivity.class);
                         }
                         finish();
-                    } else ToastUtils.showErrorLong(activity, "发表失败！");
                 } else ToastUtils.showToast(context, false, "请输入内容！");
             }
         });
+
+    }
+
+    @Override
+    protected void initEvent() {
 
     }
 

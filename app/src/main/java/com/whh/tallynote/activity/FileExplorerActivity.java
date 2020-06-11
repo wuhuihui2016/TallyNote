@@ -3,18 +3,20 @@ package com.whh.tallynote.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.FileExplorerAdapter;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
 import com.whh.tallynote.utils.DialogListener;
@@ -31,11 +33,28 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 文件浏览
  * Created by wuhuihui on 2017/7/13.
  */
 public class FileExplorerActivity extends BaseActivity {
+
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+    @BindView(R.id.layout)
+    public LinearLayout layout;
+    @BindView(R.id.choose_layout)
+    public LinearLayout choose_layout;
+    @BindView(R.id.ok)
+    public Button ok;
+    @BindView(R.id.no)
+    public Button no;
+    @BindView(R.id.del)
+    public Button del;
 
     private List<File> fileList = new ArrayList<>();
     private FileExplorerAdapter adapter;
@@ -43,16 +62,20 @@ public class FileExplorerActivity extends BaseActivity {
     private boolean isSellect = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("文件浏览", R.layout.activity_file_explorer);
+    }
 
+    @Override
+    protected void initView() {
+    }
+
+    @Override
+    protected void initEvent() {
         init();
     }
 
     private void init() {
-        final ListView listView = (ListView) findViewById(R.id.listView);
-
         File excelDir = FileUtils.getExcelDir();
         if (excelDir == null || !excelDir.exists()) return;
         final File files[] = excelDir.listFiles();
@@ -106,7 +129,7 @@ public class FileExplorerActivity extends BaseActivity {
 
             }
 
-            listView.setEmptyView(findViewById(R.id.emptyView));
+            listView.setEmptyView(emptyView);
 
             if (getIntent().hasExtra("import")) {
                 new DelayTask(200, new DelayTask.ICallBack() {
@@ -153,7 +176,7 @@ public class FileExplorerActivity extends BaseActivity {
         View layout = inflater.inflate(R.layout.layout_file_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(layout, Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.open).setOnClickListener(
                 new View.OnClickListener() {
@@ -205,17 +228,16 @@ public class FileExplorerActivity extends BaseActivity {
         adapter.setSelect(isSellect);
 
         if (isSellect) {
-            final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
             choose_layout.setVisibility(View.VISIBLE);
 
-            findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+           ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.selectAll(true);
                 }
             });
 
-            findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+            no.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.selList.clear();
@@ -224,7 +246,7 @@ public class FileExplorerActivity extends BaseActivity {
                 }
             });
 
-            findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
+            del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (adapter.selList.size() > 0) {
@@ -247,8 +269,6 @@ public class FileExplorerActivity extends BaseActivity {
 
                 }
             });
-
-        } else {
 
         }
     }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.NumAdapter;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
@@ -30,95 +31,61 @@ import com.whh.tallynote.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 验证密码
  * Created by wuhuihui on 2017/6/27.
  */
 public class SetOrCheckPwdActivity extends BaseActivity {
 
-    private ImageButton pwdVisible;
+    @BindView(R.id.pwdVisible)
+    public ImageButton pwdVisible;
+    @BindView(R.id.edit_tips)
+    public TextView edit_tips;
+    @BindView(R.id.numGridView)
+    public GridView numGridView; //输入密码的按键
+    @BindView(R.id.pwd1)
+    public TextView pwd1;
+    @BindView(R.id.pwd2)
+    public TextView pwd2;
+    @BindView(R.id.pwd3)
+    public TextView pwd3;
+    @BindView(R.id.pwd4)
+    public TextView pwd4;
+    @BindView(R.id.pwd5)
+    public TextView pwd5;
+    @BindView(R.id.pwd6)
+    public TextView pwd6;
+    @BindView(R.id.forgetPwd_btn)
+    public Button forgetPwd_btn;
 
     private List<TextView> textViews = new ArrayList<>();//密码输入显示的view
-    private GridView numGridView; //输入密码的按键
     private List<String> pwds = new ArrayList<>(); //输入的密码数字集合
 
     private boolean isSetting = true; //设置密码还是验证密码,默认设置
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         //沉浸式状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_pwd);
-
-        pwdVisible = (ImageButton) findViewById(R.id.pwdVisible);
-        initView();
-
-        //判断是否设置过，是否重置密码
-        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWDKEY, ""))
-                || getIntent().hasExtra(ContansUtils.RESETPWD)) {
-            //为设置密码操作
-            TextView edit_tips = (TextView) findViewById(R.id.edit_tips);
-
-            if (getIntent().hasExtra(ContansUtils.RESETPWD)) {
-                edit_tips.setHint("请输入新的6位密码");
-            } else {
-                edit_tips.setHint("请输入6位密码，为进入APP验证使用");
-                if (!ContansUtils.contains(ContansUtils.NICKNAME)) //如果本地没有昵称，则去登录
-                    startActivity(new Intent(activity, LoginUserActivity.class));
-            }
-
-        } else {
-            //为验证密码操作
-            isSetting = false;
-
-            //忘记密码
-            Button forgetPwd_btn = (Button) findViewById(R.id.forgetPwd_btn);
-            forgetPwd_btn.setVisibility(View.VISIBLE);
-            forgetPwd_btn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //增加下划线
-            forgetPwd_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(activity, ForgetPwdActivity.class));
-                    AppManager.getAppManager().finishActivity(); //清除所有Acitivity
-                }
-            });
-
-            //判断验方式：手势密码还是启动密码
-            if (ContansUtils.getCheckWayIsGesture()) { //关闭当前界面，验证手势密码
-                Intent intent = new Intent(activity, SetGestureActivity.class);
-                intent.putExtra("start", true);
-                intent.putExtra("activityNum", 0);
-                startActivity(intent);
-                finish();
-            }
-        }
-
-    }
-
-    /**
-     * 设置密保后跳转页面
-     */
-    private void skipMainActivity() {
-        finish();
-        startActivity(new Intent(activity, MainActivity.class));
     }
 
     /**
      * 初始化View
      */
-    private void initView() {
+    @Override
+    protected void initView() {
         //密码输入显示的TextView集合
-        textViews.add((TextView) findViewById(R.id.pwd1));
-        textViews.add((TextView) findViewById(R.id.pwd2));
-        textViews.add((TextView) findViewById(R.id.pwd3));
-        textViews.add((TextView) findViewById(R.id.pwd4));
-        textViews.add((TextView) findViewById(R.id.pwd5));
-        textViews.add((TextView) findViewById(R.id.pwd6));
+        textViews.add(pwd1);
+        textViews.add(pwd2);
+        textViews.add(pwd3);
+        textViews.add(pwd4);
+        textViews.add(pwd5);
+        textViews.add(pwd6);
 
-        //输入数字View
-        numGridView = (GridView) findViewById(R.id.numGridView);
         //输入后数字集合
         pwds = new ArrayList<>();
 
@@ -142,6 +109,52 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                 onClickCallback((position + 1) + "");
             }
         });
+    }
+
+    @Override
+    protected void initEvent() {
+        //判断是否设置过，是否重置密码
+        if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWDKEY, ""))
+                || getIntent().hasExtra(ContansUtils.RESETPWD)) {
+            //为设置密码操作
+            if (getIntent().hasExtra(ContansUtils.RESETPWD)) {
+                edit_tips.setHint("请输入新的6位密码");
+            } else {
+                edit_tips.setHint("请输入6位密码，为进入APP验证使用");
+                if (!ContansUtils.contains(ContansUtils.NICKNAME)) //如果本地没有昵称，则去登录
+                    AppManager.transfer(activity, LoginUserActivity.class);
+            }
+
+        } else {
+            //为验证密码操作
+            isSetting = false;
+
+            //忘记密码
+            forgetPwd_btn.setVisibility(View.VISIBLE);
+            forgetPwd_btn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //增加下划线
+            forgetPwd_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppManager.transfer(activity, ForgetPwdActivity.class);
+                    AppManager.getAppManager().finishActivity(); //清除所有Acitivity
+                }
+            });
+
+            //判断验方式：手势密码还是启动密码
+            if (ContansUtils.getCheckWayIsGesture()) { //关闭当前界面，验证手势密码
+                AppManager.transfer(activity, SetGestureActivity.class,"start", true,"activityNum", 0);
+                finish();
+            }
+        }
+    }
+
+
+    /**
+     * 设置密保后跳转页面
+     */
+    private void skipMainActivity() {
+        finish();
+        AppManager.transfer(activity, MainActivity.class);
     }
 
     boolean isPwdVisible = false;
@@ -239,12 +252,12 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                             if (password.equals(pwdKey)) {  //验证通过
                                 if (getIntent().hasExtra("secureSet")) { //进入安全设置
                                     finish();
-                                    startActivity(new Intent(activity, SecureSetActivity.class));
+                                    AppManager.transfer(activity, SecureSetActivity.class);
                                 } else { //进入APP
                                     LogUtils.i("isSetting", "验证通过,进入APP");
                                     if (!getIntent().hasExtra(ContansUtils.ISBACK)) {
                                         finish();
-                                        startActivity(new Intent(activity, MainActivity.class));
+                                        AppManager.transfer(activity, MainActivity.class);
                                     } else {
                                         finish();
                                     }

@@ -1,20 +1,22 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.DayNoteAdapter;
-import com.whh.tallynote.database.DayNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.DayNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -29,40 +31,57 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 日账单明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class List4DayActivity extends BaseActivity {
 
-    private ListView listView;
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.all)
+    public TextView all;
+    @BindView(R.id.consume)
+    public TextView consume;
+    @BindView(R.id.account_out)
+    public TextView account_out;
+    @BindView(R.id.account_in)
+    public TextView account_in;
+    @BindView(R.id.homeuse)
+    public TextView homeuse;
+
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
 
     private List<DayNote> dayNotes;
     private List<DayNote> list = new ArrayList<>();
     private DayNoteAdapter dayNoteAdapter;
 
-    private TextView info, all, consume, account_out, account_in, homeuse;
+    @Override
+    protected void initBundleData(Bundle bundle) {
+        setContentView("编辑日账单", R.layout.activity_day_list);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView("日账单明细", R.layout.activity_day_list);
-
-        info = (TextView) findViewById(R.id.info);
-        all = (TextView) findViewById(R.id.all);
-        consume = (TextView) findViewById(R.id.consume);
-        account_out = (TextView) findViewById(R.id.account_out);
-        account_in = (TextView) findViewById(R.id.account_in);
-        homeuse = (TextView) findViewById(R.id.homeuse);
-
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
-
+    protected void initView() {
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initPopupWindow();
+            }
+        });
+    }
+
+    @Override
+    protected void initEvent() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AppManager.transfer(activity, NewDayActivity.class, "editDayNote", dayNotes.get(position));
             }
         });
     }
@@ -100,9 +119,7 @@ public class List4DayActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewDayActivity.class);
-                            intent.putExtra("list", true);
-                            startActivity(intent);
+                            AppManager.transfer(activity, NewDayActivity.class,"list", true);
                         }
                     }
             );
@@ -140,7 +157,7 @@ public class List4DayActivity extends BaseActivity {
                 getAll4UseType(DayNote.consume);
                 break;
             case R.id.high_consume:
-                startActivity(new Intent(activity, List4DayOfHighConsumeActivity.class));
+                AppManager.transfer(activity, List4DayOfHighConsumeActivity.class);
                 break;
             case R.id.account_out:
                 getAll4UseType(DayNote.account_out);
@@ -168,7 +185,7 @@ public class List4DayActivity extends BaseActivity {
         account_in.setBackgroundResource(R.drawable.shape_type);
         homeuse.setTextColor(Color.GRAY);
         homeuse.setBackgroundResource(R.drawable.shape_type);
-        dayNotes = DayNoteDao.getDayNotes();
+        dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         LogUtils.i("dayNotes", dayNotes.toString());
         Collections.reverse(dayNotes);
         info.setText("账单记录：" + dayNotes.size()

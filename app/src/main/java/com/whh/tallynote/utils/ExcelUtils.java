@@ -2,11 +2,7 @@ package com.whh.tallynote.utils;
 
 import android.text.TextUtils;
 
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.IncomeNoteDao;
-import com.whh.tallynote.database.MemoNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.model.MemoNote;
@@ -29,12 +25,11 @@ public class ExcelUtils {
 
     //数据列表
     private static List<DayNote> dayNotes;
-    private static List<DayNote> dayNotes_history;
+    private static List<DayNote> dayNotes_historys;
     private static List<MonthNote> monthNotes;
     private static List<IncomeNote> incomeNotes;
     private static List<MemoNote> memoNotes;
     private static List<NotePad> notePads;
-
 
     /**
      * 导出日账单表
@@ -314,19 +309,19 @@ public class ExcelUtils {
     private static void writeSheet(int type, WritableSheet sheet) {
         try {
             String tag = "writeSheet";
-            dayNotes = DayNoteDao.getDayNotes();
-            dayNotes_history = DayNoteDao.getDayNotes4History();
-            monthNotes = MonthNoteDao.getMonthNotes();
-            incomeNotes = IncomeNoteDao.getIncomes();
-            memoNotes = MemoNoteDao.getMemoNotes();
-            notePads = NotePadDao.getNotePads();
+            dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
+            dayNotes_historys = MyApp.dayNoteDBHandle.getDayNotes4History();
+            monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
+            incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
+            memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
+            notePads = MyApp.notePadDBHandle.getNotePads();
 
             switch (type) {
                 case ContansUtils.DAY:
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserType(dayNotes.get(i).getUseType())));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes.get(i).getTime()));
@@ -373,14 +368,14 @@ public class ExcelUtils {
                     break;
 
                 case ContansUtils.DAY_HISTORY:
-                    LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
-                    if (dayNotes_history.size() > 0) {
-                        for (int i = 0; i < dayNotes_history.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserType(dayNotes_history.get(i).getUseType())));
-                            sheet.addCell(new Label(1, i + 1, dayNotes_history.get(i).getMoney()));
-                            sheet.addCell(new Label(2, i + 1, dayNotes_history.get(i).getRemark()));
-                            sheet.addCell(new Label(3, i + 1, dayNotes_history.get(i).getTime()));
-                            sheet.addCell(new Label(4, i + 1, dayNotes_history.get(i).getDuration()));
+                    LogUtils.i(tag, dayNotes_historys.size() + "---" + dayNotes_historys.toString());
+                    if (dayNotes_historys.size() > 0) {
+                        for (int i = 0; i < dayNotes_historys.size(); i++) {
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes_historys.get(i).getUseType())));
+                            sheet.addCell(new Label(1, i + 1, dayNotes_historys.get(i).getMoney()));
+                            sheet.addCell(new Label(2, i + 1, dayNotes_historys.get(i).getRemark()));
+                            sheet.addCell(new Label(3, i + 1, dayNotes_historys.get(i).getTime()));
+                            sheet.addCell(new Label(4, i + 1, dayNotes_historys.get(i).getDuration()));
                         }
                     }
                     break;
@@ -430,8 +425,30 @@ public class ExcelUtils {
             @Override
             public void run() {
 
-                FileUtils.backupTallyNoteFile(); //导入前先备份已有账本数据
+                if (filePath.contains(ContansUtils.tallynote_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.ALL); //清空所有表数据
 
+                else if (filePath.contains(ContansUtils.day_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.DAY); //清空日账表数据
+
+                else if (filePath.contains(ContansUtils.day_history_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.DAY_HISTORY); //清空历史日账表数据
+
+                else if (filePath.contains(ContansUtils.month_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.MONTH); //清空月账表数据
+
+                else if (filePath.contains(ContansUtils.income_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.INCOME); //清空理财表数据
+
+                else if (filePath.contains(ContansUtils.memo_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.MEMO); //清空备忘录表数据
+
+                else if (filePath.contains(ContansUtils.notepad_file))
+                    MyApp.dbHandle.clearTableData(ContansUtils.NOTEPAD); //清空记事本表数据
+
+                else callBackImport.callback("文件内容不正确！");
+
+                FileUtils.backupTallyNoteFile(); //导入前先备份已有账本数据
                 String tag = "importExcel";
                 int day_count = 0, day_history_count = 0, month_count = 0, income_count = 0, memo_count = 0, notepad_count = 0;
                 try {
@@ -450,24 +467,20 @@ public class ExcelUtils {
                                 dayNotes = new ArrayList<>();
                                 dayNotes.clear();
                                 for (int j = 1; j < rows; j++) {//行
-                                    int type = 1;
-                                    if (sheet.getCell(0, j).getContents().contains("支出")) type = 1;
-                                    if (sheet.getCell(0, j).getContents().contains("转账")) type = 2;
-                                    if (sheet.getCell(0, j).getContents().contains("转入")) type = 3;
-                                    if (sheet.getCell(0, j).getContents().contains("家用")) type = 4;
                                     if (!TextUtils.isEmpty(sheet.getCell(1, j).getContents())) {
                                         dayNotes.add(new DayNote(
-                                                type,
+                                                DayNote.getUserTypeStr(sheet.getCell(0, j).getContents()),
                                                 sheet.getCell(1, j).getContents(),
                                                 sheet.getCell(2, j).getContents(),
                                                 sheet.getCell(3, j).getContents()));
                                     }
                                 }
                                 LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
-                                if (dayNotes.size() > 0) if (DayNoteDao.newDNotes(dayNotes)) {
-                                    day_count = dayNotes.size();
-                                    exportDayNote(null);
-                                }
+                                if (dayNotes.size() > 0)
+                                    if (MyApp.dayNoteDBHandle.saveDayNoteList(dayNotes)) {
+                                        day_count = dayNotes.size();
+                                        exportDayNote(null);
+                                    }
 
                             } else if (sheetName.equals(ContansUtils.month_sheetName)) { //月账单解析
                                 monthNotes = new ArrayList<>();
@@ -487,10 +500,11 @@ public class ExcelUtils {
                                     }
                                 }
                                 LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
-                                if (monthNotes.size() > 0) if (MonthNoteDao.newMNotes(monthNotes)) {
-                                    month_count = monthNotes.size();
-                                    exportMonthNote(null);
-                                }
+                                if (monthNotes.size() > 0)
+                                    if (MyApp.monthNoteDBHandle.saveMonthNoteList(monthNotes)) {
+                                        month_count = monthNotes.size();
+                                        exportMonthNote(null);
+                                    }
 
                             } else if (sheetName.equals(ContansUtils.income_sheetName)) { //理财记录解析
                                 incomeNotes = new ArrayList<>();
@@ -512,18 +526,19 @@ public class ExcelUtils {
                                     }
                                 }
                                 LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
-                                if (incomeNotes.size() > 0) if (IncomeNoteDao.newINotes(incomeNotes)) {
-                                    income_count = incomeNotes.size();
-                                    exportIncomeNote(null);
-                                }
+                                if (incomeNotes.size() > 0)
+                                    if (MyApp.incomeNoteDBHandle.saveIncomeNoteList(incomeNotes)) {
+                                        income_count = incomeNotes.size();
+                                        exportIncomeNote(null);
+                                    }
 
                             } else if (sheetName.equals(ContansUtils.day_history_sheetName)) { //历史日账单解析
-                                dayNotes_history = new ArrayList<>();
-                                dayNotes_history.clear();
+                                dayNotes_historys = new ArrayList<>();
+                                dayNotes_historys.clear();
                                 for (int j = 1; j < rows; j++) {//行
                                     if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
-                                        dayNotes_history.add(new DayNote(
-                                                DayNote.getUserType(sheet.getCell(0, j).getContents()),
+                                        dayNotes_historys.add(new DayNote(
+                                                DayNote.getUserTypeStr(sheet.getCell(0, j).getContents()),
                                                 sheet.getCell(1, j).getContents(),
                                                 sheet.getCell(2, j).getContents(),
                                                 sheet.getCell(3, j).getContents(),
@@ -531,10 +546,10 @@ public class ExcelUtils {
                                         );
                                     }
                                 }
-                                LogUtils.i(tag, dayNotes_history.size() + "---" + dayNotes_history.toString());
-                                if (dayNotes_history.size() > 0)
-                                    if (DayNoteDao.newDNotes4History(dayNotes_history)) {
-                                        day_history_count = dayNotes_history.size();
+                                LogUtils.i(tag, dayNotes_historys.size() + "---" + dayNotes_historys.toString());
+                                if (dayNotes_historys.size() > 0)
+                                    if (MyApp.dayNoteDBHandle.saveDayNoteList4History(dayNotes_historys)) {
+                                        day_history_count = dayNotes_historys.size();
                                         exportDayNote4History(null);
                                     }
                             } else if (sheetName.equals(ContansUtils.memo_sheetName)) { //备忘录解析
@@ -549,7 +564,7 @@ public class ExcelUtils {
                                 }
                                 LogUtils.i(tag, memoNotes.size() + "---" + memoNotes.toString());
                                 if (memoNotes.size() > 0)
-                                    if (MemoNoteDao.newMemoNotes(memoNotes)) {
+                                    if (MyApp.memoNoteDBHandle.saveMemoNoteList(memoNotes)) {
                                         memo_count = memoNotes.size();
                                         exportMemoNote(null);
                                     }
@@ -566,7 +581,7 @@ public class ExcelUtils {
                                 }
                                 LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
                                 if (notePads.size() > 0)
-                                    if (NotePadDao.newNotePads(notePads)) {
+                                    if (MyApp.notePadDBHandle.saveNotePadList(notePads)) {
                                         notepad_count = notePads.size();
                                         exportNotePad(null);
                                     }
@@ -589,7 +604,7 @@ public class ExcelUtils {
                     book.close();
                 } catch (Exception e) {
                     LogUtils.e(TAG + "-importExcel", e.toString());
-                    callBackImport.callback("导入失败！");
+                    callBackImport.callback("导入失败！" + e.toString());
                 }
             }
         }).start();

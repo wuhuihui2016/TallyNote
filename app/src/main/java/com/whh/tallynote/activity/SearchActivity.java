@@ -1,18 +1,18 @@
 package com.whh.tallynote.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.SearchNoteAdapter;
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.MemoNoteDao;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.MemoNote;
 import com.whh.tallynote.model.NotePad;
@@ -26,56 +26,50 @@ import com.whh.tallynote.view.CustomSearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 搜索
  * Created by wuhuihui on 2017/8/11.
  */
-public class SearchActivity extends Activity {
+public class SearchActivity extends BaseActivity {
 
     private static final String TAG = "SearchActivity";
 
-    private CustomSearchView searchView;
-    private Button search_btn;
-    private ListView listView;
+    @BindView(R.id.return_btn)
+    public ImageButton return_btn;
+    @BindView(R.id.searchView)
+    public CustomSearchView searchView;
+    @BindView(R.id.search_btn)
+    public Button search_btn;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
 
     private List<SearchNote> searchNotes = new ArrayList<>();
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView(R.layout.activity_search);
-
-        initView();
     }
 
-    /**
-     * @param
-     * @return void
-     * @Title: initView 初始化界面
-     * @Description: TODO
-     * @author wuhuihui
-     */
-    private void initView() {
-
-        findViewById(R.id.return_btn).setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void initView() {
+        return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-        listView = (ListView) findViewById(R.id.listView);
         listView.setVisibility(View.GONE);
-
-        search_btn = (Button) findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        searchView = (CustomSearchView) findViewById(R.id.searchView);
         searchView.setHint("搜索");
         searchView.edit.addTextChangedListener(new TextWatcher() {
 
@@ -121,6 +115,11 @@ public class SearchActivity extends Activity {
 
     }
 
+    @Override
+    protected void initEvent() {
+
+    }
+
     /**
      * 显示搜索结果
      */
@@ -136,7 +135,7 @@ public class SearchActivity extends Activity {
         searchNotes.clear(); //清空数据
 
         //日账检索
-        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
+        List<DayNote> dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         if (dayNotes.size() > 0) {
             for (int i = 0; i < dayNotes.size(); i++) {
                 if (dayNotes.get(i).getRemark().contains(key)) {
@@ -146,7 +145,7 @@ public class SearchActivity extends Activity {
         }
 
         //历史日账检索
-        List<DayNote> dayNotess4History = DayNoteDao.getDayNotes4History();
+        List<DayNote> dayNotess4History = MyApp.dayNoteDBHandle.getDayNotes4History();
         if (dayNotess4History.size() > 0) {
             for (int i = 0; i < dayNotess4History.size(); i++) {
                 if (dayNotess4History.get(i).getRemark().contains(key)) {
@@ -156,7 +155,7 @@ public class SearchActivity extends Activity {
         }
 
         //备忘录检索
-        List<MemoNote> memoNotes = MemoNoteDao.getMemoNotes();
+        List<MemoNote> memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
         if (memoNotes.size() > 0) {
             for (int i = 0; i < memoNotes.size(); i++) {
                 if (memoNotes.get(i).getContent().contains(key)) {
@@ -166,7 +165,7 @@ public class SearchActivity extends Activity {
         }
 
         //记事本检索
-        List<NotePad> notePads = NotePadDao.getNotePads();
+        List<NotePad> notePads = MyApp.notePadDBHandle.getNotePads();
         if (notePads.size() > 0) {
             for (int i = 0; i < notePads.size(); i++) {
                 if (notePads.get(i).getWords().contains(key)) {
@@ -214,7 +213,7 @@ public class SearchActivity extends Activity {
 //                }
 //            });
         } else {
-            listView.setEmptyView(findViewById(R.id.emptyView));
+            listView.setEmptyView(emptyView);
         }
 
     }

@@ -1,12 +1,12 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.NotePadDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.NotePad;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
@@ -16,29 +16,30 @@ import com.whh.tallynote.utils.ExcelUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.BindView;
+
 /**
  * 记事本详情
  * Created by wuhuihui on 2017/8/02.
  */
 public class NotePadDetailActivity extends BaseActivity {
 
-    private TextView tag, time, words;
+    @BindView(R.id.tag)
+    public TextView tag;
+    @BindView(R.id.time)
+    public TextView time;
+    @BindView(R.id.words)
+    public TextView words;
+
     private NotePad notePad;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("记事本", R.layout.activity_notepad_detail);
-
-        init();
     }
 
-    private void init() {
-
-        tag = (TextView) findViewById(R.id.tag);
-        time = (TextView) findViewById(R.id.time);
-        words = (TextView) findViewById(R.id.words);
-
+    @Override
+    protected void initView() {
         notePad = (NotePad) getIntent().getSerializableExtra("notepad");
 
         if (notePad != null) {
@@ -54,7 +55,7 @@ public class NotePadDetailActivity extends BaseActivity {
                             "删除", new DialogListener() {
                                 @Override
                                 public void onClick() {
-                                    NotePadDao.delNotePad(notePad);
+                                    MyApp.notePadDBHandle.delNotePad(notePad);
                                     ExcelUtils.exportNotePad(null);
                                     EventBus.getDefault().post(ContansUtils.ACTION_NOTE);
                                     finish();
@@ -69,6 +70,11 @@ public class NotePadDetailActivity extends BaseActivity {
             });
 
         } else finish();
+
+    }
+
+    @Override
+    protected void initEvent() {
 
     }
 

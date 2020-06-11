@@ -1,15 +1,16 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.IncomeNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.IncomeNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DialogListener;
@@ -24,36 +25,38 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 
+import butterknife.BindView;
+
 /**
  * 记理财
  */
 public class NewIncomeActivity extends BaseActivity {
 
-    private EditText moneyEt, incomeRatioEt, daysEt, finalIncomeEt, remarkEt;
-    private TextView durationEt, dayIncomeEt;
+    @BindView(R.id.moneyEt)
+    public EditText moneyEt;
+    @BindView(R.id.incomeRatioEt)
+    public EditText incomeRatioEt;
+    @BindView(R.id.daysEt)
+    public EditText daysEt;
+    @BindView(R.id.finalIncomeEt)
+    public EditText finalIncomeEt;
+    @BindView(R.id.remarkEt)
+    public EditText remarkEt;
+    @BindView(R.id.durationEt)
+    public TextView durationEt;
+    @BindView(R.id.incomeNum)
+    public TextView incomeNum;
+    @BindView(R.id.dayIncomeEt)
+    public TextView dayIncomeEt;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("记理财", R.layout.activity_income);
-
-        initView();
     }
 
-    private void initView() {
-
-        //新建理财显示新的编码
-        TextView incomeNum = (TextView) findViewById(R.id.incomeNum);
+    @Override
+    protected void initView() {
         incomeNum.setText(IncomeNote.getNewIncomeID());
-
-        moneyEt = (EditText) findViewById(R.id.moneyEt);
-        incomeRatioEt = (EditText) findViewById(R.id.incomeRatioEt);
-        daysEt = (EditText) findViewById(R.id.daysEt);
-        finalIncomeEt = (EditText) findViewById(R.id.finalIncomeEt);
-        dayIncomeEt = (TextView) findViewById(R.id.dayIncomeEt);
-        durationEt = (TextView) findViewById(R.id.durtionEt);
-        remarkEt = (EditText) findViewById(R.id.remarkEt);
-
         setRightBtnListener("提交", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +75,7 @@ public class NewIncomeActivity extends BaseActivity {
                             null, null, 0, remark, DateUtils.formatDateTime());
                     LogUtils.i("commit", incomeNote.toString());
                     DialogUtils.showMsgDialog(activity, "提交理财\n"
-                                    +"投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
+                                    + "投入金额：" + StringUtils.showPrice(incomeNote.getMoney()) +
                                     "\n预期年化：" + incomeNote.getIncomeRatio() +
                                     " %\n投资期限：" + incomeNote.getDays() +
                                     " 天\n投资时段：" + incomeNote.getDurtion() +
@@ -82,16 +85,15 @@ public class NewIncomeActivity extends BaseActivity {
                             "提交", new DialogListener() {
                                 @Override
                                 public void onClick() {
-                                    if (IncomeNoteDao.newINote(incomeNote)) {
+                                    MyApp.incomeNoteDBHandle.saveIncomeNote(incomeNote);
                                         ToastUtils.showSucessLong(activity, "理财提交成功！");
                                         ExcelUtils.exportIncomeNote(null);
                                         if (getIntent().hasExtra("list")) {
                                             EventBus.getDefault().post(ContansUtils.ACTION_INCOME);
                                         } else {
-                                            startActivity(new Intent(activity, List4IncomeActivity.class));
+                                            AppManager.transfer(activity, List4IncomeActivity.class);
                                         }
                                         finish();
-                                    } else ToastUtils.showErrorLong(activity, "理财提交失败！");
                                 }
                             }, "取消", new DialogListener() {
                                 @Override
@@ -107,12 +109,18 @@ public class NewIncomeActivity extends BaseActivity {
     }
 
     @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
     public void onClick(View v) {
         super.onClick(v);
         final String daysStr = daysEt.getText().toString();
 
         if (v.getId() == R.id.durtionEt) {
-            if (!TextUtils.isEmpty(daysStr))  ViewUtils.showDatePickerDialog(activity, durationEt, Integer.parseInt(daysStr));
+            if (!TextUtils.isEmpty(daysStr))
+                ViewUtils.showDatePickerDialog(activity, durationEt, Integer.parseInt(daysStr));
             else {
                 ToastUtils.showToast(context, false, "请先输入投资期限！");
                 daysEt.requestFocus();

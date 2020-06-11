@@ -10,36 +10,41 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.base.BaseActivity;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
+
+import butterknife.BindView;
 
 /**
  * 记日账
  */
 public class SecureSetActivity extends BaseActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_secure_set);
+    @BindView(R.id.resetPass)
+    public TextView resetPass;
+    @BindView(R.id.lock_switch)
+    public Switch lock_switch;
+    @BindView(R.id.close)
+    public ImageButton close;
 
-        initView();
+    @Override
+    protected void initBundleData(Bundle bundle) {
+        setContentView(R.layout.activity_secure_set);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         //重置密码
-        TextView resetPass = (TextView) findViewById(R.id.resetPass);
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                Intent intent = new Intent(activity, SetOrCheckPwdActivity.class);
-                intent.putExtra(ContansUtils.RESETPWD, true);
-                activity.startActivity(intent);
+                AppManager.transfer(activity, SetOrCheckPwdActivity.class, ContansUtils.RESETPWD, true);
             }
         });
 
         //手势密码的设置
-        Switch lock_switch = (Switch) findViewById(R.id.lock_switch);
         if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
             lock_switch.setChecked(false);
         } else {
@@ -50,9 +55,7 @@ public class SecureSetActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 finish();
                 if (isChecked) {
-                    Intent intent = new Intent(activity, SetGestureActivity.class);
-                    intent.putExtra("activityNum", 1);
-                    startActivity(intent);
+                    AppManager.transfer(activity, SetGestureActivity.class, "activityNum", 1);
                 } else {
                     ContansUtils.remove(ContansUtils.GESTURE);
                 }
@@ -60,13 +63,17 @@ public class SecureSetActivity extends BaseActivity {
         });
 
         //关闭dialog
-        ImageButton close = (ImageButton) findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void initEvent() {
+
     }
 
 }

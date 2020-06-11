@@ -30,7 +30,7 @@
         android:hint="输入你的个性昵称"
         android:layout_marginTop="10dp"
         android:lines="1"
-        android:maxLength="20"
+        android:maxLength="10"
         android:background="@drawable/shape_pwd_stroke"
         android:padding="10dp"/>
 

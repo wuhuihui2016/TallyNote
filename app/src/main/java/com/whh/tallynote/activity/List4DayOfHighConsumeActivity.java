@@ -8,9 +8,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.DayNoteAdapter;
-import com.whh.tallynote.database.DayNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.utils.StringUtils;
@@ -19,20 +20,39 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 日账单明细(高额消费)
  * Created by wuhuihui on 2017/8/11.
  */
 public class List4DayOfHighConsumeActivity extends BaseActivity {
 
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+    @BindView(R.id.spinner)
+    public Spinner spinner;
+
     private boolean isDuration;
     private String duration;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("高额消费日账单明细", R.layout.activity_day_list_high);
+    }
+
+    @Override
+    protected void initView() {
         getAll4HighConsume();
+    }
+
+    @Override
+    protected void initEvent() {
+
     }
 
     /**
@@ -40,9 +60,7 @@ public class List4DayOfHighConsumeActivity extends BaseActivity {
      */
     private void getAll4HighConsume() {
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
-        TextView info = (TextView) findViewById(R.id.info);
+        listView.setEmptyView(emptyView);
 
         if (getIntent().hasExtra("duration")) isDuration = true;
 
@@ -51,7 +69,6 @@ public class List4DayOfHighConsumeActivity extends BaseActivity {
         if (isDuration) {
             //数据
             final List<String> durations = MonthNote.getDurations();
-            Spinner spinner = (Spinner) findViewById(R.id.spinner);
             spinner.setVisibility(View.VISIBLE);
             ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, durations);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -74,10 +91,10 @@ public class List4DayOfHighConsumeActivity extends BaseActivity {
             );
 
             duration = getIntent().getStringExtra("duration");
-            dayNotes = DayNoteDao.getDayNotes4History(duration);
+            dayNotes = MyApp.dayNoteDBHandle.getDayNotes4History(duration);
 
         } else {
-            dayNotes = DayNoteDao.getDayNotes();
+            dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         }
 
         List<DayNote> list = new ArrayList<>();

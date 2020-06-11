@@ -1,6 +1,6 @@
 package com.whh.tallynote.model;
 
-import com.whh.tallynote.database.DayNoteDao;
+import com.whh.tallynote.MyApp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ public class DayNote implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int consume = 1, account_out = 2, account_in = 3, homeuse = 4;
+    public static final int consume = 0, account_out = 1, account_in = 2, homeuse = 3;
 
-    int useType; //消费类型：1.支出,2.转账,3.入账,4.家用
+    int useType; //消费类型：0.支出,1.转账,2.入账,3.家用
     String money; //消费金额
     String remark; //消费说明
     String time; //消费时间
@@ -109,12 +109,12 @@ public class DayNote implements Serializable {
      * @param useTypeStr
      * @return
      */
-    public static int getUserType(String useTypeStr) {
-        if (useTypeStr.equals("支出：")) return 1;
-        if (useTypeStr.equals("转账：")) return 2;
-        if (useTypeStr.equals("入账：")) return 3;
-        if (useTypeStr.equals("家用：")) return 4;
-        return 1;
+    public static int getUserTypeStr(String useTypeStr) {
+        if (useTypeStr.contains("支出")) return consume;
+        if (useTypeStr.contains("转账")) return account_out;
+        if (useTypeStr.contains("入账")) return account_in;
+        if (useTypeStr.contains("家用")) return homeuse;
+        return consume;
     }
 
     /**
@@ -123,8 +123,8 @@ public class DayNote implements Serializable {
      * @param useType
      * @return
      */
-    public static String getUserType(int useType) {
-        return getUserTypes().get(useType - 1);
+    public static String getUserTypeStr(int useType) {
+        return getUserTypes().get(useType);
     }
 
     /**
@@ -133,7 +133,7 @@ public class DayNote implements Serializable {
      * @return
      */
     public static Double getAllSum() {
-        List<DayNote> dayNotes = DayNoteDao.getDayNotes();
+        List<DayNote> dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.account_in)
@@ -149,7 +149,7 @@ public class DayNote implements Serializable {
      * @return
      */
     public static Double getAllSum(String duration) {
-        List<DayNote> dayNotes = DayNoteDao.getDayNotes4History(duration);
+        List<DayNote> dayNotes = MyApp.dayNoteDBHandle.getDayNotes4History(duration);
         Double sum = 0.00;
         for (int i = 0; i < dayNotes.size(); i++) {
             if (dayNotes.get(i).getUseType() == DayNote.account_in)

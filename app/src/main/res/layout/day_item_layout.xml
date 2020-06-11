@@ -3,7 +3,6 @@
     android:id="@+id/item_day_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:onClick="onClick"
     android:orientation="horizontal"
     android:background="@color/main_bkg">
 
@@ -85,18 +84,6 @@
             android:textSize="@dimen/bigtextSize" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/day_del"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_weight="0.1"
-        android:onClick="onClick"
-        android:scaleType="centerInside"
-        android:src="@drawable/note_delete"
-        android:visibility="gone" />
 
 </LinearLayout>
 

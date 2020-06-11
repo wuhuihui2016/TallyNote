@@ -32,6 +32,7 @@
             android:background="@null"
             android:gravity="center_horizontal"
             android:hint="当前数值"
+            android:maxLength="4"
             android:layout_marginTop="5dp"
             android:inputType="numberDecimal"
             android:singleLine="true"

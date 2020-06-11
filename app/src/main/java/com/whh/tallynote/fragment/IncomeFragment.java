@@ -1,10 +1,7 @@
 package com.whh.tallynote.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -17,7 +14,9 @@ import android.widget.TextView;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.activity.List4IncomeActivity;
+import com.whh.tallynote.base.BaseFragment;
 import com.whh.tallynote.model.IncomeNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.StringUtils;
@@ -27,11 +26,9 @@ import java.util.List;
 /**
  * 理财
  */
-public class IncomeFragment extends Fragment {
+public class IncomeFragment extends BaseFragment {
 
     private static final String TAG = "IncomeFragment";
-    private Activity activity;
-    private View content;//内容布局
 
     private boolean isSeen = false;
     private ImageButton seenCheck;
@@ -105,10 +102,7 @@ public class IncomeFragment extends Fragment {
                 income_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(activity, List4IncomeActivity.class);
-                        intent.putExtra("income", true);
-                        startActivity(intent);
-
+                        AppManager.transfer(activity, List4IncomeActivity.class,"income", true);
                     }
                 });
             }

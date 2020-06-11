@@ -1,7 +1,6 @@
 package com.whh.tallynote.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.DayNoteDao;
 import com.whh.tallynote.model.DayNote;
-import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
-import com.whh.tallynote.utils.DialogUtils;
-import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.StringUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -30,12 +22,12 @@ public class DayNoteAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<DayNote> dayNotes;
-    private boolean isLast;//列表显示按所有排序，true为最后一个才可做删除操作
+    private boolean isEditable;//是否为可编辑列表，如果是历史账单，不可编辑
 
-    public DayNoteAdapter(Activity activity, List<DayNote> dayNotes, boolean isLast) {
+    public DayNoteAdapter(Activity activity, List<DayNote> dayNotes, boolean isEditable) {
         this.activity = activity;
         this.dayNotes = dayNotes;
-        this.isLast = isLast;
+        this.isEditable = isEditable;
     }
 
 
@@ -63,7 +55,6 @@ public class DayNoteAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.spot = convertView.findViewById(R.id.spot);
             viewHolder.tag = (ImageView) convertView.findViewById(R.id.tag);
-            viewHolder.day_del = (ImageView) convertView.findViewById(R.id.day_del);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.usage = (TextView) convertView.findViewById(R.id.usage);
             viewHolder.money = (TextView) convertView.findViewById(R.id.money);
@@ -76,57 +67,28 @@ public class DayNoteAdapter extends BaseAdapter {
         //获取当前对象
         final DayNote dayNote = dayNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
-        viewHolder.usage.setText(DayNote.getUserType(dayNote.getUseType()));
-        if (dayNote.getUseType() == DayNote.consume) {
+        viewHolder.usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
+        if (dayNote.getUseType() == DayNote.consume) { //0.支出
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
             viewHolder.tag.setImageResource(R.drawable.consume);
-        } else if (dayNote.getUseType() == DayNote.account_out) {
+        } else if (dayNote.getUseType() == DayNote.account_out) { //1.转账
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_out_spot);
             viewHolder.tag.setImageResource(R.drawable.account_out);
-        } else if (dayNote.getUseType() == DayNote.account_in) {
+        } else if (dayNote.getUseType() == DayNote.account_in) { //2.入账
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_in_spot);
             viewHolder.tag.setImageResource(R.drawable.account_in);
-        } else {
+        } else { //3.家用
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_home_spot);
             viewHolder.tag.setImageResource(R.drawable.account_home);
         }
         viewHolder.money.setText(StringUtils.showPrice(dayNote.getMoney()));
         viewHolder.remask.setText(dayNote.getRemark());
-
-        if (position == 0 && isLast) {
-            viewHolder.day_del.setVisibility(View.VISIBLE);
-            viewHolder.day_del.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
-                            "删除", new DialogListener() {
-                                @Override
-                                public void onClick() {
-                                    DayNoteDao.delDNote(dayNote);
-                                    dayNotes = DayNoteDao.getDayNotes();
-                                    notifyDataSetChanged();
-
-                                    EventBus.getDefault().post(ContansUtils.ACTION_DAY);
-
-                                    ExcelUtils.exportDayNote(null);
-
-                                }
-                            },
-                            "取消", new DialogListener() {
-                                @Override
-                                public void onClick() {
-                                }
-                            });
-                }
-            });
-        } else viewHolder.day_del.setVisibility(View.GONE);
-
         return convertView;
     }
 
     class ViewHolder {
         View spot;
-        ImageView tag, day_del;
+        ImageView tag;
         TextView time, usage, money, remask;
     }
 }

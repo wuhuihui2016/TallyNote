@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,10 +11,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.IncomeNoteAdapter;
-import com.whh.tallynote.database.IncomeNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.IncomeNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.ExcelUtils;
@@ -23,7 +24,6 @@ import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.NotificationUtils;
 import com.whh.tallynote.utils.StringUtils;
-import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -32,42 +32,46 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 理财明细
  * Created by wuhuihui on 2017/6/27.
  */
 public class List4IncomeActivity extends BaseActivity {
 
-    private TextView info;
-    private ListView listView;
+    @BindView(R.id.sort_info)
+    public TextView sort_info;
+    @BindView(R.id.income_earning)
+    public TextView income_earning;
+    @BindView(R.id.income_finished)
+    public TextView income_finished;
+
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
 
     private int index = 0;
     private List<IncomeNote> incomeNotes4index;
     private IncomeNoteAdapter incomeNoteAdapter;
-    private TextView sort_info, income_earning, income_finished;
     private boolean isStart = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("理财明细", R.layout.activity_income_list);
-
-        initView();
-
-        initData(0);
-
     }
 
-    private void initView() {
-
-        income_earning = (TextView) findViewById(R.id.income_earning);
+    @Override
+    protected void initView() {
         income_earning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initData(0);
             }
         });
-        income_finished = (TextView) findViewById(R.id.income_finished);
         income_finished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +80,9 @@ public class List4IncomeActivity extends BaseActivity {
             }
         });
 
-        info = (TextView) findViewById(R.id.info);
-        info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "笔" +
+        info.setText("投资账单记录有" + MyApp.dbHandle.getCount4Record(ContansUtils.INCOME) + "笔" +
                 "\n计息中" + IncomeNote.getEarningInComes().size() + "笔" +
                 "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
-        sort_info = (TextView) findViewById(R.id.sort_info);
         sort_info.setVisibility(View.VISIBLE);
         sort_info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,17 +102,19 @@ public class List4IncomeActivity extends BaseActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
-
         NotificationUtils.cancel();//关闭通知
+    }
+
+    @Override
+    protected void initEvent() {
+        initData(0);
     }
 
     //提交或完成后刷新界面
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventBusMsg(String msg) {
         if (msg.equals(ContansUtils.ACTION_INCOME)) {
-            info.setText("投资账单记录有" + IncomeNoteDao.getIncomes().size() + "笔" +
+            info.setText("投资账单记录有" + MyApp.dbHandle.getCount4Record(ContansUtils.INCOME) + "笔" +
                     "\n计息中" + IncomeNote.getEarningInComes().size() + "笔" +
                     "\n计息中的总金额：" + StringUtils.showPrice(IncomeNote.getEarningMoney() + ""));
             initData(0);
@@ -138,15 +142,10 @@ public class List4IncomeActivity extends BaseActivity {
 
                 //如果是从通知点击跳转的，需要验证密码
                 if (getIntent().hasExtra("notify")) {
-                    Intent intent = new Intent();
-                    intent.putExtra(ContansUtils.ISBACK, true);
                     if (!TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.GESTURE, ""))) {
-                        intent.setClass(activity, SetGestureActivity.class);
-                        intent.putExtra("activityNum", 0);
-                        startActivity(intent);
+                        AppManager.transfer(activity, SetGestureActivity.class,ContansUtils.ISBACK, true,"activityNum", 0);
                     } else {
-                        intent.setClass(activity, SetOrCheckPwdActivity.class);
-                        startActivity(intent);
+                        AppManager.transfer(activity, SetOrCheckPwdActivity.class, ContansUtils.ISBACK, true);
                     }
                 }
 
@@ -225,9 +224,7 @@ public class List4IncomeActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        Intent intent = new Intent(activity, NewIncomeActivity.class);
-                        intent.putExtra("list", true);
-                        startActivity(intent);
+                        AppManager.transfer(activity, NewIncomeActivity.class, "list", true);
                     }
                 }
         );

@@ -1,8 +1,7 @@
-package com.whh.tallynote.activity;
+package com.whh.tallynote.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -15,16 +14,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.whh.tallynote.MyApplication;
 import com.whh.tallynote.R;
+import com.whh.tallynote.activity.NewDayActivity;
+import com.whh.tallynote.activity.NewIncomeActivity;
+import com.whh.tallynote.activity.NewMemoActivity;
+import com.whh.tallynote.activity.NewMonthActivity;
+import com.whh.tallynote.activity.NewNotePadActivity;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
-import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
@@ -34,26 +35,46 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Created by wuhuihui on 2017/3/24.
  */
-public class BaseActivity extends FragmentActivity implements View.OnClickListener {
+public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener {
 
     protected Context context;//获取当前对象
     protected Activity activity;//获取当前对象
     protected String TAG;//当前界面输出log时的标签字段
-    protected FrameLayout content_layout;
-    protected PopupWindow popupWindow;
-    private ImageButton addNote;
+
+    private RelativeLayout top_layout; //头布局
+    private ImageButton return_btn; //返回按钮
+    private TextView titleView; //标题
+    private TextView right_btn; //右按钮
+    private ImageView right_imgbtn; //右图片按钮
+    protected FrameLayout content_layout; //中间内容布局
+    private ImageButton addNote; //显示/隐藏新增项目按钮
+    protected PopupWindow popupWindow; //新增项目
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         initActivity();
-
+        initBundleData(savedInstanceState); //接收传递的数据
+        ButterKnife.bind(this);
+        initView(); //初始化界面
+        initEvent(); //初始化事件操作
     }
+
+    //接收传递的数据
+    protected abstract void initBundleData(Bundle bundle);
+
+    //初始化界面
+    protected abstract void initView();
+
+    //初始化事件操作
+    protected abstract void initEvent();
 
     /**
      * 初始化Activity
@@ -70,6 +91,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         AppManager.getAppManager().addActivity(this);
 
+        top_layout = (RelativeLayout) findViewById(R.id.top_layout);
+        return_btn = (ImageButton) findViewById(R.id.return_btn);
+        titleView = (TextView) findViewById(R.id.title);
+        right_btn = (TextView) findViewById(R.id.right_btn);
+        right_imgbtn = (ImageView) findViewById(R.id.right_imgbtn);
+        content_layout = (FrameLayout) findViewById(R.id.content_layout);
         addNote = (ImageButton) findViewById(R.id.addNote);
 
         if (TAG.contains("New") || TAG.contains("ForgetPwdActivity")
@@ -117,7 +144,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewDayActivity.class));
+                            AppManager.transfer(activity, NewDayActivity.class);
                         }
                     }
             );
@@ -126,7 +153,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewMonthActivity.class));
+                            AppManager.transfer(activity, NewMonthActivity.class);
                         }
                     }
             );
@@ -135,7 +162,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewIncomeActivity.class));
+                            AppManager.transfer(activity, NewIncomeActivity.class);
                         }
                     }
             );
@@ -144,7 +171,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewMemoActivity.class));
+                            AppManager.transfer(activity, NewMemoActivity.class);
                         }
                     }
             );
@@ -153,7 +180,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            startActivity(new Intent(activity, NewNotePadActivity.class));
+                            AppManager.transfer(activity, NewNotePadActivity.class);
                         }
                     }
             );
@@ -167,7 +194,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
      */
     protected void setTitle(String title) {
 
-        ImageButton return_btn = (ImageButton) findViewById(R.id.return_btn);
         if (isOtherActivity()) {
             return_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,17 +224,15 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         if (!TextUtils.isEmpty(title)) {
             //设置当前界面的title
-            TextView titleView = (TextView) findViewById(R.id.title);
             titleView.setText(title);
         } else {
-            RelativeLayout top_layout = (RelativeLayout) findViewById(R.id.top_layout);
+
             top_layout.setVisibility(View.GONE);
         }
     }
 
     protected void setReturnBtnClickLitener(View.OnClickListener listener) {
         if (listener != null) {
-            ImageButton return_btn = (ImageButton) findViewById(R.id.return_btn);
             return_btn.setOnClickListener(listener);
         }
     }
@@ -224,7 +248,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         setTitle(title);
 
         //加载中间布局
-        content_layout = (FrameLayout) findViewById(R.id.content_layout);
         content_layout.removeAllViews();
         View view = LayoutInflater.from(this).inflate(layoutID, null);
         content_layout.addView(view);
@@ -239,11 +262,10 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
      */
     protected void setRightBtnListener(CharSequence text, View.OnClickListener listener) {
         if (!TextUtils.isEmpty(text)) {
-            TextView right_btn = (TextView) findViewById(R.id.right_btn);
             right_btn.setVisibility(View.VISIBLE);
             right_btn.setText(text);
             right_btn.setOnClickListener(listener);
-            findViewById(R.id.right_imgbtn).setVisibility(View.GONE);
+            right_imgbtn.setVisibility(View.GONE);
         }
     }
 
@@ -254,12 +276,10 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
      * @param listener
      */
     protected void setRightImgBtnListener(int resId, View.OnClickListener listener) {
-        ImageView right_imgbtn = (ImageView) findViewById(R.id.right_imgbtn);
         right_imgbtn.setVisibility(View.VISIBLE);
         right_imgbtn.setImageResource(resId);
         right_imgbtn.setOnClickListener(listener);
-
-        findViewById(R.id.right_btn).setVisibility(View.GONE);
+        right_btn.setVisibility(View.GONE);
     }
 
     @Override
@@ -365,4 +385,5 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                 EventBus.getDefault().unregister(this); //注销事件
         }
     }
+
 }

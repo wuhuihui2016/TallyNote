@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -20,11 +21,22 @@ import com.whh.tallynote.view.StatusChange;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 手势密码设置
  * Created by wuhuihui on 2017/12/6.
  */
 public class SetGestureActivity extends BaseActivity {
+
+    @BindView(R.id.gesture_text)
+    public TextView gestureText;
+    @BindView(R.id.user_icon)
+    public ImageView user_icon;
+    @BindView(R.id.forgetPwd_btn)
+    public Button forgetPwd_btn;
+
     public static final int launcherAct = 0;
     public static final int settingAct = 1;
     public static int activityNum;
@@ -33,14 +45,19 @@ public class SetGestureActivity extends BaseActivity {
     private Intent intent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView(R.layout.activity_set_gesture);
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initEvent() {
         intent = getIntent();
         activityNum = intent.getIntExtra("activityNum", 0);
-
-        final TextView gestureText = (TextView) findViewById(R.id.gesture_text);
-        ImageView user_icon = (ImageView) findViewById(R.id.user_icon);
 
         switch (activityNum) {
             case settingAct:
@@ -58,13 +75,12 @@ public class SetGestureActivity extends BaseActivity {
                 break;
             case launcherAct:
                 //忘记密码
-                Button forgetPwd_btn = (Button) findViewById(R.id.forgetPwd_btn);
                 forgetPwd_btn.setVisibility(View.VISIBLE);
                 forgetPwd_btn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //增加下划线
                 forgetPwd_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(activity, ForgetPwdActivity.class));
+                        AppManager.transfer(activity, ForgetPwdActivity.class);
                         AppManager.getAppManager().finishActivity(); //清除所有Acitivity
                     }
                 });
@@ -79,13 +95,13 @@ public class SetGestureActivity extends BaseActivity {
                             if ((int) event.getNewValue() == 2) {
                                 if (intent.hasExtra("secureSet")) { //安全设置弹出选择dialog
                                     finish();
-                                    startActivity(new Intent(activity, SecureSetActivity.class));
+                                    AppManager.transfer(activity, SecureSetActivity.class);
                                     intent.removeExtra("secureSet");
                                 } else { //关闭当前界面，进入APP
                                     finish();
                                     if (intent.hasExtra("start")) {
                                         LogUtils.i("lifecycle", "getIntent start true");
-                                        startActivity(new Intent(activity, MainActivity.class));
+                                        AppManager.transfer(activity, MainActivity.class);
                                         intent.removeExtra("start");
                                     }
                                 }

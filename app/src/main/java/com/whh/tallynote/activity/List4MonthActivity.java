@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,25 +10,30 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.MonthNoteAdapter;
-import com.whh.tallynote.database.DayNoteDao;
-import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.MonthNote;
+import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
+import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
 import com.whh.tallynote.utils.WPSUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * 月账单明细
@@ -37,22 +41,27 @@ import java.util.List;
  */
 public class List4MonthActivity extends BaseActivity {
 
-    private TextView info;
-    private ListView listView;
+    @BindView(R.id.info)
+    public TextView info;
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+
+    @BindView(R.id.chartAnalyse)
+    public TextView chartAnalyse;
 
     private List<MonthNote> monthNotes;
     private MonthNoteAdapter monthNoteAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initBundleData(Bundle bundle) {
         setContentView("月账单明细", R.layout.activity_month_list);
+    }
 
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
-
-        info = (TextView) findViewById(R.id.info);
+    @Override
+    protected void initView() {
+        listView.setEmptyView(emptyView);
         setRightImgBtnListener(R.drawable.icon_action_bar_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,19 +74,23 @@ public class List4MonthActivity extends BaseActivity {
         if (getIntent().hasExtra("flag")) {
             showDialog();
         }
+    }
+
+    @Override
+    protected void initEvent() {
 
     }
 
     private void initData() {
-        monthNotes = MonthNoteDao.getMonthNotes();
+        monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
         info.setText("月账单记录有" + monthNotes.size() + "笔");
 
         if (monthNotes.size() > 1) {
-            findViewById(R.id.chartAnalyse).setVisibility(View.VISIBLE);
-            findViewById(R.id.chartAnalyse).setOnClickListener(new View.OnClickListener() {
+            chartAnalyse.setVisibility(View.INVISIBLE);
+            chartAnalyse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(activity, MonthNotesAnalyseActivity.class));
+                    AppManager.transfer(activity, MonthNotesAnalyseActivity.class);
                 }
             });
         }
@@ -88,10 +101,10 @@ public class List4MonthActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (DayNoteDao.getDayNotes4History().size() > 0) {
-                    Intent intent = new Intent(activity, List4DayOfMonthActivity.class);
-                    intent.putExtra("duration", monthNotes.get(position).getDuration());
-                    startActivity(intent);
+                if (MyApp.dayNoteDBHandle.getDayNotes4History().size() > 0) {
+                    AppManager.transfer(activity, List4DayOfMonthActivity.class, "duration", monthNotes.get(position).getDuration());
+                } else {
+                    ToastUtils.showErrorLong(activity, "月消费日账加载失败！");
                 }
             }
         });
@@ -106,8 +119,6 @@ public class List4MonthActivity extends BaseActivity {
         }
     }
 
-
-
     /**
      * 新建月账完成，提醒上传数据
      */
@@ -121,10 +132,13 @@ public class List4MonthActivity extends BaseActivity {
                             public void onClick() {
                                 FileUtils.uploadFile(activity);
                             }
-                        },"查看", new DialogListener() {
+                        }, "查看", new DialogListener() {
                             @Override
                             public void onClick() {
-                                WPSUtils.openFile(context, FileUtils.getTallyNoteFile().getPath());
+                                File tallyNoteFile = FileUtils.getTallyNoteFile();
+                                if (tallyNoteFile != null)
+                                    WPSUtils.openFile(context, FileUtils.getTallyNoteFile().getPath());
+                                else ToastUtils.showErrorLong(activity, "查看失败！");
                             }
                         });
             }
@@ -150,9 +164,7 @@ public class List4MonthActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             popupWindow.dismiss();
-                            Intent intent = new Intent(activity, NewMonthActivity.class);
-                            intent.putExtra("list", true);
-                            startActivity(intent);
+                            AppManager.transfer(activity, NewMonthActivity.class, "list", true);
                         }
                     }
             );

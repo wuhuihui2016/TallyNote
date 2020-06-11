@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.FileExplorerAdapter;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -26,11 +28,27 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * log文件浏览
  * Created by wuhuihui on 2018/7/5.
  */
 public class LogExplorerActivity extends BaseActivity {
+
+    @BindView(R.id.listView)
+    public ListView listView;
+    @BindView(R.id.emptyView)
+    public TextView emptyView;
+    @BindView(R.id.choose_layout)
+    public LinearLayout choose_layout;
+
+    @BindView(R.id.ok)
+    public Button ok;
+    @BindView(R.id.no)
+    public Button no;
+    @BindView(R.id.del)
+    public Button del;
 
     private List<File> fileList = new ArrayList<>();
     private FileExplorerAdapter adapter;
@@ -38,16 +56,21 @@ public class LogExplorerActivity extends BaseActivity {
     private boolean isSellect = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initBundleData(Bundle bundle) {
         setContentView("log文件浏览", R.layout.activity_file_explorer);
+    }
 
+    @Override
+    protected void initView() {
         init();
     }
 
+    @Override
+    protected void initEvent() {
+    }
+
     private void init() {
-        final ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyView));
+        listView.setEmptyView(emptyView);
 
         File logDir = FileUtils.getLogDir();
         final File files[] = logDir.listFiles();
@@ -167,17 +190,16 @@ public class LogExplorerActivity extends BaseActivity {
         adapter.setSelect(isSellect);
 
         if (isSellect) {
-            final LinearLayout choose_layout = (LinearLayout) findViewById(R.id.choose_layout);
             choose_layout.setVisibility(View.VISIBLE);
 
-            findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+            ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.selectAll(true);
                 }
             });
 
-            findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+            no.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.selList.clear();
@@ -186,7 +208,7 @@ public class LogExplorerActivity extends BaseActivity {
                 }
             });
 
-            findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
+            del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (adapter.selList.size() > 0) {
@@ -209,8 +231,6 @@ public class LogExplorerActivity extends BaseActivity {
 
                 }
             });
-
-        } else {
 
         }
     }

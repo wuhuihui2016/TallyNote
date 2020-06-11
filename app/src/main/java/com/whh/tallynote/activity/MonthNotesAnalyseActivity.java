@@ -8,13 +8,16 @@ import com.jn.chart.data.BarEntry;
 import com.jn.chart.data.Entry;
 import com.jn.chart.manager.BarChartManager;
 import com.jn.chart.manager.LineChartManager;
+import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
-import com.whh.tallynote.database.MonthNoteDao;
+import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * 月账分析
@@ -22,17 +25,27 @@ import java.util.List;
  */
 public class MonthNotesAnalyseActivity extends BaseActivity {
 
+    @BindView(R.id.barChart4Pay)
+    public BarChart barChart4Pay;
+    @BindView(R.id.barChart4Salary)
+    public BarChart barChart4Salary;
+    @BindView(R.id.barChart4Income)
+    public BarChart barChart4Income;
+    @BindView(R.id.lineChart)
+    public LineChart lineChart;
+
     private List<MonthNote> monthNotes = new ArrayList<>();
     private int size; //所需月账大小
     private ArrayList<String> xValues; //x轴的数据
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initBundleData(Bundle bundle) {
         setContentView("月账分析", R.layout.activity_month_analyse);
+    }
 
-        List<MonthNote> allList = MonthNoteDao.getMonthNotes();
+    @Override
+    protected void initView() {
+        List<MonthNote> allList = MyApp.monthNoteDBHandle.getMonthNotes();
         int allSize = allList.size();
         //为避免数据太多，导致图标显示拥挤，仅取得其中最多12条数据，12条数据按时间间断来获取。
         int index = allSize / 11;
@@ -51,10 +64,12 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
 
         xValues = (ArrayList<String>) MonthNote.formateDurations(monthNotes);
         BarChartManager.setUnit("单位：元");
+    }
 
+    @Override
+    protected void initEvent() {
         initBarchartData(); //柱状图分析
         initLineChartData(); //线型图分析
-
     }
 
     /**
@@ -62,7 +77,6 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
      */
     private void initBarchartData() {
         //支出统计
-        BarChart barChart4Pay = (BarChart) findViewById(R.id.barChart4Pay);
         barChart4Pay.setDescription("支出统计"); //设置图表的描述
         ArrayList<BarEntry> yValues = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -72,7 +86,6 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
 
 
         //工资统计
-        BarChart barChart4Salary = (BarChart) findViewById(R.id.barChart4Salary);
         barChart4Salary.setDescription("工资统计");
         yValues = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -81,7 +94,6 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
         BarChartManager.initBarChart(context, barChart4Salary, xValues, yValues);
 
         //收益统计
-        BarChart barChart4Income = (BarChart) findViewById(R.id.barChart4Income);
         barChart4Income.setDescription("收益统计");
         yValues = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -96,7 +108,6 @@ public class MonthNotesAnalyseActivity extends BaseActivity {
      */
     private void initLineChartData() {
 
-        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
         //设置图表的描述
         lineChart.setDescription("月账统计");
 
