@@ -67,7 +67,7 @@ public class DayNoteAdapter extends BaseAdapter {
         //获取当前对象
         final DayNote dayNote = dayNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(dayNote.getTime()));
-        viewHolder.usage.setText(DayNote.getUserTypeStr(dayNote.getUseType()));
+        viewHolder.usage.setText(DayNote.getUserTypeInt(dayNote.getUseType()));
         if (dayNote.getUseType() == DayNote.consume) { //0.支出
             viewHolder.spot.setBackgroundResource(R.drawable.shape_day_consume_spot);
             viewHolder.tag.setImageResource(R.drawable.consume);

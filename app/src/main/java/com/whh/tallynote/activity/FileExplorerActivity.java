@@ -176,7 +176,7 @@ public class FileExplorerActivity extends BaseActivity {
         View layout = inflater.inflate(R.layout.layout_file_pop, null);
         popupWindow = new PopupWindow(layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         ViewUtils.setPopupWindow(context, popupWindow);
-        popupWindow.showAtLocation(layout, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(findViewById(R.id.layout), Gravity.BOTTOM, 0, 0);
 
         layout.findViewById(R.id.open).setOnClickListener(
                 new View.OnClickListener() {

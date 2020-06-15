@@ -58,7 +58,7 @@ public class NewDayActivity extends BaseActivity {
             isEditDayNote = true;
             setTitle("编辑日账");
             editDayNote = (DayNote) getIntent().getSerializableExtra("editDayNote");
-            LogUtils.e("whh0611", "editDayNote: getUserType = " + DayNote.getUserTypeStr(editDayNote.getUseType()));
+            LogUtils.e("whh0611", "editDayNote: getUserType = " + DayNote.getUserTypeInt(editDayNote.getUseType()));
         }
 
         moneyEt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -97,7 +97,7 @@ public class NewDayActivity extends BaseActivity {
                         editDayNote.setMoney(money);
                         editDayNote.setRemark(remark);
                         String message;
-                        message = editDayNote.getRemark() + DayNote.getUserTypeStr(editDayNote.getUseType()) + StringUtils.showPrice(editDayNote.getMoney());
+                        message = editDayNote.getRemark() + DayNote.getUserTypeInt(editDayNote.getUseType()) + StringUtils.showPrice(editDayNote.getMoney());
                         DialogUtils.showMsgDialog(activity, "修改日账\n" + message,
                                 "修改", new DialogListener() {
                                     @Override
@@ -166,7 +166,7 @@ public class NewDayActivity extends BaseActivity {
                         final DayNote dayNote = new DayNote(type, money, remark, DateUtils.formatDateTime());
                         LogUtils.i("commit", dayNote.toString());
                         String message;
-                        message = dayNote.getRemark() + DayNote.getUserTypeStr(dayNote.getUseType()) + StringUtils.showPrice(dayNote.getMoney());
+                        message = dayNote.getRemark() + DayNote.getUserTypeInt(dayNote.getUseType()) + StringUtils.showPrice(dayNote.getMoney());
                         DialogUtils.showMsgDialog(activity, "提交日账\n" + message,
                                 "提交", new DialogListener() {
                                     @Override

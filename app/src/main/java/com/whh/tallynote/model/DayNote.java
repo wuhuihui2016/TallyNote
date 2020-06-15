@@ -109,7 +109,7 @@ public class DayNote implements Serializable {
      * @param useTypeStr
      * @return
      */
-    public static int getUserTypeStr(String useTypeStr) {
+    public static int getUserTypeInt(String useTypeStr) {
         if (useTypeStr.contains("支出")) return consume;
         if (useTypeStr.contains("转账")) return account_out;
         if (useTypeStr.contains("入账")) return account_in;
@@ -123,7 +123,7 @@ public class DayNote implements Serializable {
      * @param useType
      * @return
      */
-    public static String getUserTypeStr(int useType) {
+    public static String getUserTypeInt(int useType) {
         return getUserTypes().get(useType);
     }
 

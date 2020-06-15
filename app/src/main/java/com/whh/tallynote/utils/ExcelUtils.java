@@ -321,7 +321,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes.get(i).getUseType())));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeInt(dayNotes.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes.get(i).getTime()));
@@ -371,7 +371,7 @@ public class ExcelUtils {
                     LogUtils.i(tag, dayNotes_historys.size() + "---" + dayNotes_historys.toString());
                     if (dayNotes_historys.size() > 0) {
                         for (int i = 0; i < dayNotes_historys.size(); i++) {
-                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeStr(dayNotes_historys.get(i).getUseType())));
+                            sheet.addCell(new Label(0, i + 1, DayNote.getUserTypeInt(dayNotes_historys.get(i).getUseType())));
                             sheet.addCell(new Label(1, i + 1, dayNotes_historys.get(i).getMoney()));
                             sheet.addCell(new Label(2, i + 1, dayNotes_historys.get(i).getRemark()));
                             sheet.addCell(new Label(3, i + 1, dayNotes_historys.get(i).getTime()));
@@ -469,7 +469,7 @@ public class ExcelUtils {
                                 for (int j = 1; j < rows; j++) {//行
                                     if (!TextUtils.isEmpty(sheet.getCell(1, j).getContents())) {
                                         dayNotes.add(new DayNote(
-                                                DayNote.getUserTypeStr(sheet.getCell(0, j).getContents()),
+                                                DayNote.getUserTypeInt(sheet.getCell(0, j).getContents()),
                                                 sheet.getCell(1, j).getContents(),
                                                 sheet.getCell(2, j).getContents(),
                                                 sheet.getCell(3, j).getContents()));
@@ -538,7 +538,7 @@ public class ExcelUtils {
                                 for (int j = 1; j < rows; j++) {//行
                                     if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
                                         dayNotes_historys.add(new DayNote(
-                                                DayNote.getUserTypeStr(sheet.getCell(0, j).getContents()),
+                                                DayNote.getUserTypeInt(sheet.getCell(0, j).getContents()),
                                                 sheet.getCell(1, j).getContents(),
                                                 sheet.getCell(2, j).getContents(),
                                                 sheet.getCell(3, j).getContents(),
