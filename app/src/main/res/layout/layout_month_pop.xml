@@ -12,9 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/day_record"
-        android:background="@drawable/shape_day"
-        android:padding="3dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="5dp"
+        android:padding="3dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,7 +103,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
-            android:text="京东金融"
+            android:text="京东小金库"
             android:textColor="@color/title"
             android:textSize="@dimen/bigtextSize" />
 
@@ -114,63 +113,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@null"
-            android:hint="京东金融"
+            android:hint="京东小金库"
             android:inputType="numberDecimal"
             android:singleLine="true"
             android:textSize="@dimen/bigtextSize" />
 
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:text="工资"
-            android:textColor="@color/title"
-            android:textSize="@dimen/bigtextSize" />
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="工资"
-            android:inputType="numberDecimal"
-            android:singleLine="true"
-            android:textSize="@dimen/bigtextSize" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="20dp">
-
-            <ImageButton
-                android:id="@+id/clear_salary"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/clear_button" />
-        </RelativeLayout>
 
     </LinearLayout>
 
@@ -198,7 +145,7 @@
             android:textSize="@dimen/bigtextSize" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/editText4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

@@ -94,19 +94,19 @@ public class FileExplorerActivity extends BaseActivity {
                     }
                 }
                 adapter = new FileExplorerAdapter(context, fileList);
-                setSellect(false);
+//                setSellect(false);
                 listView.setAdapter(adapter);
 
                 //长按进入选择模式
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (!isSellect) {
-                            setSellect(true);
-                        }
-                        return false;
-                    }
-                });
+//                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                    @Override
+//                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                        if (!isSellect) {
+//                            setSellect(true);
+//                        }
+//                        return false;
+//                    }
+//                });
 
                 //默认操作文件，选择状态下选择文件以删除
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -206,7 +206,7 @@ public class FileExplorerActivity extends BaseActivity {
             public void onClick(View v) {
                 popupWindow.dismiss();
 
-                FileUtils.uploadFile(activity); //上传到微信收藏
+                FileUtils.uploadFile2WXCollect(activity); //上传到微信收藏
 
             }
         });

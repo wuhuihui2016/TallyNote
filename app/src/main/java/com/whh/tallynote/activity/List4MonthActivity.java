@@ -108,6 +108,14 @@ public class List4MonthActivity extends BaseActivity {
                 }
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AppManager.transfer(activity, NewMonthActivity.class, "editMonthNote", monthNotes.get(position));
+                return true; //长按后拦截单按事件
+            }
+        });
     }
 
     //提交月账监听
@@ -130,7 +138,7 @@ public class List4MonthActivity extends BaseActivity {
                         "上传", new DialogListener() {
                             @Override
                             public void onClick() {
-                                FileUtils.uploadFile(activity);
+                                FileUtils.uploadFile2WXCollect(activity);
                             }
                         }, "查看", new DialogListener() {
                             @Override
@@ -179,7 +187,7 @@ public class List4MonthActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     popupWindow.dismiss();
-                    FileUtils.uploadFile(activity);
+                    FileUtils.uploadFile2WXCollect(activity);
                 }
             });
             layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {

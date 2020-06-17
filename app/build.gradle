@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 240
-        versionName "2020.06.11"
+        versionName "2020.06.16"
     }
 
     signingConfigs {
@@ -41,8 +41,7 @@ android {
         variant.outputs.all {
             outputFileName  ="tallyNote_v" +
                     defaultConfig.versionName + "_" + defaultConfig.versionCode + "_" +
-                    new Date().format("yyyy-MM-dd") + "_" + buildType.name +
-                    ".apk"
+                    buildType.name + ".apk"
         }
     }
 

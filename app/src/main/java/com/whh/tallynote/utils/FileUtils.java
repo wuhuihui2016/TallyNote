@@ -1,6 +1,7 @@
 package com.whh.tallynote.utils;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -192,10 +193,10 @@ public class FileUtils {
      *
      * @param activity
      */
-    public static void uploadFile(Activity activity) {
+    public static void uploadFile2WXCollect(Activity activity) {
         try {
             if (SystemUtils.getIsWIFI(activity)) {
-                Intent share = new Intent(Intent.ACTION_SEND);
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
                 //获得需要上传的文件
                 File file = getTallyNoteFile();
@@ -204,20 +205,25 @@ public class FileUtils {
                     return;
                 }
 
-                Uri uri = FileUtils.setFileProvider(activity, share, file);
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                share.setType("*/*"); //此处可发送多种文件
+                Uri uri = FileUtils.setFileProvider(activity, shareIntent, file);
+//                LogUtils.e("whh0616", "uploadFile2WXCollect = " + uri);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                shareIntent.setType("*/*"); //此处可发送多种文件
 
                 //查找手机中是否已安装微信APP
                 String name = "com.tencent.mm";
                 if (isInstalledAPP(activity, name)) {
-                    share.setPackage(name);
+//                    shareIntent.setPackage(name); //发送到微信(联系人/收藏/朋友圈)
+                    //name, name + ".ui.tools.ShareImgUI" 发送给联系人
+                    //name, name + ".ui.tools.AddFavoriteUI" 添加到收藏
+                    //name, name + ".ui.tools.ShareToTimeLineUI" 发送到朋友圈
+                    shareIntent.setComponent(new ComponentName(name, name + ".ui.tools.AddFavoriteUI"));
                 } else {
                     DialogUtils.showMsgDialog(activity, "没有找到微信~");
                     return;
                 }
 
-                activity.startActivity(Intent.createChooser(share, "上传文件"));
+                activity.startActivity(Intent.createChooser(shareIntent, "上传文件"));
             } else {
                 DialogUtils.showMsgDialog(activity, "当前没有连接网络，不能上传~");
             }

@@ -239,7 +239,7 @@ public class List4IncomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                FileUtils.uploadFile(activity);
+                FileUtils.uploadFile2WXCollect(activity);
             }
         });
         layout.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {

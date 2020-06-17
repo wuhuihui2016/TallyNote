@@ -19,7 +19,7 @@
         <!-- APP间读取共享文件需要配置provider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities=".fileprovider"
+            android:authorities="com.whh.tallynote.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <!--元数据-->

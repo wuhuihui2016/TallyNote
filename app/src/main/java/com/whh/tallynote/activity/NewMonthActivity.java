@@ -65,6 +65,10 @@ public class NewMonthActivity extends BaseActivity {
     private String salaryStr = null;
     private StringBuffer currAssetsInfo; //现有资产清单
 
+    //编辑月账
+    boolean isEdit = false;
+    MonthNote isEditMonthNote = null;
+
     @Override
     protected void initBundleData(Bundle bundle) {
         setContentView("记月账", R.layout.activity_month);
@@ -72,6 +76,11 @@ public class NewMonthActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        if (getIntent().hasExtra("editMonthNote")) {
+            editMonthNote(); //编辑月账
+            return;
+        }
+
         if (MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) > 0) { //如果已有月账记录自动填充上次结余，不得手动输入
             String actual_balance = MyApp.monthNoteDBHandle.getLastMonthNote().getActual_balance();
             last_balanceEt.setText(StringUtils.formatePrice(actual_balance));
@@ -123,9 +132,9 @@ public class NewMonthActivity extends BaseActivity {
                 String last_balance = StringUtils.formatePrice(last_balanceEt.getText().toString());
                 String pay = StringUtils.formatePrice(payEt.getText().toString());
                 String salary = StringUtils.formatePrice(salaryEt.getText().toString());
-                String income = StringUtils.formatePrice(incomeEt.getText().toString());
                 String balance = StringUtils.formatePrice(balanceEt.getText().toString());
                 String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
+                String income = StringUtils.formatePrice(incomeEt.getText().toString());
                 String duration = durationEt.getText().toString();
                 String remark = remarkEt.getText().toString();
 
@@ -142,7 +151,7 @@ public class NewMonthActivity extends BaseActivity {
                                     "\n本次收益：" + StringUtils.showPrice(monthNote.getIncome()) +
                                     "\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) +
                                     "\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) +
-                                    "\n月结说明：" + monthNote.getRemark(),
+                                    "\n" + monthNote.getRemark(),
                             "提交", new DialogListener() {
                                 @Override
                                 public void onClick() {
@@ -173,7 +182,78 @@ public class NewMonthActivity extends BaseActivity {
                 }
             }
         });
+    }
 
+    /**
+     * 编辑月账
+     * 仅实际结余和备注可编辑
+     */
+    private void editMonthNote() {
+        setTitle("编辑月账");
+        isEdit = true;
+        isEditMonthNote = (MonthNote) getIntent().getSerializableExtra("editMonthNote");
+        //上次结余
+        last_balanceEt.setText(StringUtils.formatePrice(isEditMonthNote.getLast_balance()));
+        last_balanceEt.setEnabled(false);
+        //本次支出
+        payEt.setText(StringUtils.formatePrice(isEditMonthNote.getPay()));
+        payEt.setEnabled(false);
+        //本次工资
+        salaryEt.setText(StringUtils.formatePrice(isEditMonthNote.getSalary()));
+        salaryEt.setEnabled(false);
+        //本次结余
+        balanceEt.setText(StringUtils.formatePrice(isEditMonthNote.getBalance()));
+        balanceEt.setEnabled(false);
+        //本次收益
+        if (TextUtils.isEmpty(isEditMonthNote.getIncome())) {
+            incomeEt.setText(StringUtils.formatePrice(isEditMonthNote.getIncome()));
+            incomeEt.setEnabled(false);
+        } else {incomeEt.setVisibility(View.GONE);}
+        //结算时段
+        durationEt.setText(isEditMonthNote.getDuration());
+        durationEt.setEnabled(false);
+
+        actual_balanceEt.setText(StringUtils.formatePrice(isEditMonthNote.getActual_balance()));  //实际结余
+
+        String getRemask = isEditMonthNote.getRemark();
+        if (getRemask.split("\n其他说明：").length == 2) {
+            getRemask = getRemask.split("\n其他说明：")[1];
+        }
+        remarkEt.setText(getRemask); //月结说明
+
+        setRightBtnListener("修改", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
+                String remark = remarkEt.getText().toString();
+
+                if (!TextUtils.isEmpty(actual_balance) && !actual_balance.equals(isEditMonthNote.getActual_balance())) {
+                    isEditMonthNote.setActual_balance(actual_balance);
+                    isEditMonthNote.setRemark(currAssetsInfo.toString() + "\n其他说明：" + remark);
+
+                    LogUtils.i("commit", isEditMonthNote.toString());
+                    DialogUtils.showMsgDialog(activity, "修改月账单\n" +
+                                    "实际结余：" + StringUtils.showPrice(isEditMonthNote.getActual_balance()) +
+                                    "\n" + isEditMonthNote.getRemark(),
+                            "提交", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                    MyApp.monthNoteDBHandle.updateMonthNote(isEditMonthNote);
+                                    ToastUtils.showSucessLong(activity, "修改月账单成功！");
+                                    ExcelUtils.exportMonthNote(null);
+                                    EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
+                                    finish();
+                                }
+                            }, "取消", new DialogListener() {
+                                @Override
+                                public void onClick() {
+                                }
+                            });
+                } else {
+                    ToastUtils.showToast(context, true, "实际结余为空或未修改！");
+                }
+            }
+        });
     }
 
     @Override
@@ -255,52 +335,22 @@ public class NewMonthActivity extends BaseActivity {
             popupWindow.showAtLocation(findViewById(R.id.month_layout), Gravity.CENTER, 0, -300);
 
             TextView info = (TextView) layout.findViewById(R.id.info);
-            info.setText("如工资还在工资卡中，工资项自动填充，请待月结算完成转入理财;" +
-                    "否则请手动清除工资项金额，避免重复累加，导致实有资产结算错误！！" +
-                    "京东金融中包含2W+回款银行理财，该平台的总金额不能作为累计，应取【小金库】的金额！！");
+            if (isEdit) info.setVisibility(View.GONE);
+            info.setText("工资：" + StringUtils.formatePrice(salaryStr) + "元，是否转存小金库？");
             final EditText editText1 = (EditText) layout.findViewById(R.id.editText1); //微信
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2); //支付宝
-            final EditText editText3 = (EditText) layout.findViewById(R.id.editText3); //京东金融
-            final EditText editText4 = (EditText) layout.findViewById(R.id.editText4); //工资
-            if (!TextUtils.isEmpty(salaryStr)) { //自动填充工资金额
-                editText4.setText(StringUtils.formatePrice(salaryStr));
-                final ImageButton clear_salary = (ImageButton) layout.findViewById(R.id.clear_salary);
-                clear_salary.setVisibility(View.VISIBLE);
-                clear_salary.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        editText3.setText("");
-                    }
-                });
-
-                editText3.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        if (s.length() > 0) clear_salary.setVisibility(View.VISIBLE);
-                        else clear_salary.setVisibility(View.GONE);
-
-                    }
-                });
-            }
-            final EditText editText5 = (EditText) layout.findViewById(R.id.editText5); //理财
+            final EditText editText3 = (EditText) layout.findViewById(R.id.editText3); //京东小金库
+            final EditText editText4 = (EditText) layout.findViewById(R.id.editText4); //理财
             //自动填写理财总金额
             if (IncomeNote.getEarningInComes().size() > 0)
-                editText5.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
+                editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
 
             layout.findViewById(R.id.comfire).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                                asset_clearing = 0.00;
+                                asset_clearing = 0.00; //现有资产统计
                                 popupWindow.dismiss();
 
                                 //统计已输入资产总额
@@ -309,20 +359,19 @@ public class NewMonthActivity extends BaseActivity {
                                 je.add(editText2.getText().toString());
                                 je.add(editText3.getText().toString());
                                 je.add(editText4.getText().toString());
-                                je.add(editText5.getText().toString());
 
                                 currAssetsInfo = new StringBuffer();
-                                currAssetsInfo.append("现有资产：");
+                                currAssetsInfo.append("当前资产= ");
                                 for (int i = 0; i < je.size(); i++) {
                                     if (!TextUtils.isEmpty(je.get(i))) {
                                         double money = Double.parseDouble(je.get(i));
                                         asset_clearing += money;
                                         if (i == 0)
-                                            currAssetsInfo.append("微信：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                            currAssetsInfo.append(showPrice(je.get(i)) + "(微信) + ");
                                         if (i == 1)
-                                            currAssetsInfo.append("  支付宝：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                            currAssetsInfo.append(showPrice(je.get(i)) + "(支付宝) + ");
                                         if (i == 2)
-                                            currAssetsInfo.append("  京东金融：" + StringUtils.showPrice(StringUtils.formatePrice(je.get(i))));
+                                            currAssetsInfo.append(showPrice(je.get(i)) + "(京东小金库)");
                                     }
                                 }
 
@@ -333,7 +382,7 @@ public class NewMonthActivity extends BaseActivity {
                                     Double balance = Double.parseDouble(getBalance);
                                     Double balanceDiff = asset_clearing - balance;
 
-                                    String diff = StringUtils.showPrice(StringUtils.formatePrice(balanceDiff + ""));
+                                    String diff = showPrice(balanceDiff + "");
                                     if (balanceDiff > 0) {
                                         balance_diff.setText("(差额：↑ " + diff);
                                     } else {
@@ -357,4 +406,12 @@ public class NewMonthActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 格式化显示价格
+     * @param priceStr
+     * @return
+     */
+    private String showPrice(String priceStr) {
+        return StringUtils.showPrice(StringUtils.formatePrice(priceStr));
+    }
 }

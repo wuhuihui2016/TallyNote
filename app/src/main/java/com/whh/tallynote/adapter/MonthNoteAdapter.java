@@ -1,10 +1,12 @@
 package com.whh.tallynote.adapter;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.R;
@@ -53,6 +55,7 @@ public class MonthNoteAdapter extends BaseAdapter {
             viewHolder.month_salary = (TextView) convertView.findViewById(R.id.month_salary);
             viewHolder.month_last_balance = (TextView) convertView.findViewById(R.id.month_last_balance);
             viewHolder.month_balance = (TextView) convertView.findViewById(R.id.month_balance);
+            viewHolder.month_income_layout = (LinearLayout) convertView.findViewById(R.id.month_income_layout);
             viewHolder.month_income = (TextView) convertView.findViewById(R.id.month_income);
             viewHolder.month_duration = (TextView) convertView.findViewById(R.id.month_duration);
             viewHolder.month_remark = (TextView) convertView.findViewById(R.id.month_remark);
@@ -70,11 +73,20 @@ public class MonthNoteAdapter extends BaseAdapter {
         viewHolder.month_salary.setText(StringUtils.showPrice(monthNote.getSalary()));
         viewHolder.month_last_balance.setText(StringUtils.showPrice(monthNote.getLast_balance()));
         viewHolder.month_balance.setText(StringUtils.showPrice(monthNote.getBalance()));
-        viewHolder.month_income.setText(StringUtils.showPrice(monthNote.getIncome()));
-        if (monthNote.getRemark().length() > 0)
+
+        //当月理财收益
+        String getIncome = StringUtils.showPrice(monthNote.getIncome());
+        if (!TextUtils.isEmpty(getIncome) && !getIncome.equals("¥ 0.00 元") && !getIncome.equals("无")) {
+            viewHolder.month_income_layout.setVisibility(View.VISIBLE);
+            viewHolder.month_income.setText(getIncome);
+        } else viewHolder.month_income_layout.setVisibility(View.GONE);
+
+        //月账说明
+        if (!TextUtils.isEmpty(monthNote.getRemark()))
             viewHolder.month_remark.setText(monthNote.getRemark());
         else viewHolder.month_remark.setText("无");
 
+        //结算时段
         String duration = monthNote.getDuration();
         if (duration.contains("-")) {
             int days = DateUtils.getDaysBetween(duration.split("-")[0], duration.split("-")[1]);
@@ -109,6 +121,7 @@ public class MonthNoteAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        LinearLayout month_income_layout;
         TextView month_time, month_pay, month_salary, month_last_balance;
         TextView month_balance, month_income, month_duration, month_remark, month_actual_balance, month_diff;
     }

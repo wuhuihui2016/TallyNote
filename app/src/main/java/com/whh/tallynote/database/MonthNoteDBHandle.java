@@ -110,6 +110,23 @@ public class MonthNoteDBHandle extends DBHandle {
     }
 
     /**
+     * 修改一条月账
+     * 仅修改实际结余和月结说明
+     * @param monthNote
+     */
+    public void updateMonthNote(MonthNote monthNote) {
+        ContentValues value = new ContentValues();
+
+        value.put(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_ACTUALBALANCE, monthNote.getActual_balance());
+        update(DBCommon.MonthNoteRecordColumns.TABLE_NAME_MONTHNOTE, value,
+                DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME + " = ? ", new String[]{monthNote.getTime()});
+
+        value.put(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_REMARK, monthNote.getRemark());
+        update(DBCommon.MonthNoteRecordColumns.TABLE_NAME_MONTHNOTE, value,
+                DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME + " = ? ", new String[]{monthNote.getTime()});
+    }
+
+    /**
      * 获取最后一条数据
      *
      * @return

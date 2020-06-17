@@ -118,7 +118,7 @@ public class NewIncomeActivity extends BaseActivity {
         super.onClick(v);
         final String daysStr = daysEt.getText().toString();
 
-        if (v.getId() == R.id.durtionEt) {
+        if (v.getId() == R.id.durationEt) {
             if (!TextUtils.isEmpty(daysStr))
                 ViewUtils.showDatePickerDialog(activity, durationEt, Integer.parseInt(daysStr));
             else {
