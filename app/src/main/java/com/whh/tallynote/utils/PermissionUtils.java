@@ -12,6 +12,7 @@ public class PermissionUtils {
 
     public static int REQUESTCODE = 0;
     public static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static String[] PERMISSIONS_READ_PHONE_STATE = {Manifest.permission.READ_PHONE_STATE};
 
     /**
      * TODO 判断SDcard权限获取成功与否
@@ -32,6 +33,24 @@ public class PermissionUtils {
     }
 
     /**
+     * TODO 判断手机信息权限获取成功与否
+     * 失败后本方法不调用系统弹出框
+     *
+     * @param activity
+     * @param checkCallback
+     */
+    public static void checkPhonestatePermission(Activity activity, OnCheckCallback checkCallback) {
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_PHONE_STATE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            checkCallback.onCheck(false);
+        } else {
+            checkCallback.onCheck(true);
+        }
+    }
+
+    /**
      * 权限获取回调
      */
     public interface OnCheckCallback {
@@ -39,10 +58,18 @@ public class PermissionUtils {
     }
 
     /**
-     * 权限获取失败时的操作
+     * 获取SDCard读写权限失败时的操作
+     * 申请弹出获取权限系统框
      */
-    public static void notPermission(Activity activity, String[] permissions) {
-        //申请弹出获取权限系统框
-        ActivityCompat.requestPermissions(activity, permissions, REQUESTCODE);
+    public static void notSDCardPermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUESTCODE);
+    }
+
+    /**
+     * 获取手机信息权限失败时的操作
+     * 申请弹出获取权限系统框
+     */
+    public static void notPhoneStatePermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, PERMISSIONS_READ_PHONE_STATE, REQUESTCODE);
     }
 }

@@ -2,13 +2,26 @@ package com.whh.tallynote.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.hardware.display.DisplayManager;
+import android.hardware.display.VirtualDisplay;
+import android.media.Image;
+import android.media.ImageReader;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,9 +36,13 @@ import com.whh.tallynote.activity.NewMemoActivity;
 import com.whh.tallynote.activity.NewMonthActivity;
 import com.whh.tallynote.activity.NewNotePadActivity;
 import com.whh.tallynote.utils.AppManager;
+import com.whh.tallynote.utils.BitmapUtils;
+import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DialogListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
+import com.whh.tallynote.utils.FileUtils;
+import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 import com.whh.tallynote.utils.ViewUtils;
@@ -34,6 +51,9 @@ import com.whh.tallynote.utils.WPSUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.nio.ByteBuffer;
 
 import butterknife.ButterKnife;
 
@@ -89,7 +109,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
 
         Log.i(TAG, TAG + " is onCreated!");
 
-        AppManager.getAppManager().addActivity(this);
+        AppManager.getAppManager().addActivity(activity);
 
         top_layout = (RelativeLayout) findViewById(R.id.top_layout);
         return_btn = (ImageButton) findViewById(R.id.return_btn);
@@ -114,8 +134,8 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         }
 
         if (TAG.contains("List4") && !TAG.contains("Of")) { //仅一级列表页注册EventBus
-            if (!EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().register(this); //注册事件,不可重复注册
+            if (!EventBus.getDefault().isRegistered(activity))
+                EventBus.getDefault().register(activity); //注册事件,不可重复注册
         }
 
     }
@@ -133,7 +153,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         } else {
             LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layout = mLayoutInflater.inflate(R.layout.layout_add_note_pop, null);
-            popupWindow = new PopupWindow(layout, 400, 800);
+            popupWindow = new PopupWindow(layout, 400, 1000);
             ViewUtils.setPopupWindow(activity, popupWindow);
             // 相对某个控件的位置，有偏移;xoff表示x轴的偏移，正值表示向左，负值表示向右；yoff表示相对y轴的偏移，正值是向下，负值是向上
             popupWindow.showAsDropDown(addNote, 50, 20);
@@ -184,8 +204,119 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
                         }
                     }
             );
+            layout.findViewById(R.id.screenShot).setOnClickListener(
+                    new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            takeScreenShot();
+                        }
+                    }
+            );
         }
     }
+
+    /**
+     * 截屏相关代码 start
+     */
+    private final int EVENT_SCREENSHOT = 1;
+    private MediaProjectionManager mediaProjectionManager;
+    private Image image = null;
+    private ImageReader mImageReader;
+    private VirtualDisplay virtualDisplay;
+    private MediaProjection mediaProjection;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void takeScreenShot() {
+        mediaProjectionManager = (MediaProjectionManager) getApplication().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), EVENT_SCREENSHOT);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtils.e("whh0914", "onActivityResult requestCode=" + requestCode);
+        if (requestCode == EVENT_SCREENSHOT) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels;
+            int height = displayMetrics.heightPixels;
+            mImageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 2);
+            mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);
+            if(mediaProjection == null) { //用户在弹窗点了“取消”
+                ToastUtils.showWarningLong(activity, "截图已取消！");
+                return;
+            }
+            virtualDisplay = mediaProjection.createVirtualDisplay("screen-mirror", width, height,
+                    displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mImageReader.getSurface(), null, null);
+            mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                @Override
+                public void onImageAvailable(ImageReader reader) {
+                    try {
+                        if(mImageReader == null) return;
+                        image = mImageReader.acquireLatestImage();
+                        if (image != null) {
+                            final Image.Plane[] planes = image.getPlanes();
+                            final ByteBuffer buffer = planes[0].getBuffer();
+                            int width = image.getWidth();
+                            int height = image.getHeight();
+                            int pixelStride = planes[0].getPixelStride();
+                            int rowStride = planes[0].getRowStride();
+                            int rowPadding = rowStride - pixelStride * width;
+                            Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
+                            bitmap.copyPixelsFromBuffer(buffer);
+                            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), false);
+                            if (bitmap != null) {
+                                LogUtils.e("whh0914", "屏幕截图成功!");
+                                File screenShotDir = new File(FileUtils.screenShot);
+                                if (!screenShotDir.exists()) screenShotDir.mkdirs();
+                                String filePath = FileUtils.screenShot + "screenShot_" + DateUtils.formatDate4fileName() + ".png";
+                                BitmapUtils.saveBitmap(bitmap, filePath);
+                                DialogUtils.showMsgDialog(activity,"截图成功！保存在\n" + filePath);
+                            } else {
+                                ToastUtils.showErrorLong(activity, "截图失败！");
+                            }
+                            bitmap.recycle();
+                        }
+                    } catch (Exception e) {
+                        LogUtils.e("whh0914", "截图出现异常：" + e.toString());
+                        ToastUtils.showErrorLong(activity, "截图失败！");
+                    } finally {
+                        stopScreenShot();
+                    }
+                }
+            },null);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void stopScreenShot() {
+        if (image != null) {
+            image.close();
+        }
+        if (mImageReader != null) {
+            mImageReader.close();
+            mImageReader.setOnImageAvailableListener(null, null);
+        }
+        if (virtualDisplay != null) {
+            virtualDisplay.release();
+        }
+        if(mediaProjection != null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mediaProjection.stop();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopScreenShot();
+    }
+    //截屏相关代码 end
 
     /**
      * 设置中间内容布局
@@ -381,8 +512,8 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
 //        }
 
         if (TAG.contains("List4") && !TAG.contains("Of")) {
-            if (EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().unregister(this); //注销事件
+            if (EventBus.getDefault().isRegistered(activity))
+                EventBus.getDefault().unregister(activity); //注销事件
         }
     }
 

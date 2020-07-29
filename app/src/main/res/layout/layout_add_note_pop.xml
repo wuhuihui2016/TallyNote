@@ -33,7 +33,7 @@
                 android:gravity="center_vertical|center"
                 android:text="日账"
                 android:textColor="@color/day_record"
-                android:textSize="@dimen/smalltextSize" />
+                android:textSize="@dimen/littletextSize" />
 
         </LinearLayout>
 
@@ -58,7 +58,7 @@
                 android:gravity="center_vertical|center"
                 android:text="月账"
                 android:textColor="@color/day_record"
-                android:textSize="@dimen/smalltextSize" />
+                android:textSize="@dimen/littletextSize" />
 
         </LinearLayout>
         <LinearLayout
@@ -82,7 +82,7 @@
                 android:gravity="center_vertical|center"
                 android:text="理财"
                 android:textColor="@color/day_record"
-                android:textSize="@dimen/smalltextSize" />
+                android:textSize="@dimen/littletextSize" />
 
         </LinearLayout>
 
@@ -108,7 +108,7 @@
                 android:gravity="center_vertical|center"
                 android:text="备忘录"
                 android:textColor="@color/day_record"
-                android:textSize="@dimen/smalltextSize" />
+                android:textSize="@dimen/littletextSize" />
 
         </LinearLayout>
 
@@ -134,7 +134,33 @@
                 android:gravity="center_vertical|center"
                 android:text="记事本"
                 android:textColor="@color/day_record"
-                android:textSize="@dimen/smalltextSize" />
+                android:textSize="@dimen/littletextSize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/screenShot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/coming_soon" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center"
+                android:text="截屏"
+                android:textColor="@color/day_record"
+                android:textSize="@dimen/littletextSize" />
 
         </LinearLayout>
     </LinearLayout>

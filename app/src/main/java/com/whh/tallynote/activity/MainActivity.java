@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -79,7 +78,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         //检测权限后显示界面
-        PermissionUtils.checkSDcardPermission(MainActivity.this, new PermissionUtils.OnCheckCallback() {
+        PermissionUtils.checkSDcardPermission(activity, new PermissionUtils.OnCheckCallback() {
             @Override
             public void onCheck(boolean isSucess) {
                 if (isSucess) {
@@ -110,7 +109,7 @@ public class MainActivity extends BaseActivity {
 
 
                 } else {
-                    PermissionUtils.notPermission(MainActivity.this, PermissionUtils.PERMISSIONS_STORAGE);
+                    PermissionUtils.notSDCardPermission(activity);
                     ToastUtils.showToast(context, true, "可能读取SDCard权限未打开，请检查后重试！");
                 }
             }
@@ -198,8 +197,8 @@ public class MainActivity extends BaseActivity {
         if (canShow) {
             Animation animation;
             LayoutAnimationController controller;
-            if (isShow) animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_show);
-            else animation = AnimationUtils.loadAnimation(this, R.anim.tabbar_hidden);
+            if (isShow) animation = AnimationUtils.loadAnimation(context, R.anim.tabbar_show);
+            else animation = AnimationUtils.loadAnimation(context, R.anim.tabbar_hidden);
             controller = new LayoutAnimationController(animation);
 
             app_bottom.setLayoutAnimation(controller);// 设置动画
@@ -222,7 +221,7 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                ToastUtils.showToast(this, true, "再按一次退出程序");
+                ToastUtils.showToast(activity, true, "再按一次退出程序");
                 mExitTime = System.currentTimeMillis();
             } else {
                 finish();

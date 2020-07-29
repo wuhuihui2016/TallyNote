@@ -289,10 +289,10 @@ public class SetOrCheckPwdActivity extends BaseActivity {
             //重回界面不输入密码退出APP
             if (getIntent().hasExtra(ContansUtils.ISBACK)) {
                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                    ToastUtils.showToast(this, true, "再按一次退出程序");
+                    ToastUtils.showToast(activity, true, "再按一次退出程序");
                     mExitTime = System.currentTimeMillis();
                 } else {
-                    AppManager.getAppManager().AppExit(this);
+                    AppManager.getAppManager().AppExit(activity);
                 }
                 return true;
             }

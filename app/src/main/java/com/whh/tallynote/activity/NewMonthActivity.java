@@ -335,8 +335,8 @@ public class NewMonthActivity extends BaseActivity {
             popupWindow.showAtLocation(findViewById(R.id.month_layout), Gravity.CENTER, 0, -300);
 
             TextView info = (TextView) layout.findViewById(R.id.info);
-            if (isEdit) info.setVisibility(View.GONE);
             info.setText("工资：" + StringUtils.formatePrice(salaryStr) + "元，是否转存小金库？");
+            if (isEdit) info.setText(isEditMonthNote.getRemark().split("\n其他说明：")[0]);
             final EditText editText1 = (EditText) layout.findViewById(R.id.editText1); //微信
             final EditText editText2 = (EditText) layout.findViewById(R.id.editText2); //支付宝
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3); //京东小金库
