@@ -136,11 +136,15 @@ public class NewMonthActivity extends BaseActivity {
                 String actual_balance = StringUtils.formatePrice(actual_balanceEt.getText().toString());
                 String income = StringUtils.formatePrice(incomeEt.getText().toString());
                 String duration = durationEt.getText().toString();
+                if (!TextUtils.isEmpty(duration) && duration.split("-").length != 2) {
+                    ToastUtils.showErrorLong(activity, "月结时段格式不正确！");
+                    return;
+                }
+
                 String remark = remarkEt.getText().toString();
 
-                if (!TextUtils.isEmpty(last_balance) && !TextUtils.isEmpty(pay) &&
-                        !TextUtils.isEmpty(salary) && !TextUtils.isEmpty(balance)
-                        && !TextUtils.isEmpty(actual_balance) && !TextUtils.isEmpty(duration)) {
+                if (!TextUtils.isEmpty(last_balance) && !TextUtils.isEmpty(pay) && !TextUtils.isEmpty(salary)
+                        && !TextUtils.isEmpty(balance) && !TextUtils.isEmpty(actual_balance)) {
                     final MonthNote monthNote = new MonthNote(last_balance, pay, salary, income,
                             balance, actual_balance, duration, currAssetsInfo.toString() + "\n其他说明：" + remark, DateUtils.formatDateTime());
                     LogUtils.i("commit", monthNote.toString());

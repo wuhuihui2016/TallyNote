@@ -33,10 +33,10 @@ public class FileUtils {
 
     private static final String TAG = "FileUtils";
 
-    public static final String dirPath = Environment.getExternalStorageDirectory() + "/ATallyNote";//项目根目录
-    public static final String excelPath = dirPath + "/excel/";//excel根目录
-    public static final String logPath = dirPath + "/crash/";//log根目录
-    public static final String screenShot = dirPath + "/screenShot/";//截屏根目录
+    public static final String dirPath = Environment.getExternalStorageDirectory() + "/ATallyNote"; //项目根目录
+    public static final String excelPath = dirPath + "/excel/"; //excel根目录
+    public static final String crashPath = dirPath + "/crash/"; //crash根目录
+    public static final String screenShot = dirPath + "/screenShot/"; //截屏根目录
 
     /**
      * 获取APP文件夹
@@ -67,7 +67,7 @@ public class FileUtils {
      */
     public static File getLogDir() {
         if (isSDCardAvailable()) {
-            return new File(logPath);
+            return new File(crashPath);
         } else return null;
     }
 
