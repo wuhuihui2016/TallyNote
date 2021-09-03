@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 250
-        versionName "2020.11.17"
+        versionName "2021.09.03"
     }
 
     signingConfigs {
@@ -43,6 +43,13 @@ android {
                     defaultConfig.versionName + "_" + defaultConfig.versionCode + "_" +
                     buildType.name + ".apk"
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
 }

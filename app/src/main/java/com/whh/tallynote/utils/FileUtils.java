@@ -23,6 +23,10 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -400,11 +404,45 @@ public class FileUtils {
             while ((bytesRead = input.read(buf)) > 0) {
                 output.write(buf, 0, bytesRead);
             }
+
+            delOldExcelDir();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 删除旧文件夹，且仅保留最近三个文件夹
+     */
+    private static void delOldExcelDir() {
+        File excelDir = getExcelDir();
+        File[] files = excelDir.listFiles();
+        List<File> fileList = new ArrayList<>();
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory()) fileList.add(files[i]);
+        }
+        Collections.sort(fileList, new Comparator<File>() {
+            @Override
+            public int compare(File lhs, File rhs) {
+                //JDK1.7 在sort排序中重写的方法一定要满足:可逆比较
+                if (lhs.getName().compareTo(rhs.getName()) < 0) {
+                    return 1;
+                }
+                if (lhs.getName().compareTo(rhs.getName()) > 0) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
+
+        for (int i = 0; i < fileList.size(); i++) {
+            if (i > 2) {
+                delete(fileList.get(i));
+            }
+        }
+
     }
 
 

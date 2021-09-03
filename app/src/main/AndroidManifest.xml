@@ -15,6 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
         android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
         <!-- APP间读取共享文件需要配置provider -->
