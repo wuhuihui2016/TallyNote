@@ -110,10 +110,10 @@ public class DayNoteDBHandle extends DBHandle {
             cursor = query(DBCommon.DayNoteRecordColumns.TABLE_NAME_DAYNOTE, DBCommon.DayNoteRecordColumns.projects,
                     null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)));
+                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)));
                 list.add(dayNote);
             }
         } catch (Exception e) {
@@ -180,11 +180,11 @@ public class DayNoteDBHandle extends DBHandle {
             cursor = query(DBCommon.DayNoteRecordColumns.TABLE_NAME_DAYNOTE_HISTORY, DBCommon.DayNoteRecordColumns.projects_history,
                     null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_DURATION)));
+                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_DURATION)));
                 list.add(dayNote);
             }
         } catch (Exception e) {
@@ -210,11 +210,11 @@ public class DayNoteDBHandle extends DBHandle {
             cursor = query(DBCommon.DayNoteRecordColumns.TABLE_NAME_DAYNOTE_HISTORY, DBCommon.DayNoteRecordColumns.projects_history,
                     "duration = ?", new String[]{duration}, null, null, null, null);
             while (cursor.moveToNext()) {
-                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_DURATION)));
+                DayNote dayNote = new DayNote(cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_USETYPE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_MONEY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_REMARK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_TIME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.DayNoteRecordColumns.COLUMN_DAYNOTE_DURATION)));
                 list.add(dayNote);
             }
         } catch (Exception e) {

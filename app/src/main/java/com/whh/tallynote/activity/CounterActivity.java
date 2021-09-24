@@ -18,7 +18,7 @@ import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DelayTask;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.ViewUtils;
@@ -58,21 +58,21 @@ public class CounterActivity extends BaseActivity {
         setRightBtnListener("增删", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtils.showMsgDialog(activity, "选择操作", "录入", new DialogListener() {
+                DialogUtils.showMsgDialog(activity, "选择操作", "录入", new MyClickListener() {
                     @Override
                     public void onClick() {
                         initPopupWindow();
                     }
-                }, "清除", new DialogListener() {
+                }, "清除", new MyClickListener() {
                     @Override
                     public void onClick() {
-                        DialogUtils.showMsgDialog(activity, "确认清除数据？", "清除", new DialogListener() {
+                        DialogUtils.showMsgDialog(activity, "确认清除数据？", "清除", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 ContansUtils.remove(ContansUtils.COUNTER);
                                 refreshView();
                             }
-                        }, "取消", new DialogListener() {
+                        }, "取消", new MyClickListener() {
                             @Override
                             public void onClick() {
 

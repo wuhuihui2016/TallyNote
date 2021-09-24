@@ -38,7 +38,7 @@ import com.whh.tallynote.activity.NewNotePadActivity;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.BitmapUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -331,13 +331,13 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
                 public void onClick(View v) {
                     if (TAG.contains("New")) {
                         DialogUtils.showMsgDialog(activity, "退出本次编辑",
-                                "退出", new DialogListener() {
+                                "退出", new MyClickListener() {
                                     @Override
                                     public void onClick() {
                                         finish();
                                     }
                                 },
-                                "取消", new DialogListener() {
+                                "取消", new MyClickListener() {
                                     @Override
                                     public void onClick() {
 
@@ -428,13 +428,13 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         public void callback(boolean sucess, final String fileName) {
             if (sucess) {
                 DialogUtils.showMsgDialog(activity, "导出成功\n" + fileName,
-                        "查看", new DialogListener() {
+                        "查看", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 WPSUtils.openFile(context, fileName);
                             }
                         },
-                        "忽略", new DialogListener() {
+                        "忽略", new MyClickListener() {
                             @Override
                             public void onClick() {
                             }
@@ -462,13 +462,13 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         if (isOtherActivity()) {
             if (TAG.contains("New")) {
                 DialogUtils.showMsgDialog(activity, "退出本次编辑",
-                        "退出", new DialogListener() {
+                        "退出", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 finish();
                             }
                         },
-                        "取消", new DialogListener() {
+                        "取消", new MyClickListener() {
                             @Override
                             public void onClick() {
 

@@ -1,20 +1,25 @@
 package com.whh.tallynote.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.model.NotePad;
+import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 
+import java.lang.ref.SoftReference;
 import java.util.List;
 
 /**
@@ -31,7 +36,6 @@ public class NotePadAdapter extends BaseAdapter {
         this.notePads = notePads;
         this.isShowTag = isShowTag;
     }
-
 
     @Override
     public int getCount() {
@@ -57,6 +61,10 @@ public class NotePadAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.words = (TextView) convertView.findViewById(R.id.words);
+            viewHolder.image_layout = (LinearLayout) convertView.findViewById(R.id.image_layout);
+            viewHolder.imageView1 = (ImageView) convertView.findViewById(R.id.imageView1);
+            viewHolder.imageView2 = (ImageView) convertView.findViewById(R.id.imageView2);
+            viewHolder.imageView3 = (ImageView) convertView.findViewById(R.id.imageView3);
             viewHolder.del = (TextView) convertView.findViewById(R.id.del);
 
             convertView.setTag(viewHolder);
@@ -74,12 +82,27 @@ public class NotePadAdapter extends BaseAdapter {
             content = notePad.getWords();
         }
         viewHolder.words.setText(content);
+        if (notePad.getImgCount() == 0) {
+            viewHolder.image_layout.setVisibility(View.GONE);
+        } else {
+            viewHolder.image_layout.setVisibility(View.VISIBLE);
+            SoftReference<Bitmap> bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg1()));
+            viewHolder.imageView1.setImageBitmap(bitmapRef.get());
+            if (notePad.getImgCount() > 1) {
+                bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg2()));
+                viewHolder.imageView2.setImageBitmap(bitmapRef.get());
+            }
+            if (notePad.getImgCount() > 2) {
+                bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg3()));
+                viewHolder.imageView3.setImageBitmap(bitmapRef.get());
+            }
+        }
         viewHolder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
-                        "删除", new DialogListener() {
+                        "删除", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 MyApp.notePadDBHandle.delNotePad(notePad);
@@ -87,7 +110,7 @@ public class NotePadAdapter extends BaseAdapter {
                                 notePads.remove(notePad);
                                 notifyDataSetChanged();
                             }
-                        }, "取消", new DialogListener() {
+                        }, "取消", new MyClickListener() {
                             @Override
                             public void onClick() {
                             }
@@ -100,5 +123,7 @@ public class NotePadAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView time, words, del;
+        LinearLayout image_layout;
+        ImageView imageView1, imageView2, imageView3;
     }
 }

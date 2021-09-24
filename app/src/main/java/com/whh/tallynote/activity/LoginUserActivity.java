@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.whh.tallynote.R;
 import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
+import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.ContansUtils;
-import com.whh.tallynote.utils.DesEncryptUtils;
 import com.whh.tallynote.utils.PermissionUtils;
 import com.whh.tallynote.utils.StringUtils;
 import com.whh.tallynote.utils.ToastUtils;
@@ -78,13 +78,9 @@ public class LoginUserActivity extends BaseActivity {
                     return;
                 }
 
-                try {
-                    ContansUtils.put(ContansUtils.NICKNAME, nickName);
-                    ContansUtils.put(ContansUtils.PHONENUM, phoneNum);
-                    ContansUtils.put(ContansUtils.SECRETKEY, DesEncryptUtils.encode(secretKey)); //加密保存密钥
-                } catch (DesEncryptUtils.CodecException e) {
-                    e.printStackTrace();
-                }
+                ContansUtils.put(ContansUtils.NICKNAME, nickName);
+                ContansUtils.put(ContansUtils.PHONENUM, phoneNum);
+                ContansUtils.put(ContansUtils.SECRETKEY, Base64Utils.encodeToString(secretKey)); //加密保存密钥
                 finish();
                 break;
         }

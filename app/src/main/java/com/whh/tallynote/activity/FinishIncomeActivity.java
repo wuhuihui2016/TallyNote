@@ -11,7 +11,7 @@ import com.whh.tallynote.R;
 import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.utils.ContansUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -64,7 +64,7 @@ public class FinishIncomeActivity extends BaseActivity {
                                     "\n投资说明：" + incomeNote.getRemark() +
                                     "\n最终提现：" + StringUtils.showPrice(incomeNote.getFinalCash()) +
                                     "\n提现去处：" + incomeNote.getFinalCashGo(),
-                            "提交", new DialogListener() {
+                            "提交", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.incomeNoteDBHandle.finishIncome(incomeNote);
@@ -74,7 +74,7 @@ public class FinishIncomeActivity extends BaseActivity {
                                     finish();
                                 }
                             },
-                            "返回查看", new DialogListener() {
+                            "返回查看", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }

@@ -64,15 +64,15 @@ public class MonthNoteDBHandle extends DBHandle {
             cursor = query(DBCommon.MonthNoteRecordColumns.TABLE_NAME_MONTHNOTE, DBCommon.MonthNoteRecordColumns.projects,
                     null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                MonthNote monthNote = new MonthNote(cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_LASTBALANCE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_PAY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_SALARY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_INCOME)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_BALANCE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_ACTUALBALANCE)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_DURATION)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_REMARK)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME)));
+                MonthNote monthNote = new MonthNote(cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_LASTBALANCE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_PAY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_SALARY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_INCOME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_BALANCE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_ACTUALBALANCE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_DURATION)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_REMARK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME)));
                 list.add(monthNote);
             }
         } catch (Exception e) {
@@ -135,15 +135,15 @@ public class MonthNoteDBHandle extends DBHandle {
         Cursor cursor = rawQuery("select * from " + DBCommon.MonthNoteRecordColumns.TABLE_NAME_MONTHNOTE +
                 " LIMIT 1 OFFSET " + (MyApp.dbHandle.getCount4Record(ContansUtils.MONTH) - 1), new String[]{});
         if (cursor != null && cursor.moveToFirst()) {
-            return new MonthNote(cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_LASTBALANCE)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_PAY)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_SALARY)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_INCOME)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_BALANCE)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_ACTUALBALANCE)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_DURATION)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_REMARK)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME)));
+            return new MonthNote(cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_LASTBALANCE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_PAY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_SALARY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_INCOME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_BALANCE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_ACTUALBALANCE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_DURATION)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_REMARK)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MonthNoteRecordColumns.COLUMN_MONTHNOTE_TIME)));
         }
         return null;
     }

@@ -3,6 +3,8 @@ package com.whh.tallynote.utils;
 import android.text.TextUtils;
 
 import com.whh.tallynote.MyApp;
+import com.whh.tallynote.database.DBCommon;
+import com.whh.tallynote.database.DBHandle;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.model.MemoNote;
@@ -309,15 +311,10 @@ public class ExcelUtils {
     private static void writeSheet(int type, WritableSheet sheet) {
         try {
             String tag = "writeSheet";
-            dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
-            dayNotes_historys = MyApp.dayNoteDBHandle.getDayNotes4History();
-            monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
-            incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
-            memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
-            notePads = MyApp.notePadDBHandle.getNotePads();
 
             switch (type) {
                 case ContansUtils.DAY:
+                    dayNotes = MyApp.dayNoteDBHandle.getDayNotes();
                     LogUtils.i(tag, dayNotes.size() + "---" + dayNotes.toString());
                     if (dayNotes.size() > 0) {
                         for (int i = 0; i < dayNotes.size(); i++) {
@@ -330,6 +327,7 @@ public class ExcelUtils {
                     break;
 
                 case ContansUtils.MONTH:
+                    monthNotes = MyApp.monthNoteDBHandle.getMonthNotes();
                     LogUtils.i(tag, monthNotes.size() + "---" + monthNotes.toString());
                     if (monthNotes.size() > 0) {
                         for (int i = 0; i < monthNotes.size(); i++) {
@@ -347,6 +345,7 @@ public class ExcelUtils {
                     break;
 
                 case ContansUtils.INCOME:
+                    incomeNotes = MyApp.incomeNoteDBHandle.getIncomeNotes();
                     LogUtils.i(tag, incomeNotes.size() + "---" + incomeNotes.toString());
                     if (incomeNotes.size() > 0) {
                         for (int i = 0; i < incomeNotes.size(); i++) {
@@ -368,6 +367,7 @@ public class ExcelUtils {
                     break;
 
                 case ContansUtils.DAY_HISTORY:
+                    dayNotes_historys = MyApp.dayNoteDBHandle.getDayNotes4History();
                     LogUtils.i(tag, dayNotes_historys.size() + "---" + dayNotes_historys.toString());
                     if (dayNotes_historys.size() > 0) {
                         for (int i = 0; i < dayNotes_historys.size(); i++) {
@@ -381,6 +381,7 @@ public class ExcelUtils {
                     break;
 
                 case ContansUtils.MEMO:
+                    memoNotes = MyApp.memoNoteDBHandle.getMemoNotes();
                     LogUtils.i(tag, memoNotes.size() + "---" + memoNotes.toString());
                     if (memoNotes.size() > 0) {
                         for (int i = 0; i < memoNotes.size(); i++) {
@@ -392,20 +393,54 @@ public class ExcelUtils {
                     }
                     break;
                 case ContansUtils.NOTEPAD:
+                    notePads = MyApp.notePadDBHandle.getNotePads();
                     LogUtils.i(tag, notePads.size() + "---" + notePads.toString());
                     if (notePads.size() > 0) {
                         for (int i = 0; i < notePads.size(); i++) {
-                            String tagStr = NotePad.getTagList().get(notePads.get(i).getTag());
+                            NotePad notePad = notePads.get(i);
+                            String tagStr = NotePad.getTagList().get(notePad.getTag());
                             sheet.addCell(new Label(0, i + 1, tagStr));
-                            sheet.addCell(new Label(1, i + 1, notePads.get(i).getWords()));
-                            sheet.addCell(new Label(2, i + 1, notePads.get(i).getTime()));
+
+                            //图片数量
+                            sheet.addCell(new Label(1, i + 1, notePad.getImgCount() + ""));
+
+                            if (notePad.getImgCount() > 0) {
+                                //图片base64编码后，内容过长，不适合放入excel的单元格；
+                                //另保存为text.dat文件(/ATallyNote/excel/notepadimg/...img.dat)，在单元格中保留该文件路径
+                                File notpadImgDir = new File(FileUtils.notePadImg);
+                                if (!notpadImgDir.exists()) notpadImgDir.mkdirs();
+                                String imgDirPath = FileUtils.notePadImg + notePad.getTime() + "_";
+
+                                //图1
+                                byte[] img1 = notePad.getImg1();
+                                if (img1 != null && img1.length > 0) {
+                                    FileUtils.writeTextFile(imgDirPath + "img1.dat", new String(img1));
+                                    sheet.addCell(new Label(2, i + 1, imgDirPath + "img1.dat"));
+                                }
+
+                                //图2
+                                byte[] img2 = notePad.getImg2();
+                                if (img2 != null && img2.length > 0) {
+                                    FileUtils.writeTextFile(imgDirPath + "img2.dat", new String(img2));
+                                    sheet.addCell(new Label(3, i + 1, imgDirPath + "img2.dat"));
+                                }
+
+                                //图3
+                                byte[] img3 = notePad.getImg3();
+                                if (img3 != null && img3.length > 0) {
+                                    FileUtils.writeTextFile(imgDirPath + "img3.dat", new String(img3));
+                                    sheet.addCell(new Label(4, i + 1, imgDirPath + "img3.dat"));
+                                }
+                            }
+
+                            sheet.addCell(new Label(5, i + 1, notePad.getWords()));
+                            sheet.addCell(new Label(6, i + 1, notePad.getTime()));
                         }
                     }
                     break;
-
             }
         } catch (Exception e) {
-            LogUtils.e(TAG + "-writeSheet", e.toString());
+            LogUtils.e(TAG + "-writeSheet", "exception：" + e.toString());
         }
     }
 
@@ -419,34 +454,45 @@ public class ExcelUtils {
     /**
      * 导入本地Excel文件到数据库
      * 如果表单中没有数据不覆盖已有数据
+     * tally_note_20210825130712.xml
      */
     public static void importExcel(final String filePath, final ICallBackImport callBackImport) {
+        LogUtils.i(TAG, "importExcel...filePath=" + filePath);
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 获取当前文件的版本号
+                String version = "1";
+                String[] split = filePath.split("_");
+                if (split.length > 3) version = split[2];
 
-                if (filePath.contains(ContansUtils.tallynote_file))
+                if (filePath.contains(ContansUtils.tallynote_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.ALL); //清空所有表数据
 
-                else if (filePath.contains(ContansUtils.day_file))
+                else if (filePath.contains(ContansUtils.day_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.DAY); //清空日账表数据
 
-                else if (filePath.contains(ContansUtils.day_history_file))
+                else if (filePath.contains(ContansUtils.day_history_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.DAY_HISTORY); //清空历史日账表数据
 
-                else if (filePath.contains(ContansUtils.month_file))
+                else if (filePath.contains(ContansUtils.month_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.MONTH); //清空月账表数据
 
-                else if (filePath.contains(ContansUtils.income_file))
+                else if (filePath.contains(ContansUtils.income_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.INCOME); //清空理财表数据
 
-                else if (filePath.contains(ContansUtils.memo_file))
+                else if (filePath.contains(ContansUtils.memo_file0))
                     MyApp.dbHandle.clearTableData(ContansUtils.MEMO); //清空备忘录表数据
 
-                else if (filePath.contains(ContansUtils.notepad_file))
+                else if (filePath.contains(ContansUtils.notepad_file0)) {
                     MyApp.dbHandle.clearTableData(ContansUtils.NOTEPAD); //清空记事本表数据
+                    FileUtils.delete(new File(FileUtils.notePadImg)); //清空已有的记事本图片
+                }
 
-                else callBackImport.callback("文件内容不正确！");
+                else {
+                    callBackImport.callback("文件内容不正确！");
+                    return;
+                }
 
                 FileUtils.backupTallyNoteFile(); //导入前先备份已有账本数据
                 String tag = "importExcel";
@@ -574,9 +620,30 @@ public class ExcelUtils {
                                 for (int j = 1; j < rows; j++) {//行
                                     if (!TextUtils.isEmpty(sheet.getCell(0, j).getContents())) {
                                         String tagStr = sheet.getCell(0, j).getContents();
-                                        notePads.add(new NotePad(NotePad.getTag(tagStr),
-                                                sheet.getCell(1, j).getContents(), sheet.getCell(2, j).getContents())
-                                        );
+                                        if (version.equals("1")) { //最初版本，记事本仅有标签、内容、时间3个字段
+                                            notePads.add(new NotePad(NotePad.getTag(tagStr),
+                                                    sheet.getCell(1, j).getContents(), sheet.getCell(2, j).getContents())
+                                            );
+                                        } else if (version.equals("2")) {
+                                            //当文件版本为2时，记事本中新增了图片发表(新增了图片数量、图片1、图片2、图片3等字段)，需解析其中的图片文件
+                                            byte[] img1 = new byte[0], img2 = img1, img3 = img1;
+                                            if (!TextUtils.isEmpty(sheet.getCell(2, j).getContents())) {
+                                                img1 = FileUtils.readTextFile(sheet.getCell(2, j).getContents()).getBytes();
+                                            }
+                                            if (!TextUtils.isEmpty(sheet.getCell(3, j).getContents())) {
+                                                img2 = FileUtils.readTextFile(sheet.getCell(3, j).getContents()).getBytes();
+                                            }
+                                            if (!TextUtils.isEmpty(sheet.getCell(4, j).getContents())) {
+                                                img3 = FileUtils.readTextFile(sheet.getCell(4, j).getContents()).getBytes();
+                                            }
+
+                                            notePads.add(new NotePad(NotePad.getTag(tagStr),
+                                                    Integer.parseInt(sheet.getCell(1, j).getContents()),
+                                                    img1, img2, img3,
+                                                    sheet.getCell(5, j).getContents(),
+                                                    sheet.getCell(6, j).getContents())
+                                            );
+                                        }
                                     }
                                 }
                                 LogUtils.i(tag, notePads.size() + "---" + notePads.toString());

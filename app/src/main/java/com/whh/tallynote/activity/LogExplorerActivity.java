@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.FileExplorerAdapter;
 import com.whh.tallynote.base.BaseActivity;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.FileUtils;
 import com.whh.tallynote.utils.SystemUtils;
@@ -213,7 +213,7 @@ public class LogExplorerActivity extends BaseActivity {
                 public void onClick(View v) {
                     if (adapter.selList.size() > 0) {
                         DialogUtils.showMsgDialog(activity, "是否确定删除选定的" + adapter.selList.size() + "文件",
-                                "删除", new DialogListener() {
+                                "删除", new MyClickListener() {
                                     @Override
                                     public void onClick() {
                                         for (int i = 0; i < adapter.selList.size(); i++)
@@ -222,7 +222,7 @@ public class LogExplorerActivity extends BaseActivity {
                                         choose_layout.setVisibility(View.GONE);
                                         init();
                                     }
-                                }, "取消", new DialogListener() {
+                                }, "取消", new MyClickListener() {
                                     @Override
                                     public void onClick() {
                                     }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.whh.tallynote.utils.LogUtils;
+
 
 /**
  * 数据库操作类
@@ -11,6 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static final String TAG = "DBHelper";
     private static final String DATABASE_NAME = "tally_note.db";
     private volatile static DBHelper sInstance;
 
@@ -36,26 +39,35 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DBCommon.MonthNoteRecordColumns.SQL_CREATE_MONTHNOTE_TABLE);
         db.execSQL(DBCommon.IncomeNoteRecordColumns.SQL_CREATE_INCOMENOTE_TABLE);
         db.execSQL(DBCommon.MemoNoteRecordColumns.SQL_CREATE_MEMO_TABLE);
-        db.execSQL(DBCommon.NotePadRecordColumns.SQL_CREATE_NOTEPAD_TABLE);
+//        db.execSQL(DBCommon.NotePadRecordColumns.SQL_CREATE_NOTEPAD_TABLE);
+        db.execSQL(DBCommon.NotePadRecordColumns.SQL_CREATE_NOTEPAD_TABLE2);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //TODO 测试数据库升级，新增数据表中的列
-//        if (oldVersion == 3) {//如果版本是3.0的，升级下面的内容或修改
-//            LogUtils.i("whh1028", "onUpgrade=>你在没有卸载的情况下，在线更新了版本3.0");
-//            String sql_upgrade = "alter table identify_record add zyycjdm text";
-//            db.execSQL(sql_upgrade);
-//            sql_upgrade = "alter table identify_record add zyqsqk text";
-//            db.execSQL(sql_upgrade);
-//            sql_upgrade = "alter table identify_record add yyqsqk text";
-//            db.execSQL(sql_upgrade);
-//
-//        } else if (oldVersion == 4) {
-//            LogUtils.i("whh1028", "onUpgrade=>你在没有卸载的情况下，在线更新了版本4.0");
-//            String sql_upgrade = "alter table identify_record add sbbzpf text";
-//            db.execSQL(sql_upgrade);
-//        }
+        LogUtils.e(TAG, "oldVersion : " + oldVersion + ",newVersion : " + newVersion);
+        for (int i = oldVersion + 1; i <= newVersion; i++) {
+            switch (i) {
+                case 2:
+                    upgradeToVersion2(db);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+    }
+
+    /**
+     * 数据库升级到版本2：
+     * 记事本表增加 imgcount图片张数,img1,img2,img3 字段
+     */
+    private void upgradeToVersion2(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE note_pad ADD COLUMN imgcount integer");
+        db.execSQL("ALTER TABLE note_pad ADD COLUMN img2 BLOB");
+        db.execSQL("ALTER TABLE note_pad ADD COLUMN img3 BLOB");
+        db.execSQL("ALTER TABLE note_pad ADD COLUMN img3 BLOB");
     }
 }

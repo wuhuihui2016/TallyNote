@@ -1,20 +1,26 @@
 package com.whh.tallynote.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whh.tallynote.MyApp;
 import com.whh.tallynote.R;
 import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.NotePad;
+import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.lang.ref.SoftReference;
 
 import butterknife.BindView;
 
@@ -30,6 +36,14 @@ public class NotePadDetailActivity extends BaseActivity {
     public TextView time;
     @BindView(R.id.words)
     public TextView words;
+    @BindView(R.id.image_layout)
+    public LinearLayout image_layout;
+    @BindView(R.id.imageView1)
+    public ImageView imageView1;
+    @BindView(R.id.imageView2)
+    public ImageView imageView2;
+    @BindView(R.id.imageView3)
+    public ImageView imageView3;
 
     private NotePad notePad;
 
@@ -47,12 +61,28 @@ public class NotePadDetailActivity extends BaseActivity {
             time.setText(DateUtils.showTime4Detail(notePad.getTime()));
             words.setText(notePad.getWords());
 
+            if (notePad.getImgCount() == 0) {
+                image_layout.setVisibility(View.GONE);
+            } else {
+                image_layout.setVisibility(View.VISIBLE);
+                SoftReference<Bitmap> bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg1()));
+                imageView1.setImageBitmap(bitmapRef.get());
+                if (notePad.getImgCount() > 1) {
+                    bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg2()));
+                    imageView2.setImageBitmap(bitmapRef.get());
+                }
+                if (notePad.getImgCount() > 2) {
+                    bitmapRef = new SoftReference<>(Base64Utils.decode2Bitmap(notePad.getImg3()));
+                    imageView3.setImageBitmap(bitmapRef.get());
+                }
+            }
+
             setRightImgBtnListener(R.drawable.note_delete, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
-                            "删除", new DialogListener() {
+                            "删除", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.notePadDBHandle.delNotePad(notePad);
@@ -61,7 +91,7 @@ public class NotePadDetailActivity extends BaseActivity {
                                     finish();
 
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }

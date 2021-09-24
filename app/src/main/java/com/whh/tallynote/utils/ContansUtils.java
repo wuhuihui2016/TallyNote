@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.whh.tallynote.database.DBCommon;
+
 import java.util.Map;
 
 /**
@@ -27,21 +29,32 @@ public class ContansUtils {
 
     public static final String NICKNAME = "nickName"; //登录时设置的昵称，用于显示在个人主页
     public static final String PHONENUM = "phoneNum"; //登录时设置的手机号码，用于显示在个人主页
-    public static final String SECRETKEY = "secretKey"; //登录时设置的密钥，作为找回密码的钥匙，需要加密存储
+    public static final String SECRETKEY = "secretKey"; //注册时设置的密钥，作为找回密码的钥匙，需要加密存储
 
     public static final String CHECKWAY = "checkWay"; //验证方式
-    public static final String PWDKEY = "pwdKey"; //验证密码
+    public static final String PWDKEY = "pwdKey"; //验证密码，进入应用需要验证的密码
     public static final String GESTURE = "gesture"; //手势密码
     public static final String RESETPWD = "resetPwd"; //重置密码
 
     public static final String ISBACK = "isBack"; //是否在后台运行的标志
+    public static boolean pauseCheckBack = false; //是否中止判断应用的前后台运行，如果中止，用完需恢复状态位
     public static final String INCOMEREMINDER = "incomeReminder"; //记录当天日期，用于理财到期通知，当天仅显示一次通知
     public static final String COUNTER = "counter"; //计数器功能
 
-    //文件名
-    public static final String day_file = "day_note_", month_file = "month_note_",
-            income_file = "income_note_", tallynote_file = "tally_note_",
-            day_history_file = "day_note_history_", memo_file = "memo_note_", notepad_file = "notepad_";
+
+    //文件名(最初的文件名)
+    public static final String day_file0 = "day_note_", month_file0 = "month_note_",
+            income_file0 = "income_note_", day_history_file0 = "day_note_history_",
+            memo_file0 = "memo_note_", notepad_file0 = "notepad_", tallynote_file0 = "tally_note_";
+
+    //文件名(20210917 add DBVersion to index update database)
+    public static final String day_file = day_file0 + DBCommon.VERSION + "_",
+            month_file = month_file0 + DBCommon.VERSION + "_",
+            income_file = income_file0 + DBCommon.VERSION + "_",
+            day_history_file = day_history_file0 + DBCommon.VERSION + "_",
+            memo_file = memo_file0 + DBCommon.VERSION + "_",
+            notepad_file = notepad_file0 + DBCommon.VERSION + "_",
+            tallynote_file = tallynote_file0 + DBCommon.VERSION + "_";
 
     //表单名
     public static final String day_sheetName = "日账单", month_sheetName = "月账单", income_sheetName = "理财记录",
@@ -55,7 +68,7 @@ public class ContansUtils {
     public static String[] incomeTitle = {"投入金额(万元)", "预期年化（%）", "投资期限（天）", "投资时段", "拟日收益（元/万天）", "最终收益（元）",
             "最终提现（元）", "提现去处", "完成状态", "投资说明", "记录时间"};
     public static String[] memoTitle = {"内容", "状态", "记录时间"};
-    public static String[] notepadTitle = {"标签", "内容", "记录时间"};
+    public static String[] notepadTitle = {"标签", "图片数量", "图片1", "图片2", "图片3", "内容", "记录时间"};
 
     /**
      * 是否为手势验证方式

@@ -39,6 +39,10 @@ public class NotePadDBHandle extends DBHandle {
 
         ContentValues value = new ContentValues();
         value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TAG, notePad.getTag());
+        value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMGCOUNT, notePad.getImgCount());
+        value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG1, notePad.getImg1());
+        value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG2, notePad.getImg2());
+        value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG3, notePad.getImg3());
         value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_WORDS, notePad.getWords());
         value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TIME, notePad.getTime());
         return insert(DBCommon.NotePadRecordColumns.TABLE_NAME_NOTEPAD, value);
@@ -50,7 +54,6 @@ public class NotePadDBHandle extends DBHandle {
      * @param notePad
      */
     public void delNotePad(NotePad notePad) {
-        ContentValues value = new ContentValues();
         delete(DBCommon.NotePadRecordColumns.TABLE_NAME_NOTEPAD, "words = ? and time = ?",
                 new String[]{notePad.getWords(), notePad.getTime()});
     }
@@ -68,9 +71,13 @@ public class NotePadDBHandle extends DBHandle {
             cursor = query(DBCommon.NotePadRecordColumns.TABLE_NAME_NOTEPAD, DBCommon.NotePadRecordColumns.projects,
                     null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                NotePad notePad = new NotePad(cursor.getInt(cursor.getColumnIndex(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TAG)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_WORDS)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TIME)));
+                NotePad notePad = new NotePad(cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TAG)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMGCOUNT)),
+                        cursor.getBlob(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG1)),
+                        cursor.getBlob(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG2)),
+                        cursor.getBlob(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG3)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_WORDS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TIME)));
                 notePads.add(notePad);
             }
         } catch (Exception e) {
@@ -94,6 +101,10 @@ public class NotePadDBHandle extends DBHandle {
             ContentValues value = new ContentValues();
             NotePad incomeNote = incomeNotes.get(i);
             value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TAG, incomeNote.getTag());
+            value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMGCOUNT, incomeNote.getImgCount());
+            value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG1, incomeNote.getImg1());
+            value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG2, incomeNote.getImg2());
+            value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_IMG3, incomeNote.getImg3());
             value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_WORDS, incomeNote.getWords());
             value.put(DBCommon.NotePadRecordColumns.COLUMN_NOTEPAD_TIME, incomeNote.getTime());
             cv[i] = value;

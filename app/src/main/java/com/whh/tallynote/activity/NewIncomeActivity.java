@@ -13,7 +13,7 @@ import com.whh.tallynote.model.IncomeNote;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -82,7 +82,7 @@ public class NewIncomeActivity extends BaseActivity {
                                     " \n拟日收益：" + incomeNote.getDayIncome() +
                                     " 元/万/天\n最终收益：" + StringUtils.showPrice(incomeNote.getFinalIncome()) +
                                     "\n投资说明：" + incomeNote.getRemark(),
-                            "提交", new DialogListener() {
+                            "提交", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.incomeNoteDBHandle.saveIncomeNote(incomeNote);
@@ -95,7 +95,7 @@ public class NewIncomeActivity extends BaseActivity {
                                         }
                                         finish();
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -135,7 +135,7 @@ public class NewIncomeActivity extends BaseActivity {
                     !TextUtils.isEmpty(daysStr)) {
                 DialogUtils.showMsgDialog(activity,
                         "计算日收益：\n" + finalIncomeStr + " / " + daysStr + " / " + moneyStr,
-                        "计算", new DialogListener() {
+                        "计算", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 double result = Double.parseDouble(finalIncomeStr) / Double.parseDouble(daysStr)
@@ -143,7 +143,7 @@ public class NewIncomeActivity extends BaseActivity {
                                 DecimalFormat df = new DecimalFormat("0.000");
                                 dayIncomeEt.setText(df.format(result));
                             }
-                        }, "取消", new DialogListener() {
+                        }, "取消", new MyClickListener() {
                             @Override
                             public void onClick() {
                             }

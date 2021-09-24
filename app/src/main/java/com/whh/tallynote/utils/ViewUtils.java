@@ -59,8 +59,7 @@ public class ViewUtils {
     public static DatePickerDialog datePickerDialog;
 
     /**
-     * 日期选择器，
-     *
+     * 日期选择器
      * @param activity
      * @param textView
      * @param days     0为月账单，>0为理财，月账单开始日期自动填充，理财的终止日期自动填充
@@ -72,7 +71,7 @@ public class ViewUtils {
             String curDuration = textView.getText().toString();
             LogUtils.i("curDuration", curDuration + "");
             if (curDuration.length() > 0 && curDuration.endsWith("-")) {
-                if (days > 0) { //如果已经设定天数，则自动计算结束日期
+                if (days > 0) { //如果已经设定天数，则自动计算结束日期(用于理财记录)
                     try {
                         Calendar cal = DateUtils.getAfterDate(curDuration.substring(0, curDuration.length() - 1), days);
                         int year = cal.get(Calendar.YEAR);
@@ -88,10 +87,12 @@ public class ViewUtils {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    Calendar cal = DateUtils.getAfterDate(curDuration.substring(0, curDuration.length() - 1), 20);
+                } else { //不确定间隔天数，用于月账结算
+                    //月账结算的终止时间默认为当天时间
+                    DateUtils.calendar.clear();
+                    DateUtils.calendar = Calendar.getInstance();
                     datePickerDialog = new DatePickerDialog(activity, new MyDateListener(activity, textView, days),
-                            cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                            DateUtils.calendar.get(Calendar.YEAR), DateUtils.calendar.get(Calendar.MONTH), DateUtils.calendar.get(Calendar.DAY_OF_MONTH));
                     datePickerDialog.setTitle("选择日期");
                     datePickerDialog.setMessage("已选起始日期："
                             + curDuration.substring(0, curDuration.length() - 1) + "\n请选择终止日期");
@@ -145,11 +146,11 @@ public class ViewUtils {
                 if (curDuration.endsWith("-")) {
                     String startTime = curDuration.substring(0, curDuration.length() - 1);
                     String endTime = year + month + day;
-                    if (DateUtils.getDaysBetween(startTime, endTime) >= 20) {//起止日期必须间隔20天及以上
+                    if (DateUtils.getDaysBetween(startTime, endTime) >= 10) {//起止日期必须间隔10天及以上
                         textView.setText(curDuration + endTime);
                     } else {
                         if (days == 0) {
-                            ToastUtils.showWarningLong(activity, "起止日期必须间隔20天及以上，请重新选择日期");
+                            ToastUtils.showWarningLong(activity, "起止日期选择有误，请重新选择日期");
                             textView.setText(MonthNote.getAfterEndDate());
                             showDatePickerDialog(activity, textView, days);
                         }

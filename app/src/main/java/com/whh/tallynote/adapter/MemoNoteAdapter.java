@@ -52,6 +52,7 @@ public class MemoNoteAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
+            viewHolder.tag = (TextView) convertView.findViewById(R.id.tag);
             viewHolder.content = (TextView) convertView.findViewById(R.id.content);
             convertView.setTag(viewHolder);
         } else {
@@ -61,15 +62,18 @@ public class MemoNoteAdapter extends BaseAdapter {
         //获取当前对象
         final MemoNote memoNote = memoNotes.get(position);
         viewHolder.time.setText(DateUtils.diffTime(memoNote.getTime()));
-        viewHolder.content.setText(memoNote.getContent());
+
         if (memoNote.getStatus() == MemoNote.OFF) {
-            viewHolder.content.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            viewHolder.tag.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.tag.setVisibility(View.GONE);
         }
+        viewHolder.content.setText(memoNote.getContent());
 
         return convertView;
     }
 
     class ViewHolder {
-        TextView time, content;
+        TextView time, tag, content;
     }
 }

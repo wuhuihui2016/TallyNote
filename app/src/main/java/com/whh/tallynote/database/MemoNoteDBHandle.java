@@ -90,9 +90,9 @@ public class MemoNoteDBHandle extends DBHandle {
             cursor = query(DBCommon.MemoNoteRecordColumns.TABLE_NAME_MEMONOTE, DBCommon.MemoNoteRecordColumns.projects,
                     null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                MemoNote memoNote = new MemoNote(cursor.getString(cursor.getColumnIndex(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_CONTENT)),
-                        cursor.getInt(cursor.getColumnIndex(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_STATUS)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_TIME)));
+                MemoNote memoNote = new MemoNote(cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_CONTENT)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.MemoNoteRecordColumns.COLUMN_MEMONOTE_TIME)));
                 memoNotes.add(memoNote);
             }
         } catch (Exception e) {

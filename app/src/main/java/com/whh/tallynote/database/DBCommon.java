@@ -14,7 +14,8 @@ public class DBCommon {
     private interface Base_Columns {
     }
 
-    public static int VERSION = 1;
+//    public static int VERSION = 1;
+    public static int VERSION = 2; //记事本表增加 imgcount图片张数,img1,img2,img3 字段
 
     /**
      * 日消费记录
@@ -131,16 +132,24 @@ public class DBCommon {
         String TABLE_NAME_NOTEPAD = "note_pad";
 
         String COLUMN_NOTEPAD_TAG = "tag"; //标签
+        String COLUMN_NOTEPAD_IMGCOUNT = "imgcount"; //图片张数 20210914 add
+        String COLUMN_NOTEPAD_IMG1 = "img1"; //图片1 20210914 add
+        String COLUMN_NOTEPAD_IMG2 = "img2"; //图片2 20210914 add
+        String COLUMN_NOTEPAD_IMG3 = "img3"; //图片3 20210914 add
         String COLUMN_NOTEPAD_WORDS = "words"; //内容
         String COLUMN_NOTEPAD_TIME = "time"; //记录时间
 
-        String[] projects = {COLUMN_NOTEPAD_TAG, COLUMN_NOTEPAD_WORDS, COLUMN_NOTEPAD_TIME};
+        String[] projects = {COLUMN_NOTEPAD_TAG, COLUMN_NOTEPAD_IMGCOUNT, COLUMN_NOTEPAD_IMG1, COLUMN_NOTEPAD_IMG2,
+                COLUMN_NOTEPAD_IMG3, COLUMN_NOTEPAD_WORDS, COLUMN_NOTEPAD_TIME};
 
         //记事本：tag标签,words内容,time记录时间
         String SQL_CREATE_NOTEPAD_TABLE = "create table if not exists note_pad(_id integer primary key," +
                 "tag integer,words varchar(200),time varchar(20))";
 
-    }
+        //记事本：tag标签,图片数量,img1、img2、img3图片,words内容,time记录时间
+        String SQL_CREATE_NOTEPAD_TABLE2 = "create table if not exists note_pad(_id integer primary key," +
+                "tag integer,imgcount integer,img1 BLOB,img2 BLOB,img3 BLOB,words varchar(200),time varchar(20))";
 
+    }
 
 }

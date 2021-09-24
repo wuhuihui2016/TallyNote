@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -11,8 +10,8 @@ import android.widget.TextView;
 import com.whh.tallynote.R;
 import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
+import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.ContansUtils;
-import com.whh.tallynote.utils.DesEncryptUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -65,11 +64,7 @@ public class ForgetPwdActivity extends BaseActivity {
                     return;
                 }
 
-                try {
-                    secretKey = DesEncryptUtils.encode(secretKey);
-                } catch (DesEncryptUtils.CodecException e) {
-                    e.printStackTrace();
-                }
+                secretKey = Base64Utils.encodeToString(secretKey);
 
                 String pwdKey = (String) ContansUtils.get(ContansUtils.SECRETKEY, "");
                 if (secretKey.equals(pwdKey)) { //输入的密钥加密后和设置的密钥一致则可重置密码

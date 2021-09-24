@@ -1,6 +1,5 @@
 package com.whh.tallynote.activity;
 
-import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,10 +18,10 @@ import com.whh.tallynote.R;
 import com.whh.tallynote.adapter.NumAdapter;
 import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.utils.AppManager;
+import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
-import com.whh.tallynote.utils.DesEncryptUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.SystemUtils;
@@ -71,6 +70,13 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_pwd);
+
+        //舍弃DES加密方式，改为Base64加密方式，因此将之前加密key清除，需要重新登录设置
+        if (SystemUtils.getVersion(this).compareTo("2021.09.23") < 0) {
+            LogUtils.e("whh0922", "need to clear PWDKEY and SECRETKEY!, then relogin");
+            ContansUtils.remove(ContansUtils.PWDKEY);
+            ContansUtils.remove(ContansUtils.SECRETKEY);
+        }
     }
 
     /**
@@ -113,6 +119,11 @@ public class SetOrCheckPwdActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         //判断是否设置过，是否重置密码
         if (TextUtils.isEmpty((String) ContansUtils.get(ContansUtils.PWDKEY, ""))
                 || getIntent().hasExtra(ContansUtils.RESETPWD)) {
@@ -142,12 +153,11 @@ public class SetOrCheckPwdActivity extends BaseActivity {
 
             //判断验方式：手势密码还是启动密码
             if (ContansUtils.getCheckWayIsGesture()) { //关闭当前界面，验证手势密码
-                AppManager.transfer(activity, SetGestureActivity.class,"start", true,"activityNum", 0);
+                AppManager.transfer(activity, SetGestureActivity.class, "start", true, "activityNum", 0);
                 finish();
             }
         }
     }
-
 
     /**
      * 设置密保后跳转页面
@@ -220,18 +230,14 @@ public class SetOrCheckPwdActivity extends BaseActivity {
 
                         if (isSetting) {
                             final String finalPassword = password;
-                            DialogUtils.showMsgDialog(activity, "设置当前密码？", "确定", new DialogListener() {
+                            DialogUtils.showMsgDialog(activity, "设置当前密码？", "确定", new MyClickListener() {
                                 @Override
                                 public void onClick() {
-                                    try {
-                                        ContansUtils.put(ContansUtils.CHECKWAY, ContansUtils.PWDKEY);
-                                        ContansUtils.put(ContansUtils.PWDKEY, DesEncryptUtils.encode(finalPassword));
-                                    } catch (DesEncryptUtils.CodecException e) {
-                                        e.printStackTrace();
-                                    }
+                                    ContansUtils.put(ContansUtils.CHECKWAY, ContansUtils.PWDKEY);
+                                    ContansUtils.put(ContansUtils.PWDKEY, Base64Utils.encodeToString(finalPassword));
                                     skipMainActivity();
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     pwds.clear();
@@ -244,11 +250,7 @@ public class SetOrCheckPwdActivity extends BaseActivity {
                         } else {
                             //密码取已保存的启动密码
                             String pwdKey = (String) ContansUtils.get(ContansUtils.PWDKEY, "");
-                            try {
-                                password = DesEncryptUtils.encode(password);
-                            } catch (DesEncryptUtils.CodecException e) {
-                                e.printStackTrace();
-                            }
+                            password = Base64Utils.encodeToString(password);
                             if (password.equals(pwdKey)) {  //验证通过
                                 if (getIntent().hasExtra("secureSet")) { //进入安全设置
                                     finish();

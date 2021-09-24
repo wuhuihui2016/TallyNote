@@ -2,7 +2,9 @@ package com.whh.tallynote.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -13,7 +15,7 @@ import com.whh.tallynote.base.BaseActivity;
 import com.whh.tallynote.model.DayNote;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -111,7 +113,7 @@ public class ImportExportActivity extends BaseActivity {
                 if (FileUtils.isSDCardAvailable()) {
 
                     DialogUtils.showMsgDialog(activity, "从文件中导入将覆盖已有数据，是否继续导入？",
-                            "导入", new DialogListener() {
+                            "导入", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     try {
@@ -124,7 +126,7 @@ public class ImportExportActivity extends BaseActivity {
                                         ToastUtils.showToast(context, true, "Please install a File Manager.");
                                     }
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -144,6 +146,7 @@ public class ImportExportActivity extends BaseActivity {
     //导入文件进度
     ProgressDialog dialog = null;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -193,12 +196,23 @@ public class ImportExportActivity extends BaseActivity {
 
                         @Override
                         public void callback(String errorMsg) {
-                            dialog.dismiss();
-                            ToastUtils.showErrorLong(activity, errorMsg);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog.dismiss();
+                                    ToastUtils.showErrorLong(activity, errorMsg);
+                                }
+                            });
                         }
                     });
                 } else {
-                    ToastUtils.showErrorLong(activity, "导入失败！\n仅支持xlsx或xls文件，请检查后重试！");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showErrorLong(activity, "导入失败！\n仅支持xlsx或xls文件，请检查后重试！");
+                        }
+                    });
+
                 }
             }
 

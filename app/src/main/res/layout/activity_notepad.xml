@@ -20,6 +20,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <com.whh.tallynote.view.CustomImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera"
+            android:scaleType="fitXY"/>
+
+        <com.whh.tallynote.view.CustomImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitXY"/>
+
+        <com.whh.tallynote.view.CustomImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitXY"/>
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/wordsEt"
         android:layout_width="match_parent"

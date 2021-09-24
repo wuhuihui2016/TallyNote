@@ -9,7 +9,6 @@
         android:id="@+id/tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="all"
         android:textColor="@color/blue"
         android:textIsSelectable="true" />
 
@@ -24,6 +23,36 @@
         android:hint="这一刻的想法..."
         android:textIsSelectable="true"
         android:textSize="@dimen/bigtextSize" />
+
+    <LinearLayout
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/words">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitXY"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/time"

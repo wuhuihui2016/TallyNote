@@ -13,10 +13,12 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,7 +26,6 @@ import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -40,7 +41,9 @@ public class FileUtils {
     public static final String dirPath = Environment.getExternalStorageDirectory() + "/ATallyNote"; //项目根目录
     public static final String excelPath = dirPath + "/excel/"; //excel根目录
     public static final String crashPath = dirPath + "/crash/"; //crash根目录
-    public static final String screenShot = dirPath + "/screenShot/"; //截屏根目录
+    public static final String screenShot = dirPath + "/screenshot/"; //截屏根目录
+    public static final String notePadTakeImg = dirPath + "/notepadtakeimg/"; //编辑记事本拍照图片保存的临时目录
+    public static final String notePadImg = excelPath + "notepadimg/"; //记事本导出的图片根目录
 
     /**
      * 获取APP文件夹
@@ -149,7 +152,7 @@ public class FileUtils {
      */
     public static File getTallyNoteFile() {
         File excelDir = FileUtils.getExcelDir();
-        if (!excelDir.exists())  return null;
+        if (!excelDir.exists()) return null;
         final File files[] = excelDir.listFiles();
         if (files.length == 0) return null;
         for (int i = 0; i < files.length; i++) {
@@ -329,6 +332,26 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 将字符串写入文件
+     *
+     * @param fileName
+     * @param content
+     * @return
+     */
+    public static boolean writeTextFile(String fileName, final String content) {
+        try {
+            if (fileName == null || content == null) return false;
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+            bw.write(content);
+            bw.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     /**
      * 读取本地文本文件
@@ -337,7 +360,7 @@ public class FileUtils {
      * @return
      */
     public static String readTextFile(String fileName) {
-        String result = null;
+        String result;
         try {
             File file = new File(fileName);
             int length = (int) file.length();
@@ -349,6 +372,7 @@ public class FileUtils {
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.e(TAG, "没有找到指定文件");
+            return "";
         }
         return result;
     }
@@ -366,19 +390,19 @@ public class FileUtils {
         if (files.length == 0) return;
         for (int i = 0; i < files.length; i++) {
             if (type == ContansUtils.DAY) {
-                if (files[i].getName().contains(ContansUtils.day_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.day_file0)) files[i].delete();
             } else if (type == ContansUtils.DAY_HISTORY) {
-                if (files[i].getName().contains(ContansUtils.day_history_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.day_history_file0)) files[i].delete();
             } else if (type == ContansUtils.MONTH) {
-                if (files[i].getName().contains(ContansUtils.month_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.month_file0)) files[i].delete();
             } else if (type == ContansUtils.INCOME) {
-                if (files[i].getName().contains(ContansUtils.income_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.income_file0)) files[i].delete();
             } else if (type == ContansUtils.MEMO) {
-                if (files[i].getName().contains(ContansUtils.memo_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.memo_file0)) files[i].delete();
             } else if (type == ContansUtils.NOTEPAD) {
-                if (files[i].getName().contains(ContansUtils.notepad_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.notepad_file0)) files[i].delete();
             } else {
-                if (files[i].getName().contains(ContansUtils.tallynote_file)) files[i].delete();
+                if (files[i].getName().startsWith(ContansUtils.tallynote_file0)) files[i].delete();
             }
         }
     }
@@ -388,7 +412,7 @@ public class FileUtils {
      */
     public static void backupTallyNoteFile() {
         try {
-            if(getTallyNoteFile() == null) return;
+            if (getTallyNoteFile() == null) return;
             String tallyNoteFileName = getTallyNoteFile().getName();
 
             String dirPath = excelPath + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";

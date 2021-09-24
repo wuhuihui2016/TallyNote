@@ -15,7 +15,7 @@ import com.whh.tallynote.model.MemoNote;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -91,7 +91,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                 public void onClick(View v) {
 
                     DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
-                            "删除", new DialogListener() {
+                            "删除", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.memoNoteDBHandle.delMemoNote(memoNote);
@@ -100,7 +100,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                                     finish();
 
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -142,7 +142,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                         public void onClick(View v) {
                             popupWindow.dismiss();
                             DialogUtils.showMsgDialog(activity, "是否确定完成此条备忘录",
-                                    "提交", new DialogListener() {
+                                    "提交", new MyClickListener() {
                                         @Override
                                         public void onClick() {
                                             MyApp.memoNoteDBHandle.finishMemoNote(memoNote);
@@ -151,7 +151,7 @@ public class MemoNoteDetailActivity extends BaseActivity {
                                             showStatus(true);
                                             EventBus.getDefault().post(ContansUtils.ACTION_MEMO);
                                         }
-                                    }, "取消", new DialogListener() {
+                                    }, "取消", new MyClickListener() {
                                         @Override
                                         public void onClick() {
                                         }

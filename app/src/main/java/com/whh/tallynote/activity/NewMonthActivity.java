@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -156,7 +155,7 @@ public class NewMonthActivity extends BaseActivity {
                                     "\n本次结余：" + StringUtils.showPrice(monthNote.getBalance()) +
                                     "\n实际结余：" + StringUtils.showPrice(monthNote.getActual_balance()) +
                                     "\n" + monthNote.getRemark(),
-                            "提交", new DialogListener() {
+                            "提交", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.monthNoteDBHandle.saveMonthNote(monthNote);
@@ -176,7 +175,7 @@ public class NewMonthActivity extends BaseActivity {
                                     }
                                     finish();
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -239,7 +238,7 @@ public class NewMonthActivity extends BaseActivity {
                     DialogUtils.showMsgDialog(activity, "修改月账单\n" +
                                     "实际结余：" + StringUtils.showPrice(isEditMonthNote.getActual_balance()) +
                                     "\n" + isEditMonthNote.getRemark(),
-                            "提交", new DialogListener() {
+                            "提交", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.monthNoteDBHandle.updateMonthNote(isEditMonthNote);
@@ -248,7 +247,7 @@ public class NewMonthActivity extends BaseActivity {
                                     EventBus.getDefault().post(ContansUtils.ACTION_MONTH);
                                     finish();
                                 }
-                            }, "取消", new DialogListener() {
+                            }, "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -301,12 +300,12 @@ public class NewMonthActivity extends BaseActivity {
                 final String calculate = (last_balance - pay + salary + income) + "";
 
                 DialogUtils.showMsgDialog(activity, "计算结余：\n" + meaasge,
-                        "计算", new DialogListener() {
+                        "计算", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 balanceEt.setText(StringUtils.formatePrice(calculate));
                             }
-                        }, "取消", new DialogListener() {
+                        }, "取消", new MyClickListener() {
                             @Override
                             public void onClick() {
                             }
@@ -346,8 +345,10 @@ public class NewMonthActivity extends BaseActivity {
             final EditText editText3 = (EditText) layout.findViewById(R.id.editText3); //京东小金库
             final EditText editText4 = (EditText) layout.findViewById(R.id.editText4); //理财
             //自动填写理财总金额
-            if (IncomeNote.getEarningInComes().size() > 0)
-                editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
+//            if (IncomeNote.getEarningInComes().size() > 0) {
+//                editText4.setText(StringUtils.formatePrice(IncomeNote.getEarningMoney() + ""));
+//            }
+            editText4.setText("0"); //理财over，为0
 
             layout.findViewById(R.id.comfire).setOnClickListener(
                     new View.OnClickListener() {

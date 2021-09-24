@@ -2,6 +2,7 @@ package com.whh.tallynote;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.squareup.leakcanary.LeakCanary;
@@ -24,6 +25,8 @@ public class MyApp extends Application {
 
     private static String TAG = "MyApplication";
 
+    public static Context context;
+
     public static DBHandle dbHandle;
     public static DayNoteDBHandle dayNoteDBHandle;
     public static MonthNoteDBHandle monthNoteDBHandle;
@@ -37,6 +40,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        context = this;
         LeakCanary.install(this); //检测内存泄露
         ContansUtils.setPres(this);//设置存储空间，获取编辑器
         FileUtils.createDir(); //创建项目文件目录(excel文档及crash日志)
@@ -62,7 +66,7 @@ public class MyApp extends Application {
             public void onActivityStopped(Activity activity) {
                 count--;
                 if (count == 0) {
-                    SystemUtils.setBack(activity);
+                    SystemUtils.setBack(activity); //后台运行
                 }
             }
 
@@ -71,7 +75,7 @@ public class MyApp extends Application {
                 String name = SystemUtils.getRunningActivityName(activity);
                 LogUtils.i(TAG + "-getRunningActivityName", name);
                 if (count == 0) {
-                    SystemUtils.setFore(activity);
+                    SystemUtils.setFore(activity); //前台运行
                 }
                 count++;
             }

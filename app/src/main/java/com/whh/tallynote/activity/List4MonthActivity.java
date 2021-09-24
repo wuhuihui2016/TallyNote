@@ -18,7 +18,7 @@ import com.whh.tallynote.model.MonthNote;
 import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DelayTask;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.FileUtils;
@@ -135,12 +135,12 @@ public class List4MonthActivity extends BaseActivity {
             @Override
             public void deal() {
                 DialogUtils.showMsgDialog(activity, "新月账单已生成,是否现在上传数据？",
-                        "上传", new DialogListener() {
+                        "上传", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 FileUtils.uploadFile2WXCollect(activity);
                             }
-                        }, "查看", new DialogListener() {
+                        }, "查看", new MyClickListener() {
                             @Override
                             public void onClick() {
                                 File tallyNoteFile = FileUtils.getTallyNoteFile();

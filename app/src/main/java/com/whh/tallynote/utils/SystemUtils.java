@@ -129,6 +129,7 @@ public class SystemUtils {
      * 如果从APP内部发送文件或者打开文件时跳转第三方APP视为APP后台执行
      */
     public static void setBack(Activity activity) {
+        ContansUtils.pauseCheckBack = false; //暂停判断前后台切换验证标志位恢复
         ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
         String className = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
         LogUtils.i(TAG, "APP运行在>>>>" + className);
@@ -149,6 +150,7 @@ public class SystemUtils {
      * @param activity
      */
     public static void setFore(Activity activity) {
+        if (ContansUtils.pauseCheckBack) return; //如果中止了判断前后台的切换，则不需跳转验证密码页
         if ((Boolean) ContansUtils.get(ContansUtils.ISBACK, false)) {
             LogUtils.i(TAG, "lifecycle--APP运行在>>>>前台");
             ContansUtils.put(ContansUtils.ISBACK, false); //写入非后台运行标记

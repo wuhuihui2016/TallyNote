@@ -18,7 +18,7 @@ import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
 import com.whh.tallynote.utils.DecimalInputTextWatcher;
-import com.whh.tallynote.utils.DialogListener;
+import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
 import com.whh.tallynote.utils.LogUtils;
@@ -99,7 +99,7 @@ public class NewDayActivity extends BaseActivity {
                         String message;
                         message = editDayNote.getRemark() + DayNote.getUserTypeInt(editDayNote.getUseType()) + StringUtils.showPrice(editDayNote.getMoney());
                         DialogUtils.showMsgDialog(activity, "修改日账\n" + message,
-                                "修改", new DialogListener() {
+                                "修改", new MyClickListener() {
                                     @Override
                                     public void onClick() {
                                         MyApp.dayNoteDBHandle.updateDayNote(editDayNote);
@@ -112,7 +112,7 @@ public class NewDayActivity extends BaseActivity {
                                         }
                                         finish();
                                     }
-                                }, "取消", new DialogListener() {
+                                }, "取消", new MyClickListener() {
                                     @Override
                                     public void onClick() {
 
@@ -132,7 +132,7 @@ public class NewDayActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     DialogUtils.showMsgDialog(activity, "是否确定删除此条记录",
-                            "删除", new DialogListener() {
+                            "删除", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                     MyApp.dayNoteDBHandle.delDayNote(editDayNote);
@@ -146,7 +146,7 @@ public class NewDayActivity extends BaseActivity {
                                     finish();
                                 }
                             },
-                            "取消", new DialogListener() {
+                            "取消", new MyClickListener() {
                                 @Override
                                 public void onClick() {
                                 }
@@ -168,7 +168,7 @@ public class NewDayActivity extends BaseActivity {
                         String message;
                         message = dayNote.getRemark() + DayNote.getUserTypeInt(dayNote.getUseType()) + StringUtils.showPrice(dayNote.getMoney());
                         DialogUtils.showMsgDialog(activity, "提交日账\n" + message,
-                                "提交", new DialogListener() {
+                                "提交", new MyClickListener() {
                                     @Override
                                     public void onClick() {
                                         MyApp.dayNoteDBHandle.saveDayNote(dayNote);
@@ -181,7 +181,7 @@ public class NewDayActivity extends BaseActivity {
                                         }
                                         finish();
                                     }
-                                }, "取消", new DialogListener() {
+                                }, "取消", new MyClickListener() {
                                     @Override
                                     public void onClick() {
 

@@ -77,7 +77,7 @@ public class DialogUtils {
      * @param comfireListener 确定按钮
      * @return
      */
-    public static AlertDialog showMsgDialog(Activity activity, String message, final DialogListener comfireListener) {
+    public static AlertDialog showMsgDialog(Activity activity, String message, final MyClickListener comfireListener) {
         final AlertDialog dialog = initDialog(activity);
         msg.setText(message);
         if (message.length() > 12) msg.setGravity(Gravity.LEFT);
@@ -112,7 +112,7 @@ public class DialogUtils {
      * @param comfireListener 确定按钮
      * @return
      */
-    public static AlertDialog showMsgDialog(Activity activity, String message, boolean isCancel, final DialogListener comfireListener) {
+    public static AlertDialog showMsgDialog(Activity activity, String message, boolean isCancel, final MyClickListener comfireListener) {
         final AlertDialog dialog = initDialog(activity);
         dialog.setCancelable(isCancel);
         msg.setText(message);
@@ -148,7 +148,7 @@ public class DialogUtils {
      * @param comfireListener 确定按钮
      * @return
      */
-    public static AlertDialog showMsgDialog(Activity activity, String message, String okTitle, final DialogListener comfireListener) {
+    public static AlertDialog showMsgDialog(Activity activity, String message, String okTitle, final MyClickListener comfireListener) {
         final AlertDialog dialog = initDialog(activity);
         msg.setText(message);
         if (message.length() > 12) msg.setGravity(Gravity.LEFT);
@@ -187,8 +187,8 @@ public class DialogUtils {
      * @return
      */
     public static AlertDialog showMsgDialog(Activity activity, String message,
-                                            String okTitle, final DialogListener comfireListener,
-                                            String noTitle, final DialogListener cancelListener) {
+                                            String okTitle, final MyClickListener comfireListener,
+                                            String noTitle, final MyClickListener cancelListener) {
         final AlertDialog dialog = initDialog(activity);
         msg.setText(message);
         if (message.length() > 12) msg.setGravity(Gravity.LEFT);
@@ -233,8 +233,8 @@ public class DialogUtils {
      * @return
      */
     public static AlertDialog showMsgDialog(Activity activity, String message, boolean isCancel,
-                                            String okTitle, final DialogListener comfireListener,
-                                            String noTitle, final DialogListener cancelListener) {
+                                            String okTitle, final MyClickListener comfireListener,
+                                            String noTitle, final MyClickListener cancelListener) {
         final AlertDialog dialog = initDialog(activity);
         dialog.setCancelable(isCancel);
         msg.setText(message);

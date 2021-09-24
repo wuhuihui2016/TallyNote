@@ -89,18 +89,18 @@ public class IncomeNoteDBHandle extends DBHandle {
 //                    null, null, null, null, null, null);
             cursor = rawQuery("select * from income_note");
             while (cursor.moveToNext()) {
-                IncomeNote incomeNote = new IncomeNote(cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_MONEY)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_INCOMERATIO)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYS)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DURTION)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYINCOME)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALINCOME)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASH)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASHGO)),
-                        cursor.getInt(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINISHED)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_REMARK)),
-                        cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_TIME)));
-                incomeNote.setId(cursor.getInt(cursor.getColumnIndex("_id")) + "");
+                IncomeNote incomeNote = new IncomeNote(cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_MONEY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_INCOMERATIO)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DURTION)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYINCOME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALINCOME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASH)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASHGO)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINISHED)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_REMARK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_TIME)));
+                incomeNote.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")) + "");
                 list.add(incomeNote);
             }
         } catch (Exception e) {
@@ -148,18 +148,18 @@ public class IncomeNoteDBHandle extends DBHandle {
         Cursor cursor = rawQuery("select * from " + DBCommon.IncomeNoteRecordColumns.TABLE_NAME_INCOMENOTE +
                 " LIMIT 1 OFFSET " + (MyApp.dbHandle.getCount4Record(ContansUtils.INCOME) - 1), new String[]{});
         if (cursor != null && cursor.moveToFirst()) {
-            IncomeNote incomeNote = new IncomeNote(cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_MONEY)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_INCOMERATIO)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYS)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DURTION)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYINCOME)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALINCOME)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASH)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASHGO)),
-                    cursor.getInt(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINISHED)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_REMARK)),
-                    cursor.getString(cursor.getColumnIndex(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_TIME)));
-            incomeNote.setId(cursor.getInt(cursor.getColumnIndex("_id")) + "");
+            IncomeNote incomeNote = new IncomeNote(cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_MONEY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_INCOMERATIO)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DURTION)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_DAYINCOME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALINCOME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASH)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINALCASHGO)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_FINISHED)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_REMARK)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBCommon.IncomeNoteRecordColumns.COLUMN_INCOMENOTE_TIME)));
+            incomeNote.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")) + "");
             return incomeNote;
         }
         return null;
