@@ -26,7 +26,6 @@
             android:ellipsize="end"
             android:text="我想说..."
             android:textColor="@color/bitblack"
-            android:textIsSelectable="true"
             android:textSize="@dimen/bigtextSize" />
 
         <LinearLayout

@@ -1,9 +1,11 @@
 package com.whh.tallynote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -19,6 +21,7 @@ import com.whh.tallynote.model.NotePad;
 import com.whh.tallynote.model.SearchNote;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
+import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.view.CustomSearchView;
@@ -182,36 +185,35 @@ public class SearchActivity extends BaseActivity {
             searchNotes = DateUtils.sortData(searchNotes);
             listView.setAdapter(new SearchNoteAdapter(this, searchNotes));
 
-            //设置无点击效果
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                    LogUtils.i(TAG, "Search4Notes-setOnItemClickListener" + position);
-//                    SearchNote searchNote = searchNotes.get(position);
-//
-//                    if (searchNote.getType() == ContansUtils.DAY) {
-//                        DayNote dayNote = (DayNote) searchNote.getObject();
-//                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserType(dayNote.getUseType()) + dayNote.getRemark() );
-//
-//                    } else if (searchNote.getType() == ContansUtils.MEMO) {
-//                        MemoNote memoNote = (MemoNote) searchNote.getObject();
-//                        Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putSerializable("memoNote", memoNote);
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-//
-//                    } else {
-//                        NotePad notePad = (NotePad) searchNote.getObject();
-//                        Intent intent = new Intent(activity, NotePadDetailActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putSerializable("notepad", notePad);
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-//                    }
-//                }
-//            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    LogUtils.i(TAG, "Search4Notes-setOnItemClickListener" + position);
+                    SearchNote searchNote = searchNotes.get(position);
+
+                    if (searchNote.getType() == ContansUtils.DAY) {
+                        DayNote dayNote = (DayNote) searchNote.getObject();
+                        DialogUtils.showMsgDialog(activity, "日账\n" + DayNote.getUserTypeInt(dayNote.getUseType()) + dayNote.getRemark() );
+
+                    } else if (searchNote.getType() == ContansUtils.MEMO) {
+                        MemoNote memoNote = (MemoNote) searchNote.getObject();
+                        Intent intent = new Intent(activity, MemoNoteDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("memoNote", memoNote);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+
+                    } else {
+                        NotePad notePad = (NotePad) searchNote.getObject();
+                        Intent intent = new Intent(activity, NotePadDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("notepad", notePad);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }
+            });
         } else {
             listView.setEmptyView(emptyView);
         }

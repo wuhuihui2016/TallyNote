@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        LogUtils.e(TAG, "oldVersion : " + oldVersion + ",newVersion : " + newVersion);
+        LogUtils.e(TAG, "oldVersion : " + oldVersion + ", newVersion : " + newVersion);
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             switch (i) {
                 case 2:
@@ -65,9 +65,10 @@ public class DBHelper extends SQLiteOpenHelper {
      * 记事本表增加 imgcount图片张数,img1,img2,img3 字段
      */
     private void upgradeToVersion2(SQLiteDatabase db) {
+        LogUtils.e(TAG, "upgradeToVersion2....");
         db.execSQL("ALTER TABLE note_pad ADD COLUMN imgcount integer");
+        db.execSQL("ALTER TABLE note_pad ADD COLUMN img1 BLOB");
         db.execSQL("ALTER TABLE note_pad ADD COLUMN img2 BLOB");
-        db.execSQL("ALTER TABLE note_pad ADD COLUMN img3 BLOB");
         db.execSQL("ALTER TABLE note_pad ADD COLUMN img3 BLOB");
     }
 }

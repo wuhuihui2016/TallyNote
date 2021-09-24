@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,6 +35,7 @@ import com.whh.tallynote.utils.Base64Utils;
 import com.whh.tallynote.utils.BitmapUtils;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.DateUtils;
+import com.whh.tallynote.utils.LogUtils;
 import com.whh.tallynote.utils.MyClickListener;
 import com.whh.tallynote.utils.DialogUtils;
 import com.whh.tallynote.utils.ExcelUtils;
@@ -155,7 +157,7 @@ public class NewNotePadActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(words)) {
                     NotePad notePad = new NotePad(tag, words.trim(), DateUtils.formatDateTime());
                     if (imgFilePaths.size() > 0) {
-                         //记事本增加图片属性，并保存于数据库
+                        //记事本增加图片属性，并保存于数据库
                         notePad.setImgCount(imgFilePaths.size());
                         for (int i = 0; i < imgFilePaths.size(); i++) {
                             SoftReference<Bitmap> bitmapRef = new SoftReference<>(BitmapFactory.decodeFile(imgFilePaths.get(i)));
@@ -210,10 +212,22 @@ public class NewNotePadActivity extends BaseActivity {
                                                 public void onClick() {
                                                     filePath = DateUtils.formatDate4fileName() + "_camera.jpg";
                                                     File notePadImgDir = new File(FileUtils.notePadTakeImg);
-                                                    if (!notePadImgDir.exists()) notePadImgDir.mkdirs();
+                                                    if (!notePadImgDir.exists())  notePadImgDir.mkdirs();
                                                     File file = new File(notePadImgDir, filePath);
                                                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+
+                                                    Uri uri;
+                                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                                                        uri = Uri.fromFile(file);
+                                                    } else {
+                                                        LogUtils.e("whh0924", "com.whh.tallynote.fileprovider..");
+                                                        // 7.0+ 调用系统相机拍照不再允许使用Uri方式，替换为FileProvider，
+                                                        // 也可以解决MIUI系统上拍照返回size为0的情况
+                                                        // 参数authority 要与 manifest.xml 命名的 FileProvider 一致！
+                                                        uri = FileProvider.getUriForFile(activity, "com.whh.tallynote.fileprovider", file);
+                                                    }
+
+                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                                                     startActivityForResult(intent, requestCameraCode);
                                                 }
                                             });

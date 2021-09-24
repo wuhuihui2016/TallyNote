@@ -40,6 +40,7 @@ public class ContansUtils {
     public static boolean pauseCheckBack = false; //是否中止判断应用的前后台运行，如果中止，用完需恢复状态位
     public static final String INCOMEREMINDER = "incomeReminder"; //记录当天日期，用于理财到期通知，当天仅显示一次通知
     public static final String COUNTER = "counter"; //计数器功能
+    public static final String VERSION = "version"; //记录当前版本
 
 
     //文件名(最初的文件名)

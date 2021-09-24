@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 连接网络 -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动 -->
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 运行任务 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 拍照 -->
 
     <application
         android:name=".MyApp"

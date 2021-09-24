@@ -13,9 +13,11 @@
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/drawable/shape_white.xml" value="0.1685185185185185" />
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/activity_notepad.xml" value="0.1" />
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/activity_notepad_detail.xml" value="0.29270833333333335" />
+        <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/dialog_message.xml" value="0.1" />
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/image_view.xml" value="0.25" />
-        <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/memonote_item_layout.xml" value="0.21822916666666667" />
+        <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/memonote_item_layout.xml" value="0.1" />
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/notepad_item_layout.xml" value="0.29270833333333335" />
+        <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/search_item_layout.xml" value="0.25181159420289856" />
         <entry key="..\:/private/whh_git/TallyNote/app/src/main/res/layout/search_view.xml" value="0.27853260869565216" />
       </map>
     </option>

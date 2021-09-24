@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 260
-        versionName "2021.09.23"
+        versionName "2021.09.24"
     }
 
     signingConfigs {

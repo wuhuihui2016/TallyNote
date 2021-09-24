@@ -71,11 +71,10 @@ public class List4MemoNoteActivity extends BaseActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppManager.transfer(activity, MemoNoteDetailActivity.class,"memoNote", memoNotes.get(position));
-                return false;
             }
         });
     }

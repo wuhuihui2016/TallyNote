@@ -72,10 +72,10 @@ public class SetOrCheckPwdActivity extends BaseActivity {
         setContentView(R.layout.activity_pwd);
 
         //舍弃DES加密方式，改为Base64加密方式，因此将之前加密key清除，需要重新登录设置
-        if (SystemUtils.getVersion(this).compareTo("2021.09.23") < 0) {
-            LogUtils.e("whh0922", "need to clear PWDKEY and SECRETKEY!, then relogin");
-            ContansUtils.remove(ContansUtils.PWDKEY);
-            ContansUtils.remove(ContansUtils.SECRETKEY);
+        String version0 = (String) ContansUtils.get(ContansUtils.VERSION, ""); //获取升级前保存的版本号
+        if (version0.compareTo("2021.09.24") < 0) {
+            LogUtils.e("whh0924", "need to clear PWDKEY and SECRETKEY!, then relogin");
+            ContansUtils.clear(); //清除所有的已保存的信息
         }
     }
 

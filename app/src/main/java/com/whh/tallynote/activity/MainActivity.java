@@ -22,6 +22,7 @@ import com.whh.tallynote.utils.AppManager;
 import com.whh.tallynote.utils.ContansUtils;
 import com.whh.tallynote.utils.NotificationUtils;
 import com.whh.tallynote.utils.PermissionUtils;
+import com.whh.tallynote.utils.SystemUtils;
 import com.whh.tallynote.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+        ContansUtils.put(ContansUtils.VERSION, SystemUtils.getVersion(this)); //写入当前版本号
         NotificationUtils.notifyIncome(context); //理财到期提醒
     }
 
