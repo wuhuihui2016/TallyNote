@@ -210,10 +210,10 @@ public class NewNotePadActivity extends BaseActivity {
                                             }, "拍照", new MyClickListener() {
                                                 @Override
                                                 public void onClick() {
-                                                    filePath = DateUtils.formatDate4fileName() + "_camera.jpg";
                                                     File notePadImgDir = new File(FileUtils.notePadTakeImg);
-                                                    if (!notePadImgDir.exists())  notePadImgDir.mkdirs();
-                                                    File file = new File(notePadImgDir, filePath);
+                                                    if (!notePadImgDir.exists()) notePadImgDir.mkdirs();
+                                                    filePath = FileUtils.notePadTakeImg + DateUtils.formatDate4fileName() + "_camera.jpg";
+                                                    File file = new File(filePath);
                                                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 
                                                     Uri uri;
